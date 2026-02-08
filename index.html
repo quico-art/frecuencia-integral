@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frecuencia Integral Academy - Transforma tu Vida a través de las Tres Puertas</title>
+    <meta name="description" content="Una integración magistral de Dzogchen, el Cuarto Camino y Un Curso de Milagros. Sistema integral para cimentar tu cuerpo, purificar tu energía y expandir tu mente.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Outfit:wght@300;400;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <style>
+        /* Custom CSS Variables */
+        :root {
+            /* Typography */
+            --font-sans: 'Plus Jakarta Sans', 'Outfit', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            
+            /* Radius */
+            --radius: 0.75rem;
+
+            /* Core UI Tokens - Diseño Claro y Luminoso */
+            --background: oklch(1 0 0);  /* Blanco puro */
+            --foreground: oklch(0.15 0.01 240);  /* Texto más suave */
+            --card: oklch(1 0 0);  /* Blanco puro para tarjetas */
+            --card-foreground: oklch(0.15 0.01 240);
+            --popover: oklch(1 0 0);
+            --popover-foreground: oklch(0.15 0.01 240);
+            --primary: oklch(0.55 0.15 250);  /* Azul más suave */
+            --primary-foreground: oklch(1 0 0);
+            --secondary: oklch(0.96 0.005 240);  /* Gris muy claro */
+            --secondary-foreground: oklch(0.20 0.02 240);
+            --muted: oklch(0.98 0.005 240);  /* Fondo muy suave */
+            --muted-foreground: oklch(0.40 0.01 240);  /* Texto secundario más suave */
+            --accent: oklch(0.60 0.12 200);  /* Azul cyan suave */
+            --accent-foreground: oklch(1 0 0);
+            --destructive: oklch(0.55 0.15 25);
+            --destructive-foreground: oklch(1 0 0);
+            --border: oklch(0.92 0.005 240);  /* Bordes muy suaves */
+            --input: oklch(0.96 0.005 240);
+            --ring: oklch(0.55 0.15 250);
+        }
+
+        /* Tailwind Configuration */
+        .font-sans { font-family: var(--font-sans); }
+        .font-mono { font-family: var(--font-mono); }
+        .font-heading { font-family: 'Outfit', var(--font-sans); }
+        
+        /* Custom Components */
+        .hero-background {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            opacity: 0.25;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.8) 100%);
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .gradient-soft {
+            background: linear-gradient(135deg, #ffffff 0%, rgba(248, 250, 252, 0.3) 50%, #ffffff 100%);
+        }
+        
+        .gradient-primary-soft {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.1) 0%, rgba(96, 165, 250, 0.1) 50%, rgba(59, 130, 246, 0.1) 100%);
+        }
+        
+        .shadow-soft {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .shadow-soft-lg {
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
+        
+        .hover-lift {
+            transition: all 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            transform: translateY(-4px);
+        }
+        
+        .border-gradient {
+            position: relative;
+        }
+        
+        .border-gradient::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.2) 0%, rgba(96, 165, 250, 0.2) 50%, rgba(59, 130, 246, 0.2) 100%);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: xor;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        /* Button styles */
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        .btn-outline {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--primary);
+            padding: 1rem 2.5rem;
+            border-radius: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .btn-outline:hover {
+            background: rgba(59, 130, 246, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Badge styles */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--primary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Card styles */
+        .card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Portal cards specific styles */
+        .portal-card-blanco {
+            background: linear-gradient(135deg, rgba(248, 250, 252, 0.5) 0%, rgba(241, 245, 249, 0.5) 100%);
+        }
+
+        .portal-card-rojo {
+            background: linear-gradient(135deg, rgba(254, 242, 242, 0.5) 0%, rgba(254, 226, 226, 0.5) 100%);
+        }
+
+        .portal-card-azul {
+            background: linear-gradient(135deg, rgba(239, 246, 255, 0.5) 0%, rgba(219, 234, 254, 0.5) 100%);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+                line-height: 1.1;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.125rem;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans bg-white text-gray-800 antialiased">
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden py-24 gradient-soft">
+        <div class="hero-background">
+            <img src="/images/Captura de pantalla6026.png" alt="Naturaleza y Espiritualidad" class="w-full h-full object-cover">
+            <div class="hero-overlay"></div>
+        </div>
+
+        <div class="container mx-auto px-4 relative z-10 text-center animate-fade-in-up">
+            <div class="badge mb-8">
+                <i data-lucide="map-pin" class="w-4 h-4"></i>
+                <span>Bienvenido a la Evolución del Ser</span>
+            </div>
+
+            <h1 class="hero-title text-5xl md:text-7xl font-heading font-bold tracking-tight mb-6 leading-tight">
+                Transforma tu Vida a través de <br>
+                <span class="bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 bg-clip-text text-transparent">
+                    las Tres Puertas
+                </span>
+            </h1>
+
+            <p class="hero-subtitle text-xl text-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
+                Una integración magistral de <strong>Dzogchen</strong>, el <strong>Cuarto Camino</strong> y 
+                <strong>Un Curso de Milagros</strong>. Un sistema integral para cimentar tu cuerpo, 
+                purificar tu energía y expandir tu mente.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
+                <a href="#tres-puertas" class="btn-primary">
+                    <i data-lucide="layers" class="w-5 h-5"></i>
+                    Explorar las Tres Puertas
+                </a>
+                <button onclick="showPortalTest()" class="btn-outline">
+                    <i data-lucide="gem" class="w-5 h-5"></i>
+                    Descubre tu Portal de Luz
+                </button>
+            </div>
+        </div>
+
+        <!-- Sacred Geometry Decor -->
+        <div class="absolute bottom-10 right-10 w-64 h-64 opacity-10 pointer-events-none animate-float">
+            <img src="https://images.unsplash.com/photo-1619879310659-01e83a8e9d6b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4Mzc5NTV8MHwxfHNlYXJjaHwxfHxzYWNyZWQlMjBnZW9tZXRyeSUyMG1hbmRhbGElMjBzcGlyaXR1YWx8ZW58MHwwfHx8MTc3MDQ2ODAwM3ww&ixlib=rb-4.1.0&q=80&w=1080" alt="Geometría Sagrada" class="w-full h-full object-contain">
+        </div>
+    </section>
+
+    <!-- Las Tres Puertas de la Transformación -->
+    <section id="tres-puertas" class="py-24 gradient-soft">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <div class="badge mb-4">Sistema TCT</div>
+                <h2 class="text-4xl font-heading font-bold mb-6">Las Tres Puertas de la Transformación</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto text-lg leading-relaxed">
+                    Cada nivel incluye tu <strong>Portal de Luz personalizado</strong> y sesiones de 
+                    <strong>acompañamiento vibracional</strong> con cuencos tibetanos. Una experiencia única 
+                    que combina la sabiduría ancestral con la artesanería sagrada.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Puerta Blanca -->
+                <div class="card hover-lift">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-slate-200 to-slate-400 flex items-center justify-center">
+                            <i data-lucide="shield-check" class="w-8 h-8 text-slate-600"></i>
+                        </div>
+                        <div class="text-sm text-gray-500 uppercase tracking-wider mb-2">Puerta Blanca</div>
+                        <div class="text-sm text-gray-500 mb-4">Nivel 1</div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4">Nivel 1: Puerta Blanca (Cimentación)</h3>
+                    <p class="text-gray-600 mb-6 leading-relaxed">
+                        Enfoque en el cuerpo y la presencia física. Integración del Cuarto Camino y El Deportista Consciente para la cimentación integral.
+                    </p>
+                    <div class="space-y-2 mb-6">
+                        <h4 class="font-semibold text-sm uppercase tracking-wider text-gray-500">Temas clave</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm">Presencia Corporal</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm">Cuarto Camino: Los Tres Centros</span>
+                            <span class="px-3 py-1 bg-slate-100 text-slate-700 rounded-full text-sm">El Deportista Consciente</span>
+                        </div>
+                    </div>
+                    <div class="text-center pt-4 border-t border-gray-200">
+                        <div class="text-2xl font-bold text-gray-800 mb-2">12 Semanas</div>
+                        <button class="btn-outline w-full">Explorar</button>
+                    </div>
+                </div>
+
+                <!-- Puerta Roja -->
+                <div class="card hover-lift portal-card-rojo">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center">
+                            <i data-lucide="zap" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <div class="text-sm text-red-600 uppercase tracking-wider mb-2">Puerta Roja</div>
+                        <div class="text-sm text-red-500 mb-4">Nivel 2</div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 text-red-800">Nivel 2: Puerta Roja (Purificación)</h3>
+                    <p class="text-red-600 mb-6 leading-relaxed">
+                        Transformación de la energía emocional. Integración del Cuarto Camino, UCDM y protocolos de sonido con cuencos tibetanos.
+                    </p>
+                    <div class="space-y-2 mb-6">
+                        <h4 class="font-semibold text-sm uppercase tracking-wider text-red-500">Temas clave</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm">Gestión Emocional</span>
+                            <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm">Frecuencias Sagradas</span>
+                            <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm">Alquimia de la Energía</span>
+                        </div>
+                    </div>
+                    <div class="text-center pt-4 border-t border-red-200">
+                        <div class="text-2xl font-bold text-red-800 mb-2">12 Semanas</div>
+                        <button class="btn-outline w-full">Explorar</button>
+                    </div>
+                </div>
+
+                <!-- Puerta Azul -->
+                <div class="card hover-lift portal-card-azul">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                            <i data-lucide="heart" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <div class="text-sm text-blue-600 uppercase tracking-wider mb-2">Puerta Azul</div>
+                        <div class="text-sm text-blue-500 mb-4">Nivel 3</div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-4 text-blue-800">Nivel 3: Puerta Azul (Maestría)</h3>
+                    <p class="text-blue-600 mb-6 leading-relaxed">
+                        Expansión de la mente y conexión espiritual. Dzogchen y Un Curso de Milagros para la integración final del Ser.
+                    </p>
+                    <div class="space-y-2 mb-6">
+                        <h4 class="font-semibold text-sm uppercase tracking-wider text-blue-500">Temas clave</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">No-Dualidad</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">Visión Clara (Rigpa)</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">Perdón Radical</span>
+                        </div>
+                    </div>
+                    <div class="text-center pt-4 border-t border-blue-200">
+                        <div class="text-2xl font-bold text-blue-800 mb-2">12 Semanas</div>
+                        <button class="btn-outline w-full">Explorar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Una Experiencia Única -->
+    <section class="py-24 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-16">
+                    <div class="badge mb-4">Una Experiencia Única</div>
+                    <h2 class="text-3xl font-heading font-bold mb-6">Lo que hace diferente esta formación</h2>
+                    <p class="text-lg text-gray-600 leading-relaxed">
+                        Más allá del contenido teórico, cada alumno recibe una experiencia personalizada 
+                        que integra elementos físicos y vibracionales únicos en el mundo
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-12 items-center mb-16">
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="gem" class="w-6 h-6 text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">29 Años Creando Joyas Especiales</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Desde 1992, he diseñado joyas únicas y especiales, cada una sintonizada 
+                                    con la frecuencia única de su portador. Cada pieza es un portal que conecta 
+                                    con la esencia más íntima del ser.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="music" class="w-6 h-6 text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Maestro en Cuencos Tibetanos</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Especializado en acompañamiento vibracional, utilizo el sonido y la vibración 
+                                    para crear espacios de transformación interior, ayudando a observar y equilibrar 
+                                    cuerpo, energía y mente.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="award" class="w-6 h-6 text-blue-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold mb-2">Creador del Sistema TCT</h3>
+                                <p class="text-gray-600 leading-relaxed">
+                                    He integrado Dzogchen, el Cuarto Camino y Un Curso de Milagros en un sistema práctico y transformador. 
+                                    Es autor de "El deportista consciente, más allá del resultado" y "El ser consciente. Más allá de la acción: 
+                                    vivir con presencia en la vida cotidiana" y de la serie de libros TCT Blanco, Rojo, Azul y anexos.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="relative">
+                        <div class="aspect-square rounded-3xl overflow-hidden shadow-2xl">
+                            <img src="https://images.unsplash.com/photo-1593810451410-8fbb422cc15e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4Mzc5NTV8MHwxfHNlYXJjaHw0fHxtZWRpdGF0aW9uJTIwc291bmQlMjBib3dscyUyMHNwaXJpdHVhbCUyMGhlYWxpbmd8ZW58MHwwfHx8MTc3MDQ2ODAwNHww&ixlib=rb-4.1.0&q=80&w=1080" alt="Quico Tent con cuencos tibetanos" class="w-full h-full object-cover">
+                        </div>
+                        <div class="absolute -bottom-6 -right-6 bg-white p-6 rounded-2xl shadow-xl border">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-blue-600 mb-1">29</div>
+                                <div class="text-sm text-gray-500 uppercase tracking-wider">Años de Experiencia</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <blockquote class="text-2xl font-light italic text-gray-600 mb-6 max-w-3xl mx-auto leading-relaxed">
+                        "Cuando estoy diseñando, el mundo del Arte, del Diseño y de la Joyería se fusionan, 
+                        creando un espacio nuevo y personal, ideal para poder crear piezas únicas y especiales."
+                    </blockquote>
+                    <cite class="text-blue-600 font-semibold">— Quico Tent, Manacor</cite>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- La Fórmula Esencial -->
+    <section class="py-24 relative overflow-hidden gradient-soft">
+        <div class="absolute inset-0 z-0 opacity-5">
+            <img src="https://images.unsplash.com/photo-1619879310659-01e83a8e9d6b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4Mzc5NTV8MHwxfHNlYXJjaHwxfHxzYWNyZWQlMjBnZW9tZXRyeSUyMG1hbmRhbGElMjBzcGlyaXR1YWx8ZW58MHwwfHx8MTc3MDQ2ODAwM3ww&ixlib=rb-4.1.0&q=80&w=1080" alt="Pattern" class="w-full h-full object-cover">
+        </div>
+
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="glass-effect p-12 rounded-3xl shadow-soft border-gradient">
+                <div class="text-center mb-16">
+                    <span class="text-blue-600 font-mono text-sm tracking-widest uppercase mb-4 block">La Alquimia del Ser</span>
+                    <h2 class="text-4xl md:text-5xl font-heading font-bold mb-6">La Fórmula Esencial</h2>
+                    <p class="text-2xl font-light italic text-gray-600">
+                        "La felicidad no es una meta, es la resonancia de un Ser en equilibrio."
+                    </p>
+                </div>
+
+                <div class="flex flex-col md:flex-row items-center justify-around gap-12">
+                    <div class="flex flex-col items-center text-center max-w-[200px]">
+                        <div class="w-16 h-16 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center mb-6">
+                            <i data-lucide="shield-check" class="w-8 h-8 text-gray-600"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Aceptación</h3>
+                        <p class="text-sm text-gray-600">Cimentación física y presencia en el ahora (Puerta Blanca).</p>
+                    </div>
+
+                    <div class="text-4xl font-light text-gray-400">+</div>
+
+                    <div class="flex flex-col items-center text-center max-w-[200px]">
+                        <div class="w-16 h-16 rounded-full bg-blue-600 flex items-center justify-center mb-6 shadow-lg">
+                            <i data-lucide="zap" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Propósito</h3>
+                        <p class="text-sm text-gray-600">Purificación de la energía y acción consciente (Puerta Roja).</p>
+                    </div>
+
+                    <div class="text-4xl font-light text-gray-400">+</div>
+
+                    <div class="flex flex-col items-center text-center max-w-[200px]">
+                        <div class="w-16 h-16 rounded-full bg-blue-500 flex items-center justify-center mb-6 shadow-lg">
+                            <i data-lucide="heart" class="w-8 h-8 text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Conexión</h3>
+                        <p class="text-sm text-gray-600">Unidad espiritual y expansión mental (Puerta Azul).</p>
+                    </div>
+
+                    <div class="text-4xl font-light text-gray-400 hidden md:block">=</div>
+
+                    <div class="flex flex-col items-center text-center">
+                        <div class="text-6xl md:text-7xl font-heading font-black text-blue-600 drop-shadow-sm">Felicidad</div>
+                        <span class="text-gray-600 uppercase tracking-tighter text-xs mt-2 font-mono">Frecuencia Integral</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portales de Luz Personalizados -->
+    <section class="py-24 gradient-primary-soft">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <div class="badge mb-4">Valor Añadido Único</div>
+                <h2 class="text-3xl font-heading font-bold mb-6">Más que una Formación: Una Experiencia Integral</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    Cada nivel incluye tu Portal de Luz personalizado (Opcionales) y sesiones de acompañamiento vibracional de audios bineurales con cuencos tibetanos. 
+                    Una experiencia única que combina la sabiduría ancestral con la artesanía sagrada.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <!-- Portal Blanco -->
+                <div class="glass-effect p-8 rounded-3xl text-center hover-lift portal-card-blanco">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-slate-200 to-slate-400 flex items-center justify-center">
+                        <i data-lucide="gem" class="w-10 h-10 text-slate-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-slate-800">Portal Blanco</h3>
+                    <p class="text-slate-600 mb-6 leading-relaxed">
+                        <strong>Cimentación</strong><br>
+                        Plata sagrada con piedras de tierra. Conecta con tu presencia física y enraizamiento.
+                    </p>
+                    <div class="space-y-2 text-sm text-slate-500 mb-4">
+                        <div>• Cuarzo transparente</div>
+                        <div>• Jaspe rojo</div>
+                        <div>• Símbolos de tierra</div>
+                    </div>
+                    <div class="text-center pt-4 border-t border-slate-200">
+                        <div class="text-2xl font-bold text-slate-800">€1000</div>
+                        <div class="text-xs text-slate-500 uppercase tracking-wider">Opcional</div>
+                    </div>
+                </div>
+
+                <!-- Portal Rojo -->
+                <div class="glass-effect p-8 rounded-3xl text-center hover-lift portal-card-rojo">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center">
+                        <i data-lucide="heart" class="w-10 h-10 text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-red-800">Portal Rojo</h3>
+                    <p class="text-red-600 mb-6 leading-relaxed">
+                        <strong>Purificación</strong><br>
+                        Transformación de la energía emocional. Integración del Cuarto Camino, UCDM y protocolos de sonido con cuencos tibetanos.
+                    </p>
+                    <div class="space-y-2 text-sm text-red-500 mb-4">
+                        <div>• Rubí</div>
+                        <div>• Granate</div>
+                        <div>• Llama de transformación</div>
+                    </div>
+                    <div class="text-center pt-4 border-t border-red-200">
+                        <div class="text-2xl font-bold text-red-800">€3000</div>
+                        <div class="text-xs text-red-500 uppercase tracking-wider">Opcional</div>
+                    </div>
+                </div>
+
+                <!-- Portal Azul -->
+                <div class="glass-effect p-8 rounded-3xl text-center hover-lift portal-card-azul">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                        <i data-lucide="sparkles" class="w-10 h-10 text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4 text-blue-800">Portal Azul</h3>
+                    <p class="text-blue-600 mb-6 leading-relaxed">
+                        <strong>Maestría</strong><br>
+                        Expansión de la mente y conexión espiritual. Dzogchen, UCDM y "El Ser Consciente. Más allá de la acción: vivir con presencia en la vida cotidiana" para la integración final del Ser.
+                    </p>
+                    <div class="space-y-2 text-sm text-blue-500 mb-4">
+                        <div>• Zafiro azul</div>
+                        <div>• Amatista</div>
+                        <div>• Mandala cósmico</div>
+                    </div>
+                    <div class="text-center pt-4 border-t border-blue-200">
+                        <div class="text-2xl font-bold text-blue-800">€5000</div>
+                        <div class="text-xs text-blue-500 uppercase tracking-wider">Opcional</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-effect p-8 rounded-3xl shadow-soft border-gradient">
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-4">Portales de Luz Opcionales</h3>
+                        <p class="text-gray-600 mb-6">
+                            Cada Portal de Luz es una pieza única, creada artesanalmente con materiales sagrados 
+                            y sintonizada con tu frecuencia personal. Son completamente opcionales y se pueden 
+                            añadir a cualquier nivel de formación.
+                        </p>
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-blue-600 font-bold text-sm">1</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">Test de Portal de Luz</h4>
+                                    <p class="text-sm text-gray-600">Descubrimos tu frecuencia única y tipo de portal.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-blue-600 font-bold text-sm">2</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">Consulta Personal</h4>
+                                    <p class="text-sm text-gray-600">Sesión 1:1 para afinar el diseño según tu esencia.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-blue-600 font-bold text-sm">3</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">Creación Artesanal</h4>
+                                    <p class="text-sm text-gray-600">Diseño y elaboro tu portal en mi taller de Manacor.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-1">
+                                    <span class="text-blue-600 font-bold text-sm">4</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold mb-1">Activación Vibracional</h4>
+                                    <p class="text-sm text-gray-600">Ceremonia con cuencos para activar tu portal.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="aspect-square rounded-2xl overflow-hidden shadow-2xl">
+                            <img src="https://images.unsplash.com/photo-1593810451410-8fbb422cc15e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4Mzc5NTV8MHwxfHNlYXJjaHw0fHxtZWRpdGF0aW9uJTIwc291bmQlMjBib3dscyUyMHNwaXJpdHVhbCUyMGhlYWxpbmd8ZW58MHwwfHx8MTc3MDQ2ODAwNHww&ixlib=rb-4.1.0&q=80&w=1080" alt="Portal de Luz personalizado" class="w-full h-full object-cover">
+                        </div>
+                        <div class="absolute -top-4 -right-4 bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
+                            Único en el mundo
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonios -->
+    <section class="py-24 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <div class="badge mb-4">Único en el mundo</div>
+                <h2 class="text-4xl font-heading font-bold mb-6">Voces del Despertar</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto text-lg">
+                    Cientos de alumnos ya están experimentando la transformación a través de las frecuencias sagradas y el método TCT.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonio 1 -->
+                <div class="card">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center text-white font-bold">
+                            R
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Roberto Sánchez</h4>
+                            <p class="text-sm text-gray-500">Alumno de la Academia</p>
+                        </div>
+                    </div>
+                    <blockquote class="text-gray-600 leading-relaxed italic">
+                        "La formación en la Puerta Blanca cambió por completo mi rendimiento. No solo físicamente, sino la paz mental que ahora llevo a cada competición."
+                    </blockquote>
+                </div>
+
+                <!-- Testimonio 2 -->
+                <div class="card">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center text-white font-bold">
+                            E
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Elena Martínez</h4>
+                            <p class="text-sm text-gray-500">Alumno de la Academia</p>
+                        </div>
+                    </div>
+                    <blockquote class="text-gray-600 leading-relaxed italic">
+                        "Los protocolos de cuencos tibetanos y la Puerta Roja me han dado herramientas de sanación que no encontré en ninguna otra parte. Imprescindible."
+                    </blockquote>
+                </div>
+
+                <!-- Testimonio 3 -->
+                <div class="card">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white font-bold">
+                            C
+                        </div>
+                        <div>
+                            <h4 class="font-semibold">Carlos Ruiz</h4>
+                            <p class="text-sm text-gray-500">Alumno de la Academia</p>
+                        </div>
+                    </div>
+                    <blockquote class="text-gray-600 leading-relaxed italic">
+                        "Buscaba algo integral que uniera lo cotidiano con lo espiritual. El sistema TCT es la fórmula que estaba esperando."
+                    </blockquote>
+                </div>
+            </div>
+
+            <div class="text-center mt-12">
+                <button class="btn-outline">Ver casos de éxito</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="py-24 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 text-white relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-blue-500/10"></div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-4xl md:text-5xl font-heading font-bold mb-6">
+                    ¿Estás listo para cruzar tu primera puerta?
+                </h2>
+                <p class="text-xl mb-8 opacity-90 leading-relaxed">
+                    Únete hoy a Frecuencia Integral Academy y comienza tu viaje de 36 semanas hacia la maestría del Ser.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <button onclick="showPortalTest()" class="px-10 py-4 bg-white text-blue-600 hover:bg-gray-50 font-semibold text-lg shadow-soft hover-lift transition-all rounded-2xl flex items-center gap-2">
+                        <i data-lucide="gem" class="w-5 h-5"></i>
+                        Registrarme Ahora
+                    </button>
+                    <a href="#tres-puertas" class="px-10 py-4 border-2 border-white/80 text-white hover:bg-white/10 hover:border-white transition-all font-semibold text-lg rounded-2xl flex items-center gap-2 backdrop-blur-sm">
+                        <i data-lucide="layers" class="w-5 h-5"></i>
+                        Ver Planes
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 pt-16 border-t border-white/20">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold mb-2">3</div>
+                        <div class="text-sm opacity-80">Niveles Integrales</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold mb-2">36</div>
+                        <div class="text-sm opacity-80">Prácticas Diarias</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold mb-2">1:1</div>
+                        <div class="text-sm opacity-80">Mentoría Experta</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold mb-2">∞</div>
+                        <div class="text-sm opacity-80">Frecuencias Sagradas</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portal Test Modal (Hidden by default) -->
+    <div id="portalTestModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+        <div class="min-h-screen flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div class="p-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="gem" class="w-6 h-6 text-blue-600"></i>
+                            <h2 class="text-2xl font-heading font-bold">Descubre tu Portal de Luz</h2>
+                            <i data-lucide="gem" class="w-6 h-6 text-blue-600"></i>
+                        </div>
+                        <button onclick="hidePortalTest()" class="text-gray-400 hover:text-gray-600">
+                            <i data-lucide="x" class="w-6 h-6"></i>
+                        </button>
+                    </div>
+                    
+                    <p class="text-gray-600 text-center mb-8">
+                        Un test único basado en 29 años de experiencia creando joyas sagradas
+                    </p>
+
+                    <div class="text-center py-16">
+                        <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                            <i data-lucide="sparkles" class="w-12 h-12 text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">Test de Portal de Luz</h3>
+                        <p class="text-gray-600 mb-8">
+                            Descubre qué tipo de Portal de Luz resuena con tu frecuencia única. 
+                            Este test personalizado te ayudará a identificar tu camino de transformación ideal.
+                        </p>
+                        <div class="space-y-4">
+                            <button class="btn-primary w-full">Comenzar Test</button>
+                            <p class="text-xs text-gray-500">by Quico Tent • Manacor, Mallorca</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Portal Test Modal Functions
+        function showPortalTest() {
+            document.getElementById('portalTestModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hidePortalTest() {
+            document.getElementById('portalTestModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('portalTestModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hidePortalTest();
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in-up');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards and sections
+        document.querySelectorAll('.card, section > .container > div').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Add parallax effect to hero background
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const heroBackground = document.querySelector('.hero-background img');
+            if (heroBackground) {
+                heroBackground.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+    </script>
+</body>
+</html>
