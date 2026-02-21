@@ -1936,7 +1936,33 @@ document.getElementById('week-modal').addEventListener('click', function(e){
 </style>
 
 <!-- EDITOR BUTTON -->
-<button onclick="editorOpen()" id="edOpenBtn" style="position:fixed;bottom:80px;left:24px;z-index:99999;background:#1c1814;color:white;border:2px solid rgba(255,255,255,.2);padding:10px 18px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 20px rgba(0,0,0,.5)">✏️ Editor</button>
+<!-- ZONA SECRETA: triple-clic esquina inferior izquierda activa el editor -->
+<div id="edSecretZone" onclick="edSecretClick()" style="position:fixed;bottom:0;left:0;width:50px;height:50px;z-index:99998;cursor:default;-webkit-tap-highlight-color:transparent"></div>
+
+<!-- MODAL CONTRASEÑA EDITOR -->
+<div id="edPwdModal" style="display:none;position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);align-items:center;justify-content:center">
+  <div style="background:#1c1814;border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:32px 36px;width:min(340px,90vw);box-shadow:0 20px 60px rgba(0,0,0,.7);font-family:'DM Sans',sans-serif">
+    <div style="text-align:center;margin-bottom:22px">
+      <div style="font-size:32px;margin-bottom:10px">🔐</div>
+      <div style="font-size:16px;font-weight:700;color:white">Acceso al Editor</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.35);margin-top:5px">Introduce la contraseña para editar</div>
+    </div>
+    <input id="edPwdInput" type="password" placeholder="••••••••" autocomplete="off"
+      style="width:100%;box-sizing:border-box;background:#252118;color:white;border:1px solid rgba(255,255,255,.2);padding:13px 14px;border-radius:9px;font-size:16px;font-family:'DM Sans',sans-serif;outline:none;margin-bottom:8px;text-align:center;letter-spacing:.15em"
+      onkeydown="if(event.key==='Enter')edPwdCheck()">
+    <div id="edPwdErr" style="display:none;color:#f08080;font-size:11px;text-align:center;margin-bottom:10px">❌ Contraseña incorrecta</div>
+    <div style="display:flex;gap:8px;margin-top:4px">
+      <button onclick="edPwdCheck()" style="flex:1;background:#2b7d7a;color:white;border:none;padding:12px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">Entrar</button>
+      <button onclick="edPwdCancel()" style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.1);padding:12px 16px;border-radius:8px;font-size:13px;cursor:pointer">Cancelar</button>
+    </div>
+    <div style="margin-top:18px;padding-top:14px;border-top:1px solid rgba(255,255,255,.07);font-size:10px;color:rgba(255,255,255,.18);text-align:center;line-height:1.6">
+      Los visitantes no ven esta pantalla ni saben que existe.
+    </div>
+  </div>
+</div>
+
+<!-- BOTÓN EDITOR (oculto — aparece solo tras contraseña correcta) -->
+<button onclick="editorOpen()" id="edOpenBtn" style="display:none;position:fixed;bottom:80px;left:24px;z-index:99999;background:#1c1814;color:white;border:2px solid rgba(255,255,255,.2);padding:10px 18px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 20px rgba(0,0,0,.5)">✏️ Editor</button>
 
 <!-- BOTÓN GESTOR (visible solo con editor abierto) -->
 <button onclick="hcpOpen()" id="hcpOpenBtn" style="display:none;position:fixed;bottom:80px;left:130px;z-index:99999;background:#2b7d7a;color:white;border:2px solid rgba(255,255,255,.15);padding:10px 18px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 20px rgba(0,0,0,.4)">🗂️ Navegación</button>
@@ -2541,6 +2567,98 @@ document.addEventListener('keydown',function(e){
 function edMsg(t){var m=document.getElementById('edMsg');if(m)m.textContent=t;}
 
 // ── Abrir / Cerrar ──
+// ══════════════════════════════════════════════════════════════
+// PROTECCIÓN POR CONTRASEÑA DEL EDITOR
+// ══════════════════════════════════════════════════════════════
+// ⚠️ CAMBIA ESTA CONTRASEÑA POR LA TUYA:
+var _edPassword = 'frecuencia2025';
+// ══════════════════════════════════════════════════════════════
+
+var _edUnlocked = false;
+var _edSecretClicks = 0;
+var _edSecretTimer = null;
+
+function edSecretClick() {
+  _edSecretClicks++;
+  clearTimeout(_edSecretTimer);
+  _edSecretTimer = setTimeout(function(){ _edSecretClicks = 0; }, 800);
+  if(_edSecretClicks >= 3) {
+    _edSecretClicks = 0;
+    if(_edUnlocked) {
+      // Ya desbloqueado: mostrar/ocultar botones directamente
+      edToggleEditorBtns();
+    } else {
+      edPwdShow();
+    }
+  }
+}
+
+function edPwdShow() {
+  var modal = document.getElementById('edPwdModal');
+  modal.style.display = 'flex';
+  document.getElementById('edPwdInput').value = '';
+  document.getElementById('edPwdErr').style.display = 'none';
+  setTimeout(function(){ document.getElementById('edPwdInput').focus(); }, 100);
+}
+
+function edPwdCheck() {
+  var val = document.getElementById('edPwdInput').value;
+  if(val === _edPassword) {
+    _edUnlocked = true;
+    document.getElementById('edPwdModal').style.display = 'none';
+    edShowEditorBtns();
+    edMsg && edMsg('🔓 Editor desbloqueado — bienvenido');
+  } else {
+    document.getElementById('edPwdErr').style.display = 'block';
+    document.getElementById('edPwdInput').value = '';
+    document.getElementById('edPwdInput').focus();
+    // Shake animation
+    var input = document.getElementById('edPwdInput');
+    input.style.borderColor = '#bf4637';
+    setTimeout(function(){ input.style.borderColor = 'rgba(255,255,255,.2)'; }, 1200);
+  }
+}
+
+function edPwdCancel() {
+  document.getElementById('edPwdModal').style.display = 'none';
+  document.getElementById('edPwdInput').value = '';
+}
+
+function edShowEditorBtns() {
+  var eb = document.getElementById('edOpenBtn');
+  var nb = document.getElementById('navMgrBtn');
+  if(eb) eb.style.display = '';
+  if(nb) nb.style.display = '';
+}
+
+function edHideEditorBtns() {
+  var eb = document.getElementById('edOpenBtn');
+  var nb = document.getElementById('navMgrBtn');
+  if(eb) eb.style.display = 'none';
+  if(nb) nb.style.display = 'none';
+  // Close panels if open
+  var panel = document.getElementById('edPanel');
+  if(panel && panel.style.display === 'flex') edClose();
+  var nm = document.getElementById('navMgrPanel');
+  if(nm) nm.style.display = 'none';
+}
+
+function edToggleEditorBtns() {
+  var eb = document.getElementById('edOpenBtn');
+  if(eb && eb.style.display !== 'none') {
+    edHideEditorBtns();
+  } else {
+    edShowEditorBtns();
+  }
+}
+
+// Cerrar modal con Escape
+document.addEventListener('keydown', function(e) {
+  if(e.key === 'Escape' && document.getElementById('edPwdModal').style.display === 'flex') {
+    edPwdCancel();
+  }
+});
+
 function editorOpen(){
   var p=document.getElementById('edPanel');
   var open=p.style.display==='flex';
@@ -3092,7 +3210,7 @@ function edSave(){
 <!-- ══════════════════════════════════════════════════════════════ -->
 
 <!-- Botón de acceso rápido (junto al Editor) -->
-<button onclick="navMgrOpen()" id="navMgrBtn" style="position:fixed;bottom:80px;left:110px;z-index:99999;background:#1c1814;color:#b89558;border:2px solid rgba(184,149,88,.3);padding:10px 18px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 20px rgba(0,0,0,.5)">🗂 Nav & Páginas</button>
+<button onclick="navMgrOpen()" id="navMgrBtn" style="display:none;position:fixed;bottom:80px;left:130px;z-index:99999;background:#1c1814;color:#b89558;border:2px solid rgba(184,149,88,.3);padding:10px 18px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 20px rgba(0,0,0,.5)">🗂 Nav & Páginas</button>
 
 <!-- Panel principal del Gestor -->
 <div id="navMgrPanel" style="display:none;position:fixed;inset:0;z-index:100000;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)">
