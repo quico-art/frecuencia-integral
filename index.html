@@ -1634,9 +1634,394 @@ document.getElementById('week-modal').addEventListener('click', function(e){
 <!-- EDITOR BUTTON -->
 <button onclick="editorOpen()" id="edOpenBtn" style="position:fixed;bottom:80px;left:24px;z-index:99999;background:#1c1814;color:white;border:2px solid rgba(255,255,255,.2);padding:10px 18px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 20px rgba(0,0,0,.5)">✏️ Editor</button>
 
-<!-- CONTEXT MENU al hacer clic derecho en elemento seleccionado -->
-<div id="edCtxMenu" style="display:none;position:fixed;z-index:10001;background:#1c1814;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:6px;min-width:180px;box-shadow:0 8px 32px rgba(0,0,0,.5)">
-  <div id="edCtxTitle" style="font-size:10px;color:rgba(255,255,255,.4);padding:4px 10px 8px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:4px">Elemento seleccionado</div>
+<!-- ══════════════════════════════════════════════════ -->
+<!-- BARRA FLOTANTE DE FORMATO (aparece al selec. texto) -->
+<!-- ══════════════════════════════════════════════════ -->
+<div id="edFmtBar" style="display:none;position:fixed;z-index:10003;background:#161210;border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:5px 7px;gap:2px;align-items:center;box-shadow:0 6px 28px rgba(0,0,0,.7);flex-wrap:wrap;max-width:600px">
+  <!-- Formato básico -->
+  <button onclick="edFmt('bold')" class="efb" title="Negrita Ctrl+B"><b>B</b></button>
+  <button onclick="edFmt('italic')" class="efb" title="Cursiva Ctrl+I"><i style="font-style:italic">I</i></button>
+  <button onclick="edFmt('underline')" class="efb" title="Subrayado" style="text-decoration:underline">U</button>
+  <button onclick="edFmt('strikeThrough')" class="efb" title="Tachado" style="text-decoration:line-through">S</button>
+  <div class="efbsep"></div>
+  <!-- Alineación -->
+  <button onclick="edFmt('justifyLeft')" class="efb" title="Izquierda">≡⬛</button>
+  <button onclick="edFmt('justifyCenter')" class="efb" title="Centrar">⬛≡</button>
+  <button onclick="edFmt('justifyRight')" class="efb" title="Derecha">≡⬛</button>
+  <div class="efbsep"></div>
+  <!-- Encabezados -->
+  <button onclick="edFmtBlock('h1')" class="efb efb-lbl" title="Título H1">H1</button>
+  <button onclick="edFmtBlock('h2')" class="efb efb-lbl" title="Título H2">H2</button>
+  <button onclick="edFmtBlock('h3')" class="efb efb-lbl" title="Título H3">H3</button>
+  <button onclick="edFmtBlock('p')"  class="efb efb-lbl" title="Párrafo">P</button>
+  <div class="efbsep"></div>
+  <!-- Listas -->
+  <button onclick="edFmt('insertUnorderedList')" class="efb" title="Lista viñetas">•≡</button>
+  <button onclick="edFmt('insertOrderedList')"   class="efb" title="Lista numerada">1.≡</button>
+  <div class="efbsep"></div>
+  <!-- Color texto inline -->
+  <div style="display:flex;align-items:center;gap:3px">
+    <span style="font-size:9px;color:rgba(255,255,255,.4)">A</span>
+    <input type="color" id="efbTxtColor" value="#1c1814" style="width:22px;height:22px;border:none;border-radius:3px;cursor:pointer;padding:0" onchange="edApplyFontColor(this.value)" title="Color texto">
+  </div>
+  <!-- Resaltar -->
+  <div style="display:flex;align-items:center;gap:3px">
+    <span style="font-size:9px;color:rgba(255,255,255,.4)">▓</span>
+    <input type="color" id="efbHlColor" value="#fff9c4" style="width:22px;height:22px;border:none;border-radius:3px;cursor:pointer;padding:0" onchange="edFmtHighlight(this.value)" title="Resaltar texto">
+  </div>
+  <div class="efbsep"></div>
+  <!-- Tamaño inline -->
+  <select onchange="if(this.value){edApplyFontSize(this.value);this.value=''}" style="background:#2a2420;color:white;border:1px solid rgba(255,255,255,.15);padding:2px 3px;border-radius:5px;font-size:10px;cursor:pointer;max-width:52px" title="Tamaño texto">
+    <option value="">px</option>
+    <option value="10px">10</option><option value="11px">11</option><option value="12px">12</option>
+    <option value="13px">13</option><option value="14px">14</option><option value="15px">15</option>
+    <option value="16px">16</option><option value="18px">18</option><option value="20px">20</option>
+    <option value="22px">22</option><option value="24px">24</option><option value="28px">28</option>
+    <option value="32px">32</option><option value="36px">36</option><option value="40px">40</option>
+    <option value="48px">48</option><option value="56px">56</option><option value="64px">64</option>
+    <option value="72px">72</option><option value="80px">80</option><option value="96px">96</option>
+  </select>
+  <input type="number" min="8" max="200" placeholder="px" title="Tam. libre" style="width:38px;background:#2a2420;color:white;border:1px solid rgba(255,255,255,.15);padding:2px 4px;border-radius:5px;font-size:10px;outline:none" onkeydown="if(event.key==='Enter'&&this.value){edApplyFontSize(this.value+'px');this.value=''}">
+  <div class="efbsep"></div>
+  <!-- Tipografía inline -->
+  <select onchange="if(this.value){edApplyFontInline(this.value);this.value=''}" style="background:#2a2420;color:white;border:1px solid rgba(255,255,255,.15);padding:2px 3px;border-radius:5px;font-size:10px;cursor:pointer;max-width:80px">
+    <option value="">Font</option>
+    <option value="'DM Sans',sans-serif">DM Sans</option>
+    <option value="'Cormorant Garamond',serif">Cormorant</option>
+    <option value="Georgia,serif">Georgia</option>
+    <option value="Arial,sans-serif">Arial</option>
+    <option value="'Helvetica Neue',sans-serif">Helvetica</option>
+    <option value="'Times New Roman',serif">Times NR</option>
+    <option value="'Courier New',monospace">Courier</option>
+  </select>
+  <div class="efbsep"></div>
+  <!-- Superscript / Subscript -->
+  <button onclick="edFmt('superscript')" class="efb" title="Superíndice" style="font-size:9px">X²</button>
+  <button onclick="edFmt('subscript')" class="efb" title="Subíndice" style="font-size:9px">X₂</button>
+  <!-- Link -->
+  <button onclick="edAddLink()" class="efb" title="Enlace">🔗</button>
+  <!-- Cerrar -->
+  <button onclick="edFmtBarHide()" style="background:none;border:none;color:rgba(255,255,255,.3);font-size:13px;cursor:pointer;padding:1px 5px;margin-left:2px;line-height:1">✕</button>
+</div>
+
+<!-- ══════════════════════════════════════════════════ -->
+<!-- PANEL LATERAL DE PROPIEDADES                       -->
+<!-- ══════════════════════════════════════════════════ -->
+<div id="edPropsPanel" style="display:none;position:fixed;right:0;top:0;bottom:0;z-index:9996;width:268px;background:#161210;border-left:1px solid rgba(255,255,255,.1);overflow-y:auto;font-family:'DM Sans',sans-serif;padding-bottom:120px">
+
+  <!-- Header -->
+  <div style="position:sticky;top:0;z-index:2;background:#161210;padding:10px 14px 8px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:space-between">
+    <span style="font-size:11px;font-weight:700;color:#3d9e9b;letter-spacing:.08em">⚙ PROPIEDADES</span>
+    <div style="display:flex;align-items:center;gap:6px">
+      <code id="edPropsTag" style="font-size:9px;color:rgba(255,255,255,.3);background:rgba(255,255,255,.06);padding:2px 5px;border-radius:3px"></code>
+      <button onclick="edCloseProps()" style="background:none;border:none;color:rgba(255,255,255,.3);font-size:14px;cursor:pointer;padding:0 2px">✕</button>
+    </div>
+  </div>
+
+  <!-- SECCIÓN: TAMAÑO -->
+  <div class="epp-sec">
+    <div class="epp-lbl">📐 Tamaño del contenedor</div>
+    <div class="epp-grid2">
+      <div><div class="epp-sub">Ancho (W)</div>
+        <input id="prpW" type="text" placeholder="auto" class="epp-inp" oninput="edPropLive('width',this.value)" title="px / % / auto / vw"></div>
+      <div><div class="epp-sub">Alto (H)</div>
+        <input id="prpH" type="text" placeholder="auto" class="epp-inp" oninput="edPropLive('height',this.value)" title="px / vh / auto"></div>
+      <div><div class="epp-sub">Máx. ancho</div>
+        <input id="prpMW" type="text" placeholder="none" class="epp-inp" oninput="edPropLive('maxWidth',this.value)"></div>
+      <div><div class="epp-sub">Mín. alto</div>
+        <input id="prpMH" type="text" placeholder="auto" class="epp-inp" oninput="edPropLive('minHeight',this.value)"></div>
+    </div>
+    <!-- Presets ancho rápido -->
+    <div style="display:flex;gap:3px;flex-wrap:wrap;margin-top:5px">
+      <button onclick="edPropQ('width','100%')" class="epp-chip">100%</button>
+      <button onclick="edPropQ('maxWidth','1200px')" class="epp-chip">1200px</button>
+      <button onclick="edPropQ('maxWidth','900px')" class="epp-chip">900px</button>
+      <button onclick="edPropQ('maxWidth','700px')" class="epp-chip">700px</button>
+      <button onclick="edPropQ('maxWidth','500px')" class="epp-chip">500px</button>
+      <button onclick="edPropQ('margin','0 auto')" class="epp-chip" style="color:#3d9e9b">↔ Centrar</button>
+    </div>
+  </div>
+
+  <!-- SECCIÓN: PADDING -->
+  <div class="epp-sec">
+    <div class="epp-lbl">↔ Espaciado interno (padding)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:4px;margin-bottom:6px">
+      <div><div class="epp-sub">↑ Top</div><input id="prpPT" type="text" placeholder="0" class="epp-inp" oninput="edPropLive('paddingTop',this.value)"></div>
+      <div><div class="epp-sub">↓ Bot</div><input id="prpPB" type="text" placeholder="0" class="epp-inp" oninput="edPropLive('paddingBottom',this.value)"></div>
+      <div><div class="epp-sub">← Izq</div><input id="prpPL" type="text" placeholder="0" class="epp-inp" oninput="edPropLive('paddingLeft',this.value)"></div>
+      <div><div class="epp-sub">→ Der</div><input id="prpPR" type="text" placeholder="0" class="epp-inp" oninput="edPropLive('paddingRight',this.value)"></div>
+    </div>
+    <div style="display:flex;gap:3px;flex-wrap:wrap">
+      <button onclick="edPropQ('padding','8px')" class="epp-chip">8px</button>
+      <button onclick="edPropQ('padding','16px')" class="epp-chip">16px</button>
+      <button onclick="edPropQ('padding','24px')" class="epp-chip">24px</button>
+      <button onclick="edPropQ('padding','32px')" class="epp-chip">32px</button>
+      <button onclick="edPropQ('padding','40px')" class="epp-chip">40px</button>
+      <button onclick="edPropQ('padding','48px 64px')" class="epp-chip">48×64</button>
+      <button onclick="edPropQ('padding','80px 40px')" class="epp-chip">80×40</button>
+    </div>
+  </div>
+
+  <!-- SECCIÓN: FONDO -->
+  <div class="epp-sec">
+    <div class="epp-lbl">🎨 Color de fondo</div>
+    <!-- Picker + hex -->
+    <div style="display:flex;gap:6px;align-items:center;margin-bottom:8px">
+      <input type="color" id="prpBgPk" value="#f7f5f1" style="width:36px;height:36px;border:none;border-radius:6px;cursor:pointer;padding:0;flex-shrink:0" onchange="edPropBg(this.value)">
+      <input id="prpBgHex" type="text" placeholder="#rrggbb / transparent" class="epp-inp" style="flex:1" onchange="edPropBg(this.value)" oninput="edPropBgInput(this.value)">
+      <button onclick="edPropBg('transparent')" class="epp-xbtn" title="Sin fondo">∅</button>
+    </div>
+    <!-- Paleta rápida -->
+    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px">
+      <div onclick="edPropBg('#ffffff')" class="epp-sw" style="background:#fff;border-color:#ccc" title="Blanco"></div>
+      <div onclick="edPropBg('#f7f5f1')" class="epp-sw" style="background:#f7f5f1" title="Crema claro"></div>
+      <div onclick="edPropBg('#f0ece4')" class="epp-sw" style="background:#f0ece4" title="Crema"></div>
+      <div onclick="edPropBg('#e8e3d8')" class="epp-sw" style="background:#e8e3d8" title="Arena"></div>
+      <div onclick="edPropBg('#d4cfc6')" class="epp-sw" style="background:#d4cfc6" title="Gris arena"></div>
+      <div onclick="edPropBg('#1c1814')" class="epp-sw" style="background:#1c1814" title="Negro TCT"></div>
+      <div onclick="edPropBg('#2a241e')" class="epp-sw" style="background:#2a241e" title="Oscuro"></div>
+      <div onclick="edPropBg('#3d3028')" class="epp-sw" style="background:#3d3028" title="Marrón oscuro"></div>
+      <div onclick="edPropBg('#2b7d7a')" class="epp-sw" style="background:#2b7d7a" title="Verde TCT"></div>
+      <div onclick="edPropBg('#3d9e9b')" class="epp-sw" style="background:#3d9e9b" title="Verde claro"></div>
+      <div onclick="edPropBg('#e8f4f3')" class="epp-sw" style="background:#e8f4f3" title="Verde muy claro"></div>
+      <div onclick="edPropBg('#1c5a58')" class="epp-sw" style="background:#1c5a58" title="Verde oscuro"></div>
+      <div onclick="edPropBg('#b89558')" class="epp-sw" style="background:#b89558" title="Oro TCT"></div>
+      <div onclick="edPropBg('#d4b878')" class="epp-sw" style="background:#d4b878" title="Oro claro"></div>
+      <div onclick="edPropBg('#fdf6e3')" class="epp-sw" style="background:#fdf6e3" title="Oro muy claro"></div>
+      <div onclick="edPropBg('#bf4637')" class="epp-sw" style="background:#bf4637" title="Rojo Puerta"></div>
+      <div onclick="edPropBg('#fdecea')" class="epp-sw" style="background:#fdecea" title="Rojo muy claro"></div>
+      <div onclick="edPropBg('#2c5f9e')" class="epp-sw" style="background:#2c5f9e" title="Azul Puerta"></div>
+      <div onclick="edPropBg('#e8eef7')" class="epp-sw" style="background:#e8eef7" title="Azul muy claro"></div>
+      <div onclick="edPropBg('#7b4fa6')" class="epp-sw" style="background:#7b4fa6" title="Violeta"></div>
+    </div>
+    <!-- Gradientes predefinidos -->
+    <div class="epp-sub" style="margin-bottom:4px">Gradientes rápidos</div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px">
+      <div onclick="edPropBg('linear-gradient(135deg,#f7f5f1,#e8e3d8)')" class="epp-grad" style="background:linear-gradient(135deg,#f7f5f1,#e8e3d8)" title="Crema"></div>
+      <div onclick="edPropBg('linear-gradient(135deg,#2b7d7a,#1c5a58)')" class="epp-grad" style="background:linear-gradient(135deg,#2b7d7a,#1c5a58)" title="Verde"></div>
+      <div onclick="edPropBg('linear-gradient(135deg,#1c1814,#3d3028)')" class="epp-grad" style="background:linear-gradient(135deg,#1c1814,#3d3028)" title="Oscuro"></div>
+      <div onclick="edPropBg('linear-gradient(135deg,#b89558,#8a6a35)')" class="epp-grad" style="background:linear-gradient(135deg,#b89558,#8a6a35)" title="Oro"></div>
+      <div onclick="edPropBg('linear-gradient(135deg,#2c5f9e,#1a3d6e)')" class="epp-grad" style="background:linear-gradient(135deg,#2c5f9e,#1a3d6e)" title="Azul"></div>
+      <div onclick="edPropBg('linear-gradient(135deg,#bf4637,#8b2d22)')" class="epp-grad" style="background:linear-gradient(135deg,#bf4637,#8b2d22)" title="Rojo"></div>
+      <div onclick="edPropBg('linear-gradient(135deg,#7b4fa6,#4a2d6e)')" class="epp-grad" style="background:linear-gradient(135deg,#7b4fa6,#4a2d6e)" title="Violeta"></div>
+      <div onclick="edPropBg('linear-gradient(160deg,#2b7d7a 0%,#1c1814 100%)')" class="epp-grad" style="background:linear-gradient(160deg,#2b7d7a,#1c1814)" title="Verde → Negro"></div>
+    </div>
+    <!-- Gradiente personalizado -->
+    <div class="epp-sub" style="margin-bottom:4px">Crear gradiente</div>
+    <div style="display:flex;gap:5px;align-items:center">
+      <input type="color" id="prpG1" value="#2b7d7a" style="width:28px;height:28px;border:none;border-radius:5px;cursor:pointer;padding:0" onchange="edBuildGrad()">
+      <input type="color" id="prpG2" value="#f0ece4" style="width:28px;height:28px;border:none;border-radius:5px;cursor:pointer;padding:0" onchange="edBuildGrad()">
+      <select id="prpGDir" onchange="edBuildGrad()" style="flex:1;background:#2a2420;color:white;border:1px solid rgba(255,255,255,.15);padding:3px;border-radius:5px;font-size:10px">
+        <option value="135deg">↘ Diagonal</option><option value="to right">→ Horizontal</option>
+        <option value="to bottom">↓ Vertical</option><option value="45deg">↗ Diagonal 2</option>
+        <option value="180deg">↑ Vertical inv.</option>
+      </select>
+      <div id="prpGPreview" style="width:36px;height:28px;border-radius:5px;border:1px solid rgba(255,255,255,.1);background:linear-gradient(135deg,#2b7d7a,#f0ece4);cursor:pointer" onclick="edBuildGrad(true)" title="Aplicar"></div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN: COLOR TEXTO -->
+  <div class="epp-sec">
+    <div class="epp-lbl">✍️ Color de texto del bloque</div>
+    <div style="display:flex;gap:6px;align-items:center;margin-bottom:8px">
+      <input type="color" id="prpTxtPk" value="#1c1814" style="width:36px;height:36px;border:none;border-radius:6px;cursor:pointer;padding:0;flex-shrink:0" onchange="edPropTxtColor(this.value)">
+      <input id="prpTxtHex" type="text" placeholder="#1c1814" class="epp-inp" style="flex:1" onchange="edPropTxtColor(this.value)">
+    </div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap">
+      <div onclick="edPropTxtColor('#1c1814')" class="epp-sw" style="background:#1c1814" title="Negro TCT"></div>
+      <div onclick="edPropTxtColor('#ffffff')" class="epp-sw" style="background:#fff;border-color:#ccc" title="Blanco"></div>
+      <div onclick="edPropTxtColor('#7a7168')" class="epp-sw" style="background:#7a7168" title="Gris TCT"></div>
+      <div onclick="edPropTxtColor('#5a5248')" class="epp-sw" style="background:#5a5248" title="Gris oscuro"></div>
+      <div onclick="edPropTxtColor('#2b7d7a')" class="epp-sw" style="background:#2b7d7a" title="Verde TCT"></div>
+      <div onclick="edPropTxtColor('#3d9e9b')" class="epp-sw" style="background:#3d9e9b" title="Verde claro"></div>
+      <div onclick="edPropTxtColor('#b89558')" class="epp-sw" style="background:#b89558" title="Oro TCT"></div>
+      <div onclick="edPropTxtColor('#bf4637')" class="epp-sw" style="background:#bf4637" title="Rojo Puerta"></div>
+      <div onclick="edPropTxtColor('#2c5f9e')" class="epp-sw" style="background:#2c5f9e" title="Azul Puerta"></div>
+      <div onclick="edPropTxtColor('#7b4fa6')" class="epp-sw" style="background:#7b4fa6" title="Violeta"></div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN: TIPOGRAFÍA DEL BLOQUE -->
+  <div class="epp-sec">
+    <div class="epp-lbl">🔤 Tipografía del bloque</div>
+    <select onchange="if(this.value){edPropQ('fontFamily',this.value);this.value=''}" class="epp-inp" style="width:100%;margin-bottom:6px">
+      <option value="">— Fuente del contenedor —</option>
+      <option value="'DM Sans',sans-serif">DM Sans (principal)</option>
+      <option value="'Cormorant Garamond',serif">Cormorant Garamond (títulos)</option>
+      <option value="Georgia,serif">Georgia</option>
+      <option value="Arial,sans-serif">Arial</option>
+      <option value="'Helvetica Neue',sans-serif">Helvetica Neue</option>
+      <option value="'Times New Roman',serif">Times New Roman</option>
+      <option value="'Courier New',monospace">Courier New</option>
+    </select>
+    <div class="epp-grid2">
+      <div><div class="epp-sub">Tamaño</div>
+        <input id="prpFS" type="text" placeholder="16px" class="epp-inp" oninput="edPropLive('fontSize',this.value)"></div>
+      <div><div class="epp-sub">Grosor</div>
+        <select onchange="edPropQ('fontWeight',this.value)" class="epp-inp">
+          <option value="">—</option>
+          <option value="300">300 Fino</option><option value="400">400 Normal</option>
+          <option value="500">500 Medio</option><option value="600">600 Semi</option>
+          <option value="700">700 Bold</option><option value="800">800 Extra</option>
+        </select></div>
+      <div><div class="epp-sub">Interlineado</div>
+        <input id="prpLH" type="text" placeholder="1.6" class="epp-inp" oninput="edPropLive('lineHeight',this.value)"></div>
+      <div><div class="epp-sub">Alineación</div>
+        <select onchange="edPropQ('textAlign',this.value)" class="epp-inp">
+          <option value="">—</option><option value="left">Izquierda</option>
+          <option value="center">Centro</option><option value="right">Derecha</option>
+          <option value="justify">Justificado</option>
+        </select></div>
+      <div><div class="epp-sub">Letra espac.</div>
+        <input type="text" placeholder="0em" class="epp-inp" oninput="edPropLive('letterSpacing',this.value)"></div>
+      <div><div class="epp-sub">Transformar</div>
+        <select onchange="edPropQ('textTransform',this.value)" class="epp-inp">
+          <option value="">—</option><option value="uppercase">MAYÚS</option>
+          <option value="lowercase">minús</option><option value="capitalize">Primer</option>
+          <option value="none">Normal</option>
+        </select></div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN: BORDE -->
+  <div class="epp-sec">
+    <div class="epp-lbl">🔲 Borde</div>
+    <div style="display:flex;gap:5px;align-items:center;margin-bottom:7px">
+      <input type="color" id="prpBdPk" value="#e4ddd3" style="width:30px;height:30px;border:none;border-radius:5px;cursor:pointer;padding:0;flex-shrink:0" onchange="edPropBorder(this.value)">
+      <input id="prpBdHex" type="text" placeholder="#e4ddd3" class="epp-inp" style="flex:1" onchange="edPropBorder(this.value)">
+      <button onclick="edPropQ('border','none')" class="epp-xbtn" title="Sin borde">∅</button>
+    </div>
+    <!-- Paleta borde -->
+    <div style="display:flex;gap:3px;flex-wrap:wrap;margin-bottom:7px">
+      <div onclick="edPropBorder('#e4ddd3')" class="epp-sw" style="background:#e4ddd3" title="Crema borde"></div>
+      <div onclick="edPropBorder('#d4cfc6')" class="epp-sw" style="background:#d4cfc6" title="Arena"></div>
+      <div onclick="edPropBorder('#2b7d7a')" class="epp-sw" style="background:#2b7d7a" title="Verde TCT"></div>
+      <div onclick="edPropBorder('#3d9e9b')" class="epp-sw" style="background:#3d9e9b" title="Verde claro"></div>
+      <div onclick="edPropBorder('#b89558')" class="epp-sw" style="background:#b89558" title="Oro TCT"></div>
+      <div onclick="edPropBorder('#bf4637')" class="epp-sw" style="background:#bf4637" title="Rojo"></div>
+      <div onclick="edPropBorder('#2c5f9e')" class="epp-sw" style="background:#2c5f9e" title="Azul"></div>
+      <div onclick="edPropBorder('#1c1814')" class="epp-sw" style="background:#1c1814" title="Negro"></div>
+    </div>
+    <div class="epp-grid2">
+      <div><div class="epp-sub">Grosor</div>
+        <select id="prpBdW" onchange="edPropBorderW(this.value)" class="epp-inp">
+          <option value="1px">1px</option><option value="2px">2px</option>
+          <option value="3px">3px</option><option value="4px">4px</option>
+          <option value="6px">6px</option>
+        </select></div>
+      <div><div class="epp-sub">Estilo</div>
+        <select id="prpBdSt" onchange="edPropBorderSt(this.value)" class="epp-inp">
+          <option value="solid">Sólido</option><option value="dashed">Guiones</option>
+          <option value="dotted">Puntos</option><option value="double">Doble</option>
+        </select></div>
+      <div><div class="epp-sub">Radio (redondeado)</div>
+        <input id="prpBR" type="text" placeholder="0px" class="epp-inp" oninput="edPropLive('borderRadius',this.value)"></div>
+      <div style="display:flex;flex-direction:column;gap:3px;margin-top:14px">
+        <button onclick="edPropQ('borderRadius','8px')" class="epp-chip">8px</button>
+        <button onclick="edPropQ('borderRadius','16px')" class="epp-chip">16px</button>
+        <button onclick="edPropQ('borderRadius','24px')" class="epp-chip">24px</button>
+        <button onclick="edPropQ('borderRadius','50%')" class="epp-chip">50% ●</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN: SOMBRA -->
+  <div class="epp-sec">
+    <div class="epp-lbl">🌑 Sombra</div>
+    <div style="display:flex;flex-direction:column;gap:3px">
+      <button onclick="edPropQ('boxShadow','none')" class="epp-rowbtn">Sin sombra</button>
+      <button onclick="edPropQ('boxShadow','0 1px 4px rgba(0,0,0,.06)')" class="epp-rowbtn">Muy sutil</button>
+      <button onclick="edPropQ('boxShadow','0 2px 10px rgba(0,0,0,.08)')" class="epp-rowbtn">Sutil</button>
+      <button onclick="edPropQ('boxShadow','0 4px 20px rgba(0,0,0,.12)')" class="epp-rowbtn">Media</button>
+      <button onclick="edPropQ('boxShadow','0 8px 32px rgba(0,0,0,.18)')" class="epp-rowbtn">Fuerte</button>
+      <button onclick="edPropQ('boxShadow','0 16px 48px rgba(0,0,0,.28)')" class="epp-rowbtn">Muy fuerte</button>
+      <button onclick="edPropQ('boxShadow','0 8px 32px rgba(43,125,122,.22)')" class="epp-rowbtn" style="color:#3d9e9b">✦ Sombra verde TCT</button>
+      <button onclick="edPropQ('boxShadow','0 8px 32px rgba(184,149,88,.28)')" class="epp-rowbtn" style="color:#b89558">✦ Sombra oro TCT</button>
+      <button onclick="edPropQ('boxShadow','0 8px 32px rgba(191,70,55,.2)')" class="epp-rowbtn" style="color:#bf4637">✦ Sombra roja</button>
+      <button onclick="edPropQ('boxShadow','inset 0 0 40px rgba(0,0,0,.08)')" class="epp-rowbtn">Interna sutil</button>
+    </div>
+  </div>
+
+  <!-- SECCIÓN: MARGEN / POSICIÓN -->
+  <div class="epp-sec">
+    <div class="epp-lbl">↔ Margen externo</div>
+    <div class="epp-grid2">
+      <div><div class="epp-sub">Top</div><input type="text" placeholder="0" class="epp-inp" oninput="edPropLive('marginTop',this.value)"></div>
+      <div><div class="epp-sub">Bottom</div><input type="text" placeholder="0" class="epp-inp" oninput="edPropLive('marginBottom',this.value)"></div>
+    </div>
+    <div style="margin-top:5px;display:flex;gap:3px;flex-wrap:wrap">
+      <button onclick="edPropQ('margin','0 auto')" class="epp-chip" style="color:#3d9e9b">↔ Centrar</button>
+      <button onclick="edPropQ('marginBottom','24px')" class="epp-chip">↓ 24px</button>
+      <button onclick="edPropQ('marginBottom','40px')" class="epp-chip">↓ 40px</button>
+      <button onclick="edPropQ('marginBottom','60px')" class="epp-chip">↓ 60px</button>
+      <button onclick="edPropQ('marginTop','40px')" class="epp-chip">↑ 40px</button>
+    </div>
+  </div>
+
+  <!-- SECCIÓN: DISPLAY / FLEX -->
+  <div class="epp-sec">
+    <div class="epp-lbl">⊞ Display / Layout</div>
+    <div style="display:flex;gap:3px;flex-wrap:wrap">
+      <button onclick="edPropQ('display','block')" class="epp-chip">Block</button>
+      <button onclick="edPropQ('display','flex')" class="epp-chip">Flex</button>
+      <button onclick="edPropQ('display','grid')" class="epp-chip">Grid</button>
+      <button onclick="edPropQ('display','inline-block')" class="epp-chip">Inline-block</button>
+      <button onclick="edPropQ('display','none')" class="epp-chip" style="color:#f08080">Ocultar</button>
+    </div>
+    <div style="margin-top:5px;display:flex;gap:3px;flex-wrap:wrap">
+      <button onclick="edPropQ('alignItems','center')" class="epp-chip">Align: centro</button>
+      <button onclick="edPropQ('justifyContent','center')" class="epp-chip">Justify: centro</button>
+      <button onclick="edPropQ('flexDirection','column')" class="epp-chip">Col ↓</button>
+      <button onclick="edPropQ('flexWrap','wrap')" class="epp-chip">Wrap</button>
+      <button onclick="edPropQ('gap','16px')" class="epp-chip">Gap 16px</button>
+      <button onclick="edPropQ('gap','24px')" class="epp-chip">Gap 24px</button>
+    </div>
+  </div>
+
+  <!-- SECCIÓN: OPACIDAD / OVERFLOW -->
+  <div class="epp-sec">
+    <div class="epp-lbl">🔆 Opacidad / Overflow</div>
+    <div class="epp-grid2">
+      <div><div class="epp-sub">Opacidad (0–1)</div>
+        <input type="range" min="0" max="1" step="0.05" value="1" style="width:100%" oninput="edPropLive('opacity',this.value);this.nextElementSibling.textContent=this.value">
+        <span style="font-size:10px;color:rgba(255,255,255,.4)">1</span></div>
+      <div><div class="epp-sub">Overflow</div>
+        <select onchange="edPropQ('overflow',this.value)" class="epp-inp">
+          <option value="">—</option><option value="visible">Visible</option>
+          <option value="hidden">Hidden</option><option value="auto">Auto</option>
+          <option value="scroll">Scroll</option>
+        </select></div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN: CSS DIRECTO -->
+  <div class="epp-sec">
+    <div class="epp-lbl">💻 CSS directo (style="")</div>
+    <textarea id="prpCss" rows="5" class="epp-css" placeholder="padding:32px; background:white; border:1px solid #ccc; ..."></textarea>
+    <div style="display:flex;gap:5px;margin-top:5px">
+      <button onclick="edPropCssApply()" class="epp-rowbtn" style="flex:1;color:#3d9e9b;border-color:rgba(61,158,155,.3)">▶ Aplicar CSS</button>
+      <button onclick="edPropCssRead()" class="epp-rowbtn" title="Leer estilos actuales del elemento">↻ Leer</button>
+    </div>
+  </div>
+
+  <!-- ACCIONES RÁPIDAS -->
+  <div class="epp-sec">
+    <div class="epp-lbl">⚡ Acciones</div>
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <button onclick="edDuplicate()" class="epp-rowbtn">📋 Duplicar elemento</button>
+      <button onclick="edMoveUp()" class="epp-rowbtn">⬆️ Mover arriba</button>
+      <button onclick="edMoveDown()" class="epp-rowbtn">⬇️ Mover abajo</button>
+      <button onclick="edAddLink()" class="epp-rowbtn">🔗 Añadir enlace</button>
+      <button onclick="edChangeImage()" class="epp-rowbtn">🖼️ Cambiar imagen</button>
+      <button onclick="edDeleteSelected()" class="epp-rowbtn" style="color:#f08080;border-color:rgba(191,70,55,.25)">🗑️ Eliminar elemento</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONTEXT MENU -->
+<div id="edCtxMenu" style="display:none;position:fixed;z-index:10001;background:#161210;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:6px;min-width:188px;box-shadow:0 8px 32px rgba(0,0,0,.6);font-family:'DM Sans',sans-serif">
+  <div id="edCtxTitle" style="font-size:9px;color:rgba(255,255,255,.4);padding:4px 10px 7px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:4px;text-transform:uppercase;letter-spacing:.07em">Elemento</div>
+  <button onclick="edCtxAction('props')" class="edctx-btn">⚙️ Propiedades del bloque</button>
   <button onclick="edCtxAction('editar')" class="edctx-btn">✏️ Editar textos internos</button>
   <button onclick="edCtxAction('link')" class="edctx-btn">🔗 Añadir enlace</button>
   <button onclick="edCtxAction('imagen')" class="edctx-btn">🖼️ Cambiar imagen</button>
@@ -1645,564 +2030,727 @@ document.getElementById('week-modal').addEventListener('click', function(e){
   <button onclick="edCtxAction('bajar')" class="edctx-btn">⬇️ Mover abajo</button>
   <div style="height:1px;background:rgba(255,255,255,.1);margin:4px 0"></div>
   <button onclick="edCtxAction('eliminar')" class="edctx-btn" style="color:#f08080">🗑️ Eliminar</button>
-  <button onclick="edCtxClose()" class="edctx-btn" style="color:rgba(255,255,255,.4)">✕ Cerrar menú</button>
+  <button onclick="edCtxClose()" class="edctx-btn" style="color:rgba(255,255,255,.35)">✕ Cerrar menú</button>
 </div>
 
 <!-- EDITOR PANEL -->
-<div id="edPanel" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9998;background:#1c1814;padding:10px 16px;align-items:center;gap:10px;flex-wrap:wrap;box-shadow:0 -4px 20px rgba(0,0,0,.5)">
-
-  <span style="font-size:13px;font-weight:700;color:#3d9e9b;white-space:nowrap">✦ Editor</span>
-  <div class="edsep"></div>
-
-  <!-- DESHACER / REHACER -->
-  <button onclick="edUndo()" id="edUndoBtn" title="Deshacer (Ctrl+Z)" style="background:#2a2420;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.1);padding:6px 10px;border-radius:6px;font-size:13px;cursor:pointer">↩</button>
-  <button onclick="edRedo()" id="edRedoBtn" title="Rehacer (Ctrl+Y)" style="background:#2a2420;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.1);padding:6px 10px;border-radius:6px;font-size:13px;cursor:pointer">↪</button>
-  <div class="edsep"></div>
-
-  <!-- MODO SELECCIÓN / EDICIÓN -->
-  <button onclick="edToggleMode()" id="edModeBtn" style="background:#2b7d7a;color:white;border:none;padding:7px 13px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">🖱 Seleccionar</button>
-  <button onclick="edToggleText()" id="edTxtBtn" style="background:#2b7d7a;color:white;border:none;padding:7px 13px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">✏️ Editar textos</button>
-  <div class="edsep"></div>
-
-  <!-- TEXTO -->
-  <input type="color" id="edFontColor" value="#1c1814" title="Color texto" style="width:26px;height:26px;border:none;border-radius:4px;cursor:pointer;padding:0" onchange="edApplyFontColor(this.value)">
-  <select id="edFont" onchange="edApplyFont(this.value)" title="Tipografía" style="background:#2a2420;color:white;border:1px solid rgba(255,255,255,.15);padding:4px 6px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;max-width:130px">
-    <option value="">Tipografía</option>
-    <option value="'DM Sans', sans-serif">DM Sans</option>
-    <option value="'Cormorant Garamond', serif">Cormorant</option>
-    <option value="Georgia, serif">Georgia</option>
-    <option value="'Arial', sans-serif">Arial</option>
-    <option value="'Helvetica Neue', sans-serif">Helvetica</option>
-    <option value="'Times New Roman', serif">Times New Roman</option>
-    <option value="'Courier New', monospace">Courier</option>
-  </select>
-  <select id="edFontSize" onchange="edApplyFontSize(this.value)" title="Tamaño" style="background:#2a2420;color:white;border:1px solid rgba(255,255,255,.15);padding:4px 6px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;max-width:90px">
-    <option value="">Tamaño</option>
-    <option value="11px">11px</option><option value="12px">12px</option>
-    <option value="13px">13px</option><option value="14px">14px</option>
-    <option value="16px">16px</option><option value="18px">18px</option>
-    <option value="20px">20px</option><option value="24px">24px</option>
-    <option value="28px">28px</option><option value="32px">32px</option>
-    <option value="40px">40px</option><option value="48px">48px</option>
-    <option value="64px">64px</option>
-  </select>
-  <div class="edsep"></div>
-
-  <!-- BLOQUE -->
-  <div style="display:flex;align-items:center;gap:4px">
-    <span style="font-size:10px;color:rgba(255,255,255,.4)">Fondo:</span>
-    <input type="color" id="edBg" value="#f7f5f1" title="Color de fondo del bloque seleccionado" style="width:26px;height:26px;border:none;border-radius:4px;cursor:pointer;padding:0" onchange="edApplyBg(this.value)">
-    <button onclick="edApplyBg('transparent')" title="Sin fondo (transparente)" style="background:#2a2420;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.15);padding:3px 7px;border-radius:4px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">∅</button>
+<div id="edPanel" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9998;background:#161210;padding:7px 12px;align-items:center;gap:6px;flex-wrap:wrap;box-shadow:0 -4px 24px rgba(0,0,0,.6);font-family:'DM Sans',sans-serif">
+  <span style="font-size:12px;font-weight:700;color:#3d9e9b;white-space:nowrap">✦ Editor</span>
+  <div class="eds"></div>
+  <!-- Historial -->
+  <button onclick="edUndo()" id="edUndoBtn" title="Deshacer Ctrl+Z" style="background:#252118;color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.1);padding:5px 9px;border-radius:6px;font-size:13px;cursor:pointer;opacity:.4">↩</button>
+  <button onclick="edRedo()" id="edRedoBtn" title="Rehacer Ctrl+Y" style="background:#252118;color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.1);padding:5px 9px;border-radius:6px;font-size:13px;cursor:pointer;opacity:.3">↪</button>
+  <div class="eds"></div>
+  <!-- Modos -->
+  <button onclick="edToggleMode()" id="edModeBtn" class="edpb teal">🖱 Seleccionar</button>
+  <button onclick="edToggleText()" id="edTxtBtn" class="edpb teal">✏️ Editar textos</button>
+  <div class="eds"></div>
+  <!-- Formato rápido texto -->
+  <div style="display:flex;gap:2px">
+    <button onclick="edFmt('bold')" class="efb2" title="Negrita Ctrl+B"><b>B</b></button>
+    <button onclick="edFmt('italic')" class="efb2" title="Cursiva Ctrl+I"><i style="font-style:italic">I</i></button>
+    <button onclick="edFmt('underline')" class="efb2" title="Subrayado" style="text-decoration:underline">U</button>
+    <button onclick="edFmt('strikeThrough')" class="efb2" title="Tachado" style="text-decoration:line-through">S</button>
   </div>
-  <div style="display:flex;align-items:center;gap:4px">
-    <span style="font-size:10px;color:rgba(255,255,255,.4)">Borde:</span>
-    <input type="color" id="edBorderColor" value="#e4ddd3" title="Color del borde del bloque" style="width:26px;height:26px;border:none;border-radius:4px;cursor:pointer;padding:0" onchange="edApplyBorder(this.value)">
-    <button onclick="edApplyBorder('none')" title="Sin borde" style="background:#2a2420;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.15);padding:3px 7px;border-radius:4px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">∅</button>
+  <div style="display:flex;gap:2px">
+    <button onclick="edFmt('justifyLeft')" class="efb2" title="Izquierda">⬛◻</button>
+    <button onclick="edFmt('justifyCenter')" class="efb2" title="Centro">◻⬛◻</button>
+    <button onclick="edFmt('justifyRight')" class="efb2" title="Derecha">◻⬛</button>
   </div>
-  <input type="color" id="edBtnColor" value="#2b7d7a" title="Color botón" style="width:26px;height:26px;border:none;border-radius:4px;cursor:pointer;padding:0" onchange="edApplyBtn(this.value)">
-  <select id="edPadding" onchange="edApplyPadding(this.value)" style="background:#2a2420;color:white;border:1px solid rgba(255,255,255,.15);padding:4px 6px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;max-width:110px">
-    <option value="">Espaciado</option>
-    <option value="0px">Sin espacio</option><option value="8px">8px</option>
-    <option value="16px">16px</option><option value="24px">24px</option>
-    <option value="32px">32px</option><option value="48px">48px</option>
-    <option value="64px">64px</option><option value="80px">80px</option>
+  <div style="display:flex;gap:2px">
+    <button onclick="edFmtBlock('h1')" class="efb2 efb2s">H1</button>
+    <button onclick="edFmtBlock('h2')" class="efb2 efb2s">H2</button>
+    <button onclick="edFmtBlock('h3')" class="efb2 efb2s">H3</button>
+    <button onclick="edFmt('insertUnorderedList')" class="efb2">•≡</button>
+    <button onclick="edFmt('insertOrderedList')" class="efb2">1.≡</button>
+  </div>
+  <div class="eds"></div>
+  <!-- Color texto + fuente + tamaño -->
+  <input type="color" id="edFontColor" value="#1c1814" title="Color texto" style="width:24px;height:24px;border:none;border-radius:4px;cursor:pointer;padding:0;flex-shrink:0" onchange="edApplyFontColor(this.value)">
+  <select id="edFont" onchange="edApplyFont(this.value)" style="background:#252118;color:white;border:1px solid rgba(255,255,255,.15);padding:3px 4px;border-radius:5px;font-size:10px;cursor:pointer;max-width:100px">
+    <option value="">Fuente</option>
+    <option value="'DM Sans',sans-serif">DM Sans</option>
+    <option value="'Cormorant Garamond',serif">Cormorant</option>
+    <option value="Georgia,serif">Georgia</option>
+    <option value="Arial,sans-serif">Arial</option>
+    <option value="'Helvetica Neue',sans-serif">Helvetica</option>
+    <option value="'Times New Roman',serif">Times NR</option>
+    <option value="'Courier New',monospace">Courier</option>
   </select>
-  <select id="edMaxWidth" onchange="edApplyMaxWidth(this.value)" style="background:#2a2420;color:white;border:1px solid rgba(255,255,255,.15);padding:4px 6px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;max-width:110px">
-    <option value="">Ancho máx.</option>
-    <option value="400px">400px</option><option value="600px">600px</option>
-    <option value="800px">800px</option><option value="1000px">1000px</option>
-    <option value="1200px">1200px</option><option value="100%">100%</option>
+  <div style="display:flex;gap:2px;align-items:center">
+    <select id="edFontSize" onchange="if(this.value){edApplyFontSize(this.value);this.value=''}" style="background:#252118;color:white;border:1px solid rgba(255,255,255,.15);padding:3px 3px;border-radius:5px;font-size:10px;cursor:pointer;max-width:58px">
+      <option value="">px</option>
+      <option value="11px">11</option><option value="12px">12</option><option value="13px">13</option>
+      <option value="14px">14</option><option value="15px">15</option><option value="16px">16</option>
+      <option value="18px">18</option><option value="20px">20</option><option value="22px">22</option>
+      <option value="24px">24</option><option value="28px">28</option><option value="32px">32</option>
+      <option value="36px">36</option><option value="40px">40</option><option value="48px">48</option>
+      <option value="56px">56</option><option value="64px">64</option><option value="80px">80</option>
+    </select>
+    <input id="edFontSzFree" type="number" min="8" max="200" placeholder="px" title="Tamaño libre — Enter para aplicar" style="width:40px;background:#252118;color:white;border:1px solid rgba(255,255,255,.15);padding:3px 4px;border-radius:5px;font-size:10px;outline:none" onkeydown="if(event.key==='Enter'&&this.value){edApplyFontSize(this.value+'px');this.value=''}">
+  </div>
+  <div class="eds"></div>
+  <!-- BG / Borde -->
+  <div style="display:flex;align-items:center;gap:2px">
+    <span style="font-size:9px;color:rgba(255,255,255,.3)">BG</span>
+    <input type="color" id="edBg" value="#f7f5f1" title="Fondo del bloque" style="width:24px;height:24px;border:none;border-radius:4px;cursor:pointer;padding:0" onchange="edApplyBg(this.value)">
+    <button onclick="edApplyBg('transparent')" style="background:#252118;color:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.1);padding:1px 5px;border-radius:4px;font-size:11px;cursor:pointer">∅</button>
+  </div>
+  <div style="display:flex;align-items:center;gap:2px">
+    <span style="font-size:9px;color:rgba(255,255,255,.3)">BD</span>
+    <input type="color" id="edBorderColor" value="#e4ddd3" title="Borde" style="width:24px;height:24px;border:none;border-radius:4px;cursor:pointer;padding:0" onchange="edApplyBorder(this.value)">
+    <button onclick="edApplyBorder('none')" style="background:#252118;color:rgba(255,255,255,.35);border:1px solid rgba(255,255,255,.1);padding:1px 5px;border-radius:4px;font-size:11px;cursor:pointer">∅</button>
+  </div>
+  <input type="color" id="edBtnColor" value="#2b7d7a" title="Color de botón" style="width:24px;height:24px;border:none;border-radius:4px;cursor:pointer;padding:0;flex-shrink:0" onchange="edApplyBtn(this.value)">
+  <div class="eds"></div>
+  <!-- W / H inline -->
+  <div style="display:flex;gap:2px;align-items:center">
+    <span style="font-size:9px;color:rgba(255,255,255,.3)">W</span>
+    <input id="edWInp" type="text" placeholder="auto" title="Ancho: px / % / auto — Enter" style="width:52px;background:#252118;color:white;border:1px solid rgba(255,255,255,.15);padding:3px 4px;border-radius:5px;font-size:10px;outline:none" onkeydown="if(event.key==='Enter')edPropLive('width',this.value)">
+    <span style="font-size:9px;color:rgba(255,255,255,.3)">H</span>
+    <input id="edHInp" type="text" placeholder="auto" title="Alto: px / vh / auto — Enter" style="width:52px;background:#252118;color:white;border:1px solid rgba(255,255,255,.15);padding:3px 4px;border-radius:5px;font-size:10px;outline:none" onkeydown="if(event.key==='Enter')edPropLive('height',this.value)">
+  </div>
+  <select id="edPadding" onchange="edApplyPadding(this.value)" style="background:#252118;color:white;border:1px solid rgba(255,255,255,.15);padding:3px 4px;border-radius:5px;font-size:10px;cursor:pointer;max-width:80px">
+    <option value="">Padding</option>
+    <option value="0">0</option><option value="8px">8px</option><option value="12px">12px</option>
+    <option value="16px">16px</option><option value="24px">24px</option><option value="32px">32px</option>
+    <option value="40px">40px</option><option value="48px">48px</option><option value="64px">64px</option><option value="80px">80px</option>
   </select>
-  <div class="edsep"></div>
-
-  <!-- AÑADIR -->
-  <span style="font-size:10px;color:rgba(255,255,255,.4);white-space:nowrap">+ AÑADIR:</span>
-  <button onclick="edInsert('texto')" class="edbtn-add">📝 Texto</button>
-  <button onclick="edInsert('tarjeta')" class="edbtn-add">🃏 Tarjeta</button>
-  <button onclick="edInsert('banner-ancho')" class="edbtn-add">🔲 Banner</button>
-  <button onclick="edInsert('banner-pequeño')" class="edbtn-add">▭ Banner S</button>
-  <button onclick="edInsert('imagen-banner')" class="edbtn-add">🖼 Img.banner</button>
-  <button onclick="edInsert('imagen-pequeña')" class="edbtn-add">🖼 Img.+texto</button>
-  <button onclick="edInsert('boton')" class="edbtn-add">🔘 Botón</button>
-  <button onclick="edInsert('separador')" class="edbtn-add">— Separador</button>
-  <div class="edsep"></div>
-
-  <!-- ACCIONES ELEMENTO -->
-  <button onclick="edAddLink()" class="edbtn-add" title="Añadir enlace al elemento seleccionado">🔗 Link</button>
-  <button onclick="edChangeImage()" class="edbtn-add">🔄 Img.</button>
-  <button onclick="edDuplicate()" class="edbtn-add">📋 Dupl.</button>
-  <button onclick="edMoveUp()" class="edbtn-add">⬆</button>
-  <button onclick="edMoveDown()" class="edbtn-add">⬇</button>
-  <button onclick="edDeleteSelected()" style="background:#3a1a18;color:#f08080;border:1px solid rgba(191,70,55,.25);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">🗑 Eliminar</button>
-  <div class="edsep"></div>
-
-  <!-- GUARDAR -->
-  <button onclick="edSave()" style="background:#b89558;color:white;border:none;padding:8px 18px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">💾 Guardar</button>
-  <button onclick="edClose()" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);border:none;padding:7px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif">✕</button>
-
-  <span id="edMsg" style="font-size:11px;color:#3d9e9b;margin-left:auto;white-space:nowrap;overflow:hidden;max-width:300px;text-overflow:ellipsis"></span>
+  <div class="eds"></div>
+  <!-- Props button -->
+  <button onclick="edToggleProps()" id="edPropsBtn" style="background:#252118;color:#3d9e9b;border:1px solid rgba(61,158,155,.35);padding:5px 11px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap">⚙ Props →</button>
+  <div class="eds"></div>
+  <!-- Añadir bloques -->
+  <span style="font-size:9px;color:rgba(255,255,255,.3);white-space:nowrap">AÑADIR:</span>
+  <button onclick="edInsert('texto')" class="edba">📝 Texto</button>
+  <button onclick="edInsert('tarjeta')" class="edba">🃏 Tarjeta</button>
+  <button onclick="edInsert('banner-ancho')" class="edba">🔲 Banner</button>
+  <button onclick="edInsert('banner-pequeño')" class="edba">▭ BannerS</button>
+  <button onclick="edInsert('imagen-banner')" class="edba">🖼 Img.banner</button>
+  <button onclick="edInsert('imagen-pequeña')" class="edba">🖼 Img+txt</button>
+  <button onclick="edInsert('boton')" class="edba">🔘 Botón</button>
+  <button onclick="edInsert('separador')" class="edba">— Sep.</button>
+  <div class="eds"></div>
+  <!-- Acciones -->
+  <button onclick="edAddLink()" class="edba">🔗 Link</button>
+  <button onclick="edChangeImage()" class="edba">🖼 Img.</button>
+  <button onclick="edDuplicate()" class="edba">📋 Dupl.</button>
+  <button onclick="edMoveUp()" class="edba">⬆</button>
+  <button onclick="edMoveDown()" class="edba">⬇</button>
+  <button onclick="edDeleteSelected()" style="background:#2a1412;color:#f08080;border:1px solid rgba(191,70,55,.2);padding:4px 9px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap">🗑 Eliminar</button>
+  <div class="eds"></div>
+  <!-- Guardar -->
+  <button onclick="edSave()" style="background:#b89558;color:white;border:none;padding:7px 15px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">💾 Guardar</button>
+  <button onclick="edClose()" style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.45);border:none;padding:6px 10px;border-radius:6px;font-size:12px;cursor:pointer">✕</button>
+  <span id="edMsg" style="font-size:10px;color:#3d9e9b;margin-left:auto;white-space:nowrap;overflow:hidden;max-width:260px;text-overflow:ellipsis"></span>
 </div>
 
 <style>
-.edsep{width:1px;height:22px;background:rgba(255,255,255,.12);flex-shrink:0}
-.edbtn-add{background:#2a2420;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.12);padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
-.edbtn-add:hover{background:#3a3028;color:white}
-.edctx-btn{display:block;width:100%;background:none;border:none;color:rgba(255,255,255,.8);padding:7px 12px;text-align:left;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;border-radius:6px}
-.edctx-btn:hover{background:rgba(255,255,255,.08)}
+/* ── Editor v3 core ── */
+.eds{width:1px;height:20px;background:rgba(255,255,255,.1);flex-shrink:0}
+.edpb{border:none;padding:6px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
+.edpb.teal{background:#2b7d7a;color:white}
+.edba{background:#252118;color:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.1);padding:4px 8px;border-radius:5px;font-size:10px;font-weight:600;cursor:pointer;white-space:nowrap}
+.edba:hover{background:#353028;color:white}
+.efb2{background:#252118;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1);padding:3px 7px;border-radius:5px;font-size:11px;cursor:pointer;min-width:24px;text-align:center}
+.efb2:hover,.efb2:active{background:#2b7d7a;color:white;border-color:#2b7d7a}
+.efb2s{font-size:9px;font-weight:700}
+.edctx-btn{display:block;width:100%;background:none;border:none;color:rgba(255,255,255,.8);padding:7px 12px;text-align:left;font-size:12px;cursor:pointer;border-radius:6px}
+.edctx-btn:hover{background:rgba(255,255,255,.07)}
 .ed-selected-ring{outline:2px solid #3d9e9b !important;outline-offset:2px}
+/* Floating format bar */
+.efb{background:#252118;color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.12);padding:3px 7px;border-radius:5px;font-size:11px;cursor:pointer;white-space:nowrap;min-width:24px;text-align:center}
+.efb:hover{background:#3d9e9b;border-color:#3d9e9b;color:white}
+.efbsep{width:1px;height:16px;background:rgba(255,255,255,.12);flex-shrink:0;margin:0 1px}
+.efb-lbl{font-size:9px;font-weight:700}
+/* Props panel */
+.epp-sec{padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.06)}
+.epp-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px}
+.epp-sub{font-size:9px;color:rgba(255,255,255,.3);margin-bottom:3px;text-transform:uppercase;letter-spacing:.05em}
+.epp-inp{background:#252118;color:white;border:1px solid rgba(255,255,255,.14);padding:5px 7px;border-radius:5px;font-size:11px;font-family:'DM Sans',sans-serif;outline:none;box-sizing:border-box}
+.epp-inp:focus{border-color:#3d9e9b}
+.epp-grid2{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.epp-xbtn{background:#252118;color:rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.1);padding:3px 7px;border-radius:5px;font-size:12px;cursor:pointer;flex-shrink:0}
+.epp-xbtn:hover{background:#353028;color:white}
+.epp-sw{width:22px;height:22px;border-radius:4px;cursor:pointer;border:1px solid rgba(255,255,255,.1);transition:transform .12s;flex-shrink:0}
+.epp-sw:hover{transform:scale(1.2);z-index:1}
+.epp-grad{width:34px;height:22px;border-radius:4px;cursor:pointer;border:1px solid rgba(255,255,255,.1);transition:transform .12s}
+.epp-grad:hover{transform:scale(1.1)}
+.epp-chip{background:#252118;color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.1);padding:3px 8px;border-radius:4px;font-size:10px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.epp-chip:hover{background:#2b7d7a;color:white;border-color:#2b7d7a}
+.epp-rowbtn{background:#252118;color:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.1);padding:6px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;text-align:left;transition:background .12s;width:100%}
+.epp-rowbtn:hover{background:#353028;color:white}
+.epp-css{width:100%;background:#0a0806;color:#3d9e9b;border:1px solid rgba(255,255,255,.1);border-radius:5px;padding:7px;font-family:monospace;font-size:10px;resize:vertical;outline:none;box-sizing:border-box}
+/* Page adjust when panel open */
+body.ed-props-open #page-public{margin-right:268px;transition:margin .2s}
 </style>
 
 <script>
-// ═══════════════════════════════════════════════════════
-// EDITOR — Sistema completo con undo/redo, selección, etc.
-// ═══════════════════════════════════════════════════════
-var _edOn = false, _edSelMode = false, _edSel = null, _edSelBtn = null;
-var _edHistory = [], _edFuture = [], _edMaxHistory = 30;
+// ══════════════════════════════════════════════════════════
+// FRECUENCIA INTEGRAL — Editor WYSIWYG v3 completo
+// ══════════════════════════════════════════════════════════
+var _edOn=false,_edSelMode=false,_edSel=null,_edSelBtn=null,_edPropsOpen=false;
+var _edHistory=[],_edFuture=[],_edMaxSnap=30;
+var _edBW='1px',_edBS='solid';
 
-// ── Historial ──
-function edSnapshot() {
-  var html = document.getElementById('page-public').innerHTML;
-  if (_edHistory.length && _edHistory[_edHistory.length-1] === html) return;
-  _edHistory.push(html);
-  if (_edHistory.length > _edMaxHistory) _edHistory.shift();
-  _edFuture = [];
-  edUpdateHistoryBtns();
+// ── Snapshot / Historial ──
+function edSnapshot(){
+  var h=document.getElementById('page-public').innerHTML;
+  if(_edHistory.length&&_edHistory[_edHistory.length-1]===h)return;
+  _edHistory.push(h); if(_edHistory.length>_edMaxSnap)_edHistory.shift();
+  _edFuture=[]; edSyncHistBtns();
 }
-function edUndo() {
-  if (_edHistory.length < 2) { edMsg('⚠️ Nada que deshacer'); return; }
+function edUndo(){
+  if(_edHistory.length<2){edMsg('⚠️ Nada que deshacer');return;}
   _edFuture.push(_edHistory.pop());
-  document.getElementById('page-public').innerHTML = _edHistory[_edHistory.length-1];
-  edMsg('↩ Deshecho'); edUpdateHistoryBtns();
+  document.getElementById('page-public').innerHTML=_edHistory[_edHistory.length-1];
+  edMsg('↩ Deshecho'); edSyncHistBtns();
 }
-function edRedo() {
-  if (!_edFuture.length) { edMsg('⚠️ Nada que rehacer'); return; }
-  var html = _edFuture.pop();
-  _edHistory.push(html);
-  document.getElementById('page-public').innerHTML = html;
-  edMsg('↪ Rehecho'); edUpdateHistoryBtns();
+function edRedo(){
+  if(!_edFuture.length){edMsg('⚠️ Nada que rehacer');return;}
+  var h=_edFuture.pop(); _edHistory.push(h);
+  document.getElementById('page-public').innerHTML=h;
+  edMsg('↪ Rehecho'); edSyncHistBtns();
 }
-function edUpdateHistoryBtns() {
-  var u = document.getElementById('edUndoBtn'), r = document.getElementById('edRedoBtn');
-  if (u) u.style.opacity = _edHistory.length > 1 ? '1' : '0.3';
-  if (r) r.style.opacity = _edFuture.length ? '1' : '0.3';
+function edSyncHistBtns(){
+  var u=document.getElementById('edUndoBtn'),r=document.getElementById('edRedoBtn');
+  if(u)u.style.opacity=_edHistory.length>1?'1':'0.3';
+  if(r)r.style.opacity=_edFuture.length?'1':'0.3';
 }
-// Atajos teclado Ctrl+Z / Ctrl+Y
-document.addEventListener('keydown', function(e) {
-  if (!document.getElementById('edPanel') || document.getElementById('edPanel').style.display !== 'flex') return;
-  if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) { e.preventDefault(); edUndo(); }
-  if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) { e.preventDefault(); edRedo(); }
-  if (e.key === 'Escape') { edCtxClose(); edClearSelection(); }
-  if ((e.key === 'Delete' || e.key === 'Backspace') && _edSel && !_edOn) { e.preventDefault(); edDeleteSelected(); }
+
+// ── Keyboard shortcuts ──
+document.addEventListener('keydown',function(e){
+  var panel=document.getElementById('edPanel');
+  if(!panel||panel.style.display!=='flex')return;
+  var cm=e.ctrlKey||e.metaKey;
+  if(cm&&e.key==='z'&&!e.shiftKey){e.preventDefault();edUndo();}
+  if(cm&&(e.key==='y'||(e.key==='z'&&e.shiftKey))){e.preventDefault();edRedo();}
+  if(cm&&e.key==='b'&&_edOn){e.preventDefault();edFmt('bold');}
+  if(cm&&e.key==='i'&&_edOn){e.preventDefault();edFmt('italic');}
+  if(e.key==='Escape'){edCtxClose();edClearSel();edFmtBarHide();}
+  if((e.key==='Delete'||e.key==='Backspace')&&_edSel&&!_edOn){e.preventDefault();edDeleteSelected();}
 });
 
-function edMsg(txt) { var m = document.getElementById('edMsg'); if (m) m.textContent = txt; }
+function edMsg(t){var m=document.getElementById('edMsg');if(m)m.textContent=t;}
 
 // ── Abrir / Cerrar ──
-function editorOpen() {
-  var p = document.getElementById('edPanel');
-  var isOpen = p.style.display === 'flex';
-  p.style.display = isOpen ? 'none' : 'flex';
-  if (!isOpen && _edHistory.length === 0) edSnapshot();
+function editorOpen(){
+  var p=document.getElementById('edPanel');
+  var open=p.style.display==='flex';
+  p.style.display=open?'none':'flex';
+  if(!open&&!_edHistory.length)edSnapshot();
+  if(open){edCloseProps();edFmtBarHide();}
 }
-function edClose() {
-  document.getElementById('edPanel').style.display = 'none';
-  if (_edOn) edToggleText();
-  edClearSelection();
-  edCtxClose();
+function edClose(){
+  document.getElementById('edPanel').style.display='none';
+  if(_edOn)edToggleText();
+  edClearSel(); edCtxClose(); edCloseProps(); edFmtBarHide();
+}
+
+// ── Props panel ──
+function edToggleProps(){
+  _edPropsOpen=!_edPropsOpen;
+  var pp=document.getElementById('edPropsPanel');
+  var btn=document.getElementById('edPropsBtn');
+  pp.style.display=_edPropsOpen?'block':'none';
+  btn.style.background=_edPropsOpen?'#3d9e9b':'#252118';
+  btn.style.color=_edPropsOpen?'white':'#3d9e9b';
+  btn.textContent=_edPropsOpen?'⚙ Props ✕':'⚙ Props →';
+  document.body.classList.toggle('ed-props-open',_edPropsOpen);
+  if(_edPropsOpen&&_edSel)edFillProps(_edSel);
+}
+function edCloseProps(){
+  _edPropsOpen=false;
+  var pp=document.getElementById('edPropsPanel');
+  if(pp)pp.style.display='none';
+  var btn=document.getElementById('edPropsBtn');
+  if(btn){btn.style.background='#252118';btn.style.color='#3d9e9b';btn.textContent='⚙ Props →';}
+  document.body.classList.remove('ed-props-open');
+}
+
+// ── Sincronizar panel de propiedades con elemento ──
+function edFillProps(el){
+  if(!el)return;
+  var s=el.style, cs=window.getComputedStyle(el);
+  var tag=document.getElementById('edPropsTag');
+  if(tag)tag.textContent='<'+el.tagName.toLowerCase()+(el.id?'#'+el.id:'')+'>';
+  function si(id,v){var x=document.getElementById(id);if(x)x.value=v||'';}
+  si('prpW',s.width);si('prpH',s.height);si('prpMW',s.maxWidth);si('prpMH',s.minHeight);
+  si('prpPT',s.paddingTop);si('prpPB',s.paddingBottom);si('prpPL',s.paddingLeft);si('prpPR',s.paddingRight);
+  si('prpFS',s.fontSize);si('prpLH',s.lineHeight);si('prpBR',s.borderRadius);
+  // BG
+  var bg=s.background||s.backgroundColor||cs.backgroundColor;
+  var bgH=rgb2hex(bg);
+  si('prpBgHex',bg.indexOf('gradient')>-1?bg:(bgH||bg));
+  if(bgH)try{document.getElementById('prpBgPk').value=bgH;}catch(e){}
+  // Text color
+  var fc=s.color||cs.color; var fcH=rgb2hex(fc);
+  si('prpTxtHex',fcH||fc);
+  if(fcH)try{document.getElementById('prpTxtPk').value=fcH;}catch(e){}
+  // Border
+  var bc=s.borderColor||cs.borderColor; var bcH=rgb2hex(bc);
+  si('prpBdHex',bcH||'');
+  if(bcH)try{document.getElementById('prpBdPk').value=bcH;}catch(e){}
+  // CSS
+  si('prpCss',el.getAttribute('style')||'');
+}
+
+function rgb2hex(c){
+  if(!c||c==='transparent')return'';
+  if(c.startsWith('#'))return c;
+  if(c.indexOf('gradient')>-1)return'';
+  var m=c.match(/[\d.]+/g);
+  if(!m||m.length<3)return'';
+  if(c.indexOf('rgba')>-1&&parseFloat(m[3])===0)return'';
+  return'#'+[m[0],m[1],m[2]].map(function(x){return('0'+parseInt(x).toString(16)).slice(-2);}).join('');
+}
+
+// ── Aplicar propiedad CSS en vivo ──
+function edPropLive(prop,val){
+  if(!_edSel)return;
+  _edSel.style[prop]=val;
+  // sync W/H toolbar inputs
+  var wi=document.getElementById('edWInp'),hi=document.getElementById('edHInp');
+  if(prop==='width'&&wi)wi.value=val;
+  if(prop==='height'&&hi)hi.value=val;
+  edSnapshot();
+}
+function edPropQ(prop,val){edPropLive(prop,val);edMsg('✅ '+prop+': '+val);}
+
+// ── Fondo ──
+function edPropBg(val){
+  if(!_edSel){edMsg('⚠️ Selecciona un bloque primero');return;}
+  _edSel.style.background=val;
+  var h=rgb2hex(val);
+  if(h)try{document.getElementById('prpBgPk').value=h;}catch(e){}
+  var hx=document.getElementById('prpBgHex'); if(hx)hx.value=val;
+  if(h&&document.getElementById('edBg'))try{document.getElementById('edBg').value=h;}catch(e){}
+  edMsg('🎨 Fondo: '+val.substring(0,40)); edSnapshot();
+}
+function edPropBgInput(v){
+  if(!_edSel)return;
+  if(v.length===7&&v[0]==='#'){edPropBg(v);}
+  else if(v==='transparent'||v.indexOf('gradient')>-1){edPropBg(v);}
+}
+function edBuildGrad(){
+  var c1=document.getElementById('prpG1').value;
+  var c2=document.getElementById('prpG2').value;
+  var dir=document.getElementById('prpGDir').value;
+  var g='linear-gradient('+dir+','+c1+','+c2+')';
+  var prev=document.getElementById('prpGPreview');
+  if(prev)prev.style.background=g;
+}
+// ── Color texto del bloque ──
+function edPropTxtColor(val){
+  if(!_edSel){edMsg('⚠️ Selecciona un bloque');return;}
+  _edSel.style.setProperty('color',val,'important');
+  _edSel.querySelectorAll('*').forEach(function(n){n.style.color=val;});
+  var h=rgb2hex(val);
+  if(h)try{document.getElementById('prpTxtPk').value=h;}catch(e){}
+  var tx=document.getElementById('prpTxtHex'); if(tx)tx.value=val;
+  if(h&&document.getElementById('edFontColor'))try{document.getElementById('edFontColor').value=h;}catch(e){}
+  edMsg('✍️ Color texto: '+val); edSnapshot();
+}
+// ── Borde ──
+function edPropBorder(val){
+  if(!_edSel)return;
+  if(val==='none'){_edSel.style.border='none';}
+  else{_edSel.style.border=_edBW+' '+_edBS+' '+val;}
+  var h=rgb2hex(val);
+  if(h){try{document.getElementById('prpBdPk').value=h;}catch(e){}
+    var bx=document.getElementById('prpBdHex');if(bx)bx.value=val;}
+  if(h&&document.getElementById('edBorderColor'))try{document.getElementById('edBorderColor').value=h;}catch(e){}
+  edMsg('🔲 Borde: '+val); edSnapshot();
+}
+function edPropBorderW(w){_edBW=w;if(_edSel&&_edSel.style.borderColor){_edSel.style.borderWidth=w;edSnapshot();}}
+function edPropBorderSt(st){_edBS=st;if(_edSel&&_edSel.style.borderColor){_edSel.style.borderStyle=st;edSnapshot();}}
+function edPropCssApply(){
+  if(!_edSel){edMsg('⚠️ Selecciona un elemento');return;}
+  var v=document.getElementById('prpCss').value;
+  _edSel.setAttribute('style',v);
+  edMsg('💻 CSS aplicado'); edSnapshot();
+}
+function edPropCssRead(){
+  if(!_edSel){edMsg('⚠️ Selecciona un elemento');return;}
+  var css=document.getElementById('prpCss');
+  if(css)css.value=_edSel.getAttribute('style')||'';
+  edMsg('↻ CSS leído');
+}
+
+// ── Floating format bar ──
+function edFmtBarHide(){var b=document.getElementById('edFmtBar');if(b)b.style.display='none';}
+document.addEventListener('mouseup',function(e){
+  if(!_edOn)return;
+  if(e.target.closest('#edFmtBar')||e.target.closest('#edPanel'))return;
+  setTimeout(function(){
+    var sel=window.getSelection();
+    if(!sel||!sel.rangeCount||!sel.toString().trim()){edFmtBarHide();return;}
+    var rect=sel.getRangeAt(0).getBoundingClientRect();
+    var bar=document.getElementById('edFmtBar');
+    var bx=rect.left+rect.width/2-300;
+    bar.style.left=Math.max(6,Math.min(bx,window.innerWidth-610))+'px';
+    bar.style.top=(rect.top-58+window.scrollY)+'px';
+    bar.style.display='flex';
+    // sync color picker with selection
+    try{
+      var anc=sel.anchorNode;
+      var el2=anc.nodeType===3?anc.parentElement:anc;
+      var fc=window.getComputedStyle(el2).color;
+      var fh=rgb2hex(fc);
+      if(fh)document.getElementById('efbTxtColor').value=fh;
+    }catch(ex){}
+  },12);
+});
+document.addEventListener('mousedown',function(e){if(!e.target.closest('#edFmtBar'))edFmtBarHide();});
+
+// ── execCommand format ──
+function edFmt(cmd){
+  if(_edOn){document.execCommand(cmd,false,null);edSnapshot();}
+  else if(_edSel){
+    if(cmd==='justifyLeft'){_edSel.style.textAlign='left';edSnapshot();}
+    else if(cmd==='justifyCenter'){_edSel.style.textAlign='center';edSnapshot();}
+    else if(cmd==='justifyRight'){_edSel.style.textAlign='right';edSnapshot();}
+    else edMsg('⚠️ Activa "Editar textos" para formato de texto');
+  }
+}
+function edFmtBlock(tag){
+  if(!_edOn){edMsg('⚠️ Activa "Editar textos" primero');return;}
+  document.execCommand('formatBlock',false,tag);
+  edSnapshot(); edMsg('✅ '+tag.toUpperCase()+' aplicado');
+}
+function edFmtHighlight(color){
+  if(!_edOn){return;}
+  var sel=window.getSelection();
+  if(!sel||!sel.rangeCount||!sel.toString())return;
+  try{
+    var range=sel.getRangeAt(0);
+    var span=document.createElement('span');
+    span.style.backgroundColor=color;
+    span.appendChild(range.extractContents());
+    range.insertNode(span); sel.removeAllRanges();
+    edMsg('▓ Resaltado aplicado'); edSnapshot();
+  }catch(e){}
 }
 
 // ── Selección visual ──
-function edClearSelection() {
-  if (_edSel) { _edSel.classList.remove('ed-selected-ring'); _edSel = null; }
-  _edSelBtn = null;
-}
-function edSelectEl(el) {
-  edClearSelection();
-  _edSel = el;
-  el.classList.add('ed-selected-ring');
-  var label = (el.id ? '#'+el.id : el.tagName.toLowerCase());
-  var inner = el.textContent.trim().substring(0, 35);
-  edMsg('✅ ' + label + (inner ? ': "'+inner+'"' : '') + ' — ya puedes cambiar fondo, borde, color...');
-
-  // Sync color pickers with element's current styles
-  try {
-    var cs = window.getComputedStyle(el);
-    var bgPicker = document.getElementById('edBg');
-    var bg = el.style.background || el.style.backgroundColor || cs.backgroundColor;
-    if (bgPicker && bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
-      // Convert rgb() to hex for the picker
-      var m = bg.match(/\d+/g);
-      if (m && m.length >= 3) {
-        var hex = '#' + [m[0],m[1],m[2]].map(function(x){ return ('0'+parseInt(x).toString(16)).slice(-2); }).join('');
-        bgPicker.value = hex;
-      }
-    }
-    var fontPicker = document.getElementById('edFontColor');
-    var fc = el.style.color || cs.color;
-    if (fontPicker && fc) {
-      var m2 = fc.match(/\d+/g);
-      if (m2 && m2.length >= 3) {
-        var hex2 = '#' + [m2[0],m2[1],m2[2]].map(function(x){ return ('0'+parseInt(x).toString(16)).slice(-2); }).join('');
-        fontPicker.value = hex2;
-      }
-    }
-  } catch(e) {}
+function edClearSel(){if(_edSel){_edSel.classList.remove('ed-selected-ring');_edSel=null;}_edSelBtn=null;}
+function edSelectEl(el){
+  edClearSel(); _edSel=el; el.classList.add('ed-selected-ring');
+  var lbl=el.id?'#'+el.id:el.tagName.toLowerCase();
+  var txt=el.textContent.trim().substring(0,28);
+  edMsg('✅ '+lbl+(txt?': "'+txt+'"':'')+' — modifica en la barra o en ⚙ Props');
+  // Sync toolbar
+  try{
+    var cs=window.getComputedStyle(el);
+    var bg=el.style.background||el.style.backgroundColor||cs.backgroundColor;
+    var bgH=rgb2hex(bg);
+    if(bgH)try{document.getElementById('edBg').value=bgH;}catch(e2){}
+    var fc=el.style.color||cs.color; var fcH=rgb2hex(fc);
+    if(fcH)try{document.getElementById('edFontColor').value=fcH;}catch(e2){}
+    var wi=document.getElementById('edWInp'); if(wi)wi.value=el.style.width||'';
+    var hi=document.getElementById('edHInp'); if(hi)hi.value=el.style.height||'';
+  }catch(e){}
+  if(_edPropsOpen)edFillProps(el);
 }
 
-// ── Modo selección (clic para seleccionar elemento) ──
-function edToggleMode() {
-  _edSelMode = !_edSelMode;
-  var b = document.getElementById('edModeBtn');
-  b.style.background = _edSelMode ? '#b89558' : '#2b7d7a';
-  b.textContent = _edSelMode ? '🎯 Modo activo' : '🖱 Seleccionar';
-  edMsg(_edSelMode ? '🎯 Haz clic en cualquier elemento para seleccionarlo' : '');
-  if (!_edSelMode) edClearSelection();
+// ── Modo selección ──
+function edToggleMode(){
+  _edSelMode=!_edSelMode;
+  var b=document.getElementById('edModeBtn');
+  b.style.background=_edSelMode?'#b89558':'#2b7d7a';
+  b.textContent=_edSelMode?'🎯 Activo':'🖱 Seleccionar';
+  edMsg(_edSelMode?'🎯 Clic en cualquier elemento para seleccionar':'');
+  if(!_edSelMode)edClearSel();
 }
 
-// ── Modo edición de textos ──
-function edToggleText() {
-  _edOn = !_edOn;
-  var b = document.getElementById('edTxtBtn');
-  if (_edOn) {
+// ── Modo edición textos ──
+function edToggleText(){
+  _edOn=!_edOn;
+  var b=document.getElementById('edTxtBtn');
+  if(_edOn){
     edSnapshot();
-    var BLOCK = ['DIV','P','H1','H2','H3','H4','H5','H6','SECTION','ARTICLE','UL','OL','LI','BLOCKQUOTE','PRE','TABLE'];
-    var SKIP  = ['SCRIPT','STYLE','INPUT','SELECT','TEXTAREA','IFRAME','BUTTON','SVG','CANVAS'];
-
-    document.querySelectorAll('#page-public *').forEach(function(el) {
-      if (el.closest('#edPanel') || el.closest('nav') || el.closest('.sidebar') || el.closest('.modal-overlay')) return;
-      if (SKIP.indexOf(el.tagName) > -1) return;
-      if (el.contentEditable === 'true') return; // already activated
-
-      var txt = el.textContent.trim();
-      if (!txt || txt.length > 800) return;
-
-      // Count meaningful children
-      var blockChildren = 0, inlineChildren = 0, directText = false;
-      el.childNodes.forEach(function(n) {
-        if (n.nodeType === 3 && n.textContent.trim()) directText = true; // direct text node
-        if (n.nodeType === 1) {
-          if (BLOCK.indexOf(n.tagName) > -1) blockChildren++;
-          else inlineChildren++;
-        }
+    var BLOCK=['DIV','P','H1','H2','H3','H4','H5','H6','SECTION','ARTICLE','UL','OL','LI','BLOCKQUOTE','PRE','TABLE','TD','TH'];
+    var SKIP=['SCRIPT','STYLE','INPUT','SELECT','TEXTAREA','IFRAME','BUTTON','SVG','CANVAS','VIDEO','AUDIO'];
+    document.querySelectorAll('#page-public *').forEach(function(el){
+      if(el.closest('#edPanel')||el.closest('nav')||el.closest('.modal-overlay'))return;
+      if(SKIP.indexOf(el.tagName)>-1||el.contentEditable==='true')return;
+      var txt=el.textContent.trim();
+      if(!txt||txt.length>800)return;
+      var bk=0,dt=false;
+      el.childNodes.forEach(function(n){
+        if(n.nodeType===3&&n.textContent.trim())dt=true;
+        if(n.nodeType===1&&BLOCK.indexOf(n.tagName)>-1)bk++;
       });
-
-      var shouldActivate = false;
-      if (blockChildren === 0) shouldActivate = true; // pure leaf or inline-only
-      else if (directText && blockChildren <= 1) shouldActivate = true; // mixed: direct text + 1 block child (like "Presente en" divs)
-      else if (blockChildren === 1 && inlineChildren === 0 && !directText) shouldActivate = false; // pure container
-
-      if (shouldActivate) {
-        el.contentEditable = 'true';
-        el.setAttribute('data-ed-ol', el.style.outline || '');
-        el.setAttribute('data-ed-cur', el.style.cursor || '');
-        el.style.setProperty('outline', '1px dashed rgba(43,125,122,.6)', 'important');
-        el.style.cursor = 'text';
+      if(bk===0||(dt&&bk<=1)){
+        el.contentEditable='true';
+        el.setAttribute('data-edol',el.style.outline||'');
+        el.setAttribute('data-edcu',el.style.cursor||'');
+        el.style.setProperty('outline','1px dashed rgba(43,125,122,.5)','important');
+        el.style.cursor='text';
       }
     });
-    b.textContent = '🔒 Fin edición'; b.style.background = '#bf4637';
-    edMsg('✏️ Todos los textos activos — incluye "Presente en", tarjetas y emojis');
-  } else {
-    document.querySelectorAll('[contenteditable="true"]').forEach(function(el) {
+    b.textContent='🔒 Fin edición'; b.style.background='#bf4637';
+    edMsg('✏️ Textos activos — selecciona texto para barra flotante de formato');
+  }else{
+    document.querySelectorAll('[contenteditable="true"]').forEach(function(el){
       el.removeAttribute('contenteditable');
-      el.style.outline = el.getAttribute('data-ed-ol') || '';
-      el.style.cursor  = el.getAttribute('data-ed-cur') || '';
-      el.removeAttribute('data-ed-ol');
-      el.removeAttribute('data-ed-cur');
+      el.style.outline=el.getAttribute('data-edol')||'';
+      el.style.cursor=el.getAttribute('data-edcu')||'';
+      el.removeAttribute('data-edol'); el.removeAttribute('data-edcu');
     });
-    b.textContent = '✏️ Editar textos'; b.style.background = '#2b7d7a';
-    edMsg('');
-    edSnapshot();
+    edFmtBarHide();
+    b.textContent='✏️ Editar textos'; b.style.background='#2b7d7a';
+    edMsg(''); edSnapshot();
   }
 }
 
 // ── Color texto ──
-function edApplyFontColor(v) {
-  var sel = window.getSelection();
-  if (_edOn && sel && sel.rangeCount > 0 && sel.toString().length > 0) {
-    try {
-      var range = sel.getRangeAt(0);
-      var frag = range.extractContents();
-      // Forzar color en todos los nodos del fragmento (override inline styles)
-      frag.querySelectorAll('*').forEach(function(n) { n.style.color = v; });
-      var span = document.createElement('span');
-      span.style.setProperty('color', v, 'important');
-      span.appendChild(frag);
-      range.insertNode(span); sel.removeAllRanges();
-      edMsg('🎨 Color aplicado al texto seleccionado'); edSnapshot();
-    } catch(e) { edMsg('⚠️ '+e.message); }
-  } else if (_edSel) {
-    // Aplicar a elemento y todos sus hijos (override em, span con color inline)
-    _edSel.style.setProperty('color', v, 'important');
-    _edSel.querySelectorAll('*').forEach(function(n) { n.style.color = v; });
-    edMsg('🎨 Color aplicado al elemento y sus textos'); edSnapshot();
-  } else { edMsg('⚠️ Activa edición, selecciona texto o usa 🖱 Seleccionar para elegir elemento'); }
+function edApplyFontColor(v){
+  var sel=window.getSelection();
+  if(_edOn&&sel&&sel.rangeCount>0&&sel.toString().length>0){
+    try{
+      var range=sel.getRangeAt(0);
+      var frag=range.extractContents();
+      frag.querySelectorAll('*').forEach(function(n){n.style.color=v;});
+      var sp=document.createElement('span');
+      sp.style.setProperty('color',v,'important');
+      sp.appendChild(frag); range.insertNode(sp); sel.removeAllRanges();
+      edMsg('🎨 Color texto aplicado'); edSnapshot();
+    }catch(e){edMsg('⚠️ '+e.message);}
+  }else if(_edSel){
+    _edSel.style.setProperty('color',v,'important');
+    _edSel.querySelectorAll('*').forEach(function(n){n.style.color=v;});
+    edMsg('🎨 Color aplicado al elemento'); edSnapshot();
+  }else edMsg('⚠️ Activa edición y selecciona texto, o selecciona elemento');
 }
 
-// ── Tipografía ──
-function edApplyFont(v) {
-  if (!v) return;
-  if (_edSel) { _edSel.style.fontFamily = v; edMsg('🔤 Tipografía aplicada'); edSnapshot(); }
-  else edMsg('⚠️ Selecciona un elemento primero');
-  document.getElementById('edFont').value = '';
+// ── Tipografía bloque ──
+function edApplyFont(v){
+  if(!v)return;
+  if(_edSel){_edSel.style.fontFamily=v;edMsg('🔤 Tipografía aplicada');edSnapshot();}
+  else edMsg('⚠️ Selecciona un elemento');
+  document.getElementById('edFont').value='';
+}
+function edApplyFontInline(v){
+  if(!v||!_edOn)return;
+  var sel=window.getSelection();
+  if(sel&&sel.rangeCount>0&&sel.toString()){
+    try{
+      var range=sel.getRangeAt(0);
+      var sp=document.createElement('span');
+      sp.style.fontFamily=v; sp.appendChild(range.extractContents());
+      range.insertNode(sp); sel.removeAllRanges();
+      edMsg('🔤 Fuente inline aplicada'); edSnapshot();
+    }catch(e){}
+  }else if(_edSel){edApplyFont(v);}
 }
 
-// ── Tamaño ──
-function edApplyFontSize(v) {
-  if (!v) return;
-  var sel = window.getSelection();
-  if (_edOn && sel && sel.rangeCount > 0 && sel.toString().length > 0) {
-    try {
-      var range = sel.getRangeAt(0);
-      var frag = range.extractContents();
-      var span = document.createElement('span');
-      span.style.fontSize = v; span.appendChild(frag);
-      range.insertNode(span); sel.removeAllRanges();
-      edMsg('📐 Tamaño '+v+' aplicado'); edSnapshot();
-    } catch(e) { edMsg('⚠️ '+e.message); }
-  } else if (_edSel) {
-    _edSel.style.fontSize = v; edMsg('📐 Tamaño aplicado'); edSnapshot();
-  } else edMsg('⚠️ Selecciona o activa edición primero');
-  document.getElementById('edFontSize').value = '';
+// ── Tamaño texto ──
+function edApplyFontSize(v){
+  if(!v)return;
+  var sel=window.getSelection();
+  if(_edOn&&sel&&sel.rangeCount>0&&sel.toString()){
+    try{
+      var range=sel.getRangeAt(0);
+      var frag=range.extractContents();
+      var sp=document.createElement('span');
+      sp.style.fontSize=v; sp.appendChild(frag);
+      range.insertNode(sp); sel.removeAllRanges();
+      edMsg('📐 Tamaño '+v); edSnapshot(); return;
+    }catch(e){}
+  }
+  if(_edSel){_edSel.style.fontSize=v;edMsg('📐 Tamaño '+v+' aplicado al bloque');edSnapshot();}
+  else edMsg('⚠️ Selecciona texto o elemento');
+  var fs=document.getElementById('edFontSize'); if(fs)fs.value='';
 }
 
-// ── Fondo, botón, espaciado, ancho ──
-function edApplyBg(v) {
-  if (_edSel) {
-    _edSel.style.background = v;
-    // Update the color picker to show current value
-    if (v !== 'transparent') {
-      var picker = document.getElementById('edBg');
-      if (picker) picker.value = v;
-    }
-    edMsg('🎨 Fondo aplicado: '+v); edSnapshot();
-  } else edMsg('⚠️ Primero selecciona un bloque con 🖱 Seleccionar o clic derecho');
+// ── Fondo / Borde / Botón / Padding ──
+function edApplyBg(v){
+  if(_edSel){_edSel.style.background=v;edMsg('🎨 Fondo: '+v);edSnapshot();}
+  else edMsg('⚠️ Selecciona un bloque primero');
 }
-function edApplyBorder(v) {
-  if (_edSel) {
-    if (v === 'none') {
-      _edSel.style.border = 'none';
-    } else {
-      _edSel.style.border = '1px solid ' + v;
-    }
+function edApplyBorder(v){
+  if(_edSel){
+    if(v==='none')_edSel.style.border='none';
+    else _edSel.style.border=_edBW+' '+_edBS+' '+v;
     edMsg('🔲 Borde: '+v); edSnapshot();
-  } else edMsg('⚠️ Selecciona un elemento primero');
+  }else edMsg('⚠️ Selecciona un elemento');
 }
-function edApplyBtn(v) {
-  var t = _edSelBtn || _edSel;
-  if (t) {
-    var btn = t.tagName === 'BUTTON' ? t : t.querySelector('button');
-    if (btn) {
-      btn.style.background = v;
-      var r=parseInt(v.slice(1,3),16), g=parseInt(v.slice(3,5),16), b=parseInt(v.slice(5,7),16);
-      btn.style.color = (r*299+g*587+b*114)/1000 > 128 ? '#1c1814' : 'white';
-      edMsg('🔘 Color botón: '+v); edSnapshot();
-    } else edMsg('⚠️ No hay botón en este elemento');
-  } else edMsg('⚠️ Selecciona un elemento con botón');
+function edApplyBtn(v){
+  var t=_edSelBtn||_edSel;
+  if(t){
+    var btn=t.tagName==='BUTTON'?t:t.querySelector('button, a[href]');
+    if(btn){
+      btn.style.background=v;
+      var r=parseInt(v.slice(1,3),16),g=parseInt(v.slice(3,5),16),b=parseInt(v.slice(5,7),16);
+      btn.style.color=(r*299+g*587+b*114)/1000>128?'#1c1814':'white';
+      edMsg('🔘 Botón: '+v); edSnapshot();
+    }else edMsg('⚠️ No hay botón en este elemento');
+  }else edMsg('⚠️ Selecciona un elemento con botón');
 }
-function edApplyPadding(v) {
-  if (!v) return;
-  if (_edSel) { _edSel.style.padding = v; edMsg('📐 Espaciado: '+v); edSnapshot(); }
+function edApplyPadding(v){
+  if(!v)return;
+  if(_edSel){_edSel.style.padding=v;edMsg('📐 Padding: '+v);edSnapshot();}
   else edMsg('⚠️ Selecciona un elemento');
-  document.getElementById('edPadding').value = '';
-}
-function edApplyMaxWidth(v) {
-  if (!v) return;
-  if (_edSel) { _edSel.style.maxWidth = v; _edSel.style.margin = '0 auto'; edMsg('↔️ Ancho: '+v); edSnapshot(); }
-  else edMsg('⚠️ Selecciona un elemento');
-  document.getElementById('edMaxWidth').value = '';
+  document.getElementById('edPadding').value='';
 }
 
-// ── Añadir enlace ──
-function edAddLink() {
-  var url = prompt('URL del enlace (ej: https://frecuenciaintegral.com):');
-  if (!url) return;
-  var sel = window.getSelection();
-  if (_edOn && sel && sel.rangeCount > 0 && sel.toString().length > 0) {
-    try {
-      var range = sel.getRangeAt(0);
-      var a = document.createElement('a');
-      a.href = url; a.target = '_blank'; a.style.color = 'inherit'; a.style.textDecoration = 'underline';
-      a.appendChild(range.extractContents());
-      range.insertNode(a); sel.removeAllRanges();
-      edMsg('🔗 Enlace añadido'); edSnapshot();
-    } catch(e) { edMsg('⚠️ Selecciona texto primero'); }
-  } else if (_edSel) {
-    _edSel.style.cursor = 'pointer';
-    _edSel.onclick = function() { window.open(url, '_blank'); };
-    _edSel.setAttribute('data-link', url);
+// ── Enlace ──
+function edAddLink(){
+  var url=prompt('URL del enlace (ej: https://frecuenciaintegral.com):');
+  if(!url)return;
+  var sel=window.getSelection();
+  if(_edOn&&sel&&sel.rangeCount>0&&sel.toString()){
+    try{
+      var range=sel.getRangeAt(0);
+      var a=document.createElement('a');
+      a.href=url; a.target='_blank'; a.style.color='inherit'; a.style.textDecoration='underline';
+      a.appendChild(range.extractContents()); range.insertNode(a); sel.removeAllRanges();
+      edMsg('🔗 Enlace añadido'); edSnapshot(); return;
+    }catch(e){}
+  }
+  if(_edSel){
+    _edSel.style.cursor='pointer';
+    _edSel.setAttribute('onclick',"window.open('"+url+"','_blank')");
     edMsg('🔗 Enlace añadido al elemento'); edSnapshot();
-  } else edMsg('⚠️ Selecciona texto o un elemento');
+  }else edMsg('⚠️ Selecciona texto o un elemento');
 }
 
 // ── Cambiar imagen ──
-function edChangeImage() {
-  var url = prompt('URL de la imagen:');
-  if (!url) return;
-  var target = _edSel || document.body;
-  var img = target.tagName === 'IMG' ? target : target.querySelector('img');
-  if (img) {
-    img.src = url; edMsg('🖼️ Imagen cambiada'); edSnapshot();
-  } else if (_edSel) {
-    var ni = document.createElement('img');
-    ni.src = url; ni.style.cssText = 'width:100%;border-radius:12px;margin-top:12px;object-fit:cover;max-height:400px';
+function edChangeImage(){
+  var url=prompt('URL de la nueva imagen:');
+  if(!url)return;
+  var t=_edSel||document.body;
+  var img=t.tagName==='IMG'?t:t.querySelector('img');
+  if(img){img.src=url;edMsg('🖼️ Imagen cambiada');edSnapshot();}
+  else if(_edSel){
+    var ni=document.createElement('img');
+    ni.src=url; ni.style.cssText='width:100%;border-radius:12px;margin-top:12px;object-fit:cover;max-height:400px';
     _edSel.appendChild(ni); edMsg('🖼️ Imagen añadida'); edSnapshot();
-  } else edMsg('⚠️ Selecciona un elemento primero');
+  }else edMsg('⚠️ Selecciona un elemento primero');
 }
 
-// ── Duplicar ──
-function edDuplicate() {
-  if (!_edSel) { edMsg('⚠️ Selecciona un elemento'); return; }
+// ── Duplicar / Mover / Eliminar ──
+function edDuplicate(){
+  if(!_edSel){edMsg('⚠️ Selecciona un elemento');return;}
   edSnapshot();
-  var clone = _edSel.cloneNode(true);
-  clone.classList.remove('ed-selected-ring');
-  _edSel.parentNode.insertBefore(clone, _edSel.nextSibling);
-  edSelectEl(clone);
-  edMsg('📋 Elemento duplicado'); edSnapshot();
+  var cl=_edSel.cloneNode(true); cl.classList.remove('ed-selected-ring');
+  _edSel.parentNode.insertBefore(cl,_edSel.nextSibling);
+  edSelectEl(cl); edMsg('📋 Duplicado'); edSnapshot();
 }
-
-// ── Mover ──
-function edMoveUp() {
-  if (!_edSel) { edMsg('⚠️ Selecciona un elemento'); return; }
-  var prev = _edSel.previousElementSibling;
-  if (prev) { edSnapshot(); _edSel.parentNode.insertBefore(_edSel, prev); edMsg('⬆️ Movido arriba'); }
+function edMoveUp(){
+  if(!_edSel){edMsg('⚠️ Selecciona un elemento');return;}
+  var prev=_edSel.previousElementSibling;
+  if(prev){edSnapshot();_edSel.parentNode.insertBefore(_edSel,prev);edMsg('⬆️ Movido arriba');}
   else edMsg('⚠️ Ya está al principio');
 }
-function edMoveDown() {
-  if (!_edSel) { edMsg('⚠️ Selecciona un elemento'); return; }
-  var next = _edSel.nextElementSibling;
-  if (next) { edSnapshot(); _edSel.parentNode.insertBefore(next, _edSel); edMsg('⬇️ Movido abajo'); }
+function edMoveDown(){
+  if(!_edSel){edMsg('⚠️ Selecciona un elemento');return;}
+  var next=_edSel.nextElementSibling;
+  if(next){edSnapshot();_edSel.parentNode.insertBefore(next,_edSel);edMsg('⬇️ Movido abajo');}
   else edMsg('⚠️ Ya está al final');
 }
-
-// ── Eliminar ──
-function edDeleteSelected() {
-  if (!_edSel) { edMsg('⚠️ Selecciona un elemento'); return; }
-  if (!confirm('¿Eliminar este elemento? (puedes deshacer con ↩)')) return;
-  edSnapshot();
-  _edSel.remove(); _edSel = null;
-  edMsg('🗑️ Eliminado — usa ↩ para deshacer'); edSnapshot();
+function edDeleteSelected(){
+  if(!_edSel){edMsg('⚠️ Selecciona un elemento');return;}
+  if(!confirm('¿Eliminar este elemento? (deshacer con ↩)'))return;
+  edSnapshot(); _edSel.remove(); _edSel=null;
+  edMsg('🗑️ Eliminado — ↩ para deshacer'); edSnapshot();
 }
 
-// ── Menú contextual (clic derecho) ──
-function edCtxClose() { document.getElementById('edCtxMenu').style.display = 'none'; }
-function edCtxAction(a) {
+// ── Menú contextual ──
+function edCtxClose(){document.getElementById('edCtxMenu').style.display='none';}
+function edCtxAction(a){
   edCtxClose();
-  if (a === 'editar') edToggleText();
-  else if (a === 'link') edAddLink();
-  else if (a === 'imagen') edChangeImage();
-  else if (a === 'duplicar') edDuplicate();
-  else if (a === 'subir') edMoveUp();
-  else if (a === 'bajar') edMoveDown();
-  else if (a === 'eliminar') edDeleteSelected();
+  if(a==='props'){if(!_edPropsOpen)edToggleProps();else edFillProps(_edSel);}
+  else if(a==='editar')edToggleText();
+  else if(a==='link')edAddLink();
+  else if(a==='imagen')edChangeImage();
+  else if(a==='duplicar')edDuplicate();
+  else if(a==='subir')edMoveUp();
+  else if(a==='bajar')edMoveDown();
+  else if(a==='eliminar')edDeleteSelected();
 }
-document.addEventListener('contextmenu', function(e) {
-  if (document.getElementById('edPanel').style.display !== 'flex') return;
-  if (e.target.closest('#edPanel') || e.target.closest('#edCtxMenu')) return;
+document.addEventListener('contextmenu',function(e){
+  if(document.getElementById('edPanel').style.display!=='flex')return;
+  if(e.target.closest('#edPanel')||e.target.closest('#edCtxMenu'))return;
   e.preventDefault();
-  var el = e.target.closest('div, section, article, p, h1, h2, h3, img, button');
-  if (el && !el.closest('nav')) {
+  var el=e.target.closest('div,section,article,p,h1,h2,h3,img,button,span');
+  if(el&&!el.closest('nav')){
     edSelectEl(el);
-    var ctx = document.getElementById('edCtxMenu');
-    document.getElementById('edCtxTitle').textContent = el.tagName.toLowerCase() + (el.id ? '#'+el.id : '');
-    ctx.style.display = 'block';
-    ctx.style.left = Math.min(e.clientX, window.innerWidth - 200) + 'px';
-    ctx.style.top = Math.min(e.clientY, window.innerHeight - 280) + 'px';
+    var ctx=document.getElementById('edCtxMenu');
+    document.getElementById('edCtxTitle').textContent=el.tagName.toLowerCase()+(el.id?'#'+el.id:'');
+    ctx.style.display='block';
+    ctx.style.left=Math.min(e.clientX,window.innerWidth-200)+'px';
+    ctx.style.top=Math.min(e.clientY,window.innerHeight-290)+'px';
   }
 });
-document.addEventListener('click', function(e) {
-  if (e.target.closest('#edCtxMenu')) return;
+document.addEventListener('click',function(e){
+  if(e.target.closest('#edCtxMenu'))return;
   edCtxClose();
-
-  var panel = document.getElementById('edPanel');
-  if (!panel || panel.style.display !== 'flex') return;
-  if (e.target.closest('#edPanel')) return;
-
-  if (_edOn) return; // en modo texto no interferir
-
-  if (_edSelMode) {
-    var el = e.target.closest('div[style], section, article, p, h1, h2, h3, h4, img, button, span[style]');
-    if (el && !el.closest('nav') && !el.closest('#edPanel')) {
-      e.stopPropagation();
-      edSelectEl(el);
-    }
+  var panel=document.getElementById('edPanel');
+  if(!panel||panel.style.display!=='flex')return;
+  if(e.target.closest('#edPanel')||e.target.closest('#edPropsPanel'))return;
+  if(_edOn)return;
+  if(_edSelMode){
+    var el2=e.target.closest('div[style],section,article,p,h1,h2,h3,h4,img,button,span[style]');
+    if(el2&&!el2.closest('nav')){e.stopPropagation();edSelectEl(el2);}
     return;
   }
-
-  // Modo normal: detectar botón o sección
-  var btn = e.target.closest('button');
-  if (btn && !btn.closest('#edPanel')) {
-    _edSelBtn = btn; edSelectEl(btn); return;
-  }
-  var sec = e.target.closest('[id], [style*="border-radius"], section');
-  if (sec && !sec.closest('#edPanel') && !sec.closest('nav') && sec !== document.documentElement && sec !== document.body) {
-    edSelectEl(sec);
-  }
+  var btn=e.target.closest('button');
+  if(btn&&!btn.closest('#edPanel')){_edSelBtn=btn;edSelectEl(btn);return;}
+  var sec=e.target.closest('[id],[style*="border-radius"],section');
+  if(sec&&!sec.closest('#edPanel')&&!sec.closest('nav')&&sec!==document.documentElement&&sec!==document.body)edSelectEl(sec);
 });
 
 // ── Insertar bloques ──
-function edInsert(tipo) {
+function edInsert(tipo){
   edSnapshot();
-  var el;
-  var S = "font-family:'DM Sans',sans-serif";
-  var CG = "font-family:'Cormorant Garamond',serif";
-
-  if (tipo === 'texto') {
-    el = document.createElement('div');
-    el.style.cssText = 'padding:60px 40px;max-width:800px;margin:0 auto;text-align:center';
-    el.innerHTML = '<h2 style="'+CG+';font-size:36px;font-weight:300;color:#1c1814;margin-bottom:16px">Nuevo título</h2><p style="font-size:15px;color:#7a7168;line-height:1.75;max-width:600px;margin:0 auto">Escribe aquí el contenido del bloque.</p>';
+  var el,S="font-family:'DM Sans',sans-serif",CG="font-family:'Cormorant Garamond',serif";
+  if(tipo==='texto'){
+    el=document.createElement('div');
+    el.style.cssText='padding:60px 40px;max-width:800px;margin:0 auto;text-align:center';
+    el.innerHTML='<h2 style="'+CG+';font-size:36px;font-weight:300;color:#1c1814;margin-bottom:16px">Nuevo título</h2><p style="font-size:15px;color:#7a7168;line-height:1.75;max-width:600px;margin:0 auto">Escribe aquí el contenido del bloque.</p>';
+  }else if(tipo==='tarjeta'){
+    var grid=(_edSel&&_edSel.querySelector('[style*="grid"]'))||document.querySelector('#pilares [style*="grid"]');
+    if(!grid){edMsg('⚠️ Selecciona primero una sección con tarjetas');return;}
+    el=document.createElement('div');
+    el.style.cssText='background:white;border-radius:20px;padding:32px;border:1px solid #d9d2c8';
+    el.innerHTML='<div style="font-size:32px;margin-bottom:16px">✨</div><div style="'+CG+';font-size:24px;color:#1c1814;margin-bottom:10px">Nueva Tarjeta</div><div style="font-size:13px;color:#5a5248;line-height:1.75">Descripción de la tarjeta.</div>';
+    grid.appendChild(el);edSelectEl(el);edMsg('✅ Tarjeta añadida');edSnapshot();return;
+  }else if(tipo==='banner-ancho'){
+    el=document.createElement('div');
+    el.style.cssText='width:100%;padding:80px 40px;background:linear-gradient(135deg,#2b7d7a,#1c5a58);text-align:center';
+    el.innerHTML='<h2 style="'+CG+';font-size:clamp(32px,5vw,56px);font-weight:300;color:white;margin-bottom:16px">Banner Principal</h2><p style="font-size:16px;color:rgba(255,255,255,.8);max-width:600px;margin:0 auto 32px;line-height:1.7">Texto del banner.</p><button style="background:white;color:#2b7d7a;border:none;padding:14px 32px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;'+S+'">Llamada a la acción</button>';
+  }else if(tipo==='banner-pequeño'){
+    el=document.createElement('div');
+    el.style.cssText='max-width:900px;margin:40px auto;padding:40px 48px;background:#f0ece4;border-radius:20px;border:1px solid #d9d2c8;display:flex;align-items:center;gap:32px;flex-wrap:wrap';
+    el.innerHTML='<div style="flex:1;min-width:200px"><div style="font-size:11px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">Etiqueta</div><h3 style="'+CG+';font-size:28px;font-weight:300;color:#1c1814;margin-bottom:8px">Título</h3><p style="font-size:14px;color:#7a7168;line-height:1.7">Descripción del contenido.</p></div><button style="background:#2b7d7a;color:white;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;'+S+';flex-shrink:0">Acción →</button>';
+  }else if(tipo==='imagen-banner'){
+    var ur=prompt('URL de la imagen:')||'https://via.placeholder.com/1400x500/f0ece4/7a7168?text=Banner';
+    el=document.createElement('div');
+    el.style.cssText='width:100%;height:450px;overflow:hidden;position:relative';
+    el.innerHTML='<img src="'+ur+'" style="width:100%;height:100%;object-fit:cover"><div style="position:absolute;inset:0;background:rgba(28,24,20,.4);display:flex;align-items:center;justify-content:center;text-align:center;padding:40px"><div><h2 style="'+CG+';font-size:clamp(32px,5vw,60px);font-weight:300;color:white;margin-bottom:16px">Título</h2><p style="font-size:16px;color:rgba(255,255,255,.85);max-width:500px;margin:0 auto">Subtítulo o descripción</p></div></div>';
+  }else if(tipo==='imagen-pequeña'){
+    var ur2=prompt('URL de la imagen:')||'https://via.placeholder.com/600x400/f0ece4/7a7168?text=Imagen';
+    el=document.createElement('div');
+    el.style.cssText='max-width:1000px;margin:40px auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;padding:0 32px';
+    el.innerHTML='<img src="'+ur2+'" style="width:100%;border-radius:16px;object-fit:cover;height:320px"><div><h3 style="'+CG+';font-size:28px;font-weight:300;color:#1c1814;margin-bottom:12px">Título</h3><p style="font-size:14px;color:#7a7168;line-height:1.75">Descripción.</p></div>';
+  }else if(tipo==='boton'){
+    el=document.createElement('div');
+    el.style.cssText='text-align:center;padding:24px';
+    var hr=prompt('URL del enlace (o vacío):')||'#';
+    el.innerHTML='<a href="'+hr+'" target="_blank" style="display:inline-block;background:#2b7d7a;color:white;padding:14px 32px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;'+S+';text-decoration:none">Nuevo Botón</a>';
+  }else if(tipo==='separador'){
+    el=document.createElement('div');
+    el.style.cssText='max-width:600px;margin:40px auto;display:flex;align-items:center;gap:20px;padding:0 32px';
+    el.innerHTML='<div style="flex:1;height:1px;background:#e4ddd3"></div><span style="font-size:12px;color:#b8ad9e;font-weight:600;letter-spacing:.1em">•</span><div style="flex:1;height:1px;background:#e4ddd3"></div>';
   }
-  else if (tipo === 'tarjeta') {
-    var grid = (_edSel && _edSel.querySelector('[style*="grid"]')) || document.querySelector('#pilares [style*="grid"]');
-    if (!grid) { edMsg('⚠️ Selecciona primero una sección con tarjetas'); return; }
-    el = document.createElement('div');
-    el.style.cssText = 'background:white;border-radius:20px;padding:32px;border:1px solid #d9d2c8';
-    el.innerHTML = '<div style="font-size:32px;margin-bottom:16px">✨</div><div style="'+CG+';font-size:24px;color:#1c1814;margin-bottom:10px">Nueva Tarjeta</div><div style="font-size:13px;color:#5a5248;line-height:1.75">Descripción de la tarjeta.</div>';
-    grid.appendChild(el); edSelectEl(el);
-    edMsg('✅ Tarjeta añadida'); edSnapshot(); return;
-  }
-  else if (tipo === 'banner-ancho') {
-    el = document.createElement('div');
-    el.style.cssText = 'width:100%;padding:80px 40px;background:linear-gradient(135deg,#2b7d7a,#1c5a58);text-align:center';
-    el.innerHTML = '<h2 style="'+CG+';font-size:clamp(32px,5vw,56px);font-weight:300;color:white;margin-bottom:16px">Banner Principal</h2><p style="font-size:16px;color:rgba(255,255,255,.8);max-width:600px;margin:0 auto 32px;line-height:1.7">Texto del banner.</p><button style="background:white;color:#2b7d7a;border:none;padding:14px 32px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;'+S+'">Llamada a la acción</button>';
-  }
-  else if (tipo === 'banner-pequeño') {
-    el = document.createElement('div');
-    el.style.cssText = 'max-width:900px;margin:40px auto;padding:40px 48px;background:#f0ece4;border-radius:20px;border:1px solid #d9d2c8;display:flex;align-items:center;gap:32px;flex-wrap:wrap';
-    el.innerHTML = '<div style="flex:1;min-width:200px"><div style="font-size:11px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">Etiqueta</div><h3 style="'+CG+';font-size:28px;font-weight:300;color:#1c1814;margin-bottom:8px">Título del bloque</h3><p style="font-size:14px;color:#7a7168;line-height:1.7">Descripción del contenido.</p></div><button style="background:#2b7d7a;color:white;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;'+S+';flex-shrink:0">Acción →</button>';
-  }
-  else if (tipo === 'imagen-banner') {
-    var url = prompt('URL de la imagen:') || 'https://via.placeholder.com/1400x500/f0ece4/7a7168?text=Banner';
-    el = document.createElement('div');
-    el.style.cssText = 'width:100%;height:450px;overflow:hidden;position:relative';
-    el.innerHTML = '<img src="'+url+'" style="width:100%;height:100%;object-fit:cover"><div style="position:absolute;inset:0;background:rgba(28,24,20,.4);display:flex;align-items:center;justify-content:center;text-align:center;padding:40px"><div><h2 style="'+CG+';font-size:clamp(32px,5vw,60px);font-weight:300;color:white;margin-bottom:16px">Título</h2><p style="font-size:16px;color:rgba(255,255,255,.85);max-width:500px;margin:0 auto">Subtítulo o descripción</p></div></div>';
-  }
-  else if (tipo === 'imagen-pequeña') {
-    var url2 = prompt('URL de la imagen:') || 'https://via.placeholder.com/600x400/f0ece4/7a7168?text=Imagen';
-    el = document.createElement('div');
-    el.style.cssText = 'max-width:1000px;margin:40px auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;padding:0 32px';
-    el.innerHTML = '<img src="'+url2+'" style="width:100%;border-radius:16px;object-fit:cover;height:320px"><div><h3 style="'+CG+';font-size:28px;font-weight:300;color:#1c1814;margin-bottom:12px">Título</h3><p style="font-size:14px;color:#7a7168;line-height:1.75">Descripción junto a la imagen.</p></div>';
-  }
-  else if (tipo === 'boton') {
-    el = document.createElement('div');
-    el.style.cssText = 'text-align:center;padding:24px';
-    var href = prompt('URL del enlace (o déjalo vacío):') || '#';
-    el.innerHTML = '<a href="'+href+'" target="_blank" style="display:inline-block;background:#2b7d7a;color:white;border:none;padding:14px 32px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;'+S+';text-decoration:none">Nuevo Botón</a>';
-  }
-  else if (tipo === 'separador') {
-    el = document.createElement('div');
-    el.style.cssText = 'max-width:600px;margin:40px auto;display:flex;align-items:center;gap:20px;padding:0 32px';
-    el.innerHTML = '<div style="flex:1;height:1px;background:#e4ddd3"></div><span style="font-size:12px;color:#b8ad9e;font-weight:600;letter-spacing:.1em;text-transform:uppercase">•</span><div style="flex:1;height:1px;background:#e4ddd3"></div>';
-  }
-
-  if (el) {
-    var anchor = _edSel ? _edSel : (document.getElementById('joyas') || document.getElementById('pilares'));
-    var page = document.getElementById('page-public');
-    if (anchor && anchor.parentNode && anchor.parentNode !== page) {
-      anchor.parentNode.insertBefore(el, anchor.nextSibling);
-    } else if (anchor && anchor.parentNode) {
-      anchor.parentNode.insertBefore(el, anchor.nextSibling);
-    } else { page.appendChild(el); }
-    el.scrollIntoView({ behavior:'smooth', block:'center' });
+  if(el){
+    var anchor=_edSel?_edSel:(document.getElementById('joyas')||document.getElementById('pilares'));
+    var page=document.getElementById('page-public');
+    if(anchor&&anchor.parentNode)anchor.parentNode.insertBefore(el,anchor.nextSibling);
+    else page.appendChild(el);
+    el.scrollIntoView({behavior:'smooth',block:'center'});
     edSelectEl(el);
     edMsg('✅ Bloque añadido — activa "Editar textos" para modificarlo');
     edSnapshot();
@@ -2210,25 +2758,24 @@ function edInsert(tipo) {
 }
 
 // ── Guardar ──
-function edSave() {
-  if (_edOn) edToggleText();
-  edClearSelection();
-  edCtxClose();
-  document.querySelectorAll('[contenteditable]').forEach(function(el) {
-    el.removeAttribute('contenteditable'); el.style.outline = ''; el.style.cursor = '';
+function edSave(){
+  if(_edOn)edToggleText();
+  edClearSel(); edCtxClose(); edCloseProps();
+  document.querySelectorAll('[contenteditable]').forEach(function(el){
+    el.removeAttribute('contenteditable');el.style.outline='';el.style.cursor='';
   });
-  var openBtn = document.getElementById('edOpenBtn');
-  var panel = document.getElementById('edPanel');
-  if (openBtn) openBtn.style.display = 'none';
-  panel.style.display = 'none';
-  setTimeout(function() {
-    var blob = new Blob(['<!DOCTYPE html>' + document.documentElement.outerHTML], {type:'text/html'});
-    var a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'frecuencia-integral-editada.html';
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    if (openBtn) openBtn.style.display = '';
+  var openBtn=document.getElementById('edOpenBtn');
+  var panel=document.getElementById('edPanel');
+  if(openBtn)openBtn.style.display='none';
+  panel.style.display='none';
+  setTimeout(function(){
+    var blob=new Blob(['<!DOCTYPE html>'+document.documentElement.outerHTML],{type:'text/html'});
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='frecuencia-integral-editada.html';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+    if(openBtn)openBtn.style.display='';
     toast('✅ Guardado — renombra a index.html y sube a Vercel');
-  }, 200);
+  },200);
 }
 </script></body></html>
