@@ -1697,254 +1697,258 @@ document.getElementById('week-modal').addEventListener('click', function(e){
 </div>
 
 <!-- EDITOR BUTTON -->
-<button onclick="editorOpen()" style="position:fixed;bottom:24px;left:24px;z-index:9999;background:#1c1814;color:white;border:none;padding:10px 18px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 16px rgba(0,0,0,.3)">✏️ Editor</button>
+<button onclick="editorOpen()" id="edOpenBtn" style="position:fixed;bottom:24px;left:24px;z-index:9999;background:#1c1814;color:white;border:none;padding:10px 18px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 16px rgba(0,0,0,.3)">✏️ Editor</button>
 
-<!-- EDITOR PANEL -->
-<div id="edPanel" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9998;background:#1c1814;padding:12px 20px;align-items:center;gap:14px;flex-wrap:wrap;box-shadow:0 -4px 20px rgba(0,0,0,.4)">
-
-  <span style="font-size:13px;font-weight:700;color:#3d9e9b">✦ Editor</span>
-  <div style="width:1px;height:24px;background:rgba(255,255,255,.15)"></div>
-
-  <!-- Editar textos -->
-  <button onclick="edToggleText()" id="edTxtBtn" style="background:#2b7d7a;color:white;border:none;padding:7px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">✏️ Editar textos</button>
-  <div style="width:1px;height:24px;background:rgba(255,255,255,.15)"></div>
-
-  <!-- Color fuente -->
-  <div style="display:flex;align-items:center;gap:6px">
-    <span style="font-size:11px;color:rgba(255,255,255,.5)">Color texto:</span>
-    <input type="color" id="edFontColor" value="#1c1814"
-      style="width:30px;height:30px;border:none;border-radius:4px;cursor:pointer;padding:0"
-      onchange="edApplyFontColor(this.value)">
-  </div>
-
-  <!-- Tipografía -->
-  <div style="display:flex;align-items:center;gap:6px">
-    <span style="font-size:11px;color:rgba(255,255,255,.5)">Tipografía:</span>
-    <select id="edFont" onchange="edApplyFont(this.value)"
-      style="background:#2a2420;color:white;border:1px solid rgba(255,255,255,.2);padding:5px 8px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif">
-      <option value="">— elegir —</option>
-      <option value="'DM Sans', sans-serif">DM Sans (moderna)</option>
-      <option value="'Cormorant Garamond', serif">Cormorant (elegante)</option>
-      <option value="Georgia, serif">Georgia (clásica)</option>
-      <option value="'Arial', sans-serif">Arial (limpia)</option>
-      <option value="'Helvetica Neue', sans-serif">Helvetica (minimalista)</option>
-      <option value="'Times New Roman', serif">Times New Roman</option>
-      <option value="'Courier New', monospace">Courier (monoespaciada)</option>
-    </select>
-  </div>
-
-  <!-- Tamaño fuente -->
-  <div style="display:flex;align-items:center;gap:6px">
-    <span style="font-size:11px;color:rgba(255,255,255,.5)">Tamaño:</span>
-    <select id="edFontSize" onchange="edApplyFontSize(this.value)"
-      style="background:#2a2420;color:white;border:1px solid rgba(255,255,255,.2);padding:5px 8px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif">
-      <option value="">— elegir —</option>
-      <option value="11px">11px</option><option value="12px">12px</option>
-      <option value="13px">13px</option><option value="14px">14px</option>
-      <option value="16px">16px</option><option value="18px">18px</option>
-      <option value="20px">20px</option><option value="24px">24px</option>
-      <option value="28px">28px</option><option value="32px">32px</option>
-      <option value="40px">40px</option><option value="48px">48px</option>
-      <option value="64px">64px</option>
-    </select>
-  </div>
-
-  <div style="width:1px;height:24px;background:rgba(255,255,255,.15)"></div>
-
-  <!-- Fondo sección -->
-  <div style="display:flex;align-items:center;gap:6px">
-    <span style="font-size:11px;color:rgba(255,255,255,.5)">Fondo:</span>
-    <input type="color" id="edBg" value="#f7f5f1"
-      style="width:30px;height:30px;border:none;border-radius:4px;cursor:pointer;padding:0"
-      onchange="edApplyBg(this.value)">
-  </div>
-
-  <!-- Color botón -->
-  <div style="display:flex;align-items:center;gap:6px">
-    <span style="font-size:11px;color:rgba(255,255,255,.5)">Botón:</span>
-    <input type="color" id="edBtn" value="#2b7d7a"
-      style="width:30px;height:30px;border:none;border-radius:4px;cursor:pointer;padding:0"
-      onchange="edApplyBtn(this.value)">
-  </div>
-
-  <div style="width:1px;height:24px;background:rgba(255,255,255,.15)"></div>
-
-  <!-- Espaciado -->
-  <div style="display:flex;align-items:center;gap:6px">
-    <span style="font-size:11px;color:rgba(255,255,255,.5)">Espaciado:</span>
-    <select id="edPadding" onchange="edApplyPadding(this.value)"
-      style="background:#2a2420;color:white;border:1px solid rgba(255,255,255,.2);padding:5px 8px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif">
-      <option value="">— elegir —</option>
-      <option value="0px">Sin espacio</option>
-      <option value="8px">Muy pequeño (8px)</option>
-      <option value="16px">Pequeño (16px)</option>
-      <option value="24px">Normal (24px)</option>
-      <option value="32px">Medio (32px)</option>
-      <option value="48px">Grande (48px)</option>
-      <option value="64px">Muy grande (64px)</option>
-      <option value="80px">Máximo (80px)</option>
-    </select>
-  </div>
-
-  <!-- Ancho contenedor -->
-  <div style="display:flex;align-items:center;gap:6px">
-    <span style="font-size:11px;color:rgba(255,255,255,.5)">Ancho max:</span>
-    <select id="edMaxWidth" onchange="edApplyMaxWidth(this.value)"
-      style="background:#2a2420;color:white;border:1px solid rgba(255,255,255,.2);padding:5px 8px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif">
-      <option value="">— elegir —</option>
-      <option value="400px">Estrecho (400px)</option>
-      <option value="600px">Medio (600px)</option>
-      <option value="800px">Normal (800px)</option>
-      <option value="1000px">Amplio (1000px)</option>
-      <option value="1200px">Ancho (1200px)</option>
-      <option value="100%">Completo (100%)</option>
-    </select>
-  </div>
-
-  <div style="width:1px;height:24px;background:rgba(255,255,255,.15)"></div>
-
-  <!-- INSERTAR BLOQUES -->
-  <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-    <span style="font-size:11px;color:rgba(255,255,255,.5)">+ Añadir:</span>
-    <button onclick="edInsert('texto')" style="background:#2a2420;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.15);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">📝 Texto</button>
-    <button onclick="edInsert('tarjeta')" style="background:#2a2420;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.15);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">🃏 Tarjeta</button>
-    <button onclick="edInsert('banner-ancho')" style="background:#2a2420;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.15);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">🔲 Banner ancho</button>
-    <button onclick="edInsert('banner-pequeño')" style="background:#2a2420;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.15);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">▭ Banner pequeño</button>
-    <button onclick="edInsert('imagen-banner')" style="background:#2a2420;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.15);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">🖼️ Img. banner</button>
-    <button onclick="edInsert('imagen-pequeña')" style="background:#2a2420;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.15);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">🖼️ Img. + texto</button>
-    <button onclick="edChangeImage()" style="background:#2a2420;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.15);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">🔄 Cambiar img.</button>
-    <button onclick="edDeleteSelected()" style="background:#3a1a18;color:#f08080;border:1px solid rgba(191,70,55,.3);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">🗑️ Eliminar</button>
-  </div>
-
-  <div style="width:1px;height:24px;background:rgba(255,255,255,.15)"></div>
-  <button onclick="edSave()" style="background:#b89558;color:white;border:none;padding:9px 18px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.02em">💾 Guardar</button>
-  <button onclick="edClose()" style="background:rgba(255,255,255,.1);color:white;border:none;padding:7px 14px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif">✕ Cerrar</button>
-
-  <span id="edMsg" style="font-size:11px;color:#3d9e9b;margin-left:auto"></span>
+<!-- CONTEXT MENU al hacer clic derecho en elemento seleccionado -->
+<div id="edCtxMenu" style="display:none;position:fixed;z-index:10001;background:#1c1814;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:6px;min-width:180px;box-shadow:0 8px 32px rgba(0,0,0,.5)">
+  <div id="edCtxTitle" style="font-size:10px;color:rgba(255,255,255,.4);padding:4px 10px 8px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:4px">Elemento seleccionado</div>
+  <button onclick="edCtxAction('editar')" class="edctx-btn">✏️ Editar textos internos</button>
+  <button onclick="edCtxAction('link')" class="edctx-btn">🔗 Añadir enlace</button>
+  <button onclick="edCtxAction('imagen')" class="edctx-btn">🖼️ Cambiar imagen</button>
+  <button onclick="edCtxAction('duplicar')" class="edctx-btn">📋 Duplicar</button>
+  <button onclick="edCtxAction('subir')" class="edctx-btn">⬆️ Mover arriba</button>
+  <button onclick="edCtxAction('bajar')" class="edctx-btn">⬇️ Mover abajo</button>
+  <div style="height:1px;background:rgba(255,255,255,.1);margin:4px 0"></div>
+  <button onclick="edCtxAction('eliminar')" class="edctx-btn" style="color:#f08080">🗑️ Eliminar</button>
+  <button onclick="edCtxClose()" class="edctx-btn" style="color:rgba(255,255,255,.4)">✕ Cerrar menú</button>
 </div>
 
-<script>
-var _edOn = false, _edSel = null, _edSelBtn = null;
+<!-- EDITOR PANEL -->
+<div id="edPanel" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9998;background:#1c1814;padding:10px 16px;align-items:center;gap:10px;flex-wrap:wrap;box-shadow:0 -4px 20px rgba(0,0,0,.5)">
 
+  <span style="font-size:13px;font-weight:700;color:#3d9e9b;white-space:nowrap">✦ Editor</span>
+  <div class="edsep"></div>
+
+  <!-- DESHACER / REHACER -->
+  <button onclick="edUndo()" id="edUndoBtn" title="Deshacer (Ctrl+Z)" style="background:#2a2420;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.1);padding:6px 10px;border-radius:6px;font-size:13px;cursor:pointer">↩</button>
+  <button onclick="edRedo()" id="edRedoBtn" title="Rehacer (Ctrl+Y)" style="background:#2a2420;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.1);padding:6px 10px;border-radius:6px;font-size:13px;cursor:pointer">↪</button>
+  <div class="edsep"></div>
+
+  <!-- MODO SELECCIÓN / EDICIÓN -->
+  <button onclick="edToggleMode()" id="edModeBtn" style="background:#2b7d7a;color:white;border:none;padding:7px 13px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">🖱 Seleccionar</button>
+  <button onclick="edToggleText()" id="edTxtBtn" style="background:#2b7d7a;color:white;border:none;padding:7px 13px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">✏️ Editar textos</button>
+  <div class="edsep"></div>
+
+  <!-- TEXTO -->
+  <input type="color" id="edFontColor" value="#1c1814" title="Color texto" style="width:26px;height:26px;border:none;border-radius:4px;cursor:pointer;padding:0" onchange="edApplyFontColor(this.value)">
+  <select id="edFont" onchange="edApplyFont(this.value)" title="Tipografía" style="background:#2a2420;color:white;border:1px solid rgba(255,255,255,.15);padding:4px 6px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;max-width:130px">
+    <option value="">Tipografía</option>
+    <option value="'DM Sans', sans-serif">DM Sans</option>
+    <option value="'Cormorant Garamond', serif">Cormorant</option>
+    <option value="Georgia, serif">Georgia</option>
+    <option value="'Arial', sans-serif">Arial</option>
+    <option value="'Helvetica Neue', sans-serif">Helvetica</option>
+    <option value="'Times New Roman', serif">Times New Roman</option>
+    <option value="'Courier New', monospace">Courier</option>
+  </select>
+  <select id="edFontSize" onchange="edApplyFontSize(this.value)" title="Tamaño" style="background:#2a2420;color:white;border:1px solid rgba(255,255,255,.15);padding:4px 6px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;max-width:90px">
+    <option value="">Tamaño</option>
+    <option value="11px">11px</option><option value="12px">12px</option>
+    <option value="13px">13px</option><option value="14px">14px</option>
+    <option value="16px">16px</option><option value="18px">18px</option>
+    <option value="20px">20px</option><option value="24px">24px</option>
+    <option value="28px">28px</option><option value="32px">32px</option>
+    <option value="40px">40px</option><option value="48px">48px</option>
+    <option value="64px">64px</option>
+  </select>
+  <div class="edsep"></div>
+
+  <!-- BLOQUE -->
+  <input type="color" id="edBg" value="#f7f5f1" title="Fondo" style="width:26px;height:26px;border:none;border-radius:4px;cursor:pointer;padding:0" onchange="edApplyBg(this.value)">
+  <input type="color" id="edBtnColor" value="#2b7d7a" title="Color botón" style="width:26px;height:26px;border:none;border-radius:4px;cursor:pointer;padding:0" onchange="edApplyBtn(this.value)">
+  <select id="edPadding" onchange="edApplyPadding(this.value)" style="background:#2a2420;color:white;border:1px solid rgba(255,255,255,.15);padding:4px 6px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;max-width:110px">
+    <option value="">Espaciado</option>
+    <option value="0px">Sin espacio</option><option value="8px">8px</option>
+    <option value="16px">16px</option><option value="24px">24px</option>
+    <option value="32px">32px</option><option value="48px">48px</option>
+    <option value="64px">64px</option><option value="80px">80px</option>
+  </select>
+  <select id="edMaxWidth" onchange="edApplyMaxWidth(this.value)" style="background:#2a2420;color:white;border:1px solid rgba(255,255,255,.15);padding:4px 6px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;max-width:110px">
+    <option value="">Ancho máx.</option>
+    <option value="400px">400px</option><option value="600px">600px</option>
+    <option value="800px">800px</option><option value="1000px">1000px</option>
+    <option value="1200px">1200px</option><option value="100%">100%</option>
+  </select>
+  <div class="edsep"></div>
+
+  <!-- AÑADIR -->
+  <span style="font-size:10px;color:rgba(255,255,255,.4);white-space:nowrap">+ AÑADIR:</span>
+  <button onclick="edInsert('texto')" class="edbtn-add">📝 Texto</button>
+  <button onclick="edInsert('tarjeta')" class="edbtn-add">🃏 Tarjeta</button>
+  <button onclick="edInsert('banner-ancho')" class="edbtn-add">🔲 Banner</button>
+  <button onclick="edInsert('banner-pequeño')" class="edbtn-add">▭ Banner S</button>
+  <button onclick="edInsert('imagen-banner')" class="edbtn-add">🖼 Img.banner</button>
+  <button onclick="edInsert('imagen-pequeña')" class="edbtn-add">🖼 Img.+texto</button>
+  <button onclick="edInsert('boton')" class="edbtn-add">🔘 Botón</button>
+  <button onclick="edInsert('separador')" class="edbtn-add">— Separador</button>
+  <div class="edsep"></div>
+
+  <!-- ACCIONES ELEMENTO -->
+  <button onclick="edAddLink()" class="edbtn-add" title="Añadir enlace al elemento seleccionado">🔗 Link</button>
+  <button onclick="edChangeImage()" class="edbtn-add">🔄 Img.</button>
+  <button onclick="edDuplicate()" class="edbtn-add">📋 Dupl.</button>
+  <button onclick="edMoveUp()" class="edbtn-add">⬆</button>
+  <button onclick="edMoveDown()" class="edbtn-add">⬇</button>
+  <button onclick="edDeleteSelected()" style="background:#3a1a18;color:#f08080;border:1px solid rgba(191,70,55,.25);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">🗑 Eliminar</button>
+  <div class="edsep"></div>
+
+  <!-- GUARDAR -->
+  <button onclick="edSave()" style="background:#b89558;color:white;border:none;padding:8px 18px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">💾 Guardar</button>
+  <button onclick="edClose()" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.6);border:none;padding:7px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif">✕</button>
+
+  <span id="edMsg" style="font-size:11px;color:#3d9e9b;margin-left:auto;white-space:nowrap;overflow:hidden;max-width:300px;text-overflow:ellipsis"></span>
+</div>
+
+<style>
+.edsep{width:1px;height:22px;background:rgba(255,255,255,.12);flex-shrink:0}
+.edbtn-add{background:#2a2420;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.12);padding:5px 9px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.edbtn-add:hover{background:#3a3028;color:white}
+.edctx-btn{display:block;width:100%;background:none;border:none;color:rgba(255,255,255,.8);padding:7px 12px;text-align:left;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;border-radius:6px}
+.edctx-btn:hover{background:rgba(255,255,255,.08)}
+.ed-selected-ring{outline:2px solid #3d9e9b !important;outline-offset:2px}
+</style>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// EDITOR — Sistema completo con undo/redo, selección, etc.
+// ═══════════════════════════════════════════════════════
+var _edOn = false, _edSelMode = false, _edSel = null, _edSelBtn = null;
+var _edHistory = [], _edFuture = [], _edMaxHistory = 30;
+
+// ── Historial ──
+function edSnapshot() {
+  var html = document.getElementById('page-public').innerHTML;
+  if (_edHistory.length && _edHistory[_edHistory.length-1] === html) return;
+  _edHistory.push(html);
+  if (_edHistory.length > _edMaxHistory) _edHistory.shift();
+  _edFuture = [];
+  edUpdateHistoryBtns();
+}
+function edUndo() {
+  if (_edHistory.length < 2) { edMsg('⚠️ Nada que deshacer'); return; }
+  _edFuture.push(_edHistory.pop());
+  document.getElementById('page-public').innerHTML = _edHistory[_edHistory.length-1];
+  edMsg('↩ Deshecho'); edUpdateHistoryBtns();
+}
+function edRedo() {
+  if (!_edFuture.length) { edMsg('⚠️ Nada que rehacer'); return; }
+  var html = _edFuture.pop();
+  _edHistory.push(html);
+  document.getElementById('page-public').innerHTML = html;
+  edMsg('↪ Rehecho'); edUpdateHistoryBtns();
+}
+function edUpdateHistoryBtns() {
+  var u = document.getElementById('edUndoBtn'), r = document.getElementById('edRedoBtn');
+  if (u) u.style.opacity = _edHistory.length > 1 ? '1' : '0.3';
+  if (r) r.style.opacity = _edFuture.length ? '1' : '0.3';
+}
+// Atajos teclado Ctrl+Z / Ctrl+Y
+document.addEventListener('keydown', function(e) {
+  if (!document.getElementById('edPanel') || document.getElementById('edPanel').style.display !== 'flex') return;
+  if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) { e.preventDefault(); edUndo(); }
+  if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) { e.preventDefault(); edRedo(); }
+  if (e.key === 'Escape') { edCtxClose(); edClearSelection(); }
+  if ((e.key === 'Delete' || e.key === 'Backspace') && _edSel && !_edOn) { e.preventDefault(); edDeleteSelected(); }
+});
+
+function edMsg(txt) { var m = document.getElementById('edMsg'); if (m) m.textContent = txt; }
+
+// ── Abrir / Cerrar ──
 function editorOpen() {
   var p = document.getElementById('edPanel');
-  p.style.display = (p.style.display === 'flex') ? 'none' : 'flex';
+  var isOpen = p.style.display === 'flex';
+  p.style.display = isOpen ? 'none' : 'flex';
+  if (!isOpen && _edHistory.length === 0) edSnapshot();
 }
-
 function edClose() {
   document.getElementById('edPanel').style.display = 'none';
   if (_edOn) edToggleText();
-  _edSel = null;
-  _edSelBtn = null;
+  edClearSelection();
+  edCtxClose();
 }
 
+// ── Selección visual ──
+function edClearSelection() {
+  if (_edSel) { _edSel.classList.remove('ed-selected-ring'); _edSel = null; }
+  _edSelBtn = null;
+}
+function edSelectEl(el) {
+  edClearSelection();
+  _edSel = el;
+  el.classList.add('ed-selected-ring');
+  var label = (el.id ? '#'+el.id : el.tagName.toLowerCase());
+  var inner = el.textContent.trim().substring(0, 30);
+  edMsg('✅ Seleccionado: ' + label + (inner ? ' — "'+inner+'"' : ''));
+}
+
+// ── Modo selección (clic para seleccionar elemento) ──
+function edToggleMode() {
+  _edSelMode = !_edSelMode;
+  var b = document.getElementById('edModeBtn');
+  b.style.background = _edSelMode ? '#b89558' : '#2b7d7a';
+  b.textContent = _edSelMode ? '🎯 Modo activo' : '🖱 Seleccionar';
+  edMsg(_edSelMode ? '🎯 Haz clic en cualquier elemento para seleccionarlo' : '');
+  if (!_edSelMode) edClearSelection();
+}
+
+// ── Modo edición de textos ──
 function edToggleText() {
   _edOn = !_edOn;
   var b = document.getElementById('edTxtBtn');
-
   if (_edOn) {
-    // Activar TODOS los nodos de texto hoja en la página pública
+    edSnapshot();
     document.querySelectorAll('#page-public *').forEach(function(el) {
-      // Saltar: el editor, nav, scripts, botones con onclick de funcionalidad, elementos con hijos
       if (el.closest('#edPanel') || el.closest('nav') || el.closest('.sidebar')) return;
-      if (el.closest('script') || el.closest('style')) return;
-      if (['SCRIPT','STYLE','INPUT','SELECT','TEXTAREA','IFRAME'].indexOf(el.tagName) > -1) return;
-      // Solo elementos hoja (sin hijos de bloque) con texto visible
+      if (['SCRIPT','STYLE','INPUT','SELECT','TEXTAREA','IFRAME','BUTTON'].indexOf(el.tagName) > -1) return;
       var hasBlockChild = false;
       el.childNodes.forEach(function(n) {
-        if (n.nodeType === 1 && ['DIV','P','H1','H2','H3','H4','SECTION','ARTICLE'].indexOf(n.tagName) > -1) hasBlockChild = true;
+        if (n.nodeType === 1 && ['DIV','P','H1','H2','H3','H4','SECTION'].indexOf(n.tagName) > -1) hasBlockChild = true;
       });
-      if (!hasBlockChild && el.textContent.trim().length > 0 && el.textContent.trim().length < 500) {
+      if (!hasBlockChild && el.textContent.trim().length > 0 && el.textContent.trim().length < 600) {
         el.contentEditable = 'true';
         el.style.outline = '1px dashed rgba(43,125,122,.5)';
-        el.style.minHeight = '1em';
         el.style.cursor = 'text';
       }
     });
-    b.textContent = '🔒 Fin edición';
-    b.style.background = '#bf4637';
-    document.getElementById('edMsg').textContent = '✏️ Todos los textos activados — incluye tarjetas';
+    b.textContent = '🔒 Fin edición'; b.style.background = '#bf4637';
+    edMsg('✏️ Todos los textos editables — incluye tarjetas');
   } else {
-    // Desactivar todo
     document.querySelectorAll('[contenteditable]').forEach(function(el) {
       el.removeAttribute('contenteditable');
-      el.style.outline = '';
-      el.style.minHeight = '';
-      el.style.cursor = '';
+      el.style.outline = ''; el.style.cursor = '';
     });
-    b.textContent = '✏️ Editar textos';
-    b.style.background = '#2b7d7a';
-    document.getElementById('edMsg').textContent = '';
+    b.textContent = '✏️ Editar textos'; b.style.background = '#2b7d7a';
+    edMsg('');
+    edSnapshot();
   }
 }
 
-function edApplyPadding(v) {
-  if (!v) return;
-  if (_edSel) {
-    _edSel.style.padding = v;
-    document.getElementById('edMsg').textContent = '📐 Espaciado ' + v + ' aplicado';
-  } else {
-    document.getElementById('edMsg').textContent = '⚠️ Primero haz clic en una sección o tarjeta';
-  }
-  document.getElementById('edPadding').value = '';
-}
-
-function edApplyMaxWidth(v) {
-  if (!v) return;
-  if (_edSel) {
-    _edSel.style.maxWidth = v;
-    _edSel.style.margin = v !== '100%' ? '0 auto' : '';
-    document.getElementById('edMsg').textContent = '↔️ Ancho máximo ' + v + ' aplicado';
-  } else {
-    document.getElementById('edMsg').textContent = '⚠️ Primero haz clic en una sección o contenedor';
-  }
-  document.getElementById('edMaxWidth').value = '';
-}
-
+// ── Color texto ──
 function edApplyFontColor(v) {
   var sel = window.getSelection();
   if (_edOn && sel && sel.rangeCount > 0 && sel.toString().length > 0) {
-    // Texto seleccionado en modo edición — envolver en span con color
     try {
       var range = sel.getRangeAt(0);
-      // Eliminar spans de color previos dentro de la selección
       var frag = range.extractContents();
-      var spans = frag.querySelectorAll('span[data-ed-color]');
-      spans.forEach(function(s) {
-        while (s.firstChild) s.parentNode.insertBefore(s.firstChild, s);
-        s.parentNode.removeChild(s);
-      });
-      // Crear nuevo span con color
       var span = document.createElement('span');
-      span.setAttribute('data-ed-color', '1');
-      span.style.color = v;
-      span.appendChild(frag);
-      range.insertNode(span);
-      // Limpiar selección
-      sel.removeAllRanges();
-      document.getElementById('edMsg').textContent = '🎨 Color "' + v + '" aplicado al texto seleccionado';
-    } catch(e) {
-      document.getElementById('edMsg').textContent = '⚠️ Error aplicando color: ' + e.message;
-    }
+      span.style.color = v; span.appendChild(frag);
+      range.insertNode(span); sel.removeAllRanges();
+      edMsg('🎨 Color aplicado al texto seleccionado'); edSnapshot();
+    } catch(e) { edMsg('⚠️ '+e.message); }
   } else if (_edSel) {
-    _edSel.style.color = v;
-    document.getElementById('edMsg').textContent = '🎨 Color "' + v + '" aplicado a la sección';
-  } else {
-    document.getElementById('edMsg').textContent = '⚠️ Activa "Editar textos", selecciona texto y elige color';
-  }
+    _edSel.style.color = v; edMsg('🎨 Color aplicado'); edSnapshot();
+  } else { edMsg('⚠️ Activa edición y selecciona texto'); }
 }
 
+// ── Tipografía ──
 function edApplyFont(v) {
   if (!v) return;
-  if (_edSel) {
-    _edSel.style.fontFamily = v;
-    document.getElementById('edMsg').textContent = '🔤 Tipografía aplicada a sección';
-  } else {
-    document.getElementById('edMsg').textContent = '⚠️ Primero haz clic en una sección';
-  }
+  if (_edSel) { _edSel.style.fontFamily = v; edMsg('🔤 Tipografía aplicada'); edSnapshot(); }
+  else edMsg('⚠️ Selecciona un elemento primero');
   document.getElementById('edFont').value = '';
 }
 
+// ── Tamaño ──
 function edApplyFontSize(v) {
   if (!v) return;
   var sel = window.getSelection();
@@ -1953,220 +1957,263 @@ function edApplyFontSize(v) {
       var range = sel.getRangeAt(0);
       var frag = range.extractContents();
       var span = document.createElement('span');
-      span.setAttribute('data-ed-size', '1');
-      span.style.fontSize = v;
-      span.appendChild(frag);
-      range.insertNode(span);
-      sel.removeAllRanges();
-      document.getElementById('edMsg').textContent = '📐 Tamaño ' + v + ' aplicado al texto seleccionado';
-    } catch(e) {
-      document.getElementById('edMsg').textContent = '⚠️ Error: ' + e.message;
-    }
+      span.style.fontSize = v; span.appendChild(frag);
+      range.insertNode(span); sel.removeAllRanges();
+      edMsg('📐 Tamaño '+v+' aplicado'); edSnapshot();
+    } catch(e) { edMsg('⚠️ '+e.message); }
   } else if (_edSel) {
-    _edSel.style.fontSize = v;
-    document.getElementById('edMsg').textContent = '📐 Tamaño ' + v + ' aplicado a la sección';
-  } else {
-    document.getElementById('edMsg').textContent = '⚠️ Activa "Editar textos", selecciona texto y elige tamaño';
-  }
+    _edSel.style.fontSize = v; edMsg('📐 Tamaño aplicado'); edSnapshot();
+  } else edMsg('⚠️ Selecciona o activa edición primero');
   document.getElementById('edFontSize').value = '';
 }
 
+// ── Fondo, botón, espaciado, ancho ──
 function edApplyBg(v) {
-  if (_edSel) {
-    _edSel.style.background = v;
-    document.getElementById('edMsg').textContent = '🎨 Fondo aplicado: ' + v;
-  } else {
-    document.getElementById('edMsg').textContent = '⚠️ Primero haz clic en una sección';
-  }
+  if (_edSel) { _edSel.style.background = v; edMsg('🎨 Fondo: '+v); edSnapshot(); }
+  else edMsg('⚠️ Selecciona un elemento');
 }
-
 function edApplyBtn(v) {
-  if (_edSelBtn) {
-    _edSelBtn.style.background = v;
-    var r = parseInt(v.slice(1,3), 16);
-    var g = parseInt(v.slice(3,5), 16);
-    var b = parseInt(v.slice(5,7), 16);
-    _edSelBtn.style.color = (r*299 + g*587 + b*114) / 1000 > 128 ? '#1c1814' : 'white';
-    document.getElementById('edMsg').textContent = '🔘 Color de botón aplicado: ' + v;
-  } else {
-    document.getElementById('edMsg').textContent = '⚠️ Primero haz clic en un botón';
+  var t = _edSelBtn || _edSel;
+  if (t) {
+    var btn = t.tagName === 'BUTTON' ? t : t.querySelector('button');
+    if (btn) {
+      btn.style.background = v;
+      var r=parseInt(v.slice(1,3),16), g=parseInt(v.slice(3,5),16), b=parseInt(v.slice(5,7),16);
+      btn.style.color = (r*299+g*587+b*114)/1000 > 128 ? '#1c1814' : 'white';
+      edMsg('🔘 Color botón: '+v); edSnapshot();
+    } else edMsg('⚠️ No hay botón en este elemento');
+  } else edMsg('⚠️ Selecciona un elemento con botón');
+}
+function edApplyPadding(v) {
+  if (!v) return;
+  if (_edSel) { _edSel.style.padding = v; edMsg('📐 Espaciado: '+v); edSnapshot(); }
+  else edMsg('⚠️ Selecciona un elemento');
+  document.getElementById('edPadding').value = '';
+}
+function edApplyMaxWidth(v) {
+  if (!v) return;
+  if (_edSel) { _edSel.style.maxWidth = v; _edSel.style.margin = '0 auto'; edMsg('↔️ Ancho: '+v); edSnapshot(); }
+  else edMsg('⚠️ Selecciona un elemento');
+  document.getElementById('edMaxWidth').value = '';
+}
+
+// ── Añadir enlace ──
+function edAddLink() {
+  var url = prompt('URL del enlace (ej: https://frecuenciaintegral.com):');
+  if (!url) return;
+  var sel = window.getSelection();
+  if (_edOn && sel && sel.rangeCount > 0 && sel.toString().length > 0) {
+    try {
+      var range = sel.getRangeAt(0);
+      var a = document.createElement('a');
+      a.href = url; a.target = '_blank'; a.style.color = 'inherit'; a.style.textDecoration = 'underline';
+      a.appendChild(range.extractContents());
+      range.insertNode(a); sel.removeAllRanges();
+      edMsg('🔗 Enlace añadido'); edSnapshot();
+    } catch(e) { edMsg('⚠️ Selecciona texto primero'); }
+  } else if (_edSel) {
+    _edSel.style.cursor = 'pointer';
+    _edSel.onclick = function() { window.open(url, '_blank'); };
+    _edSel.setAttribute('data-link', url);
+    edMsg('🔗 Enlace añadido al elemento'); edSnapshot();
+  } else edMsg('⚠️ Selecciona texto o un elemento');
+}
+
+// ── Cambiar imagen ──
+function edChangeImage() {
+  var url = prompt('URL de la imagen:');
+  if (!url) return;
+  var target = _edSel || document.body;
+  var img = target.tagName === 'IMG' ? target : target.querySelector('img');
+  if (img) {
+    img.src = url; edMsg('🖼️ Imagen cambiada'); edSnapshot();
+  } else if (_edSel) {
+    var ni = document.createElement('img');
+    ni.src = url; ni.style.cssText = 'width:100%;border-radius:12px;margin-top:12px;object-fit:cover;max-height:400px';
+    _edSel.appendChild(ni); edMsg('🖼️ Imagen añadida'); edSnapshot();
+  } else edMsg('⚠️ Selecciona un elemento primero');
+}
+
+// ── Duplicar ──
+function edDuplicate() {
+  if (!_edSel) { edMsg('⚠️ Selecciona un elemento'); return; }
+  edSnapshot();
+  var clone = _edSel.cloneNode(true);
+  clone.classList.remove('ed-selected-ring');
+  _edSel.parentNode.insertBefore(clone, _edSel.nextSibling);
+  edSelectEl(clone);
+  edMsg('📋 Elemento duplicado'); edSnapshot();
+}
+
+// ── Mover ──
+function edMoveUp() {
+  if (!_edSel) { edMsg('⚠️ Selecciona un elemento'); return; }
+  var prev = _edSel.previousElementSibling;
+  if (prev) { edSnapshot(); _edSel.parentNode.insertBefore(_edSel, prev); edMsg('⬆️ Movido arriba'); }
+  else edMsg('⚠️ Ya está al principio');
+}
+function edMoveDown() {
+  if (!_edSel) { edMsg('⚠️ Selecciona un elemento'); return; }
+  var next = _edSel.nextElementSibling;
+  if (next) { edSnapshot(); _edSel.parentNode.insertBefore(next, _edSel); edMsg('⬇️ Movido abajo'); }
+  else edMsg('⚠️ Ya está al final');
+}
+
+// ── Eliminar ──
+function edDeleteSelected() {
+  if (!_edSel) { edMsg('⚠️ Selecciona un elemento'); return; }
+  if (!confirm('¿Eliminar este elemento? (puedes deshacer con ↩)')) return;
+  edSnapshot();
+  _edSel.remove(); _edSel = null;
+  edMsg('🗑️ Eliminado — usa ↩ para deshacer'); edSnapshot();
+}
+
+// ── Menú contextual (clic derecho) ──
+function edCtxClose() { document.getElementById('edCtxMenu').style.display = 'none'; }
+function edCtxAction(a) {
+  edCtxClose();
+  if (a === 'editar') edToggleText();
+  else if (a === 'link') edAddLink();
+  else if (a === 'imagen') edChangeImage();
+  else if (a === 'duplicar') edDuplicate();
+  else if (a === 'subir') edMoveUp();
+  else if (a === 'bajar') edMoveDown();
+  else if (a === 'eliminar') edDeleteSelected();
+}
+document.addEventListener('contextmenu', function(e) {
+  if (document.getElementById('edPanel').style.display !== 'flex') return;
+  if (e.target.closest('#edPanel') || e.target.closest('#edCtxMenu')) return;
+  e.preventDefault();
+  var el = e.target.closest('div, section, article, p, h1, h2, h3, img, button');
+  if (el && !el.closest('nav')) {
+    edSelectEl(el);
+    var ctx = document.getElementById('edCtxMenu');
+    document.getElementById('edCtxTitle').textContent = el.tagName.toLowerCase() + (el.id ? '#'+el.id : '');
+    ctx.style.display = 'block';
+    ctx.style.left = Math.min(e.clientX, window.innerWidth - 200) + 'px';
+    ctx.style.top = Math.min(e.clientY, window.innerHeight - 280) + 'px';
   }
-}
-
-function edSave() {
-  // Desactivar edición antes de guardar
-  if (_edOn) edToggleText();
-  document.querySelectorAll('[contenteditable]').forEach(function(el) {
-    el.removeAttribute('contenteditable');
-    el.style.outline = '';
-    el.style.borderRadius = '';
-  });
-  document.getElementById('edPanel').style.display = 'none';
-
-  // Ocultar botones de UI antes de capturar HTML
-  var edBtn = document.getElementById('edPanel');
-  var edOpenBtn = document.querySelector('button[onclick="editorOpen()"]');
-  if (edOpenBtn) edOpenBtn.style.display = 'none';
-
-  setTimeout(function() {
-    var blob = new Blob(['<!DOCTYPE html>' + document.documentElement.outerHTML], { type: 'text/html' });
-    var a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'frecuencia-integral-editada.html';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-
-    // Restaurar botón editor
-    if (edOpenBtn) edOpenBtn.style.display = '';
-    toast('✅ HTML guardado — renómbralo index.html y súbelo a Netlify');
-  }, 200);
-}
-
-// Detectar clics en secciones, tarjetas y botones cuando el editor está abierto
+});
 document.addEventListener('click', function(e) {
+  if (e.target.closest('#edCtxMenu')) return;
+  edCtxClose();
+
   var panel = document.getElementById('edPanel');
   if (!panel || panel.style.display !== 'flex') return;
+  if (e.target.closest('#edPanel')) return;
 
-  // En modo edición de texto: solo capturar clics en tarjetas para hacerlas editables
-  if (_edOn) {
-    var cardEl = e.target.closest('[style*="border-radius"][style*="padding"], .puerta-card, .concept-card');
-    if (cardEl && !cardEl.closest('#edPanel')) {
-      // Hacer editables todos los textos dentro de la tarjeta
-      cardEl.querySelectorAll('div, p, span, h1, h2, h3, h4').forEach(function(el) {
-        if (!el.closest('button') && el.children.length === 0 && el.textContent.trim()) {
-          el.contentEditable = 'true';
-          el.style.outline = '1px dashed rgba(43,125,122,.6)';
-          el.style.minHeight = '1em';
-        }
-      });
-      document.getElementById('edMsg').textContent = '✏️ Tarjeta activada — haz clic en cualquier texto';
+  if (_edOn) return; // en modo texto no interferir
+
+  if (_edSelMode) {
+    var el = e.target.closest('div[style], section, article, p, h1, h2, h3, h4, img, button, span[style]');
+    if (el && !el.closest('nav') && !el.closest('#edPanel')) {
+      e.stopPropagation();
+      edSelectEl(el);
     }
     return;
   }
 
-  // Detectar botón clicado (excluir los del propio editor)
+  // Modo normal: detectar botón o sección
   var btn = e.target.closest('button');
-  if (btn && !btn.closest('#edPanel') && btn.id !== 'edTxtBtn') {
-    _edSelBtn = btn;
-    _edSel = btn;
-    document.getElementById('edMsg').textContent = '🔘 Botón: "' + btn.textContent.trim().substring(0, 30) + '"';
-    return;
+  if (btn && !btn.closest('#edPanel')) {
+    _edSelBtn = btn; edSelectEl(btn); return;
   }
-
-  // Detectar tarjeta concreta (divs con padding y border-radius = tarjetas)
-  var card = e.target.closest('[style*="border-radius"][style*="padding"]:not(#edPanel):not(nav)');
-  if (card && !card.closest('#edPanel') && !card.closest('nav') && card !== document.body) {
-    _edSel = card;
-    _edSelBtn = null;
-    var label = card.querySelector('[style*="font-family"], div, h2') ;
-    var name = label ? label.textContent.trim().substring(0,25) : card.tagName;
-    document.getElementById('edMsg').textContent = '🃏 Tarjeta/bloque: "' + name + '" — ajusta espaciado, fondo, texto';
-    return;
-  }
-
-  // Detectar sección grande
-  var sec = e.target.closest('#pilares, #puertas, #viaje, #joyas, .hero, section, [id]');
-  if (sec && !sec.closest('#edPanel') && !sec.closest('nav') && sec.tagName !== 'BUTTON') {
-    _edSel = sec;
-    _edSelBtn = null;
-    document.getElementById('edMsg').textContent = '🎨 Sección: <' + sec.tagName.toLowerCase() + (sec.id ? '#'+sec.id : '') + '>';
+  var sec = e.target.closest('[id], [style*="border-radius"], section');
+  if (sec && !sec.closest('#edPanel') && !sec.closest('nav') && sec !== document.documentElement && sec !== document.body) {
+    edSelectEl(sec);
   }
 });
 
-// ── INSERTAR BLOQUES ──
+// ── Insertar bloques ──
 function edInsert(tipo) {
-  var target = document.getElementById('pilares') || document.getElementById('puertas') || document.querySelector('#page-public > div');
+  edSnapshot();
   var el;
+  var S = "font-family:'DM Sans',sans-serif";
+  var CG = "font-family:'Cormorant Garamond',serif";
 
   if (tipo === 'texto') {
     el = document.createElement('div');
-    el.setAttribute('data-ed-block', 'texto');
     el.style.cssText = 'padding:60px 40px;max-width:800px;margin:0 auto;text-align:center';
-    el.innerHTML = '<h2 style="font-family:\'Cormorant Garamond\',serif;font-size:36px;font-weight:300;color:#1c1814;margin-bottom:16px" contenteditable="true">Título del nuevo bloque</h2><p style="font-size:15px;color:#7a7168;line-height:1.75;max-width:600px;margin:0 auto" contenteditable="true">Escribe aquí el contenido de este bloque. Haz clic en cualquier texto para editarlo.</p>';
+    el.innerHTML = '<h2 style="'+CG+';font-size:36px;font-weight:300;color:#1c1814;margin-bottom:16px">Nuevo título</h2><p style="font-size:15px;color:#7a7168;line-height:1.75;max-width:600px;margin:0 auto">Escribe aquí el contenido del bloque.</p>';
   }
   else if (tipo === 'tarjeta') {
-    // Insertar una tarjeta nueva dentro de la sección seleccionada o de pilares
-    var grid = _edSel ? _edSel.querySelector('[style*="grid"]') : document.querySelector('#pilares [style*="grid"]');
-    if (!grid) { toast('Haz clic en una sección con tarjetas primero'); return; }
+    var grid = (_edSel && _edSel.querySelector('[style*="grid"]')) || document.querySelector('#pilares [style*="grid"]');
+    if (!grid) { edMsg('⚠️ Selecciona primero una sección con tarjetas'); return; }
     el = document.createElement('div');
-    el.setAttribute('data-ed-block', 'tarjeta');
     el.style.cssText = 'background:white;border-radius:20px;padding:32px;border:1px solid #d9d2c8';
-    el.innerHTML = '<div style="font-size:32px;margin-bottom:16px" contenteditable="true">✨</div><div style="font-family:\'Cormorant Garamond\',serif;font-size:24px;color:#1c1814;margin-bottom:10px" contenteditable="true">Nueva Tarjeta</div><div style="font-size:13px;color:#5a5248;line-height:1.75" contenteditable="true">Escribe aquí el contenido de esta tarjeta. Haz clic para editar.</div>';
-    grid.appendChild(el);
-    toast('✅ Tarjeta añadida — haz clic en los textos para editar');
-    return;
+    el.innerHTML = '<div style="font-size:32px;margin-bottom:16px">✨</div><div style="'+CG+';font-size:24px;color:#1c1814;margin-bottom:10px">Nueva Tarjeta</div><div style="font-size:13px;color:#5a5248;line-height:1.75">Descripción de la tarjeta.</div>';
+    grid.appendChild(el); edSelectEl(el);
+    edMsg('✅ Tarjeta añadida'); edSnapshot(); return;
   }
   else if (tipo === 'banner-ancho') {
     el = document.createElement('div');
-    el.setAttribute('data-ed-block', 'banner-ancho');
-    el.style.cssText = 'width:100%;padding:80px 40px;background:linear-gradient(135deg,#2b7d7a,#1c5a58);text-align:center;position:relative;overflow:hidden';
-    el.innerHTML = '<h2 style="font-family:\'Cormorant Garamond\',serif;font-size:clamp(32px,5vw,56px);font-weight:300;color:white;margin-bottom:16px" contenteditable="true">Banner Principal</h2><p style="font-size:16px;color:rgba(255,255,255,.8);max-width:600px;margin:0 auto 32px;line-height:1.7" contenteditable="true">Texto del banner. Edítalo haciendo clic aquí.</p><button style="background:white;color:#2b7d7a;border:none;padding:14px 32px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:\'DM Sans\',sans-serif" contenteditable="true">Llamada a la Acción</button>';
+    el.style.cssText = 'width:100%;padding:80px 40px;background:linear-gradient(135deg,#2b7d7a,#1c5a58);text-align:center';
+    el.innerHTML = '<h2 style="'+CG+';font-size:clamp(32px,5vw,56px);font-weight:300;color:white;margin-bottom:16px">Banner Principal</h2><p style="font-size:16px;color:rgba(255,255,255,.8);max-width:600px;margin:0 auto 32px;line-height:1.7">Texto del banner.</p><button style="background:white;color:#2b7d7a;border:none;padding:14px 32px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;'+S+'">Llamada a la acción</button>';
   }
   else if (tipo === 'banner-pequeño') {
     el = document.createElement('div');
-    el.setAttribute('data-ed-block', 'banner-pequeño');
     el.style.cssText = 'max-width:900px;margin:40px auto;padding:40px 48px;background:#f0ece4;border-radius:20px;border:1px solid #d9d2c8;display:flex;align-items:center;gap:32px;flex-wrap:wrap';
-    el.innerHTML = '<div style="flex:1;min-width:200px"><div style="font-size:11px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px" contenteditable="true">Etiqueta</div><h3 style="font-family:\'Cormorant Garamond\',serif;font-size:28px;font-weight:300;color:#1c1814;margin-bottom:8px" contenteditable="true">Título del Banner</h3><p style="font-size:14px;color:#7a7168;line-height:1.7" contenteditable="true">Descripción breve del contenido del banner.</p></div><button style="background:#2b7d7a;color:white;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:\'DM Sans\',sans-serif;flex-shrink:0" contenteditable="true">Acción →</button>';
+    el.innerHTML = '<div style="flex:1;min-width:200px"><div style="font-size:11px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">Etiqueta</div><h3 style="'+CG+';font-size:28px;font-weight:300;color:#1c1814;margin-bottom:8px">Título del bloque</h3><p style="font-size:14px;color:#7a7168;line-height:1.7">Descripción del contenido.</p></div><button style="background:#2b7d7a;color:white;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;'+S+';flex-shrink:0">Acción →</button>';
   }
   else if (tipo === 'imagen-banner') {
-    var url = prompt('URL de la imagen (o deja vacío para placeholder):') || 'https://via.placeholder.com/1400x400/f0ece4/7a7168?text=Imagen+Banner';
+    var url = prompt('URL de la imagen:') || 'https://via.placeholder.com/1400x500/f0ece4/7a7168?text=Banner';
     el = document.createElement('div');
-    el.setAttribute('data-ed-block', 'imagen-banner');
-    el.style.cssText = 'width:100%;height:400px;overflow:hidden;position:relative';
-    el.innerHTML = '<img src="' + url + '" style="width:100%;height:100%;object-fit:cover" data-ed-img="1"><div style="position:absolute;inset:0;background:rgba(28,24,20,.35);display:flex;align-items:center;justify-content:center;text-align:center;padding:40px"><div><h2 style="font-family:\'Cormorant Garamond\',serif;font-size:clamp(32px,5vw,60px);font-weight:300;color:white;margin-bottom:16px" contenteditable="true">Título sobre imagen</h2><p style="font-size:16px;color:rgba(255,255,255,.85);max-width:500px;margin:0 auto" contenteditable="true">Subtítulo o descripción</p></div></div>';
+    el.style.cssText = 'width:100%;height:450px;overflow:hidden;position:relative';
+    el.innerHTML = '<img src="'+url+'" style="width:100%;height:100%;object-fit:cover"><div style="position:absolute;inset:0;background:rgba(28,24,20,.4);display:flex;align-items:center;justify-content:center;text-align:center;padding:40px"><div><h2 style="'+CG+';font-size:clamp(32px,5vw,60px);font-weight:300;color:white;margin-bottom:16px">Título</h2><p style="font-size:16px;color:rgba(255,255,255,.85);max-width:500px;margin:0 auto">Subtítulo o descripción</p></div></div>';
   }
   else if (tipo === 'imagen-pequeña') {
-    var url2 = prompt('URL de la imagen (o deja vacío para placeholder):') || 'https://via.placeholder.com/600x400/f0ece4/7a7168?text=Imagen';
+    var url2 = prompt('URL de la imagen:') || 'https://via.placeholder.com/600x400/f0ece4/7a7168?text=Imagen';
     el = document.createElement('div');
-    el.setAttribute('data-ed-block', 'imagen-pequeña');
-    el.style.cssText = 'max-width:900px;margin:40px auto;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;padding:0 32px;flex-wrap:wrap';
-    el.innerHTML = '<img src="' + url2 + '" style="width:100%;border-radius:16px;object-fit:cover;height:300px" data-ed-img="1"><div><h3 style="font-family:\'Cormorant Garamond\',serif;font-size:28px;font-weight:300;color:#1c1814;margin-bottom:12px" contenteditable="true">Título junto a imagen</h3><p style="font-size:14px;color:#7a7168;line-height:1.75" contenteditable="true">Descripción del contenido junto a la imagen. Haz clic para editar este texto.</p></div>';
+    el.style.cssText = 'max-width:1000px;margin:40px auto;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;padding:0 32px';
+    el.innerHTML = '<img src="'+url2+'" style="width:100%;border-radius:16px;object-fit:cover;height:320px"><div><h3 style="'+CG+';font-size:28px;font-weight:300;color:#1c1814;margin-bottom:12px">Título</h3><p style="font-size:14px;color:#7a7168;line-height:1.75">Descripción junto a la imagen.</p></div>';
+  }
+  else if (tipo === 'boton') {
+    el = document.createElement('div');
+    el.style.cssText = 'text-align:center;padding:24px';
+    var href = prompt('URL del enlace (o déjalo vacío):') || '#';
+    el.innerHTML = '<a href="'+href+'" target="_blank" style="display:inline-block;background:#2b7d7a;color:white;border:none;padding:14px 32px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;'+S+';text-decoration:none">Nuevo Botón</a>';
+  }
+  else if (tipo === 'separador') {
+    el = document.createElement('div');
+    el.style.cssText = 'max-width:600px;margin:40px auto;display:flex;align-items:center;gap:20px;padding:0 32px';
+    el.innerHTML = '<div style="flex:1;height:1px;background:#e4ddd3"></div><span style="font-size:12px;color:#b8ad9e;font-weight:600;letter-spacing:.1em;text-transform:uppercase">•</span><div style="flex:1;height:1px;background:#e4ddd3"></div>';
   }
 
   if (el) {
-    // Insertar antes del footer/precios o al final de la página pública
-    var anchor = document.getElementById('joyas') || document.getElementById('pilares');
+    var anchor = _edSel ? _edSel : (document.getElementById('joyas') || document.getElementById('pilares'));
     var page = document.getElementById('page-public');
-    if (anchor && anchor.parentNode) {
+    if (anchor && anchor.parentNode && anchor.parentNode !== page) {
       anchor.parentNode.insertBefore(el, anchor.nextSibling);
-    } else if (page) {
-      page.appendChild(el);
-    }
-    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    toast('✅ Bloque añadido — haz clic en los textos para editarlos');
+    } else if (anchor && anchor.parentNode) {
+      anchor.parentNode.insertBefore(el, anchor.nextSibling);
+    } else { page.appendChild(el); }
+    el.scrollIntoView({ behavior:'smooth', block:'center' });
+    edSelectEl(el);
+    edMsg('✅ Bloque añadido — activa "Editar textos" para modificarlo');
+    edSnapshot();
   }
 }
 
-function edChangeImage() {
-  var url = prompt('Introduce la URL de la nueva imagen:');
-  if (!url) return;
-  if (_edSel) {
-    var img = _edSel.querySelector('img[data-ed-img]') || _edSel.querySelector('img');
-    if (img) {
-      img.src = url;
-      document.getElementById('edMsg').textContent = '🖼️ Imagen actualizada';
-    } else {
-      // Crear imagen nueva en la sección seleccionada
-      var newImg = document.createElement('img');
-      newImg.src = url;
-      newImg.setAttribute('data-ed-img', '1');
-      newImg.style.cssText = 'width:100%;border-radius:12px;margin-top:16px;object-fit:cover';
-      _edSel.appendChild(newImg);
-      document.getElementById('edMsg').textContent = '🖼️ Imagen añadida a la sección';
-    }
-  } else {
-    document.getElementById('edMsg').textContent = '⚠️ Primero haz clic en una tarjeta o sección';
-  }
-}
-
-function edDeleteSelected() {
-  if (_edSel && confirm('¿Eliminar este bloque/sección?')) {
-    _edSel.remove();
-    _edSel = null;
-    document.getElementById('edMsg').textContent = '🗑️ Bloque eliminado';
-  } else if (!_edSel) {
-    document.getElementById('edMsg').textContent = '⚠️ Primero haz clic en un bloque';
-  }
+// ── Guardar ──
+function edSave() {
+  if (_edOn) edToggleText();
+  edClearSelection();
+  edCtxClose();
+  document.querySelectorAll('[contenteditable]').forEach(function(el) {
+    el.removeAttribute('contenteditable'); el.style.outline = ''; el.style.cursor = '';
+  });
+  var openBtn = document.getElementById('edOpenBtn');
+  var panel = document.getElementById('edPanel');
+  if (openBtn) openBtn.style.display = 'none';
+  panel.style.display = 'none';
+  setTimeout(function() {
+    var blob = new Blob(['<!DOCTYPE html>' + document.documentElement.outerHTML], {type:'text/html'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'frecuencia-integral-editada.html';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    if (openBtn) openBtn.style.display = '';
+    toast('✅ Guardado — renombra a index.html y sube a Vercel');
+  }, 200);
 }
 </script></body></html>
