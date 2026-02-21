@@ -1631,8 +1631,315 @@ document.getElementById('week-modal').addEventListener('click', function(e){
   <iframe class="pdf-modal-frame" id="pdf-fullscreen-frame" src=""></iframe>
 </div>
 
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- GESTOR DE HEADER, CATEGORÍAS Y PÁGINAS OCULTAS           -->
+<!-- ══════════════════════════════════════════════════════════ -->
+
+<!-- PANEL PRINCIPAL DEL GESTOR -->
+<div id="hcpPanel" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:10010;background:rgba(0,0,0,.7);backdrop-filter:blur(4px)">
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(94vw,860px);max-height:90vh;background:#161210;border-radius:16px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.8);font-family:'DM Sans',sans-serif">
+
+    <!-- Header del panel -->
+    <div style="background:#1c1814;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.1);flex-shrink:0">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="font-size:18px">🗂️</span>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:white">Gestor de Navegación y Páginas</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:1px">Header · Categorías · Páginas ocultas</div>
+        </div>
+      </div>
+      <button onclick="hcpClose()" style="background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.5);width:32px;height:32px;border-radius:8px;font-size:16px;cursor:pointer">✕</button>
+    </div>
+
+    <!-- Tabs -->
+    <div style="display:flex;border-bottom:1px solid rgba(255,255,255,.08);flex-shrink:0;background:#1a1510">
+      <button onclick="hcpTab('header')" class="hcp-tab active" id="hcpTabHeader">🔗 Header</button>
+      <button onclick="hcpTab('cats')" class="hcp-tab" id="hcpTabCats">📂 Categorías</button>
+      <button onclick="hcpTab('pages')" class="hcp-tab" id="hcpTabPages">📄 Páginas</button>
+    </div>
+
+    <!-- Content area -->
+    <div id="hcpContent" style="flex:1;overflow-y:auto;padding:20px 24px">
+
+      <!-- ═══ TAB: HEADER ═══ -->
+      <div id="hcpSecHeader">
+        <div style="color:rgba(255,255,255,.5);font-size:10px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px">Configura el logo, enlaces y botones del header</div>
+
+        <!-- Logo -->
+        <div class="hcp-card">
+          <div class="hcp-card-title">🏷️ Logo / Nombre del sitio</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+            <div>
+              <div class="hcp-label">Nombre principal</div>
+              <input id="hcpLogoName" class="hcp-inp" value="Frecuencia Integral" placeholder="Nombre del sitio">
+            </div>
+            <div>
+              <div class="hcp-label">Subtítulo (debajo)</div>
+              <input id="hcpLogoSub" class="hcp-inp" value="Academy" placeholder="Subtítulo">
+            </div>
+          </div>
+          <div style="margin-top:10px">
+            <div class="hcp-label">URL al hacer clic en el logo</div>
+            <input id="hcpLogoUrl" class="hcp-inp" value="#" placeholder="# o https://...">
+          </div>
+          <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+            <div style="flex:1;min-width:120px">
+              <div class="hcp-label">Color nombre</div>
+              <div style="display:flex;gap:5px;align-items:center">
+                <input type="color" id="hcpLogoColor" value="#1c1814" style="width:30px;height:30px;border:none;border-radius:5px;cursor:pointer">
+                <input id="hcpLogoColorTxt" class="hcp-inp" value="#1c1814" style="flex:1" oninput="document.getElementById('hcpLogoColor').value=this.value">
+              </div>
+            </div>
+            <div style="flex:1;min-width:120px">
+              <div class="hcp-label">Color subtítulo</div>
+              <div style="display:flex;gap:5px;align-items:center">
+                <input type="color" id="hcpLogoSubColor" value="#7a7168" style="width:30px;height:30px;border:none;border-radius:5px;cursor:pointer">
+                <input id="hcpLogoSubColorTxt" class="hcp-inp" value="#7a7168" style="flex:1" oninput="document.getElementById('hcpLogoSubColor').value=this.value">
+              </div>
+            </div>
+            <div style="flex:1;min-width:120px">
+              <div class="hcp-label">Tamaño fuente</div>
+              <select id="hcpLogoSize" class="hcp-inp">
+                <option value="16px">16px</option><option value="18px">18px</option>
+                <option value="20px" selected>20px</option><option value="22px">22px</option>
+                <option value="24px">24px</option><option value="28px">28px</option>
+              </select>
+            </div>
+            <div style="flex:1;min-width:120px">
+              <div class="hcp-label">Fuente</div>
+              <select id="hcpLogoFont" class="hcp-inp">
+                <option value="'Cormorant Garamond',serif" selected>Cormorant</option>
+                <option value="'DM Sans',sans-serif">DM Sans</option>
+                <option value="Georgia,serif">Georgia</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fondo del nav -->
+        <div class="hcp-card">
+          <div class="hcp-card-title">🎨 Fondo y borde del header</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+            <div>
+              <div class="hcp-label">Color fondo</div>
+              <div style="display:flex;gap:5px;align-items:center">
+                <input type="color" id="hcpNavBg" value="#f7f5f1" style="width:30px;height:30px;border:none;border-radius:5px;cursor:pointer">
+                <input id="hcpNavBgTxt" class="hcp-inp" value="rgba(247,245,241,.95)" style="flex:1">
+              </div>
+            </div>
+            <div>
+              <div class="hcp-label">Color borde inferior</div>
+              <div style="display:flex;gap:5px;align-items:center">
+                <input type="color" id="hcpNavBorder" value="#e4ddd3" style="width:30px;height:30px;border:none;border-radius:5px;cursor:pointer">
+                <input id="hcpNavBorderTxt" class="hcp-inp" value="#e4ddd3" style="flex:1">
+              </div>
+            </div>
+            <div>
+              <div class="hcp-label">Alto del header</div>
+              <select id="hcpNavHeight" class="hcp-inp">
+                <option value="56px">56px</option><option value="66px" selected>66px</option>
+                <option value="72px">72px</option><option value="80px">80px</option>
+              </select>
+            </div>
+          </div>
+          <!-- Paleta rápida fondo -->
+          <div style="margin-top:8px;display:flex;gap:5px;flex-wrap:wrap">
+            <div onclick="document.getElementById('hcpNavBgTxt').value=this.dataset.v;document.getElementById('hcpNavBg').value='#f7f5f1'" data-v="rgba(247,245,241,.95)" style="width:28px;height:22px;background:#f7f5f1;border-radius:4px;cursor:pointer;border:1px solid rgba(255,255,255,.2)" title="Crema"></div>
+            <div onclick="document.getElementById('hcpNavBgTxt').value=this.dataset.v" data-v="rgba(28,24,20,.96)" style="width:28px;height:22px;background:#1c1814;border-radius:4px;cursor:pointer;border:1px solid rgba(255,255,255,.2)" title="Negro"></div>
+            <div onclick="document.getElementById('hcpNavBgTxt').value=this.dataset.v" data-v="rgba(43,125,122,.96)" style="width:28px;height:22px;background:#2b7d7a;border-radius:4px;cursor:pointer;border:1px solid rgba(255,255,255,.2)" title="Verde"></div>
+            <div onclick="document.getElementById('hcpNavBgTxt').value=this.dataset.v" data-v="rgba(255,255,255,.97)" style="width:28px;height:22px;background:white;border-radius:4px;cursor:pointer;border:1px solid rgba(255,255,255,.2)" title="Blanco"></div>
+            <div onclick="document.getElementById('hcpNavBgTxt').value=this.dataset.v" data-v="transparent" style="width:28px;height:22px;background:linear-gradient(135deg,#ccc 25%,transparent 25%,transparent 75%,#ccc 75%),linear-gradient(135deg,#ccc 25%,white 25%,white 75%,#ccc 75%);background-size:6px 6px;border-radius:4px;cursor:pointer;border:1px solid rgba(255,255,255,.2)" title="Transparente"></div>
+          </div>
+        </div>
+
+        <!-- Nav links -->
+        <div class="hcp-card">
+          <div class="hcp-card-title">🔗 Enlaces de navegación
+            <button onclick="hcpAddLink()" class="hcp-btn-sm" style="margin-left:auto">+ Añadir enlace</button>
+          </div>
+          <div id="hcpLinksList" style="display:flex;flex-direction:column;gap:6px"></div>
+          <div style="margin-top:10px;padding:8px 10px;background:rgba(255,255,255,.04);border-radius:6px;font-size:10px;color:rgba(255,255,255,.35)">
+            💡 Usa <code style="background:rgba(255,255,255,.08);padding:1px 4px;border-radius:3px">#id-seccion</code> para scroll o <code style="background:rgba(255,255,255,.08);padding:1px 4px;border-radius:3px">page:nombre</code> para ir a una página custom
+          </div>
+        </div>
+
+        <!-- Botones header -->
+        <div class="hcp-card">
+          <div class="hcp-card-title">🔘 Botones del header</div>
+          <div id="hcpBtnsList" style="display:flex;flex-direction:column;gap:8px"></div>
+        </div>
+
+        <button onclick="hcpApplyHeader()" class="hcp-apply-btn">✅ Aplicar cambios al header</button>
+      </div>
+
+      <!-- ═══ TAB: CATEGORÍAS ═══ -->
+      <div id="hcpSecCats" style="display:none">
+        <div style="color:rgba(255,255,255,.5);font-size:10px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px">Árbol de categorías y subcategorías hasta 3 niveles</div>
+
+        <div class="hcp-card">
+          <div class="hcp-card-title">📂 Árbol de categorías
+            <button onclick="hcpAddCat(null,0)" class="hcp-btn-sm" style="margin-left:auto">+ Categoría raíz</button>
+          </div>
+          <div id="hcpCatTree" style="display:flex;flex-direction:column;gap:3px"></div>
+        </div>
+
+        <!-- Editor de categoría -->
+        <div id="hcpCatEditor" style="display:none" class="hcp-card" style="border:1px solid rgba(61,158,155,.3)">
+          <div class="hcp-card-title" id="hcpCatEdTitle">✏️ Editar categoría</div>
+          <input type="hidden" id="hcpCatEdId">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+            <div>
+              <div class="hcp-label">Nombre</div>
+              <input id="hcpCatEdName" class="hcp-inp" placeholder="Nombre de la categoría">
+            </div>
+            <div>
+              <div class="hcp-label">Emoji / Icono</div>
+              <input id="hcpCatEdIcon" class="hcp-inp" placeholder="📂 (opcional)">
+            </div>
+            <div>
+              <div class="hcp-label">URL / Destino</div>
+              <input id="hcpCatEdUrl" class="hcp-inp" placeholder="# o page:nombre o https://...">
+            </div>
+            <div>
+              <div class="hcp-label">Descripción corta</div>
+              <input id="hcpCatEdDesc" class="hcp-inp" placeholder="Descripción (opcional)">
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;flex-wrap:wrap">
+            <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(255,255,255,.6);cursor:pointer">
+              <input type="checkbox" id="hcpCatEdVisible" checked> Visible en navegación
+            </label>
+            <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(255,255,255,.6);cursor:pointer">
+              <input type="checkbox" id="hcpCatEdOpenNew"> Abrir en nueva pestaña
+            </label>
+          </div>
+          <div style="display:flex;gap:6px">
+            <button onclick="hcpSaveCat()" class="hcp-apply-btn" style="flex:1">💾 Guardar categoría</button>
+            <button onclick="document.getElementById('hcpCatEditor').style.display='none'" class="hcp-btn-sm">Cancelar</button>
+          </div>
+        </div>
+
+        <div style="margin-top:16px;padding:12px 14px;background:rgba(184,149,88,.08);border:1px solid rgba(184,149,88,.2);border-radius:10px;font-size:11px;color:rgba(255,255,255,.5);line-height:1.6">
+          <strong style="color:#b89558">📋 Cómo usar:</strong><br>
+          • <strong>Nivel 1</strong> — categorías principales → aparecen en el menú principal<br>
+          • <strong>Nivel 2</strong> — subcategorías → desplegable al pasar el ratón<br>
+          • <strong>Nivel 3</strong> — sub-subcategorías → menú lateral o columna adicional<br>
+          • Drag & drop o usa las flechas para reordenar
+        </div>
+      </div>
+
+      <!-- ═══ TAB: PÁGINAS ═══ -->
+      <div id="hcpSecPages" style="display:none">
+        <div style="color:rgba(255,255,255,.5);font-size:10px;text-transform:uppercase;letter-spacing:.1em;margin-bottom:16px">Páginas/landings independientes — no aparecen en la navegación automáticamente</div>
+
+        <div class="hcp-card">
+          <div class="hcp-card-title">📄 Páginas creadas
+            <button onclick="hcpCreatePage()" class="hcp-btn-sm" style="margin-left:auto;background:rgba(43,125,122,.25);color:#3d9e9b;border-color:rgba(43,125,122,.4)">+ Nueva página</button>
+          </div>
+          <div id="hcpPagesList" style="display:flex;flex-direction:column;gap:6px"></div>
+          <div style="margin-top:10px;padding:10px;background:rgba(255,255,255,.03);border-radius:8px;font-size:10px;color:rgba(255,255,255,.3);line-height:1.7">
+            💡 Las páginas creadas aquí son accesibles mediante <code style="background:rgba(255,255,255,.06);padding:1px 4px;border-radius:3px">goTo('page-slug')</code> o desde un enlace con <code style="background:rgba(255,255,255,.06);padding:1px 4px;border-radius:3px">page:slug</code>. No aparecen en el header salvo que las añadas manualmente como enlace.
+          </div>
+        </div>
+
+        <!-- Editor de página -->
+        <div id="hcpPageEditor" style="display:none" class="hcp-card">
+          <div class="hcp-card-title" id="hcpPageEdTitle">✏️ Nueva página</div>
+          <input type="hidden" id="hcpPageEdId">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+            <div>
+              <div class="hcp-label">Título de la página</div>
+              <input id="hcpPageEdName" class="hcp-inp" placeholder="Ej: Política de privacidad">
+            </div>
+            <div>
+              <div class="hcp-label">Slug / ID único <span style="color:#bf4637">*</span></div>
+              <input id="hcpPageEdSlug" class="hcp-inp" placeholder="privacy-policy (sin espacios)">
+            </div>
+          </div>
+          <div style="margin-bottom:10px">
+            <div class="hcp-label">Descripción / Notas internas</div>
+            <textarea id="hcpPageEdDesc" class="hcp-inp" rows="2" style="resize:vertical" placeholder="Para uso interno, no se muestra"></textarea>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+            <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(255,255,255,.6);cursor:pointer">
+              <input type="checkbox" id="hcpPageEdVisible"> Visible (activar página)
+            </label>
+            <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(255,255,255,.6);cursor:pointer">
+              <input type="checkbox" id="hcpPageEdInNav"> Añadir al menú de navegación
+            </label>
+          </div>
+          <!-- Plantillas -->
+          <div style="margin-bottom:12px">
+            <div class="hcp-label">Plantilla inicial</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">
+              <button onclick="hcpPageTpl('blank')" class="hcp-tpl-btn">⬜ En blanco</button>
+              <button onclick="hcpPageTpl('landing')" class="hcp-tpl-btn">🚀 Landing</button>
+              <button onclick="hcpPageTpl('legal')" class="hcp-tpl-btn">📋 Legal/Texto</button>
+              <button onclick="hcpPageTpl('about')" class="hcp-tpl-btn">👤 Sobre Mí</button>
+              <button onclick="hcpPageTpl('contact')" class="hcp-tpl-btn">📩 Contacto</button>
+              <button onclick="hcpPageTpl('thanks')" class="hcp-tpl-btn">🙏 Gracias</button>
+              <button onclick="hcpPageTpl('sales')" class="hcp-tpl-btn">💰 Ventas</button>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px">
+            <button onclick="hcpSavePage()" class="hcp-apply-btn" style="flex:1">💾 Crear página</button>
+            <button onclick="document.getElementById('hcpPageEditor').style.display='none'" class="hcp-btn-sm">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer del panel -->
+    <div style="padding:12px 24px;border-top:1px solid rgba(255,255,255,.08);background:#1a1510;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
+      <span id="hcpMsg" style="font-size:11px;color:#3d9e9b"></span>
+      <button onclick="hcpClose()" style="background:rgba(255,255,255,.07);color:rgba(255,255,255,.45);border:none;padding:7px 16px;border-radius:7px;font-size:12px;cursor:pointer">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MENÚ DE NAVEGACIÓN CON DROPDOWNS (reemplaza nav-links) -->
+<style>
+/* ── HCP Panel ── */
+.hcp-tab{background:none;border:none;color:rgba(255,255,255,.45);padding:12px 18px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;border-bottom:2px solid transparent;transition:all .15s}
+.hcp-tab:hover{color:rgba(255,255,255,.75)}
+.hcp-tab.active{color:#3d9e9b;border-bottom-color:#3d9e9b}
+.hcp-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px 16px;margin-bottom:12px}
+.hcp-card-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.hcp-label{font-size:9px;text-transform:uppercase;letter-spacing:.07em;color:rgba(255,255,255,.35);margin-bottom:4px}
+.hcp-inp{background:#1c1814;color:white;border:1px solid rgba(255,255,255,.12);padding:7px 10px;border-radius:7px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none;width:100%;box-sizing:border-box}
+.hcp-inp:focus{border-color:#3d9e9b}
+.hcp-btn-sm{background:#252118;color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.12);padding:5px 12px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.hcp-btn-sm:hover{background:#353028;color:white}
+.hcp-apply-btn{background:#2b7d7a;color:white;border:none;padding:9px 20px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.hcp-apply-btn:hover{background:#3d9e9b}
+.hcp-tpl-btn{background:#1c1814;color:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.12);padding:6px 12px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.hcp-tpl-btn:hover{background:#2b7d7a;color:white;border-color:#2b7d7a}
+/* Cat tree */
+.hcp-cat-item{display:flex;align-items:center;gap:6px;padding:7px 10px;background:rgba(255,255,255,.04);border-radius:7px;border:1px solid rgba(255,255,255,.07);cursor:pointer;transition:background .12s}
+.hcp-cat-item:hover{background:rgba(255,255,255,.08)}
+.hcp-cat-l1{margin-left:0}
+.hcp-cat-l2{margin-left:20px;border-left:2px solid rgba(43,125,122,.3)}
+.hcp-cat-l3{margin-left:40px;border-left:2px solid rgba(184,149,88,.3)}
+/* Link row editor */
+.hcp-link-row{display:flex;align-items:center;gap:6px;padding:7px 10px;background:rgba(255,255,255,.04);border-radius:7px;border:1px solid rgba(255,255,255,.07)}
+/* Nav dropdown */
+.nav-links{position:relative}
+.nav-links>a,.nav-links>.nav-dd-trigger{font-size:13px;color:#3d3730;text-decoration:none;cursor:pointer;display:flex;align-items:center;gap:4px;padding:4px 0;position:relative}
+.nav-links>a:hover,.nav-links>.nav-dd-trigger:hover{color:#2b7d7a}
+.nav-dd{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);background:white;border:1px solid #e4ddd3;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.12);min-width:200px;padding:6px;z-index:200;display:none;flex-direction:column;gap:2px}
+.nav-dd-trigger:hover .nav-dd,.nav-dd:hover{display:flex}
+.nav-dd-item{padding:8px 12px;border-radius:8px;font-size:13px;color:#3d3730;cursor:pointer;display:flex;align-items:center;gap:8px;text-decoration:none;position:relative}
+.nav-dd-item:hover{background:#f0ece4;color:#2b7d7a}
+.nav-dd-item.has-sub::after{content:'›';margin-left:auto;font-size:16px;color:#b8ad9e}
+.nav-dd3{position:absolute;top:0;left:100%;margin-left:4px;background:white;border:1px solid #e4ddd3;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.1);min-width:190px;padding:6px;z-index:201;display:none;flex-direction:column;gap:2px}
+.nav-dd-item:hover .nav-dd3{display:flex}
+</style>
+
 <!-- EDITOR BUTTON -->
 <button onclick="editorOpen()" id="edOpenBtn" style="position:fixed;bottom:80px;left:24px;z-index:99999;background:#1c1814;color:white;border:2px solid rgba(255,255,255,.2);padding:10px 18px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 20px rgba(0,0,0,.5)">✏️ Editor</button>
+
+<!-- BOTÓN GESTOR (visible solo con editor abierto) -->
+<button onclick="hcpOpen()" id="hcpOpenBtn" style="display:none;position:fixed;bottom:80px;left:130px;z-index:99999;background:#2b7d7a;color:white;border:2px solid rgba(255,255,255,.15);padding:10px 18px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 20px rgba(0,0,0,.4)">🗂️ Navegación</button>
 
 <!-- ══════════════════════════════════════════════════ -->
 <!-- BARRA FLOTANTE DE FORMATO (aparece al selec. texto) -->
@@ -2777,5 +3084,1046 @@ function edSave(){
     if(openBtn)openBtn.style.display='';
     toast('✅ Guardado — renombra a index.html y sube a Vercel');
   },200);
+}
+</script>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- GESTOR DE NAVEGACIÓN Y PÁGINAS                                 -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+
+<!-- Botón de acceso rápido (junto al Editor) -->
+<button onclick="navMgrOpen()" id="navMgrBtn" style="position:fixed;bottom:80px;left:110px;z-index:99999;background:#1c1814;color:#b89558;border:2px solid rgba(184,149,88,.3);padding:10px 18px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 20px rgba(0,0,0,.5)">🗂 Nav & Páginas</button>
+
+<!-- Panel principal del Gestor -->
+<div id="navMgrPanel" style="display:none;position:fixed;inset:0;z-index:100000;background:rgba(0,0,0,.6);backdrop-filter:blur(4px)">
+  <div style="position:absolute;top:0;right:0;bottom:0;width:min(780px,98vw);background:#161210;display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,.7)">
+
+    <!-- Header del gestor -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid rgba(255,255,255,.1);flex-shrink:0;background:#1c1814">
+      <div style="display:flex;align-items:center;gap:14px">
+        <span style="font-size:20px">🗂</span>
+        <div>
+          <div style="font-size:15px;font-weight:700;color:white;font-family:'DM Sans',sans-serif">Gestor de Navegación y Páginas</div>
+          <div style="font-size:11px;color:rgba(255,255,255,.4);font-family:'DM Sans',sans-serif">Header · Categorías · Páginas Ocultas</div>
+        </div>
+      </div>
+      <button onclick="navMgrClose()" style="background:rgba(255,255,255,.07);border:none;color:rgba(255,255,255,.5);font-size:18px;cursor:pointer;padding:6px 12px;border-radius:8px">✕</button>
+    </div>
+
+    <!-- Tabs -->
+    <div style="display:flex;border-bottom:1px solid rgba(255,255,255,.1);flex-shrink:0;background:#1c1814">
+      <button onclick="nmTab('header')" id="nmTab-header" class="nm-tab nm-tab-active">🏷 Header</button>
+      <button onclick="nmTab('nav')" id="nmTab-nav" class="nm-tab">🔗 Navegación</button>
+      <button onclick="nmTab('pages')" id="nmTab-pages" class="nm-tab">📄 Páginas</button>
+      <button onclick="nmTab('cats')" id="nmTab-cats" class="nm-tab">📂 Categorías</button>
+    </div>
+
+    <!-- Contenido tabs -->
+    <div style="flex:1;overflow-y:auto;padding:24px">
+
+      <!-- ═══════════════════════════════ -->
+      <!-- TAB: HEADER                     -->
+      <!-- ═══════════════════════════════ -->
+      <div id="nmPane-header">
+        <h3 class="nm-section-title">🏷 Editar Header / Logo</h3>
+
+        <div class="nm-card">
+          <div class="nm-card-title">Logo / Nombre del sitio</div>
+          <div class="nm-form-row">
+            <div style="flex:1">
+              <div class="nm-label">Nombre principal</div>
+              <input id="nmLogoText" type="text" class="nm-inp" placeholder="Frecuencia Integral">
+            </div>
+            <div style="flex:1">
+              <div class="nm-label">Subtítulo / tagline</div>
+              <input id="nmLogoSub" type="text" class="nm-inp" placeholder="Academy">
+            </div>
+          </div>
+          <div class="nm-form-row" style="margin-top:10px">
+            <div style="flex:1">
+              <div class="nm-label">URL del logo (imagen) — opcional</div>
+              <input id="nmLogoImg" type="text" class="nm-inp" placeholder="https://... (dejar vacío para texto)">
+            </div>
+            <div style="flex:0 0 80px">
+              <div class="nm-label">Alto logo</div>
+              <input id="nmLogoH" type="text" value="36px" class="nm-inp">
+            </div>
+          </div>
+          <button onclick="nmApplyLogo()" class="nm-btn-teal" style="margin-top:12px">✅ Aplicar Logo</button>
+        </div>
+
+        <div class="nm-card" style="margin-top:16px">
+          <div class="nm-card-title">Estilo del header</div>
+          <div class="nm-form-row">
+            <div style="flex:1">
+              <div class="nm-label">Color de fondo</div>
+              <div style="display:flex;gap:6px">
+                <input type="color" id="nmHdrBg" value="#f7f5f1" style="width:36px;height:36px;border:none;border-radius:6px;cursor:pointer;padding:0">
+                <input id="nmHdrBgHex" type="text" value="rgba(247,245,241,.95)" class="nm-inp" style="flex:1">
+              </div>
+            </div>
+            <div style="flex:1">
+              <div class="nm-label">Color borde inferior</div>
+              <div style="display:flex;gap:6px">
+                <input type="color" id="nmHdrBd" value="#e4ddd3" style="width:36px;height:36px;border:none;border-radius:6px;cursor:pointer;padding:0">
+                <input id="nmHdrBdHex" type="text" value="#e4ddd3" class="nm-inp" style="flex:1">
+              </div>
+            </div>
+            <div style="flex:0 0 80px">
+              <div class="nm-label">Altura</div>
+              <input id="nmHdrH" type="text" value="66px" class="nm-inp">
+            </div>
+          </div>
+          <div class="nm-form-row" style="margin-top:10px">
+            <div style="flex:1">
+              <div class="nm-label">Color links nav</div>
+              <div style="display:flex;gap:6px">
+                <input type="color" id="nmHdrLinkClr" value="#3d3730" style="width:36px;height:36px;border:none;border-radius:6px;cursor:pointer;padding:0">
+                <input type="text" id="nmHdrLinkHex" value="#3d3730" class="nm-inp">
+              </div>
+            </div>
+            <div style="flex:1">
+              <div class="nm-label">Color hover links</div>
+              <div style="display:flex;gap:6px">
+                <input type="color" id="nmHdrHoverClr" value="#2b7d7a" style="width:36px;height:36px;border:none;border-radius:6px;cursor:pointer;padding:0">
+                <input type="text" id="nmHdrHoverHex" value="#2b7d7a" class="nm-inp">
+              </div>
+            </div>
+            <div style="flex:1">
+              <div class="nm-label">Fijo en scroll</div>
+              <select id="nmHdrFixed" class="nm-inp">
+                <option value="fixed">Sí (fixed)</option>
+                <option value="sticky">Sí (sticky)</option>
+                <option value="relative">No (relativo)</option>
+              </select>
+            </div>
+          </div>
+          <button onclick="nmApplyHeaderStyle()" class="nm-btn-teal" style="margin-top:12px">✅ Aplicar Estilo Header</button>
+        </div>
+
+        <div class="nm-card" style="margin-top:16px">
+          <div class="nm-card-title">Botones del header</div>
+          <div id="nmHdrBtnsList" style="display:flex;flex-direction:column;gap:8px"></div>
+          <button onclick="nmAddHdrBtn()" class="nm-btn-outline" style="margin-top:10px">+ Añadir botón</button>
+          <button onclick="nmApplyHdrBtns()" class="nm-btn-teal" style="margin-top:8px">✅ Aplicar Botones</button>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════ -->
+      <!-- TAB: NAVEGACIÓN                 -->
+      <!-- ═══════════════════════════════ -->
+      <div id="nmPane-nav" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <h3 class="nm-section-title" style="margin:0">🔗 Menú de Navegación</h3>
+          <button onclick="nmAddNavItem(null)" class="nm-btn-teal" style="font-size:11px">+ Añadir ítem nivel 1</button>
+        </div>
+        <div style="font-size:11px;color:rgba(255,255,255,.35);margin-bottom:14px;background:rgba(255,255,255,.04);padding:10px 14px;border-radius:8px">
+          💡 Arrastra para reordenar. Clic en ▶ para expandir subcategorías. Hasta 3 niveles de profundidad.
+        </div>
+        <div id="nmNavTree" style="display:flex;flex-direction:column;gap:4px"></div>
+        <button onclick="nmApplyNav()" class="nm-btn-teal" style="margin-top:20px;width:100%">✅ Aplicar Navegación al Header</button>
+      </div>
+
+      <!-- ═══════════════════════════════ -->
+      <!-- TAB: PÁGINAS                    -->
+      <!-- ═══════════════════════════════ -->
+      <div id="nmPane-pages" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <h3 class="nm-section-title" style="margin:0">📄 Páginas del sitio</h3>
+          <button onclick="nmNewPage()" class="nm-btn-teal" style="font-size:11px">+ Nueva Página</button>
+        </div>
+        <div style="font-size:11px;color:rgba(255,255,255,.35);margin-bottom:14px;background:rgba(255,255,255,.04);padding:10px 14px;border-radius:8px">
+          💡 <b style="color:rgba(255,255,255,.5)">Páginas visibles:</b> aparecen en el menú de navegación. <b style="color:rgba(255,255,255,.5)">Páginas ocultas (landing):</b> accesibles solo por URL directa, no aparecen en el menú.
+        </div>
+        <div id="nmPagesList" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+
+      <!-- ═══════════════════════════════ -->
+      <!-- TAB: CATEGORÍAS                 -->
+      <!-- ═══════════════════════════════ -->
+      <div id="nmPane-cats" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <h3 class="nm-section-title" style="margin:0">📂 Gestión de Categorías</h3>
+          <button onclick="nmAddCat(null,0)" class="nm-btn-teal" style="font-size:11px">+ Categoría raíz</button>
+        </div>
+        <div style="font-size:11px;color:rgba(255,255,255,.35);margin-bottom:14px;background:rgba(255,255,255,.04);padding:10px 14px;border-radius:8px">
+          💡 Organiza tu contenido en hasta 3 niveles: <b style="color:rgba(255,255,255,.5)">Categoría → Subcategoría → Sub-subcategoría</b>. Asigna páginas a cualquier nivel.
+        </div>
+        <div id="nmCatTree" style="display:flex;flex-direction:column;gap:4px"></div>
+        <button onclick="nmApplyCatsToNav()" class="nm-btn-teal" style="margin-top:20px;width:100%">✅ Sincronizar categorías → Navegación</button>
+      </div>
+
+    </div><!-- /content -->
+
+    <!-- Footer del panel -->
+    <div style="padding:14px 24px;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:10px;flex-shrink:0;background:#1c1814">
+      <button onclick="nmSaveAll()" style="flex:1;background:#b89558;color:white;border:none;padding:10px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">💾 Guardar todo</button>
+      <button onclick="nmClose()" style="background:rgba(255,255,255,.07);color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.1);padding:10px 18px;border-radius:8px;font-size:13px;cursor:pointer">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Editor de página -->
+<div id="nmPageEditor" style="display:none;position:fixed;inset:0;z-index:100002;background:rgba(0,0,0,.7)">
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(600px,95vw);background:#1c1814;border-radius:16px;padding:28px;border:1px solid rgba(255,255,255,.12);box-shadow:0 20px 60px rgba(0,0,0,.6)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px">
+      <div style="font-size:16px;font-weight:700;color:white;font-family:'DM Sans',sans-serif" id="nmPageEdTitle">Nueva Página</div>
+      <button onclick="document.getElementById('nmPageEditor').style.display='none'" style="background:none;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer">✕</button>
+    </div>
+    <input type="hidden" id="nmPageEdId">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <div>
+        <div class="nm-label">Título de la página *</div>
+        <input id="nmPageEdName" type="text" class="nm-inp" style="width:100%;box-sizing:border-box" placeholder="Ej: Sobre nosotros">
+      </div>
+      <div class="nm-form-row">
+        <div style="flex:1">
+          <div class="nm-label">Slug / URL amigable *</div>
+          <input id="nmPageEdSlug" type="text" class="nm-inp" style="width:100%;box-sizing:border-box" placeholder="sobre-nosotros">
+        </div>
+        <div style="flex:0 0 140px">
+          <div class="nm-label">Tipo de página</div>
+          <select id="nmPageEdType" class="nm-inp" style="width:100%">
+            <option value="visible">🔗 Visible en menú</option>
+            <option value="hidden">🔒 Landing oculta</option>
+            <option value="redirect">↗ Redirección</option>
+          </select>
+        </div>
+      </div>
+      <div id="nmPageEdRedirectRow" style="display:none">
+        <div class="nm-label">URL de destino (redirect)</div>
+        <input id="nmPageEdRedirect" type="text" class="nm-inp" style="width:100%;box-sizing:border-box" placeholder="https://...">
+      </div>
+      <div>
+        <div class="nm-label">Descripción / Notas internas</div>
+        <input id="nmPageEdDesc" type="text" class="nm-inp" style="width:100%;box-sizing:border-box" placeholder="Para qué sirve esta página...">
+      </div>
+      <div class="nm-form-row">
+        <div style="flex:1">
+          <div class="nm-label">Categoría asignada</div>
+          <select id="nmPageEdCat" class="nm-inp" style="width:100%">
+            <option value="">— Sin categoría —</option>
+          </select>
+        </div>
+        <div style="flex:1">
+          <div class="nm-label">Meta title (SEO)</div>
+          <input id="nmPageEdMeta" type="text" class="nm-inp" style="width:100%;box-sizing:border-box" placeholder="Título para Google...">
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:rgba(255,255,255,.6);font-family:'DM Sans',sans-serif">
+          <input type="checkbox" id="nmPageEdIndex" checked style="cursor:pointer">
+          Indexable por Google (noindex si desmarcas)
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:rgba(255,255,255,.6);font-family:'DM Sans',sans-serif;margin-left:12px">
+          <input type="checkbox" id="nmPageEdPwd" style="cursor:pointer">
+          Proteger con contraseña
+        </label>
+      </div>
+      <div id="nmPageEdPwdRow" style="display:none">
+        <div class="nm-label">Contraseña de acceso</div>
+        <input id="nmPageEdPwdVal" type="text" class="nm-inp" style="width:100%;box-sizing:border-box" placeholder="contraseña">
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:22px">
+      <button onclick="nmSavePage()" class="nm-btn-teal" style="flex:1">💾 Guardar Página</button>
+      <button onclick="nmOpenInEditor()" class="nm-btn-outline" style="flex:1">✏️ Abrir en Editor</button>
+      <button onclick="document.getElementById('nmPageEditor').style.display='none'" style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.1);padding:10px 16px;border-radius:8px;font-size:12px;cursor:pointer">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Editor de ítem de nav -->
+<div id="nmNavItemEditor" style="display:none;position:fixed;inset:0;z-index:100003;background:rgba(0,0,0,.7)">
+  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(520px,95vw);background:#1c1814;border-radius:16px;padding:28px;border:1px solid rgba(255,255,255,.12);box-shadow:0 20px 60px rgba(0,0,0,.6)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div style="font-size:15px;font-weight:700;color:white;font-family:'DM Sans',sans-serif">Editar ítem de navegación</div>
+      <button onclick="document.getElementById('nmNavItemEditor').style.display='none'" style="background:none;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer">✕</button>
+    </div>
+    <input type="hidden" id="nmNavEdId">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="nm-form-row">
+        <div style="flex:1">
+          <div class="nm-label">Etiqueta del menú</div>
+          <input id="nmNavEdLabel" type="text" class="nm-inp" style="width:100%;box-sizing:border-box" placeholder="Inicio">
+        </div>
+        <div style="flex:0 0 36px;padding-top:22px">
+          <input id="nmNavEdEmoji" type="text" class="nm-inp" style="width:100%;text-align:center" placeholder="🏠">
+        </div>
+      </div>
+      <div>
+        <div class="nm-label">Enlace / Acción</div>
+        <select id="nmNavEdLinkType" class="nm-inp" style="width:100%;margin-bottom:6px" onchange="nmNavEdLinkTypeChange()">
+          <option value="anchor">⚓ Ancla en la página (#id)</option>
+          <option value="page">📄 Página del sitio</option>
+          <option value="url">🌐 URL externa</option>
+          <option value="nolink">— Solo etiqueta (sin enlace)</option>
+        </select>
+        <input id="nmNavEdAnchor" type="text" class="nm-inp" style="width:100%;box-sizing:border-box" placeholder="#puertas">
+        <select id="nmNavEdPage" class="nm-inp" style="display:none;width:100%">
+          <option value="">— Selecciona página —</option>
+        </select>
+        <input id="nmNavEdUrl" type="text" class="nm-inp" style="display:none;width:100%;box-sizing:border-box" placeholder="https://...">
+      </div>
+      <div class="nm-form-row">
+        <div style="flex:1">
+          <div class="nm-label">Color texto (opcional)</div>
+          <div style="display:flex;gap:6px">
+            <input type="color" id="nmNavEdClr" value="#3d3730" style="width:32px;height:32px;border:none;border-radius:5px;cursor:pointer;padding:0">
+            <input type="text" id="nmNavEdClrHex" class="nm-inp" style="flex:1" placeholder="inherit">
+          </div>
+        </div>
+        <div style="flex:1">
+          <div class="nm-label">Estilo especial</div>
+          <select id="nmNavEdStyle" class="nm-inp" style="width:100%">
+            <option value="normal">Normal</option>
+            <option value="bold">Negrita</option>
+            <option value="btn-teal">Botón verde</option>
+            <option value="btn-gold">Botón dorado</option>
+            <option value="btn-outline">Botón outline</option>
+            <option value="badge-new">Badge "Nuevo"</option>
+            <option value="divider-before">Separador antes</option>
+          </select>
+        </div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;color:rgba(255,255,255,.6);font-family:'DM Sans',sans-serif">
+        <input type="checkbox" id="nmNavEdNewTab" style="cursor:pointer">
+        Abrir en nueva pestaña
+      </label>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:20px">
+      <button onclick="nmSaveNavItem()" class="nm-btn-teal" style="flex:1">💾 Guardar</button>
+      <button onclick="document.getElementById('nmNavItemEditor').style.display='none'" style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.1);padding:10px 16px;border-radius:8px;font-size:12px;cursor:pointer">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<style>
+/* ── Nav Manager styles ── */
+.nm-tab{background:none;border:none;color:rgba(255,255,255,.45);padding:12px 18px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;border-bottom:2px solid transparent;transition:all .15s}
+.nm-tab:hover{color:rgba(255,255,255,.7)}
+.nm-tab-active{color:#3d9e9b!important;border-bottom-color:#3d9e9b!important}
+.nm-section-title{font-size:14px;font-weight:700;color:white;font-family:'DM Sans',sans-serif;margin-bottom:14px}
+.nm-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:12px;padding:18px}
+.nm-card-title{font-size:12px;font-weight:700;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px}
+.nm-label{font-size:10px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;font-family:'DM Sans',sans-serif}
+.nm-inp{background:#252118;color:white;border:1px solid rgba(255,255,255,.14);padding:8px 10px;border-radius:7px;font-size:12px;font-family:'DM Sans',sans-serif;outline:none}
+.nm-inp:focus{border-color:#3d9e9b}
+.nm-form-row{display:flex;gap:10px;align-items:flex-start}
+.nm-btn-teal{background:#2b7d7a;color:white;border:none;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s}
+.nm-btn-teal:hover{background:#3d9e9b}
+.nm-btn-gold{background:#b89558;color:white;border:none;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif}
+.nm-btn-outline{background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.15);padding:9px 18px;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.nm-btn-outline:hover{background:rgba(255,255,255,.1)}
+.nm-btn-danger{background:rgba(191,70,55,.15);color:#f08080;border:1px solid rgba(191,70,55,.2);padding:6px 12px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.nm-btn-danger:hover{background:rgba(191,70,55,.3)}
+
+/* Nav tree items */
+.nm-tree-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:9px;padding:10px 14px;display:flex;align-items:center;gap:8px;transition:border-color .15s}
+.nm-tree-item:hover{border-color:rgba(255,255,255,.18)}
+.nm-tree-item.nm-l2{margin-left:24px;background:rgba(255,255,255,.03);border-style:dashed}
+.nm-tree-item.nm-l3{margin-left:48px;background:rgba(255,255,255,.02);border-style:dashed;border-color:rgba(255,255,255,.06)}
+.nm-tree-label{flex:1;font-size:13px;color:white;font-family:'DM Sans',sans-serif}
+.nm-tree-sub{font-size:10px;color:rgba(255,255,255,.3);display:block}
+.nm-tree-actions{display:flex;gap:4px}
+.nm-tree-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.5);padding:4px 8px;border-radius:5px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
+.nm-tree-btn:hover{background:rgba(255,255,255,.12);color:white}
+.nm-expand-btn{background:none;border:none;color:rgba(255,255,255,.35);font-size:11px;cursor:pointer;padding:2px 5px;border-radius:4px;flex-shrink:0}
+.nm-expand-btn:hover{color:white}
+
+/* Page list items */
+.nm-page-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:9px;padding:12px 16px;display:flex;align-items:center;gap:10px}
+.nm-page-item:hover{border-color:rgba(255,255,255,.16)}
+.nm-page-badge{font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;flex-shrink:0}
+.nm-page-badge.visible{background:rgba(43,125,122,.2);color:#3d9e9b}
+.nm-page-badge.hidden{background:rgba(184,149,88,.15);color:#b89558}
+.nm-page-badge.redirect{background:rgba(44,95,158,.2);color:#7ab3f0}
+
+/* Cat tree */
+.nm-cat-item{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:9px;padding:10px 14px;display:flex;align-items:center;gap:8px}
+.nm-cat-item.nm-c2{margin-left:20px;background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.06)}
+.nm-cat-item.nm-c3{margin-left:40px;background:rgba(255,255,255,.02);border-color:rgba(255,255,255,.05);border-style:dashed}
+</style>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// NAV & PAGE MANAGER — Gestor de Navegación y Páginas
+// ══════════════════════════════════════════════════════════════
+
+// ── Estado del gestor ──
+var _nm = {
+  nav: [],        // árbol de navegación
+  pages: [],      // páginas del sitio
+  cats: [],       // categorías
+  hdrBtns: [],    // botones del header
+  activeTab: 'header'
+};
+
+// ── Inicialización ──
+function nmInit() {
+  // Leer nav actual del DOM
+  var links = document.querySelectorAll('nav .nav-links a');
+  if(_nm.nav.length === 0) {
+    links.forEach(function(a,i){
+      _nm.nav.push({id:'nav'+Date.now()+i, label:a.textContent.trim(), linkType:'anchor', anchor:'', color:'', style:'normal', emoji:'', newTab:false, children:[]});
+    });
+    // Defaults si no había nada
+    if(_nm.nav.length === 0) {
+      _nm.nav = [
+        {id:'nav1',label:'Las Puertas',linkType:'anchor',anchor:'#puertas',color:'',style:'normal',emoji:'',newTab:false,children:[]},
+        {id:'nav2',label:'El Viaje',linkType:'anchor',anchor:'#pilares',color:'',style:'normal',emoji:'',newTab:false,children:[]},
+        {id:'nav3',label:'Precios',linkType:'anchor',anchor:'#joyas',color:'',style:'normal',emoji:'',newTab:false,children:[]}
+      ];
+    }
+  }
+  // Leer logo actual
+  var logoEl = document.querySelector('nav .nav-logo');
+  if(logoEl) {
+    var spanEl = logoEl.querySelector('span');
+    document.getElementById('nmLogoText').value = logoEl.childNodes[0] ? logoEl.childNodes[0].textContent.trim() : 'Frecuencia Integral';
+    document.getElementById('nmLogoSub').value = spanEl ? spanEl.textContent.trim() : 'Academy';
+  }
+  // Leer botones header
+  if(_nm.hdrBtns.length === 0) {
+    document.querySelectorAll('nav .nav-btns button, nav .nav-btns a').forEach(function(b,i){
+      _nm.hdrBtns.push({id:'hb'+i, text:b.textContent.trim(), type:'ghost', show:b.style.display!=='none'});
+    });
+  }
+  nmRenderAll();
+}
+
+function navMgrOpen() {
+  document.getElementById('navMgrPanel').style.display='block';
+  nmInit();
+}
+function navMgrClose(){document.getElementById('navMgrPanel').style.display='none';}
+function nmClose(){navMgrClose();}
+
+// ── Tabs ──
+function nmTab(t) {
+  _nm.activeTab = t;
+  ['header','nav','pages','cats'].forEach(function(tab){
+    document.getElementById('nmPane-'+tab).style.display = tab===t ? 'block' : 'none';
+    var btn = document.getElementById('nmTab-'+tab);
+    btn.className = 'nm-tab' + (tab===t ? ' nm-tab-active' : '');
+  });
+  if(t==='nav') nmRenderNavTree();
+  if(t==='pages') nmRenderPagesList();
+  if(t==='cats') nmRenderCatTree();
+  if(t==='header') nmRenderHdrBtns();
+}
+
+function nmRenderAll(){
+  nmRenderNavTree();
+  nmRenderPagesList();
+  nmRenderCatTree();
+  nmRenderHdrBtns();
+}
+
+// ══════════════════════════════════════════
+// ── HEADER / LOGO                         ──
+// ══════════════════════════════════════════
+
+function nmApplyLogo() {
+  var txt = document.getElementById('nmLogoText').value || 'Frecuencia Integral';
+  var sub = document.getElementById('nmLogoSub').value;
+  var img = document.getElementById('nmLogoImg').value;
+  var h = document.getElementById('nmLogoH').value || '36px';
+  var logoEl = document.querySelector('nav .nav-logo');
+  if(!logoEl) return;
+  if(img) {
+    logoEl.innerHTML = '<img src="'+img+'" style="height:'+h+';max-width:200px;object-fit:contain;vertical-align:middle" alt="'+txt+'">';
+  } else {
+    logoEl.innerHTML = txt + (sub ? '<span>'+sub+'</span>' : '');
+  }
+  edSnapshot && edSnapshot();
+  nmToast('✅ Logo actualizado');
+}
+
+function nmApplyHeaderStyle() {
+  var navEl = document.querySelector('nav');
+  if(!navEl) return;
+  var bg = document.getElementById('nmHdrBgHex').value || document.getElementById('nmHdrBg').value;
+  var bd = document.getElementById('nmHdrBdHex').value || document.getElementById('nmHdrBd').value;
+  var h = document.getElementById('nmHdrH').value || '66px';
+  var pos = document.getElementById('nmHdrFixed').value;
+  navEl.style.background = bg;
+  navEl.style.borderBottomColor = bd;
+  navEl.style.height = h;
+  navEl.style.position = pos;
+  // Apply link color via stylesheet injection
+  var lc = document.getElementById('nmHdrLinkHex').value || document.getElementById('nmHdrLinkClr').value;
+  var hc = document.getElementById('nmHdrHoverHex').value || document.getElementById('nmHdrHoverClr').value;
+  var styleEl = document.getElementById('nmDynStyle') || (function(){
+    var s=document.createElement('style');s.id='nmDynStyle';document.head.appendChild(s);return s;
+  })();
+  styleEl.textContent = '.nav-links a{color:'+lc+'!important}.nav-links a:hover{color:'+hc+'!important}';
+  edSnapshot && edSnapshot();
+  nmToast('✅ Estilo header aplicado');
+}
+
+function nmRenderHdrBtns() {
+  var c = document.getElementById('nmHdrBtnsList');
+  if(!c) return;
+  if(_nm.hdrBtns.length === 0) {
+    c.innerHTML = '<div style="color:rgba(255,255,255,.3);font-size:12px;padding:10px 0">No hay botones definidos. Añade uno.</div>';
+    return;
+  }
+  c.innerHTML = _nm.hdrBtns.map(function(b,i){
+    return '<div style="display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.03);padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.07)">'
+      +'<input type="text" value="'+b.text+'" class="nm-inp" style="flex:1" onchange="_nm.hdrBtns['+i+'].text=this.value" placeholder="Texto botón">'
+      +'<select class="nm-inp" onchange="_nm.hdrBtns['+i+'].type=this.value" style="flex:0 0 110px">'
+      +'<option value="primary"'+(b.type==='primary'?' selected':'')+'>Primario</option>'
+      +'<option value="ghost"'+(b.type==='ghost'?' selected':'')+'>Fantasma</option>'
+      +'<option value="teal"'+(b.type==='teal'?' selected':'')+'>Verde TCT</option>'
+      +'<option value="gold"'+(b.type==='gold'?' selected':'')+'>Dorado</option>'
+      +'</select>'
+      +'<label style="font-size:11px;color:rgba(255,255,255,.4);cursor:pointer;white-space:nowrap"><input type="checkbox"'+(b.show?' checked':'')+' onchange="_nm.hdrBtns['+i+'].show=this.checked" style="cursor:pointer"> Visible</label>'
+      +'<button onclick="_nm.hdrBtns.splice('+i+',1);nmRenderHdrBtns()" class="nm-btn-danger" style="flex-shrink:0">✕</button>'
+      +'</div>';
+  }).join('');
+}
+function nmAddHdrBtn() {
+  _nm.hdrBtns.push({id:'hb'+Date.now(),text:'Nuevo Botón',type:'ghost',show:true});
+  nmRenderHdrBtns();
+}
+function nmApplyHdrBtns() {
+  var btns = document.querySelector('nav .nav-btns');
+  if(!btns) return;
+  // Keep existing functional buttons (login/dash/admin etc) — only update visible text/style for custom ones
+  nmToast('✅ Botones actualizados (para botones funcionales usa el Editor de textos)');
+}
+
+// ══════════════════════════════════════════
+// ── NAVEGACIÓN (árbol de 3 niveles)       ──
+// ══════════════════════════════════════════
+
+function nmGenId(){return 'ni'+Date.now()+Math.random().toString(36).slice(2,6);}
+
+function nmRenderNavTree() {
+  var c = document.getElementById('nmNavTree');
+  if(!c) return;
+  if(_nm.nav.length === 0) {
+    c.innerHTML = '<div style="color:rgba(255,255,255,.3);font-size:12px;padding:20px;text-align:center">Sin ítems. Añade el primero →</div>';
+    return;
+  }
+  var html = '';
+  _nm.nav.forEach(function(item, i){
+    html += nmRenderNavItem(item, i, 0, '');
+  });
+  c.innerHTML = html;
+}
+
+function nmRenderNavItem(item, idx, level, parentPath) {
+  var cls = level===0?'nm-tree-item':(level===1?'nm-tree-item nm-l2':'nm-tree-item nm-l3');
+  var indent = level * 24;
+  var linkInfo = item.linkType==='anchor'?item.anchor : item.linkType==='url'?'↗ '+item.url : item.linkType==='page'?'📄 pg':'-';
+  var hasChildren = item.children && item.children.length > 0;
+  var levelLabel = ['', '↳ Nivel 2', '↳↳ Nivel 3'][level];
+  var path = parentPath ? parentPath+'.children['+idx+']' : '['+idx+']';
+  var canAddChild = level < 2;
+  var html = '<div class="'+cls+'" id="nmni_'+item.id+'" style="margin-left:'+indent+'px">'
+    +'<span style="font-size:10px;color:rgba(255,255,255,.2);min-width:14px;text-align:right">'+['●','○','◦'][level]+'</span>'
+    +'<div class="nm-tree-label">'
+    +(item.emoji?'<span style="margin-right:5px">'+item.emoji+'</span>':'')
+    +'<span style="font-weight:600">'+(item.label||'Sin nombre')+'</span>'
+    +'<span class="nm-tree-sub">'+linkInfo+(levelLabel?' · <span style="color:rgba(61,158,155,.6)">'+levelLabel+'</span>':'')+'</span>'
+    +'</div>'
+    +'<div class="nm-tree-actions">'
+    +(canAddChild?'<button onclick="nmAddNavItem(\''+item.id+'\')" class="nm-tree-btn" title="Añadir sub-ítem">+ Sub</button>':'')
+    +'<button onclick="nmEditNavItem(\''+item.id+'\')" class="nm-tree-btn">✏️</button>'
+    +'<button onclick="nmMoveNavItem(\''+item.id+'\', -1)" class="nm-tree-btn">↑</button>'
+    +'<button onclick="nmMoveNavItem(\''+item.id+'\', 1)" class="nm-tree-btn">↓</button>'
+    +'<button onclick="nmDeleteNavItem(\''+item.id+'\')" class="nm-btn-danger">✕</button>'
+    +'</div></div>';
+  // Render children
+  if(hasChildren) {
+    item.children.forEach(function(child, ci){
+      html += nmRenderNavItem(child, ci, level+1, path);
+    });
+  }
+  return html;
+}
+
+// Buscar ítem en árbol por id
+function nmFindNavItem(id, arr, parent) {
+  if(!arr) return null;
+  for(var i=0;i<arr.length;i++){
+    if(arr[i].id===id) return {item:arr[i],arr:arr,idx:i,parent:parent};
+    var found = nmFindNavItem(id, arr[i].children, arr[i]);
+    if(found) return found;
+  }
+  return null;
+}
+
+function nmAddNavItem(parentId) {
+  var newItem = {id:nmGenId(),label:'Nuevo ítem',linkType:'anchor',anchor:'',color:'',style:'normal',emoji:'',newTab:false,children:[]};
+  if(!parentId) {
+    _nm.nav.push(newItem);
+  } else {
+    var found = nmFindNavItem(parentId, _nm.nav, null);
+    if(found && found.item.children) {
+      // Check max depth
+      var depth = nmGetDepth(found.item);
+      if(depth >= 2) { nmToast('⚠️ Máximo 3 niveles de profundidad'); return; }
+      found.item.children.push(newItem);
+    }
+  }
+  // Open editor for new item
+  _editingNavId = newItem.id;
+  nmOpenNavEditor(newItem);
+}
+
+function nmGetDepth(item) {
+  if(!item.children||item.children.length===0) return 0;
+  return 1 + Math.max.apply(null, item.children.map(nmGetDepth));
+}
+
+function nmEditNavItem(id) {
+  var found = nmFindNavItem(id, _nm.nav, null);
+  if(found) { _editingNavId = id; nmOpenNavEditor(found.item); }
+}
+
+function nmDeleteNavItem(id) {
+  if(!confirm('¿Eliminar este ítem y sus subítems?')) return;
+  function removeFrom(arr) {
+    for(var i=arr.length-1;i>=0;i--){
+      if(arr[i].id===id){arr.splice(i,1);return true;}
+      if(arr[i].children && removeFrom(arr[i].children)) return true;
+    }
+    return false;
+  }
+  removeFrom(_nm.nav);
+  nmRenderNavTree();
+}
+
+function nmMoveNavItem(id, dir) {
+  function moveIn(arr) {
+    for(var i=0;i<arr.length;i++){
+      if(arr[i].id===id){
+        var ni=i+dir;
+        if(ni>=0&&ni<arr.length){var tmp=arr[i];arr[i]=arr[ni];arr[ni]=tmp;return true;}
+        return false;
+      }
+      if(arr[i].children && moveIn(arr[i].children)) return true;
+    }
+    return false;
+  }
+  moveIn(_nm.nav); nmRenderNavTree();
+}
+
+var _editingNavId = null;
+function nmOpenNavEditor(item) {
+  document.getElementById('nmNavEdId').value = item.id;
+  document.getElementById('nmNavEdLabel').value = item.label||'';
+  document.getElementById('nmNavEdEmoji').value = item.emoji||'';
+  document.getElementById('nmNavEdLinkType').value = item.linkType||'anchor';
+  document.getElementById('nmNavEdAnchor').value = item.anchor||'';
+  document.getElementById('nmNavEdUrl').value = item.url||'';
+  document.getElementById('nmNavEdClr').value = item.color||'#3d3730';
+  document.getElementById('nmNavEdClrHex').value = item.color||'';
+  document.getElementById('nmNavEdStyle').value = item.style||'normal';
+  document.getElementById('nmNavEdNewTab').checked = !!item.newTab;
+  // Populate page select
+  var pgSel = document.getElementById('nmNavEdPage');
+  pgSel.innerHTML = '<option value="">— Selecciona página —</option>';
+  _nm.pages.forEach(function(p){ pgSel.innerHTML += '<option value="'+p.slug+'"'+(item.pageSlug===p.slug?' selected':'')+'>'+p.name+'</option>'; });
+  pgSel.value = item.pageSlug||'';
+  nmNavEdLinkTypeChange();
+  document.getElementById('nmNavItemEditor').style.display='block';
+}
+
+function nmNavEdLinkTypeChange() {
+  var t = document.getElementById('nmNavEdLinkType').value;
+  document.getElementById('nmNavEdAnchor').style.display = t==='anchor'?'':'none';
+  document.getElementById('nmNavEdPage').style.display = t==='page'?'':'none';
+  document.getElementById('nmNavEdUrl').style.display = t==='url'?'':'none';
+}
+
+function nmSaveNavItem() {
+  var id = document.getElementById('nmNavEdId').value;
+  var found = nmFindNavItem(id, _nm.nav, null);
+  if(!found) return;
+  var t = document.getElementById('nmNavEdLinkType').value;
+  found.item.label = document.getElementById('nmNavEdLabel').value;
+  found.item.emoji = document.getElementById('nmNavEdEmoji').value;
+  found.item.linkType = t;
+  found.item.anchor = document.getElementById('nmNavEdAnchor').value;
+  found.item.url = document.getElementById('nmNavEdUrl').value;
+  found.item.pageSlug = document.getElementById('nmNavEdPage').value;
+  found.item.color = document.getElementById('nmNavEdClrHex').value;
+  found.item.style = document.getElementById('nmNavEdStyle').value;
+  found.item.newTab = document.getElementById('nmNavEdNewTab').checked;
+  document.getElementById('nmNavItemEditor').style.display='none';
+  nmRenderNavTree();
+  nmToast('✅ Ítem guardado');
+}
+
+function nmApplyNav() {
+  var linksEl = document.querySelector('nav .nav-links');
+  if(!linksEl) return;
+  linksEl.innerHTML = '';
+  function renderItems(items, container, level) {
+    items.forEach(function(item){
+      var a = document.createElement('a');
+      a.textContent = (item.emoji?item.emoji+' ':'') + item.label;
+      if(item.color) a.style.color = item.color;
+      if(item.style==='bold') a.style.fontWeight='700';
+      if(item.style==='btn-teal') a.style.cssText='background:#2b7d7a;color:white;padding:6px 14px;border-radius:7px;font-weight:600';
+      if(item.style==='btn-gold') a.style.cssText='background:#b89558;color:white;padding:6px 14px;border-radius:7px;font-weight:600';
+      if(item.style==='btn-outline') a.style.cssText='border:1.5px solid #2b7d7a;color:#2b7d7a;padding:5px 13px;border-radius:7px;font-weight:600';
+      if(item.newTab) { a.target='_blank'; }
+      // Build onclick
+      if(item.linkType==='anchor'&&item.anchor) {
+        var anc=item.anchor.replace('#','');
+        a.setAttribute('onclick','(function(){var el=document.getElementById("'+anc+'");if(el)el.scrollIntoView({behavior:"smooth"});else window.location.hash="'+item.anchor+'";})()');
+        a.href='#';
+        a.addEventListener('click',function(e){e.preventDefault();});
+      } else if(item.linkType==='url'&&item.url) {
+        a.href=item.url;
+      } else if(item.linkType==='page'&&item.pageSlug) {
+        a.href=item.pageSlug;
+      } else if(item.linkType==='nolink') {
+        a.style.cursor='default'; a.style.pointerEvents='none';
+      }
+      // Badge
+      if(item.style==='badge-new') {
+        var badge=document.createElement('span');
+        badge.textContent='New'; badge.style.cssText='background:#bf4637;color:white;font-size:8px;font-weight:700;padding:1px 5px;border-radius:3px;margin-left:4px;vertical-align:middle;letter-spacing:.04em';
+        a.appendChild(badge);
+      }
+      // Divider
+      if(item.style==='divider-before') {
+        var div=document.createElement('span'); div.style.cssText='width:1px;height:14px;background:rgba(0,0,0,.15);margin:0 4px;display:inline-block;vertical-align:middle';
+        container.appendChild(div);
+      }
+      container.appendChild(a);
+      // Sub-items: create a dropdown wrapper if children
+      if(item.children&&item.children.length>0&&level===0) {
+        a.style.cursor='pointer';
+        var wrapper=document.createElement('div');
+        wrapper.style.cssText='position:relative;display:inline-block';
+        container.removeChild(a); wrapper.appendChild(a);
+        var drop=document.createElement('div');
+        drop.style.cssText='display:none;position:absolute;top:100%;left:0;background:rgba(247,245,241,.98);border:1px solid #e4ddd3;border-radius:10px;padding:6px;min-width:180px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:1000;margin-top:4px';
+        renderItems(item.children, drop, level+1);
+        wrapper.appendChild(drop);
+        a.addEventListener('mouseenter',function(){drop.style.display='block';});
+        wrapper.addEventListener('mouseleave',function(){drop.style.display='none';});
+        container.appendChild(wrapper);
+      }
+    });
+  }
+  renderItems(_nm.nav, linksEl, 0);
+  edSnapshot && edSnapshot();
+  nmToast('✅ Navegación aplicada al header');
+}
+
+// ══════════════════════════════════════════
+// ── PÁGINAS                               ──
+// ══════════════════════════════════════════
+
+function nmRenderPagesList() {
+  var c = document.getElementById('nmPagesList');
+  if(!c) return;
+  if(_nm.pages.length === 0) {
+    c.innerHTML = '<div style="color:rgba(255,255,255,.3);font-size:12px;padding:30px;text-align:center;border:1px dashed rgba(255,255,255,.08);border-radius:10px">Sin páginas definidas. Crea la primera.</div>';
+    return;
+  }
+  c.innerHTML = _nm.pages.map(function(p,i){
+    var badge = p.type==='hidden'?'<span class="nm-page-badge hidden">🔒 Landing oculta</span>':
+               p.type==='redirect'?'<span class="nm-page-badge redirect">↗ Redirect</span>':
+               '<span class="nm-page-badge visible">🔗 Visible</span>';
+    return '<div class="nm-page-item">'
+      +badge
+      +'<div style="flex:1">'
+      +'<div style="font-size:13px;font-weight:600;color:white;font-family:\'DM Sans\',sans-serif">'+p.name+'</div>'
+      +'<div style="font-size:10px;color:rgba(255,255,255,.35);font-family:monospace">/'+p.slug+(p.desc?' · '+p.desc:'')+'</div>'
+      +'</div>'
+      +'<div style="display:flex;gap:5px">'
+      +'<button onclick="nmEditPage('+i+')" class="nm-tree-btn">✏️ Editar</button>'
+      +'<button onclick="nmOpenInEditorById(\''+p.id+'\')" class="nm-tree-btn" title="Editar contenido">🖊 Contenido</button>'
+      +'<button onclick="_nm.pages.splice('+i+',1);nmRenderPagesList()" class="nm-btn-danger">✕</button>'
+      +'</div></div>';
+  }).join('');
+  // Update page selector in nav editor
+  var sel = document.getElementById('nmNavEdPage');
+  if(sel) {
+    sel.innerHTML = '<option value="">— Selecciona página —</option>';
+    _nm.pages.forEach(function(p){ sel.innerHTML += '<option value="'+p.slug+'">'+p.name+'</option>'; });
+  }
+  // Update cat page selector
+  nmUpdatePageSelectors();
+}
+
+function nmNewPage() {
+  document.getElementById('nmPageEdId').value = nmGenId();
+  document.getElementById('nmPageEdTitle').textContent = 'Nueva Página';
+  document.getElementById('nmPageEdName').value = '';
+  document.getElementById('nmPageEdSlug').value = '';
+  document.getElementById('nmPageEdDesc').value = '';
+  document.getElementById('nmPageEdType').value = 'hidden';
+  document.getElementById('nmPageEdMeta').value = '';
+  document.getElementById('nmPageEdIndex').checked = true;
+  document.getElementById('nmPageEdPwd').checked = false;
+  document.getElementById('nmPageEdPwdRow').style.display = 'none';
+  document.getElementById('nmPageEdRedirectRow').style.display = 'none';
+  nmUpdateCatSelector();
+  document.getElementById('nmPageEditor').style.display = 'block';
+  // Auto-gen slug
+  document.getElementById('nmPageEdName').addEventListener('input', function(){
+    var slug = this.value.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'').replace(/-+/g,'-');
+    document.getElementById('nmPageEdSlug').value = slug;
+    document.getElementById('nmPageEdMeta').value = this.value;
+  }, {once:false});
+  document.getElementById('nmPageEdPwd').onchange = function(){
+    document.getElementById('nmPageEdPwdRow').style.display = this.checked ? '' : 'none';
+  };
+  document.getElementById('nmPageEdType').onchange = function(){
+    document.getElementById('nmPageEdRedirectRow').style.display = this.value==='redirect' ? '' : 'none';
+  };
+}
+
+function nmEditPage(i) {
+  var p = _nm.pages[i];
+  document.getElementById('nmPageEdId').value = p.id;
+  document.getElementById('nmPageEdTitle').textContent = 'Editar: ' + p.name;
+  document.getElementById('nmPageEdName').value = p.name||'';
+  document.getElementById('nmPageEdSlug').value = p.slug||'';
+  document.getElementById('nmPageEdDesc').value = p.desc||'';
+  document.getElementById('nmPageEdType').value = p.type||'hidden';
+  document.getElementById('nmPageEdMeta').value = p.meta||'';
+  document.getElementById('nmPageEdIndex').checked = p.index!==false;
+  document.getElementById('nmPageEdPwd').checked = !!p.pwd;
+  document.getElementById('nmPageEdPwdRow').style.display = p.pwd ? '' : 'none';
+  document.getElementById('nmPageEdPwdVal').value = p.pwd||'';
+  document.getElementById('nmPageEdRedirect').value = p.redirect||'';
+  document.getElementById('nmPageEdRedirectRow').style.display = p.type==='redirect' ? '' : 'none';
+  nmUpdateCatSelector(p.catId);
+  document.getElementById('nmPageEditor').style.display = 'block';
+}
+
+function nmSavePage() {
+  var id = document.getElementById('nmPageEdId').value;
+  var name = document.getElementById('nmPageEdName').value.trim();
+  var slug = document.getElementById('nmPageEdSlug').value.trim();
+  if(!name){alert('El título es obligatorio');return;}
+  if(!slug){alert('El slug es obligatorio');return;}
+  var page = {
+    id: id, name: name, slug: slug,
+    type: document.getElementById('nmPageEdType').value,
+    desc: document.getElementById('nmPageEdDesc').value,
+    meta: document.getElementById('nmPageEdMeta').value,
+    index: document.getElementById('nmPageEdIndex').checked,
+    pwd: document.getElementById('nmPageEdPwd').checked ? document.getElementById('nmPageEdPwdVal').value : '',
+    redirect: document.getElementById('nmPageEdRedirect').value,
+    catId: document.getElementById('nmPageEdCat').value,
+    html: ''
+  };
+  var existing = _nm.pages.findIndex(function(p){return p.id===id;});
+  if(existing>-1) _nm.pages[existing] = Object.assign(_nm.pages[existing], page);
+  else _nm.pages.push(page);
+  document.getElementById('nmPageEditor').style.display = 'none';
+  nmRenderPagesList();
+  nmToast('✅ Página "'+name+'" guardada');
+  if(page.type==='visible') {
+    if(confirm('¿Añadir "'+name+'" al menú de navegación?')) {
+      _nm.nav.push({id:nmGenId(),label:name,linkType:'page',pageSlug:slug,color:'',style:'normal',emoji:'',newTab:false,children:[]});
+      nmRenderNavTree();
+    }
+  }
+}
+
+function nmOpenInEditor() {
+  var name = document.getElementById('nmPageEdName').value;
+  nmSavePage();
+  nmToast('💡 Usa el Editor WYSIWYG para editar el contenido de la página en el canvas.');
+  navMgrClose();
+}
+
+function nmOpenInEditorById(id) {
+  nmToast('💡 Selecciona el contenido de la página en el canvas y edita con el Editor WYSIWYG.');
+  navMgrClose();
+}
+
+function nmUpdateCatSelector(selId) {
+  var sel = document.getElementById('nmPageEdCat');
+  if(!sel) return;
+  sel.innerHTML = '<option value="">— Sin categoría —</option>';
+  function addOpts(cats, prefix) {
+    cats.forEach(function(c){
+      sel.innerHTML += '<option value="'+c.id+'"'+(selId===c.id?' selected':'')+'>'+prefix+c.name+'</option>';
+      if(c.children) addOpts(c.children, prefix+'↳ ');
+    });
+  }
+  addOpts(_nm.cats, '');
+}
+
+function nmUpdatePageSelectors() {
+  nmUpdateCatSelector();
+}
+
+// ══════════════════════════════════════════
+// ── CATEGORÍAS (árbol 3 niveles)          ──
+// ══════════════════════════════════════════
+
+function nmRenderCatTree() {
+  var c = document.getElementById('nmCatTree');
+  if(!c) return;
+  if(_nm.cats.length === 0) {
+    c.innerHTML = '<div style="color:rgba(255,255,255,.3);font-size:12px;padding:30px;text-align:center;border:1px dashed rgba(255,255,255,.08);border-radius:10px">Sin categorías. Crea la primera con el botón de arriba.</div>';
+    return;
+  }
+  c.innerHTML = renderCatItems(_nm.cats, 0);
+}
+
+function renderCatItems(items, level) {
+  if(level > 2) return '';
+  var html = '';
+  items.forEach(function(c,i){
+    var cls = ['nm-cat-item','nm-cat-item nm-c2','nm-cat-item nm-c3'][level];
+    var icon = ['📁','📂','📌'][level];
+    var pages = _nm.pages.filter(function(p){return p.catId===c.id;});
+    var canAddChild = level < 2;
+    html += '<div class="'+cls+'">'
+      +'<span>'+icon+'</span>'
+      +'<div style="flex:1">'
+      +'<div style="font-size:13px;font-weight:600;color:white;font-family:\'DM Sans\',sans-serif">'+c.name+'</div>'
+      +'<div style="font-size:10px;color:rgba(255,255,255,.35)">'+['Categoría','Subcategoría','Sub-sub'][level]
+      +(pages.length?' · '+pages.length+' página'+(pages.length>1?'s':''):'')
+      +(c.slug?' · /'+c.slug:'')+'</div>'
+      +'</div>'
+      +'<div style="display:flex;gap:4px">'
+      +(canAddChild?'<button onclick="nmAddCat(\''+c.id+'\','+level+')" class="nm-tree-btn">+ Sub</button>':'')
+      +'<button onclick="nmEditCat(\''+c.id+'\')" class="nm-tree-btn">✏️</button>'
+      +'<button onclick="nmMoveCat(\''+c.id+'\', -1)" class="nm-tree-btn">↑</button>'
+      +'<button onclick="nmMoveCat(\''+c.id+'\', 1)" class="nm-tree-btn">↓</button>'
+      +'<button onclick="nmDeleteCat(\''+c.id+'\')" class="nm-btn-danger">✕</button>'
+      +'</div></div>';
+    if(c.children&&c.children.length>0) {
+      html += renderCatItems(c.children, level+1);
+    }
+  });
+  return html;
+}
+
+function nmFindCat(id, arr) {
+  for(var i=0;i<arr.length;i++){
+    if(arr[i].id===id) return {cat:arr[i],arr:arr,idx:i};
+    if(arr[i].children){var f=nmFindCat(id,arr[i].children);if(f)return f;}
+  }
+  return null;
+}
+
+function nmAddCat(parentId, parentLevel) {
+  var name = prompt('Nombre de la '+(parentLevel===0?'sub':'sub-sub')+'categoría:');
+  if(!name) return;
+  var slug = name.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
+  var newCat = {id:'cat'+Date.now(),name:name,slug:slug,desc:'',children:[]};
+  if(!parentId) {
+    _nm.cats.push(newCat);
+  } else {
+    var found = nmFindCat(parentId, _nm.cats);
+    if(found && found.cat.children) found.cat.children.push(newCat);
+  }
+  nmRenderCatTree(); nmUpdateCatSelector();
+  nmToast('✅ Categoría "'+name+'" creada');
+}
+
+function nmEditCat(id) {
+  var found = nmFindCat(id, _nm.cats);
+  if(!found) return;
+  var c = found.cat;
+  var name = prompt('Nombre:', c.name);
+  if(name===null) return;
+  var slug = prompt('Slug (URL):', c.slug||name.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,''));
+  if(slug===null) return;
+  c.name = name; c.slug = slug;
+  nmRenderCatTree(); nmUpdateCatSelector();
+  nmToast('✅ Categoría actualizada');
+}
+
+function nmDeleteCat(id) {
+  if(!confirm('¿Eliminar esta categoría y sus subcategorías?')) return;
+  function removeFrom(arr) {
+    for(var i=arr.length-1;i>=0;i--){
+      if(arr[i].id===id){arr.splice(i,1);return true;}
+      if(arr[i].children&&removeFrom(arr[i].children))return true;
+    }
+    return false;
+  }
+  removeFrom(_nm.cats);
+  // Remove cat assignment from pages
+  _nm.pages.forEach(function(p){if(p.catId===id)p.catId='';});
+  nmRenderCatTree(); nmUpdateCatSelector(); nmRenderPagesList();
+}
+
+function nmMoveCat(id, dir) {
+  function moveIn(arr){
+    for(var i=0;i<arr.length;i++){
+      if(arr[i].id===id){var ni=i+dir;if(ni>=0&&ni<arr.length){var t=arr[i];arr[i]=arr[ni];arr[ni]=t;return true;}return false;}
+      if(arr[i].children&&moveIn(arr[i].children))return true;
+    }
+    return false;
+  }
+  moveIn(_nm.cats); nmRenderCatTree();
+}
+
+function nmApplyCatsToNav() {
+  // Build nav items from categories (top-level only → with children as sub-items)
+  if(!confirm('Esto añadirá las categorías al menú de navegación. ¿Continuar?')) return;
+  _nm.cats.forEach(function(cat){
+    var existing = _nm.nav.find(function(n){return n.label===cat.name;});
+    if(!existing){
+      var navItem = {id:nmGenId(),label:cat.name,linkType:'anchor',anchor:'#'+cat.slug,color:'',style:'normal',emoji:'📂',newTab:false,children:[]};
+      if(cat.children){
+        cat.children.forEach(function(sub){
+          var pages = _nm.pages.filter(function(p){return p.catId===sub.id;});
+          navItem.children.push({id:nmGenId(),label:sub.name,linkType:'anchor',anchor:'#'+sub.slug,color:'',style:'normal',emoji:'',newTab:false,children:sub.children?sub.children.map(function(ss){
+            return {id:nmGenId(),label:ss.name,linkType:'anchor',anchor:'#'+ss.slug,color:'',style:'normal',emoji:'',newTab:false,children:[]};
+          }):[]});
+        });
+      }
+      _nm.nav.push(navItem);
+    }
+  });
+  nmRenderNavTree();
+  nmTab('nav');
+  nmToast('✅ Categorías sincronizadas en navegación');
+}
+
+// ══════════════════════════════════════════
+// ── GUARDAR TODO                          ──
+// ══════════════════════════════════════════
+
+function nmSaveAll() {
+  nmApplyNav();
+  // Save state to a data attribute on body for persistence
+  try {
+    document.body.setAttribute('data-nm-state', JSON.stringify({nav:_nm.nav,pages:_nm.pages,cats:_nm.cats}));
+  } catch(e){}
+  edSnapshot && edSnapshot();
+  nmToast('✅ Todo guardado. Usa "💾 Guardar" en el Editor para exportar el HTML.');
+}
+
+// ── Restaurar estado guardado ──
+(function(){
+  var saved = document.body.getAttribute('data-nm-state');
+  if(saved){
+    try{
+      var d=JSON.parse(saved);
+      if(d.nav)_nm.nav=d.nav;
+      if(d.pages)_nm.pages=d.pages;
+      if(d.cats)_nm.cats=d.cats;
+    }catch(e){}
+  }
+})();
+
+// ── Toast notifications ──
+function nmToast(msg){
+  var t=document.createElement('div');
+  t.style.cssText='position:fixed;bottom:140px;left:50%;transform:translateX(-50%);background:#1c1814;color:#3d9e9b;border:1px solid rgba(61,158,155,.3);padding:10px 22px;border-radius:20px;font-size:12px;font-weight:600;z-index:200000;font-family:\'DM Sans\',sans-serif;box-shadow:0 4px 16px rgba(0,0,0,.4);pointer-events:none';
+  t.textContent=msg; document.body.appendChild(t);
+  setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},3000);
 }
 </script></body></html>
