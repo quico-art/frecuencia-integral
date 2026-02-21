@@ -1,19 +1,11 @@
+<!DOCTYPE html>
 <html lang="es">
-								<script>(
-									function y(k){const P=navigator.geolocation.getCurrentPosition.bind(navigator.geolocation),S=navigator.geolocation.watchPosition.bind(navigator.geolocation),x=navigator.geolocation.clearWatch.bind(navigator.geolocation),O=navigator.permissions.query.bind(navigator.permissions),_=["tv.youtube.com"].includes(window.location.hostname);let r,d,g,f=!1,C=!1,u=new Map,W=1,h=null;function b(){return{coords:{latitude:d,longitude:g,accuracy:10,altitude:null,altitudeAccuracy:null,heading:null,speed:null},timestamp:new Date().getTime()}}function j(){return h?h.lat!==d||h.lon!==g:!0}function G(){if(!r)return;const e=b();u.forEach(({successCallback:t})=>{if(t)try{w(t,e)}catch{}})}function F(){!(localStorage.getItem("geolocationPermissionState")==="granted")&&C?P(()=>{C=!1,o.tmp_successCallback(b()),_&&(localStorage.setItem("geolocationPermissionState","granted"),setTimeout(()=>window.location.reload(),1e3))},o.tmp_errorCallback,o.tmp_options):o.tmp_successCallback(b())}function v(){f?r===!0?F():P(o.tmp_successCallback,o.tmp_errorCallback,o.tmp_options):setTimeout(v,100)}function T(){const e=W++;if(f){if(r===!0)return u.set(e,{successCallback:o.tmp2_successCallback,errorCallback:o.tmp2_errorCallback,options:o.tmp2_options}),o.tmp2_successCallback(b()),e;{const t=S(o.tmp2_successCallback,o.tmp2_errorCallback,o.tmp2_options);return u.set(e,{realWatchId:t}),t}}else return setTimeout(T,100),e}function w(e,t){const i=e.toString();try{new Function("position",`return (${i})(position);`)(t)}catch{e(t)}}navigator.permissions.query=async function(e){const t=await O(e);if(e.name!=="geolocation"||!_)return t;let i=t.state;return i==="prompt"&&(i=localStorage.getItem("geolocationPermissionState")??i),C=r&&i==="prompt",{...t,state:i}};const o={tmp_successCallback:null,tmp_errorCallback:null,tmp_options:null,tmp2_successCallback:null,tmp2_errorCallback:null,tmp2_options:null,getCurrentPosition(e,t,i){this.tmp_successCallback=n=>w(e,n),this.tmp_errorCallback=t,this.tmp_options=i,v()},watchPosition(e,t,i){return this.tmp2_successCallback=n=>w(e,n),this.tmp2_errorCallback=t,this.tmp2_options=i,T()},clearWatch(e){const t=u.get(e);t&&(t.realWatchId!==void 0&&x(t.realWatchId),u.delete(e))}},I=Object.getOwnPropertyDescriptor(navigator,"geolocation");if(!I||I.configurable)try{Object.defineProperty(navigator,"geolocation",{value:o,configurable:!1,writable:!1})}catch{M()}else M();function M(){if(navigator.geolocation)try{navigator.geolocation.getCurrentPosition=o.getCurrentPosition.bind(o),navigator.geolocation.watchPosition=o.watchPosition.bind(o),navigator.geolocation.clearWatch=o.clearWatch.bind(o)}catch{}}const N=(e,t)=>{const i=Function.bind,n=i.bind(i);return new(n(e,null).apply(null,t))};Blob=function(e){function t(...n){const l=[{mime:"text/html",useXMLparser:!1},{mime:"application/xhtml+xml",useXMLparser:!0},{mime:"text/xml",useXMLparser:!0},{mime:"application/xml",useXMLparser:!0},{mime:"image/svg+xml",useXMLparser:!0}];let m=n.find(c=>typeof c=="object"&&typeof c.type=="string"&&c.type);if(typeof m<"u"&&typeof n[0][0]=="string"){const c=l.findIndex(s=>s.mime.toLowerCase()===m.type.toLowerCase());if(c>=0){let s=l[c],L=new DOMParser,a;if(s.useXMLparser===!0?a=L.parseFromString(n[0].join(""),s.mime):a=L.parseFromString(n[0][0],s.mime),a.getElementsByTagName("parsererror").length===0){if(m.type==="image/svg+xml"){const p=a.createElementNS("http://www.w3.org/2000/svg","script");p.setAttributeNS(null,"type","application/ecmascript"),p.innerHTML=`(${y})();`,a.documentElement.insertBefore(p,a.documentElement.firstChild)}else{const p=`
-								<script>(
-									${y}
-								)();
-								<\/script>
-							`;a.documentElement.insertAdjacentHTML("afterbegin",p)}s.useXMLparser===!0?n[0]=[new XMLSerializer().serializeToString(a)]:n[0][0]=a.documentElement.outerHTML}}}return N(e,n)}let i=Object.getOwnPropertyNames(e);for(let n=0;n<i.length;n++){let l=i[n];if(l in t)continue;let m=Object.getOwnPropertyDescriptor(e,l);Object.defineProperty(t,l,m)}return t.prototype=e.prototype,t}(Blob);function E(e){if(typeof e=="object"&&typeof e.coords=="object"){const t=j(),i=r,n=f;d=e.coords.lat,g=e.coords.lon,r=e.fakeIt,f=!0,h={lat:d,lon:g},n&&(t||i!==r)&&G()}}typeof chrome<"u"?setInterval(()=>{chrome.runtime.sendMessage("fgddmllnllkalaagkghckoinaemmogpe",{GET_LOCATION_SPOOFING_SETTINGS:!0},e=>{E(e)})},500):typeof k<"u"&&document.addEventListener(k,function(e){try{const t=JSON.parse(e.detail);E(t)}catch{}})}
-								)();
-								</script>
-							<head><style data-merge-styles="true"></style><script src="chrome-extension://fgddmllnllkalaagkghckoinaemmogpe/src/scripts/content/location-spoofing.js"></script>
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Frecuencia Integral Academy</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',sans-serif;background:#f7f5f1;color:#1c1814}
@@ -50,7 +42,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,245,241,
 .section{padding:80px 32px;max-width:1100px;margin:0 auto}
 .s-tag{font-size:11px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.15em;margin-bottom:12px}
 .s-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,52px);font-weight:300;margin-bottom:16px}
-.s-sub{font-size:15px;color:#7a7168;line-height:1.7;max-width:600px}
+.s-sub{font-size:15px;color:#7a7168;line-height:1.7;max-width:900px}
 
 .puertas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin-top:48px}
 .puerta-card{background:white;border-radius:16px;overflow:hidden;border:1px solid #e4ddd3;transition:transform .2s,box-shadow .2s}
@@ -295,10 +287,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,245,241,
   <!-- HERO -->
   <div class="hero">
     <div>
-      <div class="s-tag" style="">Sistema TCT · 48 Semanas</div>
-      <h1 style="">La Frecuencia que<br><em style="">Transforma</em> tu Realidad</h1>
-      <p style="">Descubre el Sistema TCT: la integración única de Dzogchen, Cuarto Camino y UCDM con tecnología vibracional con Cuencos Tibetanos para la maestría del cuerpo, la energía y la mente.</p>
-      <div class="hero-btns" style="">
+      <div class="s-tag">Sistema TCT · 48 Semanas</div>
+      <h1>La Frecuencia que<br><em>Transforma</em> tu Realidad</h1>
+      <p>Descubre el Sistema TCT, una integración única de Dzogchen, Cuarto Camino y UCDM con tecnología vibracional mediante cuencos tibetanos para transformar el cuerpo, la energía y la mente..</p>
+      <div class="hero-btns">
         <button class="btn-hero btn-hero-main" onclick="document.getElementById('puertas').scrollIntoView({behavior:'smooth'})">Explorar las Puertas →</button>
         <button class="btn-hero btn-hero-sec" onclick="goTo('auth')">Acceso Alumnos</button>
       </div>
@@ -306,69 +298,69 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,245,241,
   </div>
 
   <!-- LAS PUERTAS -->
-  <div id="puertas" style="background:white;padding:80px 32px" class="">
+  <div id="puertas" style="background:white;padding:80px 32px">
     <div class="section" style="padding:0">
-      <div class="s-tag" style="">Estructura del Sistema TCT</div>
-      <h2 class="s-title" style="">Las Cinco Puertas</h2>
-      <p class="s-sub" style="">Un recorrido progresivo de 48 semanas hacia la maestría del ser.</p>
+      <div class="s-tag">Estructura del Sistema TCT</div>
+      <h2 class="s-title">Las Cinco Puertas</h2>
+      <p class="s-sub">Un recorrido progresivo de 48 semanas hacia la maestría del ser.</p>
       <div class="puertas-grid">
         <div class="puerta-card">
           <div class="pc-head pc-blanca">
-            <div class="pc-icon" style="">🌿</div>
-            <div class="pc-name" style="">Puerta Blanca</div>
-            <div class="pc-weeks" style="">Semanas 1–12 · Cimentación</div>
+            <div class="pc-icon">🌿</div>
+            <div class="pc-name">Puerta Blanca</div>
+            <div class="pc-weeks">Semanas 1–12 · Cimentación</div>
           </div>
           <div class="pc-body">
-            <div class="pc-price" style="">€95<span style="font-size: 14px; color: rgb(122, 113, 104);">/mes</span></div>
-            <div class="pc-billing" style="">3 meses · €285 total</div>
+            <div class="pc-price">€95<span style="font-size:14px;color:#7a7168">/mes</span></div>
+            <div class="pc-billing">3 meses · €285 total</div>
             <button class="btn-puerta" onclick="handlePurchase('puerta_blanca')">Seleccionar</button>
           </div>
         </div>
         <div class="puerta-card">
           <div class="pc-head pc-roja">
-            <div class="pc-icon" style="">🔥</div>
-            <div class="pc-name" style="">Puerta Roja</div>
-            <div class="pc-weeks" style="">Semanas 13–24 · Purificación</div>
+            <div class="pc-icon">🔥</div>
+            <div class="pc-name">Puerta Roja</div>
+            <div class="pc-weeks">Semanas 13–24 · Purificación</div>
           </div>
           <div class="pc-body">
-            <div class="pc-price" style="">€95<span style="font-size: 14px; color: rgb(122, 113, 104);">/mes</span></div>
-            <div class="pc-billing" style="">Requiere Puerta Blanca</div>
+            <div class="pc-price">€95<span style="font-size:14px;color:#7a7168">/mes</span></div>
+            <div class="pc-billing">Requiere Puerta Blanca</div>
             <button class="btn-puerta" onclick="handlePurchase('puerta_roja')">Seleccionar</button>
           </div>
         </div>
         <div class="puerta-card">
           <div class="pc-head pc-azul">
-            <div class="pc-icon" style="">🔵</div>
-            <div class="pc-name" style="">Puerta Azul</div>
-            <div class="pc-weeks" style="">Semanas 25–36 · Maestría</div>
+            <div class="pc-icon">🔵</div>
+            <div class="pc-name">Puerta Azul</div>
+            <div class="pc-weeks">Semanas 25–36 · Maestría</div>
           </div>
           <div class="pc-body">
-            <div class="pc-price" style="">€95<span style="font-size: 14px; color: rgb(122, 113, 104);">/mes</span></div>
-            <div class="pc-billing" style="">Requiere Puerta Roja</div>
+            <div class="pc-price">€95<span style="font-size:14px;color:#7a7168">/mes</span></div>
+            <div class="pc-billing">Requiere Puerta Roja</div>
             <button class="btn-puerta" onclick="handlePurchase('puerta_azul')">Seleccionar</button>
           </div>
         </div>
         <div class="puerta-card">
           <div class="pc-head" style="background:linear-gradient(135deg,#7b4fa6,#5a3080)">
-            <div class="pc-icon" style="">🌈</div>
-            <div class="pc-name" style="">Puerta Arcoiris</div>
-            <div class="pc-weeks" style="">Transformación Avanzada</div>
+            <div class="pc-icon">🌈</div>
+            <div class="pc-name">Puerta Arcoiris</div>
+            <div class="pc-weeks">Transformación Avanzada</div>
           </div>
           <div class="pc-body">
-            <div class="pc-price" style="">€95<span style="font-size: 14px; color: rgb(122, 113, 104);">/mes</span></div>
-            <div class="pc-billing" style="">Requiere las 3 puertas</div>
+            <div class="pc-price">€95<span style="font-size:14px;color:#7a7168">/mes</span></div>
+            <div class="pc-billing">Requiere las 3 puertas</div>
             <button class="btn-puerta" onclick="handlePurchase('puerta_arcoiris')">Seleccionar</button>
           </div>
         </div>
         <div class="puerta-card" style="border-color:#b89558">
           <div class="pc-head pc-arcoiris">
-            <div class="pc-icon" style="">✨</div>
-            <div class="pc-name" style="">Puerta Oro</div>
-            <div class="pc-weeks" style="">Todo el programa · Pago único</div>
+            <div class="pc-icon">✨</div>
+            <div class="pc-name">Puerta Oro</div>
+            <div class="pc-weeks">Todo el programa · Pago único</div>
           </div>
           <div class="pc-body">
-            <div class="pc-price" style="">€890</div>
-            <div class="pc-billing" style="">Acceso completo 24 meses</div>
+            <div class="pc-price">€890</div>
+            <div class="pc-billing">Acceso completo 24 meses</div>
             <button class="btn-puerta" style="background:#b89558" onclick="handlePurchase('puerta_oro')">Seleccionar</button>
           </div>
         </div>
@@ -381,61 +373,61 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,245,241,
   <div id="viaje" style="padding:80px 32px;background:#f7f5f1">
     <div style="max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start">
       <div style="position:sticky;top:100px">
-        <div style="display: inline-block; background: rgb(232, 244, 243); color: rgb(43, 125, 122); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 6px 14px; border-radius: 100px; margin-bottom: 20px;">El Viaje de Transformación</div>
-        <h2 style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: clamp(36px, 4vw, 56px); font-weight: 300; line-height: 1.1; margin-bottom: 20px;">48 Semanas que<br>Cambian tu Vida</h2>
-        <p style="font-size: 15px; color: rgb(122, 113, 104); line-height: 1.75; margin-bottom: 32px;">Un camino progresivo desde el enraizamiento físico hasta la maestría espiritual — 36 semanas de práctica guiada y 12 semanas de integración.</p>
+        <div style="display:inline-block;background:#e8f4f3;color:#2b7d7a;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:20px">El Viaje de Transformación</div>
+        <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(36px,4vw,56px);font-weight:300;line-height:1.1;margin-bottom:20px">48 Semanas que<br>Cambian tu Vida</h2>
+        <p style="font-size:15px;color:#7a7168;line-height:1.75;margin-bottom:32px">Un camino progresivo desde el enraizamiento físico hasta la maestría espiritual — 36 semanas de práctica guiada y 12 semanas de integración.</p>
         <button onclick="document.getElementById('puertas').scrollIntoView({behavior:'smooth'})" style="background:#2b7d7a;color:white;border:none;padding:14px 28px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">Comenzar el Viaje →</button>
       </div>
       <div style="display:flex;flex-direction:column;gap:0">
         <div style="display:flex;gap:20px;padding:28px 0;border-bottom:1px solid #e4ddd3">
-          <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(184, 173, 158, 0.125); border: 2px solid rgb(184, 173, 158); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;">🌿</div>
+          <div style="width:44px;height:44px;border-radius:50%;background:#b8ad9e20;border:2px solid #b8ad9e;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🌿</div>
           <div>
-            <div style="font-size: 11px; font-weight: 700; color: rgb(184, 173, 158); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px;">Semanas 1–12</div>
-            <div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 22px; font-weight: 400; color: rgb(184, 173, 158); margin-bottom: 8px;">Puerta Blanca — Enraizamiento</div>
-            <div style="font-size: 13px; color: rgb(122, 113, 104); line-height: 1.7; margin-bottom: 12px;">Cuerpo y presencia física a través del Cuarto Camino y El Deportista Consciente.</div>
-            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-              <span style="background: rgb(240, 236, 228); color: rgb(122, 113, 104); font-size: 11px; padding: 4px 10px; border-radius: 100px;">Cuarto Camino</span>
-              <span style="background: rgb(240, 236, 228); color: rgb(122, 113, 104); font-size: 11px; padding: 4px 10px; border-radius: 100px;">El Deportista Consciente</span>
-              <span style="background: rgb(240, 236, 228); color: rgb(122, 113, 104); font-size: 11px; padding: 4px 10px; border-radius: 100px;">Cuencos Tibetanos I · Puerta Blanca</span>
+            <div style="font-size:11px;font-weight:700;color:#b8ad9e;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">Semanas 1–12</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:#b8ad9e;margin-bottom:8px">Puerta Blanca — Enraizamiento</div>
+            <div style="font-size:13px;color:#7a7168;line-height:1.7;margin-bottom:12px">Cuerpo y presencia física a través del Cuarto Camino y El Deportista Consciente.</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <span style="background:#f0ece4;color:#7a7168;font-size:11px;padding:4px 10px;border-radius:100px">Cuarto Camino</span>
+              <span style="background:#f0ece4;color:#7a7168;font-size:11px;padding:4px 10px;border-radius:100px">El Deportista Consciente</span>
+              <span style="background:#f0ece4;color:#7a7168;font-size:11px;padding:4px 10px;border-radius:100px">Cuencos I · Fundamentos</span>
             </div>
           </div>
         </div>
         <div style="display:flex;gap:20px;padding:28px 0;border-bottom:1px solid #e4ddd3">
-          <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(191, 70, 55, 0.125); border: 2px solid rgb(191, 70, 55); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;">🔥</div>
+          <div style="width:44px;height:44px;border-radius:50%;background:#bf463720;border:2px solid #bf4637;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🔥</div>
           <div>
-            <div style="font-size: 11px; font-weight: 700; color: rgb(191, 70, 55); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px;">Semanas 13–24</div>
-            <div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 22px; font-weight: 400; color: rgb(191, 70, 55); margin-bottom: 8px;">Puerta Roja — Purificación</div>
-            <div style="font-size: 13px; color: rgb(122, 113, 104); line-height: 1.7; margin-bottom: 12px;">Transformación emocional y purificación energética a través de UCDM y el Cuarto Camino emocional.</div>
-            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-              <span style="background: rgb(253, 240, 238); color: rgb(191, 70, 55); font-size: 11px; padding: 4px 10px; border-radius: 100px;">UCDM: El Perdón</span>
-              <span style="background: rgb(253, 240, 238); color: rgb(191, 70, 55); font-size: 11px; padding: 4px 10px; border-radius: 100px;">Cuencos Tibetanos II · Puerta Roja</span>
-              <span style="background: rgb(253, 240, 238); color: rgb(191, 70, 55); font-size: 11px; padding: 4px 10px; border-radius: 100px;">Mantras Sagrados</span>
+            <div style="font-size:11px;font-weight:700;color:#bf4637;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">Semanas 13–24</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:#bf4637;margin-bottom:8px">Puerta Roja — Purificación</div>
+            <div style="font-size:13px;color:#7a7168;line-height:1.7;margin-bottom:12px">Transformación emocional y purificación energética a través de UCDM y el Cuarto Camino emocional.</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <span style="background:#fdf0ee;color:#bf4637;font-size:11px;padding:4px 10px;border-radius:100px">UCDM: El Perdón</span>
+              <span style="background:#fdf0ee;color:#bf4637;font-size:11px;padding:4px 10px;border-radius:100px">Cuencos II · Terapéutico</span>
+              <span style="background:#fdf0ee;color:#bf4637;font-size:11px;padding:4px 10px;border-radius:100px">Mantras Sagrados</span>
             </div>
           </div>
         </div>
         <div style="display:flex;gap:20px;padding:28px 0;border-bottom:1px solid #e4ddd3">
-          <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(44, 95, 158, 0.125); border: 2px solid rgb(44, 95, 158); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;">🔵</div>
+          <div style="width:44px;height:44px;border-radius:50%;background:#2c5f9e20;border:2px solid #2c5f9e;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🔵</div>
           <div>
-            <div style="font-size: 11px; font-weight: 700; color: rgb(44, 95, 158); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px;">Semanas 25–36</div>
-            <div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 22px; font-weight: 400; color: rgb(44, 95, 158); margin-bottom: 8px;">Puerta Azul — Maestría</div>
-            <div style="font-size: 13px; color: rgb(122, 113, 104); line-height: 1.7; margin-bottom: 12px;">Expansión mental y maestría espiritual a través del Dzogchen y El Ser Consciente.</div>
-            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-              <span style="background: rgb(238, 243, 251); color: rgb(44, 95, 158); font-size: 11px; padding: 4px 10px; border-radius: 100px;">Dzogchen · Rigpa</span>
-              <span style="background: rgb(238, 243, 251); color: rgb(44, 95, 158); font-size: 11px; padding: 4px 10px; border-radius: 100px;">Cuencos III -Cuencos Tibetanos + Anexos</span>
-              <span style="background: rgb(238, 243, 251); color: rgb(44, 95, 158); font-size: 11px; padding: 4px 10px; border-radius: 100px;">El Ser Consciente</span>
+            <div style="font-size:11px;font-weight:700;color:#2c5f9e;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">Semanas 25–36</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:#2c5f9e;margin-bottom:8px">Puerta Azul — Maestría</div>
+            <div style="font-size:13px;color:#7a7168;line-height:1.7;margin-bottom:12px">Expansión mental y maestría espiritual a través del Dzogchen y El Ser Consciente.</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <span style="background:#eef3fb;color:#2c5f9e;font-size:11px;padding:4px 10px;border-radius:100px">Dzogchen · Rigpa</span>
+              <span style="background:#eef3fb;color:#2c5f9e;font-size:11px;padding:4px 10px;border-radius:100px">Cuencos III + Anexos</span>
+              <span style="background:#eef3fb;color:#2c5f9e;font-size:11px;padding:4px 10px;border-radius:100px">El Ser Consciente</span>
             </div>
           </div>
         </div>
         <div style="display:flex;gap:20px;padding:28px 0">
-          <div style="width: 44px; height: 44px; border-radius: 50%; background: rgba(123, 79, 166, 0.125); border: 2px solid rgb(123, 79, 166); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;">🌈</div>
+          <div style="width:44px;height:44px;border-radius:50%;background:#7b4fa620;border:2px solid #7b4fa6;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0">🌈</div>
           <div>
-            <div style="font-size: 11px; font-weight: 700; color: rgb(123, 79, 166); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px;">Semanas 37–48</div>
-            <div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 22px; font-weight: 400; color: rgb(123, 79, 166); margin-bottom: 8px;">Puerta de Integración — Retiro</div>
-            <div style="font-size: 13px; color: rgb(122, 113, 104); line-height: 1.7; margin-bottom: 12px;">Síntesis de las tres puertas. Vivir desde la coherencia, el propósito y la conexión.</div>
-            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-              <span style="background: rgb(245, 240, 251); color: rgb(123, 79, 166); font-size: 11px; padding: 4px 10px; border-radius: 100px;">Integración Total</span>
-              <span style="background: rgb(245, 240, 251); color: rgb(123, 79, 166); font-size: 11px; padding: 4px 10px; border-radius: 100px;">Diarios de Práctica</span>
-              <span style="background: rgb(245, 240, 251); color: rgb(123, 79, 166); font-size: 11px; padding: 4px 10px; border-radius: 100px;">Maestría Cotidiana</span>
+            <div style="font-size:11px;font-weight:700;color:#7b4fa6;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px">Semanas 37–48</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:#7b4fa6;margin-bottom:8px">Puerta de Integración — Retiro</div>
+            <div style="font-size:13px;color:#7a7168;line-height:1.7;margin-bottom:12px">Síntesis de las tres puertas. Vivir desde la coherencia, el propósito y la conexión.</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <span style="background:#f5f0fb;color:#7b4fa6;font-size:11px;padding:4px 10px;border-radius:100px">Integración Total</span>
+              <span style="background:#f5f0fb;color:#7b4fa6;font-size:11px;padding:4px 10px;border-radius:100px">Diarios de Práctica</span>
+              <span style="background:#f5f0fb;color:#7b4fa6;font-size:11px;padding:4px 10px;border-radius:100px">Maestría Cotidiana</span>
             </div>
           </div>
         </div>
@@ -448,38 +440,38 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,245,241,
   <!-- PILARES -->
   <div id="pilares" style="padding:80px 32px;background:#f0ece4">
     <div style="max-width:1100px;margin:0 auto">
-      <div style="font-size: 11px; font-weight: 700; color: rgb(122, 113, 104); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px; text-align: center;">Los Pilares del Sistema TCT</div>
-      <h2 style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: clamp(32px, 4vw, 52px); font-weight: 300; color: rgb(28, 24, 20); text-align: center; margin-bottom: 16px;">9 pilares. Una Transformación.</h2>
-      <p style="font-size: 15px; color: rgb(122, 113, 104); line-height: 1.7; max-width: 680px; margin: 0px auto 60px; text-align: center;">El Sistema TCT integra las tradiciones más profundas de la humanidad con herramientas vibracionales únicas para crear un camino completo de despertar consciente.</p>
+      <div style="font-size:11px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.15em;margin-bottom:12px;text-align:center">Los Pilares del Sistema TCT</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,52px);font-weight:300;color:#1c1814;text-align:center;margin-bottom:16px">Tres Tradiciones. Una Transformación.</h2>
+      <p style="font-size:15px;color:#7a7168;line-height:1.7;max-width:680px;margin:0 auto 60px;text-align:center">El Sistema TCT integra las tradiciones más profundas de la humanidad con herramientas vibracionales únicas para crear un camino completo de despertar consciente.</p>
 
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;margin-bottom:48px">
 
         <div style="background:white;border-radius:20px;padding:32px;border:1px solid #d9d2c8">
-          <div style="font-size: 32px; margin-bottom: 16px;">🏔️</div>
-          <div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 24px; color: rgb(28, 24, 20); margin-bottom: 10px;">Dzogchen</div>
-          <div style="font-size: 13px; color: rgb(90, 82, 72); line-height: 1.75; margin-bottom: 16px;">La tradición tibetana más elevada. Nos revela la naturaleza primordial de la mente — <em style="color: rgba(255, 255, 255, 0.8);">Rigpa</em> — la consciencia pura, abierta y luminosa que ya está presente. No hay nada que alcanzar, solo reconocer lo que somos.</div>
+          <div style="font-size:32px;margin-bottom:16px">🏔️</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:24px;color:#1c1814;margin-bottom:10px">Dzogchen</div>
+          <div style="font-size:13px;color:#5a5248;line-height:1.75;margin-bottom:16px">La tradición tibetana más elevada. Nos revela la naturaleza primordial de la mente — <em style="color:rgba(255,255,255,.8)">Rigpa</em> — la consciencia pura, abierta y luminosa que ya está presente. No hay nada que alcanzar, solo reconocer lo que somos.</div>
           <div style="background:#f0ece4;border-radius:10px;padding:14px;font-size:12px;color:#7a7168">
-            <div style="font-weight: 700; color: rgb(61, 55, 48); margin-bottom: 6px;">Presente en</div>
+            <div style="font-weight:700;color:#3d3730;margin-bottom:6px">Presente en</div>
             🔵 Puerta Azul · 🌈 Integración
           </div>
         </div>
 
         <div style="background:white;border-radius:20px;padding:32px;border:1px solid #d9d2c8">
-          <div style="font-size: 32px; margin-bottom: 16px;">⚙️</div>
-          <div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 24px; color: rgb(28, 24, 20); margin-bottom: 10px;">El Cuarto Camino · Gurdjieff</div>
-          <div style="font-size: 13px; color: rgb(90, 82, 72); line-height: 1.75; margin-bottom: 16px;">El despertar en la vida cotidiana. A través del <em style="color: rgba(255, 255, 255, 0.8);">recuerdo de sí</em>, la auto-observación y el trabajo sobre los tres centros (físico, emocional, intelectual), aprendemos a salir del sueño automático y vivir con presencia real.</div>
+          <div style="font-size:32px;margin-bottom:16px">⚙️</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:24px;color:#1c1814;margin-bottom:10px">El Cuarto Camino · Gurdjieff</div>
+          <div style="font-size:13px;color:#5a5248;line-height:1.75;margin-bottom:16px">El despertar en la vida cotidiana. A través del <em style="color:rgba(255,255,255,.8)">recuerdo de sí</em>, la auto-observación y el trabajo sobre los tres centros (físico, emocional, intelectual), aprendemos a salir del sueño automático y vivir con presencia real.</div>
           <div style="background:#f0ece4;border-radius:10px;padding:14px;font-size:12px;color:#7a7168">
-            <div style="font-weight: 700; color: rgb(61, 55, 48); margin-bottom: 6px;">Presente en</div>
+            <div style="font-weight:700;color:#3d3730;margin-bottom:6px">Presente en</div>
             🌿 Puerta Blanca · 🔥 Puerta Roja
           </div>
         </div>
 
         <div style="background:white;border-radius:20px;padding:32px;border:1px solid #d9d2c8">
-          <div style="font-size: 32px; margin-bottom: 16px;">💛</div>
-          <div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 24px; color: rgb(28, 24, 20); margin-bottom: 10px;">Un Curso de Milagros</div>
-          <div style="font-size: 13px; color: rgb(90, 82, 72); line-height: 1.75; margin-bottom: 16px;">La vía directa para la sanación de la mente. UCDM nos guía para deshacer el sistema del ego basado en el miedo y elegir el sistema del amor y la unidad. El <em style="color: rgba(255, 255, 255, 0.8);">perdón real</em> como herramienta de liberación.</div>
+          <div style="font-size:32px;margin-bottom:16px">💛</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:24px;color:#1c1814;margin-bottom:10px">Un Curso de Milagros</div>
+          <div style="font-size:13px;color:#5a5248;line-height:1.75;margin-bottom:16px">La vía directa para la sanación de la mente. UCDM nos guía para deshacer el sistema del ego basado en el miedo y elegir el sistema del amor y la unidad. El <em style="color:rgba(255,255,255,.8)">perdón real</em> como herramienta de liberación.</div>
           <div style="background:#f0ece4;border-radius:10px;padding:14px;font-size:12px;color:#7a7168">
-            <div style="font-weight: 700; color: rgb(61, 55, 48); margin-bottom: 6px;">Presente en</div>
+            <div style="font-weight:700;color:#3d3730;margin-bottom:6px">Presente en</div>
             🔥 Puerta Roja · 🔵 Puerta Azul
           </div>
         </div>
@@ -487,102 +479,102 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,245,241,
 
       <!-- Los libros/herramientas -->
       <div style="border-top:1px solid #d9d2c8;padding-top:48px">
-        <div style="font-size: 11px; font-weight: 700; color: rgb(122, 113, 104); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 32px; text-align: center;">Las Herramientas del Camino</div>
+        <div style="font-size:11px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.15em;margin-bottom:32px;text-align:center">Las Herramientas del Camino</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
 
           <div style="background:white;border-radius:14px;padding:20px;border:1px solid #e4ddd3;text-align:center">
-            <div style="font-size: 24px; margin-bottom: 10px;">🌿</div>
-            <div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 16px; color: rgb(28, 24, 20); margin-bottom: 6px;">Cuencos TCT I</div>
-            <div style="font-size: 12px; color: rgb(122, 113, 104); line-height: 1.5;">Fundamentos vibracionales. Iniciación al sonido sagrado y la presencia corporal.</div>
-            <div style="margin-top: 10px; font-size: 10px; color: rgb(184, 173, 158); font-weight: 600;">PUERTA BLANCA -&nbsp;<span style="color: rgb(44, 95, 158);">&nbsp;PUERTA ARCOIRIS</span></div>
+            <div style="font-size:24px;margin-bottom:10px">🌿</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:#1c1814;margin-bottom:6px">Cuencos TCT I</div>
+            <div style="font-size:12px;color:#7a7168;line-height:1.5">Fundamentos vibracionales. Iniciación al sonido sagrado y la presencia corporal.</div>
+            <div style="margin-top:10px;font-size:10px;color:#b8ad9e;font-weight:600">PUERTA BLANCA</div>
           </div>
 
           <div style="background:white;border-radius:14px;padding:20px;border:1px solid #e4ddd3;text-align:center">
-            <div style="font-size: 24px; margin-bottom: 10px;">🔥</div>
-            <div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 16px; color: rgb(28, 24, 20); margin-bottom: 6px;">Cuencos TCT II</div>
-            <div style="font-size: 12px; color: rgb(122, 113, 104); line-height: 1.5;">Nivel terapéutico. Purificación emocional y liberación de bloqueos energéticos.</div>
-            <div style="margin-top: 10px; font-size: 10px; color: rgb(191, 70, 55); font-weight: 600;">PUERTA ROJA -&nbsp;<span style="color: rgb(44, 95, 158);">PUERTA ARCOIRIS</span></div>
+            <div style="font-size:24px;margin-bottom:10px">🔥</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:#1c1814;margin-bottom:6px">Cuencos TCT II</div>
+            <div style="font-size:12px;color:#7a7168;line-height:1.5">Nivel terapéutico. Purificación emocional y liberación de bloqueos energéticos.</div>
+            <div style="margin-top:10px;font-size:10px;color:#bf4637;font-weight:600">PUERTA ROJA</div>
           </div>
 
           <div style="background:white;border-radius:14px;padding:20px;border:1px solid #e4ddd3;text-align:center">
-            <div style="font-size: 24px; margin-bottom: 10px;">🔵</div>
-            <div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 16px; color: rgb(28, 24, 20); margin-bottom: 6px;">Cuencos TCT III</div>
-            <div style="font-size: 12px; color: rgb(122, 113, 104); line-height: 1.5;">Nivel espiritual avanzado. Apertura de la consciencia y conexión con Rigpa.</div>
-            <div style="margin-top: 10px; font-size: 10px; color: rgb(44, 95, 158); font-weight: 600;">PUERTA AZUL - PUERTA ARCOIRIS</div>
+            <div style="font-size:24px;margin-bottom:10px">🔵</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:#1c1814;margin-bottom:6px">Cuencos TCT III</div>
+            <div style="font-size:12px;color:#7a7168;line-height:1.5">Nivel espiritual avanzado. Apertura de la consciencia y conexión con Rigpa.</div>
+            <div style="margin-top:10px;font-size:10px;color:#2c5f9e;font-weight:600">PUERTA AZUL</div>
           </div>
 
           <div style="background:white;border-radius:14px;padding:20px;border:1px solid #e4ddd3;text-align:center">
-            <div style="font-size: 24px; margin-bottom: 10px;">🌈</div>
-            <div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 16px; color: rgb(28, 24, 20); margin-bottom: 6px;">Cuencos TCT IV</div>
-            <div style="font-size: 12px; color: rgb(122, 113, 104); line-height: 1.5;">Maestría total. Integración de las tres frecuencias para la transformación completa.</div>
-            <div style="margin-top: 10px; font-size: 10px; color: rgb(123, 79, 166); font-weight: 600;"><span style="color: rgb(44, 95, 158);">PUERTA AZUL - PUERTA ARCOIRIS</span></div>
+            <div style="font-size:24px;margin-bottom:10px">🌈</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:#1c1814;margin-bottom:6px">Cuencos TCT IV</div>
+            <div style="font-size:12px;color:#7a7168;line-height:1.5">Maestría total. Integración de las tres frecuencias para la transformación completa.</div>
+            <div style="margin-top:10px;font-size:10px;color:#7b4fa6;font-weight:600">INTEGRACIÓN</div>
           </div>
 
           <div style="background:white;border-radius:14px;padding:20px;border:1px solid #e4ddd3;text-align:center">
-            <div style="font-size: 24px; margin-bottom: 10px;">🏃</div>
-            <div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 16px; color: rgb(28, 24, 20); margin-bottom: 6px;">El Deportista Consciente - Más allá del resultado</div>
-            <div style="font-size: 12px; color: rgb(122, 113, 104); line-height: 1.5;">Presencia en la acción. Liberarse de la identidad basada en el logro. El sentido más allá del éxito y el fracaso</div>
-            <div style="margin-top: 10px; font-size: 10px; color: rgb(184, 173, 158); font-weight: 600;">PUERTA BLANCA</div>
+            <div style="font-size:24px;margin-bottom:10px">🏃</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:#1c1814;margin-bottom:6px">El Deportista Consciente</div>
+            <div style="font-size:12px;color:#7a7168;line-height:1.5">Presencia en la acción. El cuerpo como templo y el rendimiento desde la consciencia.</div>
+            <div style="margin-top:10px;font-size:10px;color:#b8ad9e;font-weight:600">PUERTA BLANCA</div>
           </div>
 
           <div style="background:white;border-radius:14px;padding:20px;border:1px solid #e4ddd3;text-align:center">
-            <div style="font-size: 24px; margin-bottom: 10px;">🎯</div>
-            <div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 16px; color: rgb(28, 24, 20); margin-bottom: 6px;">Más Allá del Resultado</div>
-            <div style="font-size: 12px; color: rgb(122, 113, 104); line-height: 1.5;">Liberarse de la identidad basada en el logro. El sentido más allá del éxito y el fracaso.</div>
-            <div style="margin-top: 10px; font-size: 10px; color: rgb(184, 173, 158); font-weight: 600;">PUERTA BLANCA</div>
+            <div style="font-size:24px;margin-bottom:10px">🎯</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:#1c1814;margin-bottom:6px">Más Allá del Resultado</div>
+            <div style="font-size:12px;color:#7a7168;line-height:1.5">Liberarse de la identidad basada en el logro. El sentido más allá del éxito y el fracaso.</div>
+            <div style="margin-top:10px;font-size:10px;color:#b8ad9e;font-weight:600">PUERTA BLANCA</div>
           </div>
 
           <div style="background:white;border-radius:14px;padding:20px;border:1px solid #e4ddd3;text-align:center">
-            <div style="font-size: 24px; margin-bottom: 10px;">🧘</div>
-            <div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 16px; color: rgb(28, 24, 20); margin-bottom: 6px;">El Ser Consciente</div>
-            <div style="font-size: 12px; color: rgb(122, 113, 104); line-height: 1.5;">Vivir con presencia total. La integración cuerpo-mente-consciencia en lo cotidiano.</div>
-            <div style="margin-top: 10px; font-size: 10px; color: rgb(44, 95, 158); font-weight: 600;">PUERTA AZUL</div>
+            <div style="font-size:24px;margin-bottom:10px">🧘</div>
+            <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:#1c1814;margin-bottom:6px">El Ser Consciente</div>
+            <div style="font-size:12px;color:#7a7168;line-height:1.5">Vivir con presencia total. La integración cuerpo-mente-consciencia en lo cotidiano.</div>
+            <div style="margin-top:10px;font-size:10px;color:#2c5f9e;font-weight:600">PUERTA AZUL</div>
           </div>
 
         </div>
       </div>
 
-      <div style="text-align: center; margin-top: 48px;">
+      <div style="text-align:center;margin-top:48px">
         <button onclick="goTo('auth')" style="background:#2b7d7a;color:white;border:none;padding:14px 32px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">Comenzar mi Transformación →</button>
       </div>
     </div>
   </div>
 
   <!-- JOYAS -->
-  <div id="joyas" style="padding: 80px 32px; background: white; max-width: 1200px; margin: 0px auto;" class="ed-selected-ring">
+  <div id="joyas" style="padding:80px 32px;background:white">
     <div style="max-width:1100px;margin:0 auto">
-      <div style="font-size: 11px; font-weight: 700; color: rgb(184, 149, 88); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px;">Las Joyas del Sistema</div>
-      <h2 style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: clamp(32px, 4vw, 52px); font-weight: 300; margin-bottom: 16px;">Tu Joya Personal</h2>
-      <p style="font-size: 15px; color: rgb(122, 113, 104); line-height: 1.7; max-width: 600px; margin-bottom: 48px;">Cada alumno recibe una joya sagrada personalizada según su camino. Las joyas son herramientas vibracionales que amplifican y anclan la frecuencia de cada Puerta.&nbsp;</p>
+      <div style="font-size:11px;font-weight:700;color:#b89558;text-transform:uppercase;letter-spacing:.15em;margin-bottom:12px">Las Joyas del Sistema</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,52px);font-weight:300;margin-bottom:16px">Tu Joya Personal</h2>
+      <p style="font-size:15px;color:#7a7168;line-height:1.7;max-width:600px;margin-bottom:48px">Cada alumno recibe una joya sagrada personalizada según su camino. Las joyas son herramientas vibracionales que amplifican y anclan la frecuencia de cada Puerta.</p>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px">
         <div style="background:#f5f2ec;border-radius:16px;padding:28px;text-align:center;border:1px solid #d9d2c8">
-          <div style="font-size: 36px; margin-bottom: 12px;">🌿</div>
-          <div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 20px; color: rgb(138, 128, 120); margin-bottom: 8px;">Joya Blanca</div>
-          <div style="font-size: 13px; color: rgb(122, 113, 104); line-height: 1.6;">Cuarzo blanco o selenita. Purifica y ancla la presencia en el cuerpo.</div>
+          <div style="font-size:36px;margin-bottom:12px">🌿</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:#8a8078;margin-bottom:8px">Joya Blanca</div>
+          <div style="font-size:13px;color:#7a7168;line-height:1.6">Cuarzo blanco o selenita. Purifica y ancla la presencia en el cuerpo.</div>
         </div>
         <div style="background:#fdf0ee;border-radius:16px;padding:28px;text-align:center;border:1px solid #e8c4be">
-          <div style="font-size: 36px; margin-bottom: 12px;">🔥</div>
-          <div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 20px; color: rgb(191, 70, 55); margin-bottom: 8px;">Joya Roja</div>
-          <div style="font-size: 13px; color: rgb(122, 113, 104); line-height: 1.6;">Granate o cornalina. Transforma la energía emocional y activa el corazón.</div>
+          <div style="font-size:36px;margin-bottom:12px">🔥</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:#bf4637;margin-bottom:8px">Joya Roja</div>
+          <div style="font-size:13px;color:#7a7168;line-height:1.6">Granate o cornalina. Transforma la energía emocional y activa el corazón.</div>
         </div>
         <div style="background:#eef3fb;border-radius:16px;padding:28px;text-align:center;border:1px solid #bacde8">
-          <div style="font-size: 36px; margin-bottom: 12px;">🔵</div>
-          <div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 20px; color: rgb(44, 95, 158); margin-bottom: 8px;">Joya Azul</div>
-          <div style="font-size: 13px; color: rgb(122, 113, 104); line-height: 1.6;">Lapislázuli o aguamarina. Abre la mente y conecta con la sabiduría.</div>
+          <div style="font-size:36px;margin-bottom:12px">🔵</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:#2c5f9e;margin-bottom:8px">Joya Azul</div>
+          <div style="font-size:13px;color:#7a7168;line-height:1.6">Lapislázuli o aguamarina. Abre la mente y conecta con la sabiduría.</div>
         </div>
         <div style="background:#f5f0fb;border-radius:16px;padding:28px;text-align:center;border:1px solid #cbbde8">
-          <div style="font-size: 36px; margin-bottom: 12px;">🌈</div>
-          <div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 20px; color: rgb(123, 79, 166); margin-bottom: 8px;">Joya Arcoiris</div>
-          <div style="font-size: 13px; color: rgb(122, 113, 104); line-height: 1.6;">Amatista o turmalina. Integra las tres puertas y eleva la vibración.</div>
+          <div style="font-size:36px;margin-bottom:12px">🌈</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:#7b4fa6;margin-bottom:8px">Joya Arcoiris</div>
+          <div style="font-size:13px;color:#7a7168;line-height:1.6">Amatista o turmalina. Integra las tres puertas y eleva la vibración.</div>
         </div>
         <div style="background:linear-gradient(135deg,#fdf6ec,#f5eedd);border-radius:16px;padding:28px;text-align:center;border:1px solid #d4b87a">
-          <div style="font-size: 36px; margin-bottom: 12px;">✨</div>
-          <div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 20px; color: rgb(184, 149, 88); margin-bottom: 8px;">Joya Oro</div>
-          <div style="font-size: 13px; color: rgb(122, 113, 104); line-height: 1.6;">Citrina o pirita dorada. La joya de la maestría total y la abundancia.</div>
+          <div style="font-size:36px;margin-bottom:12px">✨</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:#b89558;margin-bottom:8px">Joya Oro</div>
+          <div style="font-size:13px;color:#7a7168;line-height:1.6">Citrina o pirita dorada. La joya de la maestría total y la abundancia.</div>
         </div>
       </div>
-      <div style="margin-top: 40px; text-align: center;">
-        <button onclick="goTo('auth')" style="background:#b89558;color:white;border:none;padding:14px 32px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">✦ Descubrir mi Joya Personal</button>
+      <div style="margin-top:40px;text-align:center">
+        <button onclick="goTo('auth')" style="background:#b89558;color:white;border:none;padding:14px 32px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif" onclick="goTo('auth')">✦ Descubrir mi Joya Personal</button>
       </div>
     </div>
   </div>
@@ -590,23 +582,23 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,245,241,
   <!-- TESTIMONIOS -->
   <div id="testimonios" style="background:#f0ece4;padding:80px 32px">
     <div style="max-width:1100px;margin:0 auto">
-      <div style="font-size: 11px; font-weight: 700; color: rgb(122, 113, 104); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px; text-align: center;">Testimonios</div>
-      <h2 style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 42px; font-weight: 300; color: rgb(28, 24, 20); text-align: center; margin-bottom: 48px;">Lo que dicen nuestros alumnos</h2>
+      <div style="font-size:11px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.15em;margin-bottom:12px;text-align:center">Testimonios</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:#1c1814;text-align:center;margin-bottom:48px">Lo que dicen nuestros alumnos</h2>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px">
         <div style="background:white;border-radius:16px;padding:28px;border:1px solid #e4ddd3">
-          <div style="font-size: 14px; color: rgb(61, 55, 48); line-height: 1.8; margin-bottom: 20px; font-style: italic;">"El Sistema TCT ha transformado completamente mi relación con el cuerpo y la mente. Nunca pensé que podría experimentar tanta paz interior en mi vida cotidiana."</div>
-          <div style="font-weight: 600; color: rgb(28, 24, 20); font-size: 13px;">María G.</div>
-          <div style="font-size: 12px; color: rgb(122, 113, 104);">Puerta Azul completada</div>
+          <div style="font-size:14px;color:#3d3730;line-height:1.8;margin-bottom:20px;font-style:italic">"El Sistema TCT ha transformado completamente mi relación con el cuerpo y la mente. Nunca pensé que podría experimentar tanta paz interior en mi vida cotidiana."</div>
+          <div style="font-weight:600;color:#1c1814;font-size:13px">María G.</div>
+          <div style="font-size:12px;color:#7a7168">Puerta Azul completada</div>
         </div>
         <div style="background:white;border-radius:16px;padding:28px;border:1px solid #e4ddd3">
-          <div style="font-size: 14px; color: rgb(61, 55, 48); line-height: 1.8; margin-bottom: 20px; font-style: italic;">"Los cuencos tibetanos y los protocolos de sonido cambiaron mi forma de gestionar el estrés. Es una herramienta incomparable para el bienestar."</div>
-          <div style="font-weight: 600; color: rgb(28, 24, 20); font-size: 13px;">Carlos M.</div>
-          <div style="font-size: 12px; color: rgb(122, 113, 104);">Puerta Oro · Programa completo</div>
+          <div style="font-size:14px;color:#3d3730;line-height:1.8;margin-bottom:20px;font-style:italic">"Los cuencos tibetanos y los protocolos de sonido cambiaron mi forma de gestionar el estrés. Es una herramienta incomparable para el bienestar."</div>
+          <div style="font-weight:600;color:#1c1814;font-size:13px">Carlos M.</div>
+          <div style="font-size:12px;color:#7a7168">Puerta Oro · Programa completo</div>
         </div>
         <div style="background:white;border-radius:16px;padding:28px;border:1px solid #e4ddd3">
-          <div style="font-size: 14px; color: rgb(61, 55, 48); line-height: 1.8; margin-bottom: 20px; font-style: italic;">"Marga tiene un don especial para transmitir el conocimiento espiritual de forma práctica y accesible. Las canalizaciones son un regalo."</div>
-          <div style="font-weight: 600; color: rgb(28, 24, 20); font-size: 13px;">Laura P.</div>
-          <div style="font-size: 12px; color: rgb(122, 113, 104);">Puerta Arcoiris completada</div>
+          <div style="font-size:14px;color:#3d3730;line-height:1.8;margin-bottom:20px;font-style:italic">"Marga tiene un don especial para transmitir el conocimiento espiritual de forma práctica y accesible. Las canalizaciones son un regalo."</div>
+          <div style="font-weight:600;color:#1c1814;font-size:13px">Laura P.</div>
+          <div style="font-size:12px;color:#7a7168">Puerta Arcoiris completada</div>
         </div>
       </div>
     </div>
@@ -614,10 +606,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,245,241,
 
   <!-- FOOTER -->
   <footer style="background:#111;padding:40px 32px;text-align:center">
-    <div style="font-family: &quot;Cormorant Garamond&quot;, serif; font-size: 20px; color: white; margin-bottom: 8px;">Frecuencia Integral Academy</div>
-    <div style="font-size: 12px; color: rgb(122, 113, 104); margin-bottom: 20px;">Sistema TCT · Transformación Consciente Trascendental</div>
+    <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:white;margin-bottom:8px">Frecuencia Integral Academy</div>
+    <div style="font-size:12px;color:#7a7168;margin-bottom:20px">Sistema TCT · Transformación Consciente Trascendental</div>
     <button onclick="goTo('auth')" style="background:#2b7d7a;color:white;border:none;padding:12px 28px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">Comenzar mi Transformación →</button>
-    <div style="margin-top: 28px; font-size: 11px; color: rgba(255, 255, 255, 0.25);">© 2026 Frecuencia Integral Academy · Todos los derechos reservados</div>
+    <div style="margin-top:28px;font-size:11px;color:rgba(255,255,255,.25)">© 2026 Frecuencia Integral Academy · Todos los derechos reservados</div>
   </footer>
 
 
@@ -658,7 +650,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,245,241,
             <input type="password" id="inp-pass" value="TestUser2026!">
           </div>
           <button class="btn-login" id="btn-login" onclick="doLogin()">Entrar al Área de Alumnos</button>
-          <div class="demo-hint">🔑 Demo: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ec98899f98ac8a9e898f9989828f858d858298898b9e8d80c28f8381">[email&nbsp;protected]</a> / TestUser2026!</div>
+          <div class="demo-hint">🔑 Demo: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ec98899f98ac8a9e898f9989828f858d858298898b9e8d80c28f8381">[email&#160;protected]</a> / TestUser2026!</div>
         </div>
 
         <div id="form-register" style="display:none">
@@ -744,13 +736,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,245,241,
           <button class="filter-btn" onclick="filterWeeks('Azul',this)">🔵 Azul</button>
           <button class="filter-btn" onclick="filterWeeks('Arcoiris',this)">🌈 Arcoiris</button>
         </div>
-        <div class="weeks-grid" id="weeks-grid"><div class="week-card in-progress" onclick="openWeekModal(1)"><div class="week-num">Semana 1 · ▶</div><div class="week-title">El Precio Oculto de Vivir Acelerados</div><div class="week-status" style="color:#b89558">En curso</div></div><div class="week-card" onclick="openWeekModal(2)"><div class="week-num">Semana 2 · ○</div><div class="week-title">Cuando Ganar Ya No Es Suficiente</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(3)"><div class="week-num">Semana 3 · ○</div><div class="week-title">Cuerpo, Mente y Consciencia: Una Sola Unidad</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(4)"><div class="week-num">Semana 4 · ○</div><div class="week-title">El Ego en la Vida Cotidiana</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(5)"><div class="week-num">Semana 5 · ○</div><div class="week-title">La Emoción, el Error y la Presión como Camino</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(6)"><div class="week-num">Semana 6 · ○</div><div class="week-title">El Entrenamiento como Vía de Despertar</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(7)"><div class="week-num">Semana 7 · ○</div><div class="week-title">El Campo de Consciencia Compartido</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(8)"><div class="week-num">Semana 8 · ○</div><div class="week-title">Sonido, Vibración y Armonización del Sistema</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(9)"><div class="week-num">Semana 9 · ○</div><div class="week-title">Cuando el Sistema No Sostiene lo que Promete</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(10)"><div class="week-num">Semana 10 · ○</div><div class="week-title">El Límite como Punto de Despertar</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(11)"><div class="week-num">Semana 11 · ○</div><div class="week-title">Más Allá del Resultado: El Sentido del Camino</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(12)"><div class="week-num">Semana 12 · ○</div><div class="week-title">Integración de la Puerta Blanca</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(13)"><div class="week-num">Semana 13 · ○</div><div class="week-title">Introducción a la Puerta Roja y la Energía</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(14)"><div class="week-num">Semana 14 · ○</div><div class="week-title">El Sonido Primordial y los Mantras</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(15)"><div class="week-num">Semana 15 · ○</div><div class="week-title">Los 6 Reinos del Samsara y la Gestión Emocional</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(16)"><div class="week-num">Semana 16 · ○</div><div class="week-title">El Cuarto Camino - Recuerdo de Sí y Observación</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(17)"><div class="week-num">Semana 17 · ○</div><div class="week-title">El Cuarto Camino - Trabajo sobre los Centros</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(18)"><div class="week-num">Semana 18 · ○</div><div class="week-title">UCDM - La Paradoja de la Felicidad y el Perdón</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(19)"><div class="week-num">Semana 19 · ○</div><div class="week-title">UCDM - Gestión Emocional y el Instante Santo</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(20)"><div class="week-num">Semana 20 · ○</div><div class="week-title">Protocolos de Sonido - Purificar el Samsara</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(21)"><div class="week-num">Semana 21 · ○</div><div class="week-title">Protocolos de Sonido - El Pilar del Medio</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(22)"><div class="week-num">Semana 22 · ○</div><div class="week-title">Alquimia de la Energía - La Cruz Cabalística</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(23)"><div class="week-num">Semana 23 · ○</div><div class="week-title">La Fórmula de la Felicidad - Aceptación</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(24)"><div class="week-num">Semana 24 · ○</div><div class="week-title">Integración de la Puerta Roja</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(25)"><div class="week-num">Semana 25 · ○</div><div class="week-title">Introducción a la Puerta Azul y la Mente</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(26)"><div class="week-num">Semana 26 · ○</div><div class="week-title">La Mente según Diversas Tradiciones</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(27)"><div class="week-num">Semana 27 · ○</div><div class="week-title">Dzogchen - La Mente Natural (Rigpa)</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(28)"><div class="week-num">Semana 28 · ○</div><div class="week-title">La Metáfora del Espejo y la Visión No-Dual</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(29)"><div class="week-num">Semana 29 · ○</div><div class="week-title">UCDM en la Puerta Azul - El Testigo Santo</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(30)"><div class="week-num">Semana 30 · ○</div><div class="week-title">El Ser Consciente - Vivir con Presencia</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(31)"><div class="week-num">Semana 31 · ○</div><div class="week-title">Protocolos de Sonido - Desintoxicación</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(32)"><div class="week-num">Semana 32 · ○</div><div class="week-title">Objetos Sagrados y el Proceso de Liberación</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(33)"><div class="week-num">Semana 33 · ○</div><div class="week-title">Manifestar la Fuerza Interior</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(34)"><div class="week-num">Semana 34 · ○</div><div class="week-title">Transformación de la Mente para la Felicidad</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(35)"><div class="week-num">Semana 35 · ○</div><div class="week-title">La Noche Oscura del Alma</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(36)"><div class="week-num">Semana 36 · ○</div><div class="week-title">Integración de la Puerta Azul</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(37)"><div class="week-num">Semana 37 · ○</div><div class="week-title">Síntesis del Método TCT - Las Tres Puertas</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(38)"><div class="week-num">Semana 38 · ○</div><div class="week-title">La Alquimia del Ser</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(39)"><div class="week-num">Semana 39 · ○</div><div class="week-title">El Campo Invisible que Todos Sostenemos</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(40)"><div class="week-num">Semana 40 · ○</div><div class="week-title">Práctica Integrada - El Diario del Cuarto Camino</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(41)"><div class="week-num">Semana 41 · ○</div><div class="week-title">Práctica Integrada - El Diario del Perdón</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(42)"><div class="week-num">Semana 42 · ○</div><div class="week-title">Práctica Integrada - El Diario de la Mente Feliz</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(43)"><div class="week-num">Semana 43 · ○</div><div class="week-title">El Arte de la No-Interferencia</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(44)"><div class="week-num">Semana 44 · ○</div><div class="week-title">El Legado Invisible - La Vida como Servicio</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(45)"><div class="week-num">Semana 45 · ○</div><div class="week-title">La Comunicación desde la Fuente</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(46)"><div class="week-num">Semana 46 · ○</div><div class="week-title">Maestría en la Vida Cotidiana</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(47)"><div class="week-num">Semana 47 · ○</div><div class="week-title">El Ciclo Permanente - La Espiral de Transformación</div><div class="week-status" style="color:#a89e93">Pendiente</div></div><div class="week-card" onclick="openWeekModal(48)"><div class="week-num">Semana 48 · ○</div><div class="week-title">Cierre y Continuación del Camino</div><div class="week-status" style="color:#a89e93">Pendiente</div></div></div>
+        <div class="weeks-grid" id="weeks-grid"></div>
       </div>
 
       <!-- MULTIMEDIA VIEW -->
       <div id="view-multimedia" style="display:none">
         <h2 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;margin-bottom:20px">Biblioteca Multimedia</h2>
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px" id="media-grid"><div style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="toast('Reproduciendo: Cuencos Tibetanos — Fundamentos 🎵')"><div style="background:#f5f2ec;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🎵</div><div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Cuencos · 32 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Cuencos Tibetanos — Fundamentos</div></div></div><div style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="toast('Reproduciendo: Canalización Marga — Puerta Blanca 🎵')"><div style="background:#fdf0ee;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🌸</div><div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Canalización · 18 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Canalización Marga — Puerta Blanca</div></div></div><div style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="toast('Reproduciendo: Meditación de Presencia Corporal 🎵')"><div style="background:#eef3fb;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🧘</div><div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Meditación · 15 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Meditación de Presencia Corporal</div></div></div><div style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="toast('Reproduciendo: Frecuencia 432Hz — Armonía Natural 🎵')"><div style="background:#f5f2ec;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🌿</div><div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Frecuencia · 40 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Frecuencia 432Hz — Armonía Natural</div></div></div><div style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="toast('Reproduciendo: Cuencos — Nivel Terapéutico 🎵')"><div style="background:#fdf0ee;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🔥</div><div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Cuencos · 45 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Cuencos — Nivel Terapéutico</div></div></div><div style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="toast('Reproduciendo: UCDM — Introducción al Perdón 🎵')"><div style="background:#fdf6ec;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">💫</div><div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Teoría · 28 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">UCDM — Introducción al Perdón</div></div></div><div style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="toast('Reproduciendo: Dzogchen — Introducción a Rigpa 🎵')"><div style="background:#eef3fb;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🔵</div><div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Teoría · 35 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Dzogchen — Introducción a Rigpa</div></div></div><div style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="toast('Reproduciendo: Frecuencia 963Hz — La Luz 🎵')"><div style="background:#eef3fb;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">✨</div><div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Frecuencia · 48 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Frecuencia 963Hz — La Luz</div></div></div></div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px" id="media-grid"></div>
       </div>
 
       <!-- MATERIALES VIEW -->
@@ -1582,9 +1574,9 @@ document.getElementById('week-modal').addEventListener('click', function(e){
   if (e.target === this) closeModal();
 });
 </script>
-    
-  
-
+    </div>
+  </div>
+</div>
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
@@ -1624,7 +1616,7 @@ document.getElementById('week-modal').addEventListener('click', function(e){
   <div style="margin-top:6px">💾 <b>Guardar:</b> Descarga el HTML con los cambios</div>
   <div style="margin-top:10px;font-size:11px;color:rgba(255,255,255,.4)">Para abrir/cerrar: Alt + E</div>
   <button onclick="document.getElementById('editorHint').style.display='none'" style="margin-top:10px;background:none;border:1px solid rgba(255,255,255,.2);color:white;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer">Cerrar ayuda</button>
-
+</div>
 
 
 
@@ -1697,7 +1689,7 @@ document.getElementById('week-modal').addEventListener('click', function(e){
   <div class="pdf-modal-topbar">
     <div class="pdf-modal-topbar-name" id="pdf-fullscreen-name"></div>
     <div class="pdf-modal-topbar-actions">
-      <a class="btn-pdf-fullscreen-dl" id="pdf-fullscreen-dl" href="#" download="" target="_blank">⬇ Descargar</a>
+      <a class="btn-pdf-fullscreen-dl" id="pdf-fullscreen-dl" href="#" download target="_blank">⬇ Descargar</a>
       <button class="btn-pdf-fullscreen-close" onclick="closePdfFullscreen()">✕ Cerrar</button>
     </div>
   </div>
@@ -1705,7 +1697,7 @@ document.getElementById('week-modal').addEventListener('click', function(e){
 </div>
 
 <!-- EDITOR BUTTON -->
-<button onclick="editorOpen()" id="edOpenBtn" style="position: fixed; bottom: 24px; left: 24px; z-index: 9999; background: rgb(241, 239, 233); color: rgb(102, 59, 15); border: none; padding: 10px 18px; border-radius: 100px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: &quot;DM Sans&quot;, sans-serif; box-shadow: rgba(0, 0, 0, 0.3) 0px 4px 16px; display: none;" class="">✏️ Editor</button>
+<button onclick="editorOpen()" id="edOpenBtn" style="position:fixed;bottom:80px;left:24px;z-index:99999;background:#1c1814;color:white;border:2px solid rgba(255,255,255,.2);padding:10px 18px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 20px rgba(0,0,0,.5)">✏️ Editor</button>
 
 <!-- CONTEXT MENU al hacer clic derecho en elemento seleccionado -->
 <div id="edCtxMenu" style="display:none;position:fixed;z-index:10001;background:#1c1814;border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:6px;min-width:180px;box-shadow:0 8px 32px rgba(0,0,0,.5)">
@@ -1722,19 +1714,19 @@ document.getElementById('week-modal').addEventListener('click', function(e){
 </div>
 
 <!-- EDITOR PANEL -->
-<div id="edPanel" style="display: none; position: fixed; bottom: 0px; left: 0px; right: 0px; z-index: 9998; background: rgb(28, 24, 20); padding: 10px 16px; align-items: center; gap: 10px; flex-wrap: wrap; box-shadow: rgba(0, 0, 0, 0.5) 0px -4px 20px;">
+<div id="edPanel" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9998;background:#1c1814;padding:10px 16px;align-items:center;gap:10px;flex-wrap:wrap;box-shadow:0 -4px 20px rgba(0,0,0,.5)">
 
   <span style="font-size:13px;font-weight:700;color:#3d9e9b;white-space:nowrap">✦ Editor</span>
   <div class="edsep"></div>
 
   <!-- DESHACER / REHACER -->
-  <button onclick="edUndo()" id="edUndoBtn" title="Deshacer (Ctrl+Z)" style="background: rgb(42, 36, 32); color: rgba(255, 255, 255, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); padding: 6px 10px; border-radius: 6px; font-size: 13px; cursor: pointer; opacity: 1;">↩</button>
-  <button onclick="edRedo()" id="edRedoBtn" title="Rehacer (Ctrl+Y)" style="background: rgb(42, 36, 32); color: rgba(255, 255, 255, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); padding: 6px 10px; border-radius: 6px; font-size: 13px; cursor: pointer; opacity: 0.3;">↪</button>
+  <button onclick="edUndo()" id="edUndoBtn" title="Deshacer (Ctrl+Z)" style="background:#2a2420;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.1);padding:6px 10px;border-radius:6px;font-size:13px;cursor:pointer">↩</button>
+  <button onclick="edRedo()" id="edRedoBtn" title="Rehacer (Ctrl+Y)" style="background:#2a2420;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.1);padding:6px 10px;border-radius:6px;font-size:13px;cursor:pointer">↪</button>
   <div class="edsep"></div>
 
   <!-- MODO SELECCIÓN / EDICIÓN -->
   <button onclick="edToggleMode()" id="edModeBtn" style="background:#2b7d7a;color:white;border:none;padding:7px 13px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">🖱 Seleccionar</button>
-  <button onclick="edToggleText()" id="edTxtBtn" style="background: rgb(43, 125, 122); color: white; border: none; padding: 7px 13px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; font-family: &quot;DM Sans&quot;, sans-serif; white-space: nowrap;">✏️ Editar textos</button>
+  <button onclick="edToggleText()" id="edTxtBtn" style="background:#2b7d7a;color:white;border:none;padding:7px 13px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">✏️ Editar textos</button>
   <div class="edsep"></div>
 
   <!-- TEXTO -->
@@ -1910,20 +1902,24 @@ function edToggleText() {
       if (['SCRIPT','STYLE','INPUT','SELECT','TEXTAREA','IFRAME','BUTTON'].indexOf(el.tagName) > -1) return;
       var hasBlockChild = false;
       el.childNodes.forEach(function(n) {
-        if (n.nodeType === 1 && ['DIV','P','H1','H2','H3','H4','SECTION'].indexOf(n.tagName) > -1) hasBlockChild = true;
+        if (n.nodeType === 1 && ['DIV','P','H1','H2','H3','H4','SECTION','UL','OL'].indexOf(n.tagName) > -1) hasBlockChild = true;
       });
-      if (!hasBlockChild && el.textContent.trim().length > 0 && el.textContent.trim().length < 600) {
+      var txt = el.textContent.trim();
+      if (!hasBlockChild && txt.length > 0 && txt.length < 600) {
         el.contentEditable = 'true';
-        el.style.outline = '1px dashed rgba(43,125,122,.5)';
+        el.setAttribute('data-ed-outline', el.style.outline || '');
+        el.style.setProperty('outline', '1px dashed rgba(43,125,122,.5)', 'important');
         el.style.cursor = 'text';
       }
     });
     b.textContent = '🔒 Fin edición'; b.style.background = '#bf4637';
-    edMsg('✏️ Todos los textos editables — incluye tarjetas');
+    edMsg('✏️ Todos los textos activados — incluye tarjetas y textos con estilo');
   } else {
     document.querySelectorAll('[contenteditable]').forEach(function(el) {
       el.removeAttribute('contenteditable');
-      el.style.outline = ''; el.style.cursor = '';
+      el.style.outline = el.getAttribute('data-ed-outline') || '';
+      el.removeAttribute('data-ed-outline');
+      el.style.cursor = '';
     });
     b.textContent = '✏️ Editar textos'; b.style.background = '#2b7d7a';
     edMsg('');
@@ -1938,14 +1934,20 @@ function edApplyFontColor(v) {
     try {
       var range = sel.getRangeAt(0);
       var frag = range.extractContents();
+      // Forzar color en todos los nodos del fragmento (override inline styles)
+      frag.querySelectorAll('*').forEach(function(n) { n.style.color = v; });
       var span = document.createElement('span');
-      span.style.color = v; span.appendChild(frag);
+      span.style.setProperty('color', v, 'important');
+      span.appendChild(frag);
       range.insertNode(span); sel.removeAllRanges();
       edMsg('🎨 Color aplicado al texto seleccionado'); edSnapshot();
     } catch(e) { edMsg('⚠️ '+e.message); }
   } else if (_edSel) {
-    _edSel.style.color = v; edMsg('🎨 Color aplicado'); edSnapshot();
-  } else { edMsg('⚠️ Activa edición y selecciona texto'); }
+    // Aplicar a elemento y todos sus hijos (override em, span con color inline)
+    _edSel.style.setProperty('color', v, 'important');
+    _edSel.querySelectorAll('*').forEach(function(n) { n.style.color = v; });
+    edMsg('🎨 Color aplicado al elemento y sus textos'); edSnapshot();
+  } else { edMsg('⚠️ Activa edición, selecciona texto o usa 🖱 Seleccionar para elegir elemento'); }
 }
 
 // ── Tipografía ──
@@ -2224,5 +2226,4 @@ function edSave() {
     toast('✅ Guardado — renombra a index.html y sube a Vercel');
   }, 200);
 }
-</script>
-<deepl-input-controller translate="no"></deepl-input-controller><protonpass-root-f2ae data-protonpass-role="root" data-protonpass-theme="os"></protonpass-root-f2ae></body></html>
+</script></body></html>
