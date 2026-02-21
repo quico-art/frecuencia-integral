@@ -1803,7 +1803,20 @@ document.getElementById('week-modal').addEventListener('click', function(e){
 
   <div style="width:1px;height:24px;background:rgba(255,255,255,.15)"></div>
 
-  <button onclick="edSave()" style="background:#b89558;color:white;border:none;padding:7px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">💾 Guardar</button>
+  <!-- INSERTAR BLOQUES -->
+  <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+    <span style="font-size:11px;color:rgba(255,255,255,.5)">+ Añadir:</span>
+    <button onclick="edInsert('texto')" style="background:#2a2420;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.15);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">📝 Texto</button>
+    <button onclick="edInsert('tarjeta')" style="background:#2a2420;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.15);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">🃏 Tarjeta</button>
+    <button onclick="edInsert('banner-ancho')" style="background:#2a2420;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.15);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">🔲 Banner ancho</button>
+    <button onclick="edInsert('banner-pequeño')" style="background:#2a2420;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.15);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">▭ Banner pequeño</button>
+    <button onclick="edInsert('imagen-banner')" style="background:#2a2420;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.15);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">🖼️ Img. banner</button>
+    <button onclick="edInsert('imagen-pequeña')" style="background:#2a2420;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.15);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">🖼️ Img. + texto</button>
+    <button onclick="edChangeImage()" style="background:#2a2420;color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.15);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">🔄 Cambiar img.</button>
+    <button onclick="edDeleteSelected()" style="background:#3a1a18;color:#f08080;border:1px solid rgba(191,70,55,.3);padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif">🗑️ Eliminar</button>
+  </div>
+
+  <div style="width:1px;height:24px;background:rgba(255,255,255,.15)"></div>
   <button onclick="edClose()" style="background:rgba(255,255,255,.1);color:white;border:none;padding:7px 14px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif">✕ Cerrar</button>
 
   <span id="edMsg" style="font-size:11px;color:#3d9e9b;margin-left:auto"></span>
@@ -2002,29 +2015,150 @@ function edSave() {
   }, 200);
 }
 
-// Detectar clics en secciones y botones cuando el editor está abierto
+// Detectar clics en secciones, tarjetas y botones cuando el editor está abierto
 document.addEventListener('click', function(e) {
   var panel = document.getElementById('edPanel');
   if (!panel || panel.style.display !== 'flex') return;
 
-  // Si modo edición de texto está activo, no interferir
-  if (_edOn) return;
+  // En modo edición de texto: solo capturar clics en tarjetas para hacerlas editables
+  if (_edOn) {
+    var cardEl = e.target.closest('[style*="border-radius"][style*="padding"], .puerta-card, .concept-card');
+    if (cardEl && !cardEl.closest('#edPanel')) {
+      // Hacer editables todos los textos dentro de la tarjeta
+      cardEl.querySelectorAll('div, p, span, h1, h2, h3, h4').forEach(function(el) {
+        if (!el.closest('button') && el.children.length === 0 && el.textContent.trim()) {
+          el.contentEditable = 'true';
+          el.style.outline = '1px dashed rgba(43,125,122,.6)';
+          el.style.minHeight = '1em';
+        }
+      });
+      document.getElementById('edMsg').textContent = '✏️ Tarjeta activada — haz clic en cualquier texto';
+    }
+    return;
+  }
 
   // Detectar botón clicado (excluir los del propio editor)
   var btn = e.target.closest('button');
   if (btn && !btn.closest('#edPanel') && btn.id !== 'edTxtBtn') {
     _edSelBtn = btn;
-    _edSel = null;
-    document.getElementById('edMsg').textContent = '🔘 Botón seleccionado: "' + btn.textContent.trim().substring(0, 30) + '"';
+    _edSel = btn;
+    document.getElementById('edMsg').textContent = '🔘 Botón: "' + btn.textContent.trim().substring(0, 30) + '"';
     return;
   }
 
-  // Detectar sección/div clicado
-  var sec = e.target.closest('section, .hero, .puertas-grid, #puertas, #viaje, [id]');
+  // Detectar tarjeta concreta (divs con padding y border-radius = tarjetas)
+  var card = e.target.closest('[style*="border-radius"][style*="padding"]:not(#edPanel):not(nav)');
+  if (card && !card.closest('#edPanel') && !card.closest('nav') && card !== document.body) {
+    _edSel = card;
+    _edSelBtn = null;
+    var label = card.querySelector('[style*="font-family"], div, h2') ;
+    var name = label ? label.textContent.trim().substring(0,25) : card.tagName;
+    document.getElementById('edMsg').textContent = '🃏 Tarjeta/bloque: "' + name + '" — ajusta espaciado, fondo, texto';
+    return;
+  }
+
+  // Detectar sección grande
+  var sec = e.target.closest('#pilares, #puertas, #viaje, #joyas, .hero, section, [id]');
   if (sec && !sec.closest('#edPanel') && !sec.closest('nav') && sec.tagName !== 'BUTTON') {
     _edSel = sec;
     _edSelBtn = null;
-    document.getElementById('edMsg').textContent = '🎨 Sección seleccionada: <' + sec.tagName.toLowerCase() + (sec.id ? '#'+sec.id : '') + '>';
+    document.getElementById('edMsg').textContent = '🎨 Sección: <' + sec.tagName.toLowerCase() + (sec.id ? '#'+sec.id : '') + '>';
   }
 });
+
+// ── INSERTAR BLOQUES ──
+function edInsert(tipo) {
+  var target = document.getElementById('pilares') || document.getElementById('puertas') || document.querySelector('#page-public > div');
+  var el;
+
+  if (tipo === 'texto') {
+    el = document.createElement('div');
+    el.setAttribute('data-ed-block', 'texto');
+    el.style.cssText = 'padding:60px 40px;max-width:800px;margin:0 auto;text-align:center';
+    el.innerHTML = '<h2 style="font-family:\'Cormorant Garamond\',serif;font-size:36px;font-weight:300;color:#1c1814;margin-bottom:16px" contenteditable="true">Título del nuevo bloque</h2><p style="font-size:15px;color:#7a7168;line-height:1.75;max-width:600px;margin:0 auto" contenteditable="true">Escribe aquí el contenido de este bloque. Haz clic en cualquier texto para editarlo.</p>';
+  }
+  else if (tipo === 'tarjeta') {
+    // Insertar una tarjeta nueva dentro de la sección seleccionada o de pilares
+    var grid = _edSel ? _edSel.querySelector('[style*="grid"]') : document.querySelector('#pilares [style*="grid"]');
+    if (!grid) { toast('Haz clic en una sección con tarjetas primero'); return; }
+    el = document.createElement('div');
+    el.setAttribute('data-ed-block', 'tarjeta');
+    el.style.cssText = 'background:white;border-radius:20px;padding:32px;border:1px solid #d9d2c8';
+    el.innerHTML = '<div style="font-size:32px;margin-bottom:16px" contenteditable="true">✨</div><div style="font-family:\'Cormorant Garamond\',serif;font-size:24px;color:#1c1814;margin-bottom:10px" contenteditable="true">Nueva Tarjeta</div><div style="font-size:13px;color:#5a5248;line-height:1.75" contenteditable="true">Escribe aquí el contenido de esta tarjeta. Haz clic para editar.</div>';
+    grid.appendChild(el);
+    toast('✅ Tarjeta añadida — haz clic en los textos para editar');
+    return;
+  }
+  else if (tipo === 'banner-ancho') {
+    el = document.createElement('div');
+    el.setAttribute('data-ed-block', 'banner-ancho');
+    el.style.cssText = 'width:100%;padding:80px 40px;background:linear-gradient(135deg,#2b7d7a,#1c5a58);text-align:center;position:relative;overflow:hidden';
+    el.innerHTML = '<h2 style="font-family:\'Cormorant Garamond\',serif;font-size:clamp(32px,5vw,56px);font-weight:300;color:white;margin-bottom:16px" contenteditable="true">Banner Principal</h2><p style="font-size:16px;color:rgba(255,255,255,.8);max-width:600px;margin:0 auto 32px;line-height:1.7" contenteditable="true">Texto del banner. Edítalo haciendo clic aquí.</p><button style="background:white;color:#2b7d7a;border:none;padding:14px 32px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:\'DM Sans\',sans-serif" contenteditable="true">Llamada a la Acción</button>';
+  }
+  else if (tipo === 'banner-pequeño') {
+    el = document.createElement('div');
+    el.setAttribute('data-ed-block', 'banner-pequeño');
+    el.style.cssText = 'max-width:900px;margin:40px auto;padding:40px 48px;background:#f0ece4;border-radius:20px;border:1px solid #d9d2c8;display:flex;align-items:center;gap:32px;flex-wrap:wrap';
+    el.innerHTML = '<div style="flex:1;min-width:200px"><div style="font-size:11px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px" contenteditable="true">Etiqueta</div><h3 style="font-family:\'Cormorant Garamond\',serif;font-size:28px;font-weight:300;color:#1c1814;margin-bottom:8px" contenteditable="true">Título del Banner</h3><p style="font-size:14px;color:#7a7168;line-height:1.7" contenteditable="true">Descripción breve del contenido del banner.</p></div><button style="background:#2b7d7a;color:white;border:none;padding:12px 28px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:\'DM Sans\',sans-serif;flex-shrink:0" contenteditable="true">Acción →</button>';
+  }
+  else if (tipo === 'imagen-banner') {
+    var url = prompt('URL de la imagen (o deja vacío para placeholder):') || 'https://via.placeholder.com/1400x400/f0ece4/7a7168?text=Imagen+Banner';
+    el = document.createElement('div');
+    el.setAttribute('data-ed-block', 'imagen-banner');
+    el.style.cssText = 'width:100%;height:400px;overflow:hidden;position:relative';
+    el.innerHTML = '<img src="' + url + '" style="width:100%;height:100%;object-fit:cover" data-ed-img="1"><div style="position:absolute;inset:0;background:rgba(28,24,20,.35);display:flex;align-items:center;justify-content:center;text-align:center;padding:40px"><div><h2 style="font-family:\'Cormorant Garamond\',serif;font-size:clamp(32px,5vw,60px);font-weight:300;color:white;margin-bottom:16px" contenteditable="true">Título sobre imagen</h2><p style="font-size:16px;color:rgba(255,255,255,.85);max-width:500px;margin:0 auto" contenteditable="true">Subtítulo o descripción</p></div></div>';
+  }
+  else if (tipo === 'imagen-pequeña') {
+    var url2 = prompt('URL de la imagen (o deja vacío para placeholder):') || 'https://via.placeholder.com/600x400/f0ece4/7a7168?text=Imagen';
+    el = document.createElement('div');
+    el.setAttribute('data-ed-block', 'imagen-pequeña');
+    el.style.cssText = 'max-width:900px;margin:40px auto;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;padding:0 32px;flex-wrap:wrap';
+    el.innerHTML = '<img src="' + url2 + '" style="width:100%;border-radius:16px;object-fit:cover;height:300px" data-ed-img="1"><div><h3 style="font-family:\'Cormorant Garamond\',serif;font-size:28px;font-weight:300;color:#1c1814;margin-bottom:12px" contenteditable="true">Título junto a imagen</h3><p style="font-size:14px;color:#7a7168;line-height:1.75" contenteditable="true">Descripción del contenido junto a la imagen. Haz clic para editar este texto.</p></div>';
+  }
+
+  if (el) {
+    // Insertar antes del footer/precios o al final de la página pública
+    var anchor = document.getElementById('joyas') || document.getElementById('pilares');
+    var page = document.getElementById('page-public');
+    if (anchor && anchor.parentNode) {
+      anchor.parentNode.insertBefore(el, anchor.nextSibling);
+    } else if (page) {
+      page.appendChild(el);
+    }
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    toast('✅ Bloque añadido — haz clic en los textos para editarlos');
+  }
+}
+
+function edChangeImage() {
+  var url = prompt('Introduce la URL de la nueva imagen:');
+  if (!url) return;
+  if (_edSel) {
+    var img = _edSel.querySelector('img[data-ed-img]') || _edSel.querySelector('img');
+    if (img) {
+      img.src = url;
+      document.getElementById('edMsg').textContent = '🖼️ Imagen actualizada';
+    } else {
+      // Crear imagen nueva en la sección seleccionada
+      var newImg = document.createElement('img');
+      newImg.src = url;
+      newImg.setAttribute('data-ed-img', '1');
+      newImg.style.cssText = 'width:100%;border-radius:12px;margin-top:16px;object-fit:cover';
+      _edSel.appendChild(newImg);
+      document.getElementById('edMsg').textContent = '🖼️ Imagen añadida a la sección';
+    }
+  } else {
+    document.getElementById('edMsg').textContent = '⚠️ Primero haz clic en una tarjeta o sección';
+  }
+}
+
+function edDeleteSelected() {
+  if (_edSel && confirm('¿Eliminar este bloque/sección?')) {
+    _edSel.remove();
+    _edSel = null;
+    document.getElementById('edMsg').textContent = '🗑️ Bloque eliminado';
+  } else if (!_edSel) {
+    document.getElementById('edMsg').textContent = '⚠️ Primero haz clic en un bloque';
+  }
+}
 </script></body></html>
