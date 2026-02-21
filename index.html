@@ -1696,7 +1696,16 @@ document.getElementById('week-modal').addEventListener('click', function(e){
   <div class="edsep"></div>
 
   <!-- BLOQUE -->
-  <input type="color" id="edBg" value="#f7f5f1" title="Fondo" style="width:26px;height:26px;border:none;border-radius:4px;cursor:pointer;padding:0" onchange="edApplyBg(this.value)">
+  <div style="display:flex;align-items:center;gap:4px">
+    <span style="font-size:10px;color:rgba(255,255,255,.4)">Fondo:</span>
+    <input type="color" id="edBg" value="#f7f5f1" title="Color de fondo del bloque seleccionado" style="width:26px;height:26px;border:none;border-radius:4px;cursor:pointer;padding:0" onchange="edApplyBg(this.value)">
+    <button onclick="edApplyBg('transparent')" title="Sin fondo (transparente)" style="background:#2a2420;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.15);padding:3px 7px;border-radius:4px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">∅</button>
+  </div>
+  <div style="display:flex;align-items:center;gap:4px">
+    <span style="font-size:10px;color:rgba(255,255,255,.4)">Borde:</span>
+    <input type="color" id="edBorderColor" value="#e4ddd3" title="Color del borde del bloque" style="width:26px;height:26px;border:none;border-radius:4px;cursor:pointer;padding:0" onchange="edApplyBorder(this.value)">
+    <button onclick="edApplyBorder('none')" title="Sin borde" style="background:#2a2420;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.15);padding:3px 7px;border-radius:4px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif">∅</button>
+  </div>
   <input type="color" id="edBtnColor" value="#2b7d7a" title="Color botón" style="width:26px;height:26px;border:none;border-radius:4px;cursor:pointer;padding:0" onchange="edApplyBtn(this.value)">
   <select id="edPadding" onchange="edApplyPadding(this.value)" style="background:#2a2420;color:white;border:1px solid rgba(255,255,255,.15);padding:4px 6px;border-radius:6px;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;max-width:110px">
     <option value="">Espaciado</option>
@@ -1819,8 +1828,32 @@ function edSelectEl(el) {
   _edSel = el;
   el.classList.add('ed-selected-ring');
   var label = (el.id ? '#'+el.id : el.tagName.toLowerCase());
-  var inner = el.textContent.trim().substring(0, 30);
-  edMsg('✅ Seleccionado: ' + label + (inner ? ' — "'+inner+'"' : ''));
+  var inner = el.textContent.trim().substring(0, 35);
+  edMsg('✅ ' + label + (inner ? ': "'+inner+'"' : '') + ' — ya puedes cambiar fondo, borde, color...');
+
+  // Sync color pickers with element's current styles
+  try {
+    var cs = window.getComputedStyle(el);
+    var bgPicker = document.getElementById('edBg');
+    var bg = el.style.background || el.style.backgroundColor || cs.backgroundColor;
+    if (bgPicker && bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
+      // Convert rgb() to hex for the picker
+      var m = bg.match(/\d+/g);
+      if (m && m.length >= 3) {
+        var hex = '#' + [m[0],m[1],m[2]].map(function(x){ return ('0'+parseInt(x).toString(16)).slice(-2); }).join('');
+        bgPicker.value = hex;
+      }
+    }
+    var fontPicker = document.getElementById('edFontColor');
+    var fc = el.style.color || cs.color;
+    if (fontPicker && fc) {
+      var m2 = fc.match(/\d+/g);
+      if (m2 && m2.length >= 3) {
+        var hex2 = '#' + [m2[0],m2[1],m2[2]].map(function(x){ return ('0'+parseInt(x).toString(16)).slice(-2); }).join('');
+        fontPicker.value = hex2;
+      }
+    }
+  } catch(e) {}
 }
 
 // ── Modo selección (clic para seleccionar elemento) ──
@@ -1839,29 +1872,49 @@ function edToggleText() {
   var b = document.getElementById('edTxtBtn');
   if (_edOn) {
     edSnapshot();
+    var BLOCK = ['DIV','P','H1','H2','H3','H4','H5','H6','SECTION','ARTICLE','UL','OL','LI','BLOCKQUOTE','PRE','TABLE'];
+    var SKIP  = ['SCRIPT','STYLE','INPUT','SELECT','TEXTAREA','IFRAME','BUTTON','SVG','CANVAS'];
+
     document.querySelectorAll('#page-public *').forEach(function(el) {
-      if (el.closest('#edPanel') || el.closest('nav') || el.closest('.sidebar')) return;
-      if (['SCRIPT','STYLE','INPUT','SELECT','TEXTAREA','IFRAME','BUTTON'].indexOf(el.tagName) > -1) return;
-      var hasBlockChild = false;
-      el.childNodes.forEach(function(n) {
-        if (n.nodeType === 1 && ['DIV','P','H1','H2','H3','H4','SECTION','UL','OL'].indexOf(n.tagName) > -1) hasBlockChild = true;
-      });
+      if (el.closest('#edPanel') || el.closest('nav') || el.closest('.sidebar') || el.closest('.modal-overlay')) return;
+      if (SKIP.indexOf(el.tagName) > -1) return;
+      if (el.contentEditable === 'true') return; // already activated
+
       var txt = el.textContent.trim();
-      if (!hasBlockChild && txt.length > 0 && txt.length < 600) {
+      if (!txt || txt.length > 800) return;
+
+      // Count meaningful children
+      var blockChildren = 0, inlineChildren = 0, directText = false;
+      el.childNodes.forEach(function(n) {
+        if (n.nodeType === 3 && n.textContent.trim()) directText = true; // direct text node
+        if (n.nodeType === 1) {
+          if (BLOCK.indexOf(n.tagName) > -1) blockChildren++;
+          else inlineChildren++;
+        }
+      });
+
+      var shouldActivate = false;
+      if (blockChildren === 0) shouldActivate = true; // pure leaf or inline-only
+      else if (directText && blockChildren <= 1) shouldActivate = true; // mixed: direct text + 1 block child (like "Presente en" divs)
+      else if (blockChildren === 1 && inlineChildren === 0 && !directText) shouldActivate = false; // pure container
+
+      if (shouldActivate) {
         el.contentEditable = 'true';
-        el.setAttribute('data-ed-outline', el.style.outline || '');
-        el.style.setProperty('outline', '1px dashed rgba(43,125,122,.5)', 'important');
+        el.setAttribute('data-ed-ol', el.style.outline || '');
+        el.setAttribute('data-ed-cur', el.style.cursor || '');
+        el.style.setProperty('outline', '1px dashed rgba(43,125,122,.6)', 'important');
         el.style.cursor = 'text';
       }
     });
     b.textContent = '🔒 Fin edición'; b.style.background = '#bf4637';
-    edMsg('✏️ Todos los textos activados — incluye tarjetas y textos con estilo');
+    edMsg('✏️ Todos los textos activos — incluye "Presente en", tarjetas y emojis');
   } else {
-    document.querySelectorAll('[contenteditable]').forEach(function(el) {
+    document.querySelectorAll('[contenteditable="true"]').forEach(function(el) {
       el.removeAttribute('contenteditable');
-      el.style.outline = el.getAttribute('data-ed-outline') || '';
-      el.removeAttribute('data-ed-outline');
-      el.style.cursor = '';
+      el.style.outline = el.getAttribute('data-ed-ol') || '';
+      el.style.cursor  = el.getAttribute('data-ed-cur') || '';
+      el.removeAttribute('data-ed-ol');
+      el.removeAttribute('data-ed-cur');
     });
     b.textContent = '✏️ Editar textos'; b.style.background = '#2b7d7a';
     edMsg('');
@@ -1921,8 +1974,25 @@ function edApplyFontSize(v) {
 
 // ── Fondo, botón, espaciado, ancho ──
 function edApplyBg(v) {
-  if (_edSel) { _edSel.style.background = v; edMsg('🎨 Fondo: '+v); edSnapshot(); }
-  else edMsg('⚠️ Selecciona un elemento');
+  if (_edSel) {
+    _edSel.style.background = v;
+    // Update the color picker to show current value
+    if (v !== 'transparent') {
+      var picker = document.getElementById('edBg');
+      if (picker) picker.value = v;
+    }
+    edMsg('🎨 Fondo aplicado: '+v); edSnapshot();
+  } else edMsg('⚠️ Primero selecciona un bloque con 🖱 Seleccionar o clic derecho');
+}
+function edApplyBorder(v) {
+  if (_edSel) {
+    if (v === 'none') {
+      _edSel.style.border = 'none';
+    } else {
+      _edSel.style.border = '1px solid ' + v;
+    }
+    edMsg('🔲 Borde: '+v); edSnapshot();
+  } else edMsg('⚠️ Selecciona un elemento primero');
 }
 function edApplyBtn(v) {
   var t = _edSelBtn || _edSel;
