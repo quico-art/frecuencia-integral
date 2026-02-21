@@ -163,24 +163,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,245,241,
 .toast.show{opacity:1}
 
 
-/* ── EDITOR ADMIN ── */
-.editor-bar{position:fixed;bottom:0;left:0;right:0;z-index:9999;background:#1c1814;color:white;padding:10px 20px;display:none;align-items:center;gap:12px;flex-wrap:wrap;box-shadow:0 -4px 20px rgba(0,0,0,.3)}
-.editor-bar.visible{display:flex}
-.editor-btn{padding:7px 14px;border-radius:6px;border:none;font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
-.editor-btn-primary{background:#2b7d7a;color:white}
-.editor-btn-primary:hover{background:#3d9e9b}
-.editor-btn-danger{background:#bf4637;color:white}
-.editor-btn-danger:hover{background:#d45a4c}
-.editor-btn-neutral{background:rgba(255,255,255,.1);color:white}
-.editor-btn-neutral:hover{background:rgba(255,255,255,.2)}
-.editor-label{font-size:11px;color:rgba(255,255,255,.5);margin-right:4px}
-.editor-sep{width:1px;height:24px;background:rgba(255,255,255,.15);margin:0 4px}
-.editor-status{font-size:11px;color:#3d9e9b;margin-left:auto}
-[contenteditable=true]{outline:2px dashed #2b7d7a !important;outline-offset:2px !important;border-radius:3px;cursor:text !important}
-[contenteditable=true]:focus{outline:2px solid #2b7d7a !important;background:rgba(43,125,122,.06) !important}
-.color-picker-wrap{display:flex;align-items:center;gap:6px}
-.color-picker-wrap input[type=color]{width:28px;height:28px;border:none;border-radius:4px;cursor:pointer;padding:0;background:none}
-
 /* FILTER */
 .filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
 .filter-btn{padding:7px 16px;border-radius:100px;border:1.5px solid #d1c8bc;background:none;font-size:12px;font-weight:600;cursor:pointer;color:#7a7168;font-family:'DM Sans',sans-serif;transition:all .2s}
@@ -449,7 +431,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,245,241,
         <div style="background:white;border-radius:20px;padding:32px;border:1px solid #d9d2c8">
           <div style="font-size:32px;margin-bottom:16px">🏔️</div>
           <div style="font-family:'Cormorant Garamond',serif;font-size:24px;color:#1c1814;margin-bottom:10px">Dzogchen</div>
-          <div style="font-size:13px;color:#5a5248;line-height:1.75;margin-bottom:16px">La tradición tibetana más elevada. Nos revela la naturaleza primordial de la mente — <em style="color:rgba(255,255,255,.8)">Rigpa</em> — la consciencia pura, abierta y luminosa que ya está presente. No hay nada que alcanzar, solo reconocer lo que somos.</div>
+          <div style="font-size:13px;color:#5a5248;line-height:1.75;margin-bottom:16px">La tradición tibetana más elevada. Nos revela la naturaleza primordial de la mente — <em style="color:#2b7d7a;font-style:italic">Rigpa</em> — la consciencia pura, abierta y luminosa que ya está presente. No hay nada que alcanzar, solo reconocer lo que somos.</div>
           <div style="background:#f0ece4;border-radius:10px;padding:14px;font-size:12px;color:#7a7168">
             <div style="font-weight:700;color:#3d3730;margin-bottom:6px">Presente en</div>
             🔵 Puerta Azul · 🌈 Integración
@@ -459,7 +441,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,245,241,
         <div style="background:white;border-radius:20px;padding:32px;border:1px solid #d9d2c8">
           <div style="font-size:32px;margin-bottom:16px">⚙️</div>
           <div style="font-family:'Cormorant Garamond',serif;font-size:24px;color:#1c1814;margin-bottom:10px">El Cuarto Camino · Gurdjieff</div>
-          <div style="font-size:13px;color:#5a5248;line-height:1.75;margin-bottom:16px">El despertar en la vida cotidiana. A través del <em style="color:rgba(255,255,255,.8)">recuerdo de sí</em>, la auto-observación y el trabajo sobre los tres centros (físico, emocional, intelectual), aprendemos a salir del sueño automático y vivir con presencia real.</div>
+          <div style="font-size:13px;color:#5a5248;line-height:1.75;margin-bottom:16px">El despertar en la vida cotidiana. A través del <em style="color:#2b7d7a;font-style:italic">recuerdo de sí</em>, la auto-observación y el trabajo sobre los tres centros (físico, emocional, intelectual), aprendemos a salir del sueño automático y vivir con presencia real.</div>
           <div style="background:#f0ece4;border-radius:10px;padding:14px;font-size:12px;color:#7a7168">
             <div style="font-weight:700;color:#3d3730;margin-bottom:6px">Presente en</div>
             🌿 Puerta Blanca · 🔥 Puerta Roja
@@ -469,7 +451,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,245,241,
         <div style="background:white;border-radius:20px;padding:32px;border:1px solid #d9d2c8">
           <div style="font-size:32px;margin-bottom:16px">💛</div>
           <div style="font-family:'Cormorant Garamond',serif;font-size:24px;color:#1c1814;margin-bottom:10px">Un Curso de Milagros</div>
-          <div style="font-size:13px;color:#5a5248;line-height:1.75;margin-bottom:16px">La vía directa para la sanación de la mente. UCDM nos guía para deshacer el sistema del ego basado en el miedo y elegir el sistema del amor y la unidad. El <em style="color:rgba(255,255,255,.8)">perdón real</em> como herramienta de liberación.</div>
+          <div style="font-size:13px;color:#5a5248;line-height:1.75;margin-bottom:16px">La vía directa para la sanación de la mente. UCDM nos guía para deshacer el sistema del ego basado en el miedo y elegir el sistema del amor y la unidad. El <em style="color:#2b7d7a;font-style:italic">perdón real</em> como herramienta de liberación.</div>
           <div style="background:#f0ece4;border-radius:10px;padding:14px;font-size:12px;color:#7a7168">
             <div style="font-weight:700;color:#3d3730;margin-bottom:6px">Presente en</div>
             🔥 Puerta Roja · 🔵 Puerta Azul
@@ -1580,46 +1562,6 @@ document.getElementById('week-modal').addEventListener('click', function(e){
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
-
-
-
-<!-- EDITOR BAR -->
-<div class="editor-bar" id="editorBar" style="display:none">
-  <span style="font-size:13px;font-weight:700;color:#3d9e9b">✦ Modo Editor</span>
-  <div class="editor-sep"></div>
-
-  <button class="editor-btn editor-btn-primary" id="btnToggleEdit" onclick="toggleEditMode()">✏️ Activar edición de texto</button>
-
-  <div class="editor-sep"></div>
-
-  <div class="color-picker-wrap">
-    <span class="editor-label">Color fondo sección:</span>
-    <input type="color" id="colorBg" value="#f7f5f1" onchange="applyBgColor(this.value)" title="Cambia el fondo de la sección">
-    <span class="editor-label" style="margin-left:8px">Color texto:</span>
-    <input type="color" id="colorText" value="#1c1814" onchange="applyTextColor(this.value)" title="Cambia el color del texto seleccionado">
-    <span class="editor-label" style="margin-left:8px">Color botón:</span>
-    <input type="color" id="colorBtn" value="#2b7d7a" onchange="applyBtnColor(this.value)" title="Cambia el color del botón seleccionado">
-  </div>
-
-  <div class="editor-sep"></div>
-
-  <button class="editor-btn editor-btn-neutral" onclick="saveChanges()">💾 Guardar HTML</button>
-  <button class="editor-btn editor-btn-danger" onclick="closeEditor()">✕ Cerrar editor</button>
-
-  <span class="editor-status" id="editorStatus">Haz clic en cualquier texto para editar · Haz clic en una sección o botón para cambiar su color</span>
-</div>
-
-  <div>✏️ <b>Editar texto:</b> Activa edición y haz clic en cualquier texto</div>
-  <div style="margin-top:6px">🎨 <b>Color fondo:</b> Haz clic en una sección y elige color</div>
-  <div style="margin-top:6px">🖊️ <b>Color texto:</b> Selecciona el texto y elige color</div>
-  <div style="margin-top:6px">🔘 <b>Color botón:</b> Haz clic en un botón y elige color</div>
-  <div style="margin-top:6px">💾 <b>Guardar:</b> Descarga el HTML con los cambios</div>
-  <div style="margin-top:10px;font-size:11px;color:rgba(255,255,255,.4)">Para abrir/cerrar: Alt + E</div>
-  <button onclick="document.getElementById('editorHint').style.display='none'" style="margin-top:10px;background:none;border:1px solid rgba(255,255,255,.2);color:white;padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer">Cerrar ayuda</button>
-</div>
-
-
-
 
 
 
