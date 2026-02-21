@@ -1817,6 +1817,7 @@ document.getElementById('week-modal').addEventListener('click', function(e){
   </div>
 
   <div style="width:1px;height:24px;background:rgba(255,255,255,.15)"></div>
+  <button onclick="edSave()" style="background:#b89558;color:white;border:none;padding:9px 18px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.02em">💾 Guardar</button>
   <button onclick="edClose()" style="background:rgba(255,255,255,.1);color:white;border:none;padding:7px 14px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif">✕ Cerrar</button>
 
   <span id="edMsg" style="font-size:11px;color:#3d9e9b;margin-left:auto"></span>
@@ -1840,34 +1841,41 @@ function edClose() {
 function edToggleText() {
   _edOn = !_edOn;
   var b = document.getElementById('edTxtBtn');
-  // Ampliado: incluye tarjetas, herramientas, pilares, todo texto editable
-  var selector = [
-    '#page-public h1', '#page-public h2', '#page-public h3', '#page-public h4',
-    '#page-public p', '#page-public span:not(.nav-item-icon)',
-    '.s-tag', '.s-title', '.s-sub',
-    '.pc-name', '.pc-weeks', '.pc-price', '.pc-billing',
-    '.hero h1', '.hero p',
-    '.nav-logo',
-    '[class*="card"] h2', '[class*="card"] h3', '[class*="card"] p',
-    '[class*="card"] span', '[class*="card"] div > p',
-    '.puerta-card .pc-name', '.puerta-card .pc-weeks', '.puerta-card .pc-price',
-    '#viaje h2', '#viaje h3', '#viaje p', '#viaje li',
-    '#puertas h2', '#puertas p',
-    'section h2', 'section h3', 'section p',
-    '[id] > h2', '[id] > h3', '[id] > p'
-  ].join(', ');
 
-  document.querySelectorAll(selector).forEach(function(el) {
-    // Evitar elementos del editor y nav
-    if (el.closest('#edPanel') || el.closest('nav') || el.closest('.sidebar')) return;
-    el.contentEditable = _edOn ? 'true' : 'false';
-    el.style.outline = _edOn ? '1px dashed rgba(43,125,122,.6)' : '';
-    el.style.borderRadius = _edOn ? '3px' : '';
-    el.style.minHeight = _edOn ? '1em' : '';
-  });
-  b.textContent = _edOn ? '🔒 Fin edición' : '✏️ Editar textos';
-  b.style.background = _edOn ? '#bf4637' : '#2b7d7a';
-  document.getElementById('edMsg').textContent = _edOn ? '✏️ Haz clic en cualquier texto para editar (incluye tarjetas)' : '';
+  if (_edOn) {
+    // Activar TODOS los nodos de texto hoja en la página pública
+    document.querySelectorAll('#page-public *').forEach(function(el) {
+      // Saltar: el editor, nav, scripts, botones con onclick de funcionalidad, elementos con hijos
+      if (el.closest('#edPanel') || el.closest('nav') || el.closest('.sidebar')) return;
+      if (el.closest('script') || el.closest('style')) return;
+      if (['SCRIPT','STYLE','INPUT','SELECT','TEXTAREA','IFRAME'].indexOf(el.tagName) > -1) return;
+      // Solo elementos hoja (sin hijos de bloque) con texto visible
+      var hasBlockChild = false;
+      el.childNodes.forEach(function(n) {
+        if (n.nodeType === 1 && ['DIV','P','H1','H2','H3','H4','SECTION','ARTICLE'].indexOf(n.tagName) > -1) hasBlockChild = true;
+      });
+      if (!hasBlockChild && el.textContent.trim().length > 0 && el.textContent.trim().length < 500) {
+        el.contentEditable = 'true';
+        el.style.outline = '1px dashed rgba(43,125,122,.5)';
+        el.style.minHeight = '1em';
+        el.style.cursor = 'text';
+      }
+    });
+    b.textContent = '🔒 Fin edición';
+    b.style.background = '#bf4637';
+    document.getElementById('edMsg').textContent = '✏️ Todos los textos activados — incluye tarjetas';
+  } else {
+    // Desactivar todo
+    document.querySelectorAll('[contenteditable]').forEach(function(el) {
+      el.removeAttribute('contenteditable');
+      el.style.outline = '';
+      el.style.minHeight = '';
+      el.style.cursor = '';
+    });
+    b.textContent = '✏️ Editar textos';
+    b.style.background = '#2b7d7a';
+    document.getElementById('edMsg').textContent = '';
+  }
 }
 
 function edApplyPadding(v) {
