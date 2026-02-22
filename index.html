@@ -2350,7 +2350,14 @@ document.getElementById('week-modal').addEventListener('click', function(e){
 <!-- ══════════════════════════════════════════════════ -->
 <!-- BARRA FLOTANTE DE FORMATO (aparece al selec. texto) -->
 <!-- ══════════════════════════════════════════════════ -->
-<div id="edFmtBar" style="display: none; position: fixed; z-index: 10003; background: rgb(22, 18, 16); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 10px; padding: 5px 7px; gap: 2px; align-items: center; box-shadow: rgba(0, 0, 0, 0.7) 0px 6px 28px; flex-wrap: wrap; max-width: 600px; left: 636.675px; top: 3511.45px;" data-protonpass-form="">
+<div id="edFmtBar" style="display: none; position: fixed; z-index: 10003; background: rgb(22, 18, 16); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 10px; padding: 5px 7px; gap: 2px; align-items: center; box-shadow: rgba(0, 0, 0, 0.7) 0px 6px 28px; flex-wrap: wrap; max-width: 640px;" data-protonpass-form="">
+  <!-- Info fuente actual -->
+  <div id="edFontInfo" style="display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.06);border-radius:6px;padding:3px 8px;margin-right:4px;min-width:120px">
+    <span id="edFontInfoFamily" style="font-size:10px!important;color:#b89558;font-weight:700;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</span>
+    <span style="font-size:9px!important;color:rgba(255,255,255,.25)">·</span>
+    <span id="edFontInfoSize" style="font-size:10px!important;color:rgba(255,255,255,.55);white-space:nowrap">—</span>
+  </div>
+  <div class="efbsep"></div>
   <!-- Formato básico -->
   <button onclick="edFmt('bold')" class="efb" title="Negrita Ctrl+B"><b>B</b></button>
   <button onclick="edFmt('italic')" class="efb" title="Cursiva Ctrl+I"><i style="font-style:italic">I</i></button>
@@ -2861,26 +2868,95 @@ document.getElementById('week-modal').addEventListener('click', function(e){
 <style>
 /* ── Editor v3 core ── */
 .eds{width:1px;height:20px;background:rgba(255,255,255,.1);flex-shrink:0}
-/* ── Grid 9 tradiciones ── */
+/* ── Accesibilidad: tamaños de fuente más grandes ── */
+html { font-size: 17px; }
+body { font-size: 1rem; }
+/* Escalar textos pequeños del cuerpo de la página */
+p, li, span, div, td, th, label, input, select, textarea, button {
+  font-size: max(var(--fs, inherit), 15px);
+}
+/* Párrafos y texto de contenido */
+p { font-size: 1.05rem !important; line-height: 1.75 !important; }
+/* Etiquetas pequeñas y metadata — nunca menos de 13px */
+.week-num, .week-status, .pc-weeks, .pc-tag, .pub-meta,
+[style*="font-size: 10px"], [style*="font-size:10px"],
+[style*="font-size: 11px"], [style*="font-size:11px"] {
+  font-size: 13px !important;
+}
+/* Texto de tarjetas y descripciones */
+[style*="font-size: 12px"], [style*="font-size:12px"] { font-size: 14px !important; }
+[style*="font-size: 13px"], [style*="font-size:13px"] { font-size: 15px !important; }
+[style*="font-size: 14px"], [style*="font-size:14px"] { font-size: 16px !important; }
+[style*="font-size: 15px"], [style*="font-size:15px"] { font-size: 17px !important; }
+/* Navegación */
+nav a, .nav-links a { font-size: 15px !important; }
+/* Botones */
+button:not(.efb):not([style*="font-size: 1"]):not([style*="font-size:1"]) { font-size: 15px !important; }
+/* No escalar elementos del editor UI */
+#edPanel *, #edFmtBar *, #edPropsPanel *, #edPwdModal *,
+#edImgPanel *, #navMgrPanel *, .ed-ctx-menu * { font-size: revert !important; }
 .tradiciones-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:48px}
 @media(max-width:900px){.tradiciones-grid{grid-template-columns:repeat(2,1fr);gap:16px}}
 @media(max-width:580px){.tradiciones-grid{grid-template-columns:1fr;gap:14px}.tradiciones-grid>div{padding:24px 20px}}
 /* ── Mobile general ── */
 @media(max-width:768px){
+  /* Nav */
   nav{padding:0 16px;height:60px}
   .nav-links{display:none}
-  .hero{padding:100px 20px 60px}
-  .hero h1{font-size:clamp(32px,8vw,48px)}
-  #puertas,#viaje,#tradiciones,#joyas,#testimonios{padding:60px 20px}
+  .nav-btns .btn-ghost:not(#btnLogin):not(#btnLogout):not(#btnDash){display:none}
+  .btn-primary{padding:9px 16px;font-size:14px}
+  /* Hero */
+  .hero{padding:90px 20px 56px}
+  .hero h1{font-size:clamp(30px,8vw,44px)}
+  .hero p{font-size:16px}
+  .hero-btns{flex-direction:column;align-items:stretch;gap:10px}
+  .btn-hero{text-align:center;padding:14px 20px;font-size:15px}
+  /* Sections */
+  #puertas,#viaje,#tradiciones,#joyas,#testimonios,#pilares-mandala{padding:56px 20px}
+  /* Grids */
   .puertas-grid{grid-template-columns:1fr}
-  .hero-btns{flex-direction:column;align-items:stretch}
-  .btn-hero{text-align:center}
-  div[style*="gap:80px"]{grid-template-columns:1fr !important;gap:40px !important}
+  div[style*="gap:80px"]{grid-template-columns:1fr !important;gap:36px !important}
   div[style*="position:sticky"],div[style*="position: sticky"]{position:relative !important;top:auto !important}
   div[style*="grid-template-columns:repeat(auto-fit,minmax(280px"]{grid-template-columns:1fr !important}
   div[style*="grid-template-columns:repeat(auto-fit,minmax(200px"]{grid-template-columns:1fr !important}
+  div[style*="grid-template-columns:repeat(auto-fit,minmax(240px"]{grid-template-columns:1fr !important}
   div[style*="grid-template-columns:1fr 1fr 1fr"][style*="height:340px"]{grid-template-columns:1fr;height:auto}
-  div[style*="grid-template-columns:1fr 1fr 1fr"][style*="height:340px"]>div{height:180px}
+  div[style*="grid-template-columns:1fr 1fr 1fr"][style*="height:340px"]>div{height:200px}
+  /* Testimonios */
+  div[style*="grid-template-columns:repeat(auto-fit,minmax(280px"]{grid-template-columns:1fr !important}
+  /* Puerta cards */
+  .pc-inner{padding:28px 20px}
+  /* Weeks grid */
+  .weeks-grid{grid-template-columns:1fr}
+  /* Dashboard */
+  .dashboard-grid{grid-template-columns:repeat(2,1fr)}
+  .auth-wrap{grid-template-columns:1fr}
+  .auth-left{display:none}
+  .sidebar{display:none}
+  .main-content{margin-left:0}
+  /* Joyas */
+  div[style*="grid-template-columns:repeat(auto-fit,minmax(200px"]{grid-template-columns:1fr !important}
+  /* Mandala — reducir tamaño en mobile */
+  #pilares-mandala svg{max-width:90vw}
+  /* Editor buttons */
+  #edOpenBtn,#navMgrBtn{bottom:20px}
+  #navMgrBtn{left:120px}
+  /* Viaje section sticky col */
+  div[style*="1fr 1fr"][style*="align-items:start"],
+  div[style*="1fr 1fr"][style*="align-items: start"]{grid-template-columns:1fr !important;gap:32px !important}
+}
+
+@media(max-width:480px){
+  .hero h1{font-size:clamp(26px,7vw,36px)}
+  nav .nav-logo{font-size:14px}
+  .tradiciones-grid{grid-template-columns:1fr !important}
+  .dashboard-grid{grid-template-columns:1fr}
+  div[style*="grid-template-columns:repeat(3,1fr)"]{grid-template-columns:1fr !important}
+  div[style*="grid-template-columns:repeat(2,1fr)"]{grid-template-columns:1fr !important}
+  /* Pricing cards */
+  div[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr !important;gap:16px !important}
+  /* Hero image band hidden on very small */
+  div[style*="grid-template-columns:1fr 1fr 1fr"][style*="height:340px"]{display:none}
 }
 .edpb{border:none;padding:6px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
 .edpb.teal{background:#2b7d7a;color:white}
@@ -3027,8 +3103,9 @@ function edPwdCancel() {
 
 function edShowEditorBtns() {
   var eb = document.getElementById('edOpenBtn');
+  var nb = document.getElementById('navMgrBtn');
   if(eb) eb.style.display = '';
-  // navMgrBtn permanece siempre oculto
+  if(nb) nb.style.display = '';
 }
 
 function edHideEditorBtns() {
@@ -3231,9 +3308,23 @@ document.addEventListener('mouseup',function(e){
     try{
       var anc=sel.anchorNode;
       var el2=anc.nodeType===3?anc.parentElement:anc;
-      var fc=window.getComputedStyle(el2).color;
+      var cs2=window.getComputedStyle(el2);
+      var fc=cs2.color;
       var fh=rgb2hex(fc);
       if(fh)document.getElementById('efbTxtColor').value=fh;
+      // ── Font info display ──
+      var ff=cs2.fontFamily||'';
+      // clean up font name
+      ff=ff.split(',')[0].replace(/['"]/g,'').trim();
+      if(ff.length>14)ff=ff.substring(0,12)+'…';
+      var fs=cs2.fontSize||'';
+      // convert px to integer for display
+      var fsPx=parseFloat(fs);
+      var fsDisplay=isNaN(fsPx)?fs:Math.round(fsPx)+'px';
+      var fiFamily=document.getElementById('edFontInfoFamily');
+      var fiSize=document.getElementById('edFontInfoSize');
+      if(fiFamily)fiFamily.textContent=ff||'—';
+      if(fiSize)fiSize.textContent=fsDisplay||'—';
     }catch(ex){}
   },12);
 });
