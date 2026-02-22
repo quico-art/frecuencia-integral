@@ -2342,7 +2342,7 @@ document.getElementById('week-modal').addEventListener('click', function(e){
 </div>
 
 <!-- BOTÓN EDITOR (oculto — aparece solo tras contraseña correcta) -->
-<button onclick="editorOpen()" id="edOpenBtn" style="position: fixed; bottom: 80px; left: 24px; z-index: 99999; background: rgb(28, 24, 20); color: white; border: 2px solid rgba(255, 255, 255, 0.2); padding: 10px 18px; border-radius: 100px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: &quot;DM Sans&quot;, sans-serif; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 20px; display: none;" class="">✏️ Editor</button>
+<button onclick="wixSideBarOpen()" id="edOpenBtn" style="position: fixed; bottom: 80px; left: 24px; z-index: 99999; background: rgb(28, 24, 20); color: white; border: 2px solid rgba(255, 255, 255, 0.2); padding: 10px 18px; border-radius: 100px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: &quot;DM Sans&quot;, sans-serif; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 20px; display: none;" class="">✏️ Editor</button>
 
 <!-- BOTÓN GESTOR (visible solo con editor abierto) -->
 <button onclick="hcpOpen()" id="hcpOpenBtn" style="display:none;position:fixed;bottom:80px;left:130px;z-index:99999;background:#2b7d7a;color:white;border:2px solid rgba(255,255,255,.15);padding:10px 18px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 20px rgba(0,0,0,.4)">🗂️ Navegación</button>
@@ -3766,6 +3766,128 @@ function edSave(){
 <!-- ══════════════════════════════════════════════════════════════ -->
 
 <!-- Botón de acceso rápido (junto al Editor) -->
+<!-- ══════════════════════════════════════
+     PANEL LATERAL ESTILO WIX
+════════════════════════════════════════ -->
+<div id="wixSideBar" style="display:none;position:fixed;top:0;left:0;bottom:0;z-index:99990;flex-direction:row;font-family:'DM Sans',sans-serif">
+
+  <!-- Columna de iconos (nivel 1) -->
+  <div id="wixIconBar" style="width:56px;height:100%;background:#1c1814;display:flex;flex-direction:column;align-items:center;padding:12px 0;gap:4px;box-shadow:2px 0 12px rgba(0,0,0,.4);flex-shrink:0">
+    <div style="font-size:9px;font-weight:700;color:#b89558;text-align:center;margin-bottom:8px;letter-spacing:.06em;line-height:1.2">ED<br>TCT</div>
+    <div style="width:32px;height:1px;background:rgba(255,255,255,.08);margin-bottom:4px"></div>
+    <button class="wsb-icon" id="wsb-texto"     onclick="wixPanel('texto')"     title="Textos">T</button>
+    <button class="wsb-icon" id="wsb-elementos" onclick="wixPanel('elementos')" title="Elementos">⊞</button>
+    <button class="wsb-icon" id="wsb-imagenes"  onclick="wixPanel('imagenes')"  title="Imágenes">🖼</button>
+    <button class="wsb-icon" id="wsb-diseno"    onclick="wixPanel('diseno')"    title="Diseño">🎨</button>
+    <button class="wsb-icon" id="wsb-nav"       onclick="wixPanel('nav')"       title="Nav & Páginas">📑</button>
+    <button class="wsb-icon" id="wsb-acciones"  onclick="wixPanel('acciones')"  title="Acciones">⚡</button>
+    <div style="flex:1"></div>
+    <div style="width:32px;height:1px;background:rgba(255,255,255,.08);margin-bottom:4px"></div>
+    <button class="wsb-icon" onclick="edSave()" title="Guardar" style="color:#b89558;border-color:rgba(184,149,88,.3)">💾</button>
+    <button class="wsb-icon" onclick="wixSideBarClose()" title="Cerrar editor" style="color:#f08080;border-color:rgba(240,128,128,.2);margin-top:4px">✕</button>
+  </div>
+
+  <!-- Panel secundario (nivel 2) -->
+  <div id="wixPanel2" style="display:none;width:260px;height:100%;background:#252118;box-shadow:2px 0 16px rgba(0,0,0,.35);overflow-y:auto;flex-direction:column;flex-shrink:0">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px;border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0;background:#252118;z-index:2">
+      <div id="wixP2Title" style="font-size:13px;font-weight:700;color:white"></div>
+      <button onclick="wixPanelClose()" style="background:none;border:none;color:rgba(255,255,255,.3);font-size:16px;cursor:pointer;padding:2px 6px">✕</button>
+    </div>
+    <div id="wixP2Body" style="padding:12px 14px;display:flex;flex-direction:column;gap:6px"></div>
+  </div>
+</div>
+
+<style>
+.wsb-icon{width:40px;height:40px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:rgba(255,255,255,.65);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.wsb-icon:hover,.wsb-icon.active{background:#2b7d7a;border-color:#2b7d7a;color:white}
+.wsb-icon.active{box-shadow:0 0 0 2px rgba(43,125,122,.4)}
+.wp2-btn{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:9px;padding:10px 12px;color:rgba(255,255,255,.8);font-size:13px;cursor:pointer;width:100%;text-align:left;transition:all .15s;font-family:'DM Sans',sans-serif}
+.wp2-btn:hover{background:rgba(43,125,122,.15);border-color:rgba(43,125,122,.4);color:white}
+.wp2-btn .wp2-ico{font-size:16px;width:22px;text-align:center;flex-shrink:0}
+.wp2-btn .wp2-lbl{display:flex;flex-direction:column}
+.wp2-btn .wp2-lbl span{font-size:10px;color:rgba(255,255,255,.35);font-weight:400;margin-top:1px}
+.wp2-divider{height:1px;background:rgba(255,255,255,.07);margin:8px 0}
+.wp2-sec-title{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.1em;padding:8px 2px 5px}
+.wp2-color-row{display:flex;align-items:center;gap:8px;padding:8px 10px;background:rgba(255,255,255,.04);border-radius:8px;border:1px solid rgba(255,255,255,.07)}
+.wp2-color-row label{font-size:11px;color:rgba(255,255,255,.5);flex:1}
+.wp2-color-row input[type=color]{width:28px;height:28px;border:none;border-radius:5px;cursor:pointer;padding:0}
+.wp2-select{width:100%;background:#1c1814;color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.12);padding:8px 10px;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.wp2-select:focus{outline:none;border-color:#2b7d7a}
+.wp2-info{background:rgba(184,149,88,.08);border:1px solid rgba(184,149,88,.2);border-radius:8px;padding:8px 12px;font-size:11px;color:rgba(184,149,88,.8);line-height:1.5}
+#wixPanel2,#wixIconBar{font-size:revert!important}
+#wixPanel2 *,#wixIconBar *{font-size:revert!important}
+</style>
+
+<script>
+var _wixCurrentPanel=null;
+function wixSideBarOpen(){
+  var sb=document.getElementById('wixSideBar');
+  sb.style.display='flex';
+  document.body.style.paddingLeft='56px';
+  editorOpen();
+}
+function wixSideBarClose(){
+  wixPanelClose();
+  document.getElementById('wixSideBar').style.display='none';
+  document.body.style.paddingLeft='';
+  document.querySelectorAll('.wsb-icon').forEach(function(b){b.classList.remove('active')});
+  _wixCurrentPanel=null;
+  edClose();
+}
+function wixPanelClose(){
+  var p2=document.getElementById('wixPanel2');
+  if(p2)p2.style.display='none';
+  document.querySelectorAll('.wsb-icon').forEach(function(b){b.classList.remove('active')});
+  document.body.style.paddingLeft='56px';
+  _wixCurrentPanel=null;
+}
+function wixPanel(name){
+  if(_wixCurrentPanel===name){wixPanelClose();return;}
+  _wixCurrentPanel=name;
+  document.querySelectorAll('.wsb-icon').forEach(function(b){b.classList.remove('active')});
+  var ic=document.getElementById('wsb-'+name);
+  if(ic)ic.classList.add('active');
+  var titles={texto:'✏️ Textos & Formato',elementos:'⊞ Elementos',imagenes:'🖼 Imágenes',diseno:'🎨 Diseño',nav:'📑 Nav & Páginas',acciones:'⚡ Acciones'};
+  document.getElementById('wixP2Title').textContent=titles[name]||name;
+  document.getElementById('wixP2Body').innerHTML=wixBuildPanel(name);
+  var p2=document.getElementById('wixPanel2');
+  p2.style.display='flex';
+  document.body.style.paddingLeft='316px';
+}
+function wixBuildPanel(n){
+  if(n==='texto')return wixPanelTexto();
+  if(n==='elementos')return wixPanelElementos();
+  if(n==='imagenes')return wixPanelImagenes();
+  if(n==='diseno')return wixPanelDiseno();
+  if(n==='nav')return wixPanelNav();
+  if(n==='acciones')return wixPanelAcciones();
+  return '';
+}
+function wixPanelTexto(){
+  var szBtns=['12px','14px','16px','18px','20px','24px','28px','32px','40px','48px','56px','64px'].map(function(s){return'<button class="wp2-btn" style="padding:5px 8px;font-size:11px!important;justify-content:center" onclick="edApplyFontSize(\''+s+'\')">'+s.replace('px','')+'</button>';}).join('');
+  var colBtns=['#1c1814','#ffffff','#b89558','#2b7d7a','#bf4637','#2c5f9e','#7a7168','#f0ece4'].map(function(c){return'<button onclick="edApplyFontColor(\''+c+'\')" style="width:28px;height:28px;border-radius:6px;background:'+c+';border:2px solid rgba(255,255,255,.15);cursor:pointer" title="'+c+'"></button>';}).join('');
+  return '<div class="wp2-info">Selecciona texto para formatear, o activa edición para editar inline.</div><div class="wp2-divider"></div><div class="wp2-sec-title">Modo edición</div><button class="wp2-btn" onclick="edToggleText()"><span class="wp2-ico">✍️</span><span class="wp2-lbl">Editar texto<span>Clic en cualquier texto</span></span></button><button class="wp2-btn" onclick="edToggleMode()"><span class="wp2-ico">🎯</span><span class="wp2-lbl">Seleccionar elemento</span></button><div class="wp2-divider"></div><div class="wp2-sec-title">Formato</div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px"><button class="wp2-btn" style="justify-content:center;padding:10px 4px" onclick="edFmt(\'bold\')"><b>B</b></button><button class="wp2-btn" style="justify-content:center;padding:10px 4px" onclick="edFmt(\'italic\')"><i style="font-style:italic">I</i></button><button class="wp2-btn" style="justify-content:center;padding:10px 4px;text-decoration:underline" onclick="edFmt(\'underline\')">U</button><button class="wp2-btn" style="justify-content:center;padding:10px 4px;text-decoration:line-through" onclick="edFmt(\'strikeThrough\')">S</button></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:4px"><button class="wp2-btn" style="justify-content:center;font-size:11px!important" onclick="edFmt(\'justifyLeft\')">⬛ Izq.</button><button class="wp2-btn" style="justify-content:center;font-size:11px!important" onclick="edFmt(\'justifyCenter\')">Centr.</button><button class="wp2-btn" style="justify-content:center;font-size:11px!important" onclick="edFmt(\'justifyRight\')">Der. ⬛</button></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:4px"><button class="wp2-btn" style="justify-content:center;font-size:11px!important" onclick="edFmt(\'insertUnorderedList\')">• Lista</button><button class="wp2-btn" style="justify-content:center;font-size:11px!important" onclick="edFmt(\'insertOrderedList\')">1. Num.</button></div><div class="wp2-divider"></div><div class="wp2-sec-title">Encabezados</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px"><button class="wp2-btn" style="justify-content:center;font-weight:700;font-size:11px!important" onclick="edFmtBlock(\'h1\')">H1</button><button class="wp2-btn" style="justify-content:center;font-weight:700;font-size:11px!important" onclick="edFmtBlock(\'h2\')">H2</button><button class="wp2-btn" style="justify-content:center;font-weight:700;font-size:11px!important" onclick="edFmtBlock(\'h3\')">H3</button><button class="wp2-btn" style="justify-content:center;font-size:11px!important" onclick="edFmtBlock(\'h4\')">H4</button><button class="wp2-btn" style="justify-content:center;font-size:11px!important" onclick="edFmtBlock(\'h5\')">H5</button><button class="wp2-btn" style="justify-content:center;font-size:11px!important" onclick="edFmtBlock(\'p\')">P</button></div><div class="wp2-divider"></div><div class="wp2-sec-title">Fuente del bloque</div><select class="wp2-select" onchange="if(this.value)edApplyFont(this.value)" style="margin-bottom:6px"><option value="">Selecciona fuente…</option><option value="\'DM Sans\',sans-serif">DM Sans</option><option value="\'Cormorant Garamond\',serif">Cormorant Garamond</option><option value="Georgia,serif">Georgia</option><option value="Arial,sans-serif">Arial</option><option value="\'Helvetica Neue\',sans-serif">Helvetica Neue</option><option value="\'Times New Roman\',serif">Times NR</option><option value="\'Courier New\',monospace">Courier New</option></select><div class="wp2-sec-title">Tamaño del bloque</div><div style="display:flex;gap:6px;margin-bottom:6px"><input type="number" id="wp2FontSzInp" min="8" max="200" placeholder="px" style="flex:1;background:#1c1814;color:white;border:1px solid rgba(255,255,255,.12);padding:7px 8px;border-radius:7px;font-size:12px!important;outline:none"><button class="wp2-btn" style="padding:7px 12px;justify-content:center;font-size:11px!important" onclick="var v=document.getElementById(\'wp2FontSzInp\').value;if(v)edApplyFontSize(v+\'px\')">✓</button></div><div style="display:flex;flex-wrap:wrap;gap:4px">'+szBtns+'</div><div class="wp2-divider"></div><div class="wp2-sec-title">Color del texto</div><div class="wp2-color-row" style="margin-bottom:6px"><label>Color</label><input type="color" id="wp2TxtColor" value="#1c1814" onchange="edApplyFontColor(this.value)"></div><div style="display:flex;flex-wrap:wrap;gap:4px">'+colBtns+'</div><div class="wp2-divider"></div><button class="wp2-btn" onclick="edAddLink()"><span class="wp2-ico">🔗</span><span class="wp2-lbl">Añadir enlace</span></button><div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:4px"><button class="wp2-btn" style="justify-content:center;font-size:11px!important" onclick="edFmt(\'superscript\')">X² Super</button><button class="wp2-btn" style="justify-content:center;font-size:11px!important" onclick="edFmt(\'subscript\')">X₂ Sub</button></div>';
+}
+function wixPanelElementos(){
+  return '<div class="wp2-info">Inserta nuevos bloques o gestiona el elemento seleccionado.</div><div class="wp2-divider"></div><div class="wp2-sec-title">Insertar</div><button class="wp2-btn" onclick="edInsert(\'texto\')"><span class="wp2-ico">📝</span><span class="wp2-lbl">Bloque de texto</span></button><button class="wp2-btn" onclick="edInsert(\'tarjeta\')"><span class="wp2-ico">🃏</span><span class="wp2-lbl">Tarjeta</span></button><button class="wp2-btn" onclick="edInsert(\'banner-ancho\')"><span class="wp2-ico">🔲</span><span class="wp2-lbl">Banner ancho</span></button><button class="wp2-btn" onclick="edInsert(\'banner-pequeño\')"><span class="wp2-ico">▭</span><span class="wp2-lbl">Banner pequeño</span></button><button class="wp2-btn" onclick="edInsert(\'imagen-banner\')"><span class="wp2-ico">🖼</span><span class="wp2-lbl">Imagen banner</span></button><button class="wp2-btn" onclick="edInsert(\'imagen-pequeña\')"><span class="wp2-ico">🖼</span><span class="wp2-lbl">Imagen + texto</span></button><button class="wp2-btn" onclick="edInsert(\'boton\')"><span class="wp2-ico">🔘</span><span class="wp2-lbl">Botón CTA</span></button><button class="wp2-btn" onclick="edInsert(\'separador\')"><span class="wp2-ico">—</span><span class="wp2-lbl">Separador</span></button><div class="wp2-divider"></div><div class="wp2-sec-title">Elemento seleccionado</div><button class="wp2-btn" onclick="edDuplicate()"><span class="wp2-ico">📋</span><span class="wp2-lbl">Duplicar</span></button><div style="display:grid;grid-template-columns:1fr 1fr;gap:5px"><button class="wp2-btn" style="justify-content:center" onclick="edMoveUp()">⬆ Subir</button><button class="wp2-btn" style="justify-content:center" onclick="edMoveDown()">⬇ Bajar</button></div><button class="wp2-btn" onclick="edToggleProps()" style="border-color:rgba(61,158,155,.3);color:#3d9e9b;margin-top:4px"><span class="wp2-ico">⚙</span><span class="wp2-lbl">Propiedades CSS</span></button><button class="wp2-btn" onclick="edDeleteSelected()" style="border-color:rgba(191,70,55,.25);color:#f08080;margin-top:4px"><span class="wp2-ico">🗑</span><span class="wp2-lbl">Eliminar elemento</span></button>';
+}
+function wixPanelImagenes(){
+  return '<div class="wp2-info">Gestiona imágenes del elemento seleccionado o inserta una nueva.</div><div class="wp2-divider"></div><button class="wp2-btn" onclick="edChangeImage()"><span class="wp2-ico">🖼</span><span class="wp2-lbl">Gestionar imagen<span>URL, tamaño, posición, ajuste</span></span></button><div class="wp2-divider"></div><div class="wp2-sec-title">URL rápida</div><div class="wp2-info" style="font-size:10px!important;margin-bottom:6px">Formato Unsplash: https://images.unsplash.com/photo-ID?w=1200&q=80</div><input id="wp2ImgUrl" type="text" placeholder="https://…" style="width:100%;box-sizing:border-box;background:#1c1814;color:white;border:1px solid rgba(255,255,255,.15);padding:8px 10px;border-radius:8px;font-size:11px!important;outline:none;margin-bottom:6px"><button class="wp2-btn" style="justify-content:center" onclick="var u=document.getElementById(\'wp2ImgUrl\').value;if(u)document.getElementById(\'edImgUrl\').value=u;edImgPanelOpen()">→ Abrir gestor</button>';
+}
+function wixPanelDiseno(){
+  var padBtns=['0','8px','12px','16px','20px','24px','32px','40px','48px'].map(function(p){return'<button class="wp2-btn" style="padding:5px 8px;font-size:10px!important;justify-content:center" onclick="if(_edSel){_edSel.style.padding=\''+p+'\';edSnapshot()}">'+p+'</button>';}).join('');
+  var radBtns=['0','4px','8px','12px','16px','20px','100px','50%'].map(function(r){return'<button class="wp2-btn" style="padding:5px 8px;font-size:10px!important;justify-content:center" onclick="if(_edSel){_edSel.style.borderRadius=\''+r+'\';edSnapshot()}">'+r+'</button>';}).join('');
+  var bgColors=['#ffffff','#f7f5f1','#f0ece4','#1c1814','#2b7d7a','#b89558','#bf4637','#2c5f9e'].map(function(c){return'<button onclick="edApplyBg(\''+c+'\')" style="width:28px;height:28px;border-radius:6px;background:'+c+';border:2px solid rgba(255,255,255,.15);cursor:pointer" title="'+c+'"></button>';}).join('');
+  return '<div class="wp2-info">Edita el diseño del elemento seleccionado.</div><div class="wp2-divider"></div><div class="wp2-sec-title">Color de fondo</div><div class="wp2-color-row" style="margin-bottom:6px"><label>Fondo</label><input type="color" id="wp2BgColor" value="#ffffff" onchange="edApplyBg(this.value)"></div><div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px">'+bgColors+'</div><div class="wp2-divider"></div><div class="wp2-sec-title">Dimensiones</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px"><div><div style="font-size:10px!important;color:rgba(255,255,255,.35);margin-bottom:4px">Ancho</div><input id="wp2WidthInp" type="text" placeholder="px/%" style="width:100%;background:#1c1814;color:white;border:1px solid rgba(255,255,255,.12);padding:7px 8px;border-radius:7px;font-size:12px!important;outline:none"></div><div><div style="font-size:10px!important;color:rgba(255,255,255,.35);margin-bottom:4px">Alto</div><input id="wp2HeightInp" type="text" placeholder="px/auto" style="width:100%;background:#1c1814;color:white;border:1px solid rgba(255,255,255,.12);padding:7px 8px;border-radius:7px;font-size:12px!important;outline:none"></div></div><button class="wp2-btn" style="justify-content:center;font-size:11px!important;margin-bottom:8px" onclick="if(_edSel){_edSel.style.width=document.getElementById(\'wp2WidthInp\').value;_edSel.style.height=document.getElementById(\'wp2HeightInp\').value;edSnapshot()}">✓ Aplicar</button><div class="wp2-divider"></div><div class="wp2-sec-title">Padding</div><div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px">'+padBtns+'</div><div class="wp2-sec-title">Border radius</div><div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px">'+radBtns+'</div><div class="wp2-divider"></div><button class="wp2-btn" onclick="edToggleProps()" style="border-color:rgba(61,158,155,.3);color:#3d9e9b"><span class="wp2-ico">⚙</span><span class="wp2-lbl">Propiedades avanzadas<span>CSS, sombras, bordes, opacidad…</span></span></button>';
+}
+function wixPanelNav(){
+  return '<div class="wp2-info">Gestiona la navegación y páginas del sitio.</div><div class="wp2-divider"></div><button class="wp2-btn" onclick="navMgrOpen();wixPanelClose()"><span class="wp2-ico">📑</span><span class="wp2-lbl">Abrir Nav & Páginas<span>Editar menú, crear páginas</span></span></button><div class="wp2-divider"></div><div class="wp2-sec-title">Ir a página</div><button class="wp2-btn" onclick="goTo(\'public\')"><span class="wp2-ico">🏠</span><span class="wp2-lbl">Página pública</span></button><button class="wp2-btn" onclick="goTo(\'auth\')"><span class="wp2-ico">🔑</span><span class="wp2-lbl">Login / Registro</span></button><button class="wp2-btn" onclick="goTo(\'student\')"><span class="wp2-ico">📚</span><span class="wp2-lbl">Dashboard alumno</span></button><button class="wp2-btn" onclick="goTo(\'admin\')"><span class="wp2-ico">⚙</span><span class="wp2-lbl">Panel admin</span></button><div class="wp2-divider"></div><div class="wp2-sec-title">Historial</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:5px"><button class="wp2-btn" style="justify-content:center" onclick="edUndo()"><span style="font-size:16px">↩</span> Deshacer</button><button class="wp2-btn" style="justify-content:center" onclick="edRedo()"><span style="font-size:16px">↪</span> Rehacer</button></div>';
+}
+function wixPanelAcciones(){
+  return '<div class="wp2-info">Acciones del editor y el elemento seleccionado.</div><div class="wp2-divider"></div><div class="wp2-sec-title">Editor</div><button class="wp2-btn" onclick="edToggleText()"><span class="wp2-ico">✍️</span><span class="wp2-lbl">Activar edición de texto</span></button><button class="wp2-btn" onclick="edToggleMode()"><span class="wp2-ico">🎯</span><span class="wp2-lbl">Modo selección</span></button><div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:4px"><button class="wp2-btn" style="justify-content:center" onclick="edUndo()">↩ Deshacer</button><button class="wp2-btn" style="justify-content:center" onclick="edRedo()">↪ Rehacer</button></div><div class="wp2-divider"></div><div class="wp2-sec-title">Elemento</div><button class="wp2-btn" onclick="edDuplicate()"><span class="wp2-ico">📋</span><span class="wp2-lbl">Duplicar</span></button><div style="display:grid;grid-template-columns:1fr 1fr;gap:5px"><button class="wp2-btn" style="justify-content:center" onclick="edMoveUp()">⬆ Subir</button><button class="wp2-btn" style="justify-content:center" onclick="edMoveDown()">⬇ Bajar</button></div><button class="wp2-btn" onclick="edAddLink()" style="margin-top:4px"><span class="wp2-ico">🔗</span><span class="wp2-lbl">Enlace</span></button><button class="wp2-btn" onclick="edChangeImage()"><span class="wp2-ico">🖼</span><span class="wp2-lbl">Imagen</span></button><button class="wp2-btn" onclick="edToggleProps()" style="border-color:rgba(61,158,155,.3);color:#3d9e9b"><span class="wp2-ico">⚙</span><span class="wp2-lbl">Propiedades CSS</span></button><button class="wp2-btn" onclick="edDeleteSelected()" style="border-color:rgba(191,70,55,.25);color:#f08080"><span class="wp2-ico">🗑</span><span class="wp2-lbl">Eliminar</span></button><div class="wp2-divider"></div><div class="wp2-sec-title">Guardar y salir</div><button class="wp2-btn" onclick="edSave()" style="border-color:rgba(184,149,88,.4);color:#b89558"><span class="wp2-ico">💾</span><span class="wp2-lbl">Guardar cambios</span></button><button class="wp2-btn" onclick="wixSideBarClose()" style="border-color:rgba(240,128,128,.2);color:#f08080;margin-top:4px"><span class="wp2-ico">✕</span><span class="wp2-lbl">Cerrar editor</span></button>';
+}
+</script>
+
 <button onclick="navMgrOpen()" id="navMgrBtn" style="display:none;position: fixed; bottom: 80px; left: 130px; z-index: 99999; background: rgb(28, 24, 20); color: rgb(184, 149, 88); border: 2px solid rgba(184, 149, 88, 0.3); padding: 10px 18px; border-radius: 100px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: &quot;DM Sans&quot;, sans-serif; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 20px;">🗂 Nav &amp; Páginas</button>
 
 <!-- Panel principal del Gestor -->
