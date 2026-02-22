@@ -259,6 +259,14 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,245,241,
 /* PAGES */
 .page{display:none}
 .page.active{display:block}
+/* Wix-style page push when sidebar opens */
+nav, .page.active {
+  transition: margin-left .25s cubic-bezier(.4,0,.2,1), left .25s cubic-bezier(.4,0,.2,1);
+}
+nav.sb-pushed { left: 56px !important; right: 0 !important; }
+nav.sb-pushed-wide { left: 316px !important; right: 0 !important; }
+.page.active.sb-pushed { margin-left: 56px; }
+.page.active.sb-pushed-wide { margin-left: 316px; }
 
 /* PUBLIC PAGE */
 .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:100px 32px 60px;background:linear-gradient(135deg,#f7f5f1 0%,#f0ece4 100%)}
@@ -1195,7 +1203,15 @@ window.addEventListener('DOMContentLoaded', function() {
 // ── NAVIGATION ──
 function goTo(page) {
   document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
-  document.getElementById('page-' + page).classList.add('active');
+  var newPage = document.getElementById('page-' + page);
+  newPage.classList.add('active');
+  // Maintain sidebar push if open
+  var sb = document.getElementById('wixSideBar');
+  if(sb && sb.style.display !== 'none') {
+    var p2 = document.getElementById('wixPanel2');
+    var isWide = p2 && p2.style.display !== 'none';
+    newPage.classList.add(isWide ? 'sb-pushed-wide' : 'sb-pushed');
+  }
   window.scrollTo(0,0);
   if (page === 'student') refreshDashboard();
 }
@@ -3829,32 +3845,36 @@ var _wixCurrentPanel=null;
 function wixSideBarOpen(){
   var sb=document.getElementById('wixSideBar');
   sb.style.display='flex';
-  document.body.style.paddingLeft='56px';
-  // Ocultar botones flotantes y barra inferior — todo está en el panel lateral
+  // Push page and nav — like Wix
+  var nav=document.querySelector('nav');
+  var page=document.querySelector('.page.active');
+  if(nav){nav.classList.remove('sb-pushed-wide');nav.classList.add('sb-pushed');}
+  if(page){page.classList.remove('sb-pushed-wide');page.classList.add('sb-pushed');}
+  document.body.style.paddingLeft='';
+  // Ocultar botones flotantes y barra inferior
   var eb=document.getElementById('edOpenBtn');
   var nb=document.getElementById('navMgrBtn');
   if(eb)eb.style.display='none';
   if(nb)nb.style.display='none';
-  // Abrir el editor internamente (activa _edUnlocked etc.) pero sin mostrar el panel inferior
-  if(typeof _edUnlocked !== 'undefined' && _edUnlocked){
-    // ya desbloqueado — solo asegurar que el panel inferior esté oculto
-    var ep=document.getElementById('edPanel');
-    if(ep)ep.style.display='none';
-  }
+  var ep=document.getElementById('edPanel');
+  if(ep)ep.style.display='none';
 }
 function wixSideBarClose(){
   wixPanelClose();
   document.getElementById('wixSideBar').style.display='none';
+  // Restore page position
+  var nav=document.querySelector('nav');
+  var page=document.querySelector('.page.active');
+  if(nav){nav.classList.remove('sb-pushed','sb-pushed-wide');}
+  if(page){page.classList.remove('sb-pushed','sb-pushed-wide');}
   document.body.style.paddingLeft='';
   document.querySelectorAll('.wsb-icon').forEach(function(b){b.classList.remove('active')});
   _wixCurrentPanel=null;
-  // Apagar modos activos limpiamente
-  if(typeof _edOn !== 'undefined' && _edOn) edToggleText();
-  if(typeof _edSelMode !== 'undefined' && _edSelMode) edToggleMode();
-  if(typeof edClearSel === 'function') edClearSel();
-  if(typeof edCtxClose === 'function') edCtxClose();
-  if(typeof edFmtBarHide === 'function') edFmtBarHide();
-  // Panel inferior y botones — quedamos todo oculto, el botón ✏️ vuelve visible
+  if(typeof _edOn!=='undefined'&&_edOn)edToggleText();
+  if(typeof _edSelMode!=='undefined'&&_edSelMode)edToggleMode();
+  if(typeof edClearSel==='function')edClearSel();
+  if(typeof edCtxClose==='function')edCtxClose();
+  if(typeof edFmtBarHide==='function')edFmtBarHide();
   var ep=document.getElementById('edPanel');
   if(ep)ep.style.display='none';
   var eb=document.getElementById('edOpenBtn');
@@ -3867,7 +3887,12 @@ function wixPanelClose(){
   var p2=document.getElementById('wixPanel2');
   if(p2)p2.style.display='none';
   document.querySelectorAll('.wsb-icon').forEach(function(b){b.classList.remove('active')});
-  document.body.style.paddingLeft='56px';
+  // Narrow push (only icon bar)
+  var nav=document.querySelector('nav');
+  var page=document.querySelector('.page.active');
+  if(nav){nav.classList.remove('sb-pushed-wide');nav.classList.add('sb-pushed');}
+  if(page){page.classList.remove('sb-pushed-wide');page.classList.add('sb-pushed');}
+  document.body.style.paddingLeft='';
   _wixCurrentPanel=null;
 }
 function wixPanel(name){
@@ -3881,7 +3906,12 @@ function wixPanel(name){
   document.getElementById('wixP2Body').innerHTML=wixBuildPanel(name);
   var p2=document.getElementById('wixPanel2');
   p2.style.display='flex';
-  document.body.style.paddingLeft='316px';
+  // Wide push (icon bar + panel)
+  var nav=document.querySelector('nav');
+  var page=document.querySelector('.page.active');
+  if(nav){nav.classList.remove('sb-pushed');nav.classList.add('sb-pushed-wide');}
+  if(page){page.classList.remove('sb-pushed');page.classList.add('sb-pushed-wide');}
+  document.body.style.paddingLeft='';
 }
 function wixBuildPanel(n){
   if(n==='texto')return wixPanelTexto();
