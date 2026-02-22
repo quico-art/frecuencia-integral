@@ -2853,9 +2853,7 @@ function edPwdCancel() {
 
 function edShowEditorBtns() {
   var eb = document.getElementById('edOpenBtn');
-  var nb = document.getElementById('navMgrBtn');
   if(eb) eb.style.display = '';
-  if(nb) nb.style.display = '';
 }
 
 function edHideEditorBtns() {
@@ -2891,12 +2889,25 @@ function editorOpen(){
   var open=p.style.display==='flex';
   p.style.display=open?'none':'flex';
   if(!open&&!_edHistory.length)edSnapshot();
-  if(open){edCloseProps();edFmtBarHide();document.body.style.paddingBottom='';}
-  else{var h=p.offsetHeight||60;document.body.style.paddingBottom=(h+16)+'px';}
+  if(open){
+    edCloseProps();edFmtBarHide();
+    document.body.style.paddingBottom='';
+    var eb=document.getElementById('edOpenBtn');
+    var nb=document.getElementById('navMgrBtn');
+    if(eb) eb.style.display='none';
+    if(nb) nb.style.display='none';
+  } else {
+    var h=p.offsetHeight||60;
+    document.body.style.paddingBottom=(h+16)+'px';
+  }
 }
 function edClose(){
   document.getElementById('edPanel').style.display='none';
   document.body.style.paddingBottom='';
+  var eb=document.getElementById('edOpenBtn');
+  var nb=document.getElementById('navMgrBtn');
+  if(eb) eb.style.display='none';
+  if(nb) nb.style.display='none';
   if(_edOn)edToggleText();
   edClearSel(); edCtxClose(); edCloseProps(); edFmtBarHide();
 }
@@ -3439,7 +3450,7 @@ function edSave(){
 <!-- ══════════════════════════════════════════════════════════════ -->
 
 <!-- Botón de acceso rápido (junto al Editor) -->
-<button onclick="navMgrOpen()" id="navMgrBtn" style="position: fixed; bottom: 80px; left: 130px; z-index: 99999; background: rgb(28, 24, 20); color: rgb(184, 149, 88); border: 2px solid rgba(184, 149, 88, 0.3); padding: 10px 18px; border-radius: 100px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: &quot;DM Sans&quot;, sans-serif; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 20px;">🗂 Nav &amp; Páginas</button>
+<button onclick="navMgrOpen()" id="navMgrBtn" style="display:none;position: fixed; bottom: 80px; left: 130px; z-index: 99999; background: rgb(28, 24, 20); color: rgb(184, 149, 88); border: 2px solid rgba(184, 149, 88, 0.3); padding: 10px 18px; border-radius: 100px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: &quot;DM Sans&quot;, sans-serif; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 20px;">🗂 Nav &amp; Páginas</button>
 
 <!-- Panel principal del Gestor -->
 <div id="navMgrPanel" style="display: none; position: fixed; inset: 0px; z-index: 100000; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px);">
@@ -4468,11 +4479,4 @@ function nmSaveAll() {
 function nmToast(msg){
   var t=document.createElement('div');
   t.style.cssText='position:fixed;bottom:140px;left:50%;transform:translateX(-50%);background:#1c1814;color:#3d9e9b;border:1px solid rgba(61,158,155,.3);padding:10px 22px;border-radius:20px;font-size:12px;font-weight:600;z-index:200000;font-family:\'DM Sans\',sans-serif;box-shadow:0 4px 16px rgba(0,0,0,.4);pointer-events:none';
-  t.textContent=msg; document.body.appendChild(t);
-  setTimeout(function(){if(t.parentNode)t.parentNode.removeChild(t);},3000);
-}
-</script>
-<deepl-input-controller translate="no"></deepl-input-controller>
-
-
-<protonpass-root-fbbb data-protonpass-role="root" data-protonpass-theme="os"></protonpass-root-fbbb></body></html>
+  t.textContent=msg; document.bo
