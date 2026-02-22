@@ -3102,10 +3102,8 @@ function edPwdCancel() {
 }
 
 function edShowEditorBtns() {
-  var eb = document.getElementById('edOpenBtn');
-  var nb = document.getElementById('navMgrBtn');
-  if(eb) eb.style.display = '';
-  if(nb) nb.style.display = '';
+  // Abre directamente el panel lateral — no se necesitan los botones flotantes
+  wixSideBarOpen();
 }
 
 function edHideEditorBtns() {
@@ -3144,8 +3142,12 @@ function editorOpen(){
   if(open){
     edCloseProps();edFmtBarHide();
     document.body.style.paddingBottom='';
-    document.getElementById('edOpenBtn').style.display='none';
-    document.getElementById('navMgrBtn').style.display='none';
+    // Solo ocultar botones si el sidebar NO está activo
+    var sb=document.getElementById('wixSideBar');
+    if(!sb||sb.style.display==='none'){
+      document.getElementById('edOpenBtn').style.display='none';
+      document.getElementById('navMgrBtn').style.display='none';
+    }
   } else {
     var h=p.offsetHeight||60;
     document.body.style.paddingBottom=(h+16)+'px';
@@ -3154,8 +3156,12 @@ function editorOpen(){
 function edClose(){
   document.getElementById('edPanel').style.display='none';
   document.body.style.paddingBottom='';
-  document.getElementById('edOpenBtn').style.display='none';
-  document.getElementById('navMgrBtn').style.display='none';
+  // Solo gestionar botones si el sidebar NO está visible
+  var sb=document.getElementById('wixSideBar');
+  if(!sb||sb.style.display==='none'){
+    document.getElementById('edOpenBtn').style.display='none';
+    document.getElementById('navMgrBtn').style.display='none';
+  }
   if(_edOn)edToggleText();
   edClearSel(); edCtxClose(); edCloseProps(); edFmtBarHide();
 }
@@ -3824,7 +3830,17 @@ function wixSideBarOpen(){
   var sb=document.getElementById('wixSideBar');
   sb.style.display='flex';
   document.body.style.paddingLeft='56px';
-  editorOpen();
+  // Ocultar botones flotantes y barra inferior — todo está en el panel lateral
+  var eb=document.getElementById('edOpenBtn');
+  var nb=document.getElementById('navMgrBtn');
+  if(eb)eb.style.display='none';
+  if(nb)nb.style.display='none';
+  // Abrir el editor internamente (activa _edUnlocked etc.) pero sin mostrar el panel inferior
+  if(typeof _edUnlocked !== 'undefined' && _edUnlocked){
+    // ya desbloqueado — solo asegurar que el panel inferior esté oculto
+    var ep=document.getElementById('edPanel');
+    if(ep)ep.style.display='none';
+  }
 }
 function wixSideBarClose(){
   wixPanelClose();
@@ -3832,7 +3848,20 @@ function wixSideBarClose(){
   document.body.style.paddingLeft='';
   document.querySelectorAll('.wsb-icon').forEach(function(b){b.classList.remove('active')});
   _wixCurrentPanel=null;
-  edClose();
+  // Apagar modos activos limpiamente
+  if(typeof _edOn !== 'undefined' && _edOn) edToggleText();
+  if(typeof _edSelMode !== 'undefined' && _edSelMode) edToggleMode();
+  if(typeof edClearSel === 'function') edClearSel();
+  if(typeof edCtxClose === 'function') edCtxClose();
+  if(typeof edFmtBarHide === 'function') edFmtBarHide();
+  // Panel inferior y botones — quedamos todo oculto, el botón ✏️ vuelve visible
+  var ep=document.getElementById('edPanel');
+  if(ep)ep.style.display='none';
+  var eb=document.getElementById('edOpenBtn');
+  if(eb)eb.style.display='';
+  var nb=document.getElementById('navMgrBtn');
+  if(nb)nb.style.display='none';
+  document.body.style.paddingBottom='';
 }
 function wixPanelClose(){
   var p2=document.getElementById('wixPanel2');
