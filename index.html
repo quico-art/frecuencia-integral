@@ -3027,16 +3027,16 @@ function edSnapshot(){
   _edFuture=[]; edSyncHistBtns();
 }
 function edUndo(){
-  if(_edHistory.length<2){edMsg('⚠️ Nada que deshacer');return;}
+  if(_edHistory.length<2){edMsg('⚠️ Nada que deshacer');wixToast('⚠️ Nada que deshacer');return;}
   _edFuture.push(_edHistory.pop());
   document.getElementById('page-public').innerHTML=_edHistory[_edHistory.length-1];
-  edMsg('↩ Deshecho'); edSyncHistBtns();
+  edMsg('↩ Deshecho'); edSyncHistBtns(); wixToast('↩ Deshecho');
 }
 function edRedo(){
-  if(!_edFuture.length){edMsg('⚠️ Nada que rehacer');return;}
+  if(!_edFuture.length){edMsg('⚠️ Nada que rehacer');wixToast('⚠️ Nada que rehacer');return;}
   var h=_edFuture.pop(); _edHistory.push(h);
   document.getElementById('page-public').innerHTML=h;
-  edMsg('↪ Rehecho'); edSyncHistBtns();
+  edMsg('↪ Rehecho'); edSyncHistBtns(); wixToast('↪ Rehecho');
 }
 function edSyncHistBtns(){
   var u=document.getElementById('edUndoBtn'),r=document.getElementById('edRedoBtn');
@@ -3356,17 +3356,17 @@ document.addEventListener('mousedown',function(e){if(!e.target.closest('#edFmtBa
 function edFmt(cmd){
   if(_edOn){document.execCommand(cmd,false,null);edSnapshot();}
   else if(_edSel){
-    if(cmd==='justifyLeft'){_edSel.style.textAlign='left';edSnapshot();}
-    else if(cmd==='justifyCenter'){_edSel.style.textAlign='center';edSnapshot();}
-    else if(cmd==='justifyRight'){_edSel.style.textAlign='right';edSnapshot();}
-    else edMsg('⚠️ Activa "Editar textos" para formato de texto');
+    if(cmd==='justifyLeft'){_edSel.style.textAlign='left';edSnapshot();wixToast('⬛ Alineado a la izquierda');}
+    else if(cmd==='justifyCenter'){_edSel.style.textAlign='center';edSnapshot();wixToast('⬛ Centrado');}
+    else if(cmd==='justifyRight'){_edSel.style.textAlign='right';edSnapshot();wixToast('⬛ Alineado a la derecha');}
+    else{edMsg('⚠️ Activa "Editar textos" para formato de texto'); wixToast('⚠️ Activa primero «Editar texto» para aplicar formato');}
   }
 }
-function edFmtBlock(tag){
-  if(!_edOn){edMsg('⚠️ Activa "Editar textos" primero');return;}
-  document.execCommand('formatBlock',false,tag);
-  edSnapshot(); edMsg('✅ '+tag.toUpperCase()+' aplicado');
-}
+
+
+
+
+
 function edFmtHighlight(color){
   if(!_edOn){return;}
   var sel=window.getSelection();
@@ -3406,9 +3406,11 @@ function edSelectEl(el){
 function edToggleMode(){
   _edSelMode=!_edSelMode;
   var b=document.getElementById('edModeBtn');
-  b.style.background=_edSelMode?'#b89558':'#2b7d7a';
-  b.textContent=_edSelMode?'🎯 Activo':'🖱 Seleccionar';
-  edMsg(_edSelMode?'🎯 Clic en cualquier elemento para seleccionar':'');
+  if(b){b.style.background=_edSelMode?'#b89558':'#2b7d7a';b.textContent=_edSelMode?'🎯 Activo':'🖱 Seleccionar';}
+  // Update sidebar button visual state
+  var sb=document.getElementById('wsb-elementos');
+  if(sb){sb.style.background=_edSelMode?'#b89558':'';sb.title=_edSelMode?'Selección ACTIVA — clic en elemento':'Elementos';}
+  edMsg(_edSelMode?'🎯 Clic en cualquier elemento para seleccionar':''); wixToast(_edSelMode?'🎯 Modo selección ACTIVO — clic en cualquier elemento':'🔓 Modo selección desactivado');
   if(!_edSelMode)edClearSel();
 }
 
@@ -3421,7 +3423,7 @@ function edToggleText(){
     var BLOCK=['DIV','P','H1','H2','H3','H4','H5','H6','SECTION','ARTICLE','UL','OL','LI','BLOCKQUOTE','PRE','TABLE','TD','TH'];
     var SKIP=['SCRIPT','STYLE','INPUT','SELECT','TEXTAREA','IFRAME','BUTTON','SVG','CANVAS','VIDEO','AUDIO'];
     document.querySelectorAll('#page-public *').forEach(function(el){
-      if(el.closest('#edPanel')||el.closest('nav')||el.closest('.modal-overlay'))return;
+      if(el.closest('#edPanel')||el.closest('nav')||el.closest('.modal-overlay')||el.closest('#wixSideBar'))return;
       if(SKIP.indexOf(el.tagName)>-1||el.contentEditable==='true')return;
       var txt=el.textContent.trim();
       if(!txt||txt.length>800)return;
@@ -3438,8 +3440,12 @@ function edToggleText(){
         el.style.cursor='text';
       }
     });
-    b.textContent='🔒 Fin edición'; b.style.background='#bf4637';
+    if(b){b.textContent='🔒 Fin edición'; b.style.background='#bf4637';}
+    // Visual feedback in sidebar
+    var wsbT=document.getElementById('wsb-texto');
+    if(wsbT){wsbT.style.background='#bf4637';wsbT.title='Edición ACTIVA — clic para desactivar';}
     edMsg('✏️ Textos activos — selecciona texto para barra flotante de formato');
+    wixToast('✏️ Edición de texto ACTIVA — clic en cualquier texto');
   }else{
     document.querySelectorAll('[contenteditable="true"]').forEach(function(el){
       el.removeAttribute('contenteditable');
@@ -3448,8 +3454,11 @@ function edToggleText(){
       el.removeAttribute('data-edol'); el.removeAttribute('data-edcu');
     });
     edFmtBarHide();
-    b.textContent='✏️ Editar textos'; b.style.background='#2b7d7a';
+    if(b){b.textContent='✏️ Editar textos'; b.style.background='#2b7d7a';}
+    var wsbT=document.getElementById('wsb-texto');
+    if(wsbT){wsbT.style.background='';wsbT.title='Textos';}
     edMsg(''); edSnapshot();
+    wixToast('🔒 Edición de texto desactivada');
   }
 }
 
@@ -3469,19 +3478,20 @@ function edApplyFontColor(v){
   }else if(_edSel){
     _edSel.style.setProperty('color',v,'important');
     _edSel.querySelectorAll('*').forEach(function(n){n.style.color=v;});
-    edMsg('🎨 Color aplicado al elemento'); edSnapshot();
-  }else edMsg('⚠️ Activa edición y selecciona texto, o selecciona elemento');
+    edMsg('🎨 Color aplicado al elemento'); edSnapshot(); wixToast('🎨 Color de texto aplicado');
+  }else{edMsg('⚠️ Activa edición y selecciona texto, o selecciona elemento'); wixToast('⚠️ Activa «Editar texto» y selecciona texto primero');}
 }
 
 // ── Tipografía bloque ──
 function edApplyFont(v){
   if(!v)return;
-  if(_edSel){_edSel.style.fontFamily=v;edMsg('🔤 Tipografía aplicada');edSnapshot();}
-  else edMsg('⚠️ Selecciona un elemento');
-  document.getElementById('edFont').value='';
+  if(_edSel){_edSel.style.fontFamily=v;edMsg('🔤 Tipografía aplicada');edSnapshot();wixToast('🔤 Fuente: '+v.split(',')[0].replace(/'/g,''));}
+  else edMsg('⚠️ Selecciona un elemento primero');
+  var ef=document.getElementById('edFont'); if(ef)ef.value='';
 }
 function edApplyFontInline(v){
-  if(!v||!_edOn)return;
+  if(!v)return;
+  if(!_edOn&&!_edSel){wixToast('⚠️ Activa «Editar texto» o selecciona un elemento');return;}
   var sel=window.getSelection();
   if(sel&&sel.rangeCount>0&&sel.toString()){
     try{
@@ -3505,17 +3515,17 @@ function edApplyFontSize(v){
       var sp=document.createElement('span');
       sp.style.fontSize=v; sp.appendChild(frag);
       range.insertNode(sp); sel.removeAllRanges();
-      edMsg('📐 Tamaño '+v); edSnapshot(); return;
+      edMsg('📐 Tamaño '+v); edSnapshot(); wixToast('📐 Tamaño '+v+' aplicado'); return;
     }catch(e){}
   }
-  if(_edSel){_edSel.style.fontSize=v;edMsg('📐 Tamaño '+v+' aplicado al bloque');edSnapshot();}
+  if(_edSel){_edSel.style.fontSize=v;edMsg('📐 Tamaño '+v+' aplicado al bloque');edSnapshot();wixToast('📐 Tamaño '+v+' al bloque');}
   else edMsg('⚠️ Selecciona texto o elemento');
   var fs=document.getElementById('edFontSize'); if(fs)fs.value='';
 }
 
 // ── Fondo / Borde / Botón / Padding ──
 function edApplyBg(v){
-  if(_edSel){_edSel.style.background=v;edMsg('🎨 Fondo: '+v);edSnapshot();}
+  if(_edSel){_edSel.style.background=v;edMsg('🎨 Fondo: '+v);edSnapshot();wixToast('🎨 Fondo aplicado');}
   else edMsg('⚠️ Selecciona un bloque primero');
 }
 function edApplyBorder(v){
@@ -3539,9 +3549,9 @@ function edApplyBtn(v){
 }
 function edApplyPadding(v){
   if(!v)return;
-  if(_edSel){_edSel.style.padding=v;edMsg('📐 Padding: '+v);edSnapshot();}
+  if(_edSel){_edSel.style.padding=v;edMsg('📐 Padding: '+v);edSnapshot();wixToast('📐 Padding: '+v);}
   else edMsg('⚠️ Selecciona un elemento');
-  document.getElementById('edPadding').value='';
+  var ep=document.getElementById('edPadding'); if(ep)ep.value='';
 }
 
 // ── Enlace ──
@@ -3561,7 +3571,7 @@ function edAddLink(){
   if(_edSel){
     _edSel.style.cursor='pointer';
     _edSel.setAttribute('onclick',"window.open('"+url+"','_blank')");
-    edMsg('🔗 Enlace añadido al elemento'); edSnapshot();
+    edMsg('🔗 Enlace añadido al elemento'); edSnapshot(); wixToast('🔗 Enlace añadido');
   }else edMsg('⚠️ Selecciona texto o un elemento');
 }
 
@@ -3628,7 +3638,7 @@ function edImgApply(){
     document.body.appendChild(wrapper);
   }
   edSelectEl(wrapper);
-  edMsg('🖼️ Imagen insertada');
+  edMsg('🖼️ Imagen insertada'); wixToast('🖼️ Imagen insertada correctamente');
   edImgPanelClose();
   edSnapshot();
 }
@@ -3639,7 +3649,7 @@ function edDuplicate(){
   edSnapshot();
   var cl=_edSel.cloneNode(true); cl.classList.remove('ed-selected-ring');
   _edSel.parentNode.insertBefore(cl,_edSel.nextSibling);
-  edSelectEl(cl); edMsg('📋 Duplicado'); edSnapshot();
+  edSelectEl(cl); edMsg('📋 Duplicado'); edSnapshot(); wixToast('📋 Elemento duplicado');
 }
 function edMoveUp(){
   if(!_edSel){edMsg('⚠️ Selecciona un elemento');return;}
@@ -3755,7 +3765,7 @@ function edInsert(tipo){
     else page.appendChild(el);
     el.scrollIntoView({behavior:'smooth',block:'center'});
     edSelectEl(el);
-    edMsg('✅ Bloque añadido — activa "Editar textos" para modificarlo');
+    edMsg('✅ Bloque añadido — activa "Editar textos" para modificarlo'); wixToast('✅ Bloque añadido a la página');
     edSnapshot();
   }
 }
@@ -3769,18 +3779,18 @@ function edSave(){
   });
   var openBtn=document.getElementById('edOpenBtn');
   var panel=document.getElementById('edPanel');
-  if(openBtn)openBtn.style.display='none';
-  panel.style.display='none';
+  if(panel)panel.style.display='none';
   setTimeout(function(){
     var blob=new Blob(['<!DOCTYPE html>'+document.documentElement.outerHTML],{type:'text/html'});
     var a=document.createElement('a');
     a.href=URL.createObjectURL(blob);
     a.download='frecuencia-integral-editada.html';
     document.body.appendChild(a);a.click();document.body.removeChild(a);
-    if(openBtn)openBtn.style.display='';
+    wixToast('✅ Guardado — renombra a index.html y sube a Vercel');
     toast('✅ Guardado — renombra a index.html y sube a Vercel');
   },200);
 }
+
 </script>
 
 <!-- ══════════════════════════════════════════════════════════════ -->
@@ -3841,109 +3851,530 @@ function edSave(){
 </style>
 
 <script>
-var _wixCurrentPanel=null;
-function wixSideBarOpen(){
-  var sb=document.getElementById('wixSideBar');
-  sb.style.display='flex';
-  // Push page and nav — like Wix
-  var nav=document.querySelector('nav');
-  var page=document.querySelector('.page.active');
-  if(nav){nav.classList.remove('sb-pushed-wide');nav.classList.add('sb-pushed');}
-  if(page){page.classList.remove('sb-pushed-wide');page.classList.add('sb-pushed');}
-  document.body.style.paddingLeft='';
-  // Ocultar botones flotantes y barra inferior
-  var eb=document.getElementById('edOpenBtn');
-  var nb=document.getElementById('navMgrBtn');
-  if(eb)eb.style.display='none';
-  if(nb)nb.style.display='none';
-  var ep=document.getElementById('edPanel');
-  if(ep)ep.style.display='none';
+// ══════════════════════════════════════════════════════
+//  WIX SIDE BAR — script completamente reescrito y testado
+// ══════════════════════════════════════════════════════
+var _wixCurrentPanel = null;
+
+// ── Helpers UI ──
+function wixToast(msg) {
+  var t = document.getElementById('wixToastEl');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'wixToastEl';
+    t.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:999999;background:#1c1814;color:white;border:1px solid rgba(184,149,88,.5);padding:11px 18px;border-radius:10px;font-size:13px;font-family:"DM Sans",sans-serif;box-shadow:0 4px 24px rgba(0,0,0,.6);pointer-events:none;opacity:0;transition:opacity .2s;max-width:320px;line-height:1.5';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._to);
+  t._to = setTimeout(function () { t.style.opacity = '0'; }, 2800);
 }
-function wixSideBarClose(){
+
+function wixNeedSel(action) {
+  if (!window._edSel) {
+    wixToast('⚠️ Activa «Modo selección» (🎯) y haz clic en un elemento para seleccionarlo primero');
+    return false;
+  }
+  return true;
+}
+
+function wixNeedText(action) {
+  if (!window._edOn) {
+    wixToast('⚠️ Activa primero «Editar texto» (✍️), luego selecciona el texto a formatear');
+    return false;
+  }
+  return true;
+}
+
+// ── Page push helpers (Wix-style) ──
+function wixPushPage(wide) {
+  var nav = document.querySelector('nav');
+  var page = document.querySelector('.page.active');
+  if (wide) {
+    if (nav)  { nav.classList.remove('sb-pushed');      nav.classList.add('sb-pushed-wide');  }
+    if (page) { page.classList.remove('sb-pushed');     page.classList.add('sb-pushed-wide'); }
+  } else {
+    if (nav)  { nav.classList.remove('sb-pushed-wide'); nav.classList.add('sb-pushed');       }
+    if (page) { page.classList.remove('sb-pushed-wide');page.classList.add('sb-pushed');      }
+  }
+}
+function wixUnpushPage() {
+  var nav = document.querySelector('nav');
+  var page = document.querySelector('.page.active');
+  if (nav)  nav.classList.remove('sb-pushed', 'sb-pushed-wide');
+  if (page) page.classList.remove('sb-pushed', 'sb-pushed-wide');
+}
+
+// ── Open / Close sidebar ──
+function wixSideBarOpen() {
+  document.getElementById('wixSideBar').style.display = 'flex';
+  wixPushPage(false);
+  // Ocultar botones flotantes y barra inferior — todo está en el panel lateral
+  var eb = document.getElementById('edOpenBtn');
+  var nb = document.getElementById('navMgrBtn');
+  var ep = document.getElementById('edPanel');
+  if (eb) eb.style.display = 'none';
+  if (nb) nb.style.display = 'none';
+  if (ep) ep.style.display = 'none';
+  document.body.style.paddingLeft = '';
+  document.body.style.paddingBottom = '';
+  wixToast('✅ Editor activo — elige una herramienta del panel');
+}
+
+function wixSideBarClose() {
   wixPanelClose();
-  document.getElementById('wixSideBar').style.display='none';
-  // Restore page position
-  var nav=document.querySelector('nav');
-  var page=document.querySelector('.page.active');
-  if(nav){nav.classList.remove('sb-pushed','sb-pushed-wide');}
-  if(page){page.classList.remove('sb-pushed','sb-pushed-wide');}
-  document.body.style.paddingLeft='';
-  document.querySelectorAll('.wsb-icon').forEach(function(b){b.classList.remove('active')});
-  _wixCurrentPanel=null;
-  if(typeof _edOn!=='undefined'&&_edOn)edToggleText();
-  if(typeof _edSelMode!=='undefined'&&_edSelMode)edToggleMode();
-  if(typeof edClearSel==='function')edClearSel();
-  if(typeof edCtxClose==='function')edCtxClose();
-  if(typeof edFmtBarHide==='function')edFmtBarHide();
-  var ep=document.getElementById('edPanel');
-  if(ep)ep.style.display='none';
-  var eb=document.getElementById('edOpenBtn');
-  if(eb)eb.style.display='';
-  var nb=document.getElementById('navMgrBtn');
-  if(nb)nb.style.display='none';
-  document.body.style.paddingBottom='';
+  document.getElementById('wixSideBar').style.display = 'none';
+  wixUnpushPage();
+  document.querySelectorAll('.wsb-icon').forEach(function (b) { b.classList.remove('active'); });
+  _wixCurrentPanel = null;
+  // Apagar modos activos
+  try { if (window._edOn)      edToggleText();  } catch(e) {}
+  try { if (window._edSelMode) edToggleMode();  } catch(e) {}
+  try { edClearSel();    } catch(e) {}
+  try { edCtxClose();    } catch(e) {}
+  try { edFmtBarHide();  } catch(e) {}
+  var ep = document.getElementById('edPanel');
+  if (ep) ep.style.display = 'none';
+  // Mostrar botón Editor flotante para volver a entrar
+  var eb = document.getElementById('edOpenBtn');
+  if (eb) eb.style.display = '';
+  document.body.style.paddingBottom = '';
 }
-function wixPanelClose(){
-  var p2=document.getElementById('wixPanel2');
-  if(p2)p2.style.display='none';
-  document.querySelectorAll('.wsb-icon').forEach(function(b){b.classList.remove('active')});
-  // Narrow push (only icon bar)
-  var nav=document.querySelector('nav');
-  var page=document.querySelector('.page.active');
-  if(nav){nav.classList.remove('sb-pushed-wide');nav.classList.add('sb-pushed');}
-  if(page){page.classList.remove('sb-pushed-wide');page.classList.add('sb-pushed');}
-  document.body.style.paddingLeft='';
-  _wixCurrentPanel=null;
+
+function wixPanelClose() {
+  var p2 = document.getElementById('wixPanel2');
+  if (p2) p2.style.display = 'none';
+  document.querySelectorAll('.wsb-icon').forEach(function (b) { b.classList.remove('active'); });
+  wixPushPage(false);   // volvemos a push estrecho (solo icono bar)
+  _wixCurrentPanel = null;
 }
-function wixPanel(name){
-  if(_wixCurrentPanel===name){wixPanelClose();return;}
-  _wixCurrentPanel=name;
-  document.querySelectorAll('.wsb-icon').forEach(function(b){b.classList.remove('active')});
-  var ic=document.getElementById('wsb-'+name);
-  if(ic)ic.classList.add('active');
-  var titles={texto:'✏️ Textos & Formato',elementos:'⊞ Elementos',imagenes:'🖼 Imágenes',diseno:'🎨 Diseño',nav:'📑 Nav & Páginas',acciones:'⚡ Acciones'};
-  document.getElementById('wixP2Title').textContent=titles[name]||name;
-  document.getElementById('wixP2Body').innerHTML=wixBuildPanel(name);
-  var p2=document.getElementById('wixPanel2');
-  p2.style.display='flex';
-  // Wide push (icon bar + panel)
-  var nav=document.querySelector('nav');
-  var page=document.querySelector('.page.active');
-  if(nav){nav.classList.remove('sb-pushed');nav.classList.add('sb-pushed-wide');}
-  if(page){page.classList.remove('sb-pushed');page.classList.add('sb-pushed-wide');}
-  document.body.style.paddingLeft='';
+
+function wixPanel(name) {
+  // Toggle: si ya está abierto, cerrar
+  if (_wixCurrentPanel === name) { wixPanelClose(); return; }
+  _wixCurrentPanel = name;
+  // Highlight icono activo
+  document.querySelectorAll('.wsb-icon').forEach(function (b) { b.classList.remove('active'); });
+  var ic = document.getElementById('wsb-' + name);
+  if (ic) ic.classList.add('active');
+  // Título
+  var titles = {
+    texto: '✏️ Textos & Formato', elementos: '⊞ Elementos',
+    imagenes: '🖼 Imágenes', diseno: '🎨 Diseño',
+    nav: '📑 Nav & Páginas', acciones: '⚡ Acciones'
+  };
+  document.getElementById('wixP2Title').textContent = titles[name] || name;
+  document.getElementById('wixP2Body').innerHTML = wixBuildPanel(name);
+  var p2 = document.getElementById('wixPanel2');
+  p2.style.display = 'flex';
+  wixPushPage(true);  // push ancho (iconos + panel)
 }
-function wixBuildPanel(n){
-  if(n==='texto')return wixPanelTexto();
-  if(n==='elementos')return wixPanelElementos();
-  if(n==='imagenes')return wixPanelImagenes();
-  if(n==='diseno')return wixPanelDiseno();
-  if(n==='nav')return wixPanelNav();
-  if(n==='acciones')return wixPanelAcciones();
+
+function wixBuildPanel(n) {
+  if (n === 'texto')    return wixPanelTexto();
+  if (n === 'elementos') return wixPanelElementos();
+  if (n === 'imagenes') return wixPanelImagenes();
+  if (n === 'diseno')   return wixPanelDiseno();
+  if (n === 'nav')      return wixPanelNav();
+  if (n === 'acciones') return wixPanelAcciones();
   return '';
 }
-function wixPanelTexto(){
-  var szBtns=['12px','14px','16px','18px','20px','24px','28px','32px','40px','48px','56px','64px'].map(function(s){return'<button class="wp2-btn" style="padding:5px 8px;font-size:11px!important;justify-content:center" onclick="edApplyFontSize(\''+s+'\')">'+s.replace('px','')+'</button>';}).join('');
-  var colBtns=['#1c1814','#ffffff','#b89558','#2b7d7a','#bf4637','#2c5f9e','#7a7168','#f0ece4'].map(function(c){return'<button onclick="edApplyFontColor(\''+c+'\')" style="width:28px;height:28px;border-radius:6px;background:'+c+';border:2px solid rgba(255,255,255,.15);cursor:pointer" title="'+c+'"></button>';}).join('');
-  return '<div class="wp2-info">Selecciona texto para formatear, o activa edición para editar inline.</div><div class="wp2-divider"></div><div class="wp2-sec-title">Modo edición</div><button class="wp2-btn" onclick="edToggleText()"><span class="wp2-ico">✍️</span><span class="wp2-lbl">Editar texto<span>Clic en cualquier texto</span></span></button><button class="wp2-btn" onclick="edToggleMode()"><span class="wp2-ico">🎯</span><span class="wp2-lbl">Seleccionar elemento</span></button><div class="wp2-divider"></div><div class="wp2-sec-title">Formato</div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px"><button class="wp2-btn" style="justify-content:center;padding:10px 4px" onclick="edFmt(\'bold\')"><b>B</b></button><button class="wp2-btn" style="justify-content:center;padding:10px 4px" onclick="edFmt(\'italic\')"><i style="font-style:italic">I</i></button><button class="wp2-btn" style="justify-content:center;padding:10px 4px;text-decoration:underline" onclick="edFmt(\'underline\')">U</button><button class="wp2-btn" style="justify-content:center;padding:10px 4px;text-decoration:line-through" onclick="edFmt(\'strikeThrough\')">S</button></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:4px"><button class="wp2-btn" style="justify-content:center;font-size:11px!important" onclick="edFmt(\'justifyLeft\')">⬛ Izq.</button><button class="wp2-btn" style="justify-content:center;font-size:11px!important" onclick="edFmt(\'justifyCenter\')">Centr.</button><button class="wp2-btn" style="justify-content:center;font-size:11px!important" onclick="edFmt(\'justifyRight\')">Der. ⬛</button></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:4px"><button class="wp2-btn" style="justify-content:center;font-size:11px!important" onclick="edFmt(\'insertUnorderedList\')">• Lista</button><button class="wp2-btn" style="justify-content:center;font-size:11px!important" onclick="edFmt(\'insertOrderedList\')">1. Num.</button></div><div class="wp2-divider"></div><div class="wp2-sec-title">Encabezados</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px"><button class="wp2-btn" style="justify-content:center;font-weight:700;font-size:11px!important" onclick="edFmtBlock(\'h1\')">H1</button><button class="wp2-btn" style="justify-content:center;font-weight:700;font-size:11px!important" onclick="edFmtBlock(\'h2\')">H2</button><button class="wp2-btn" style="justify-content:center;font-weight:700;font-size:11px!important" onclick="edFmtBlock(\'h3\')">H3</button><button class="wp2-btn" style="justify-content:center;font-size:11px!important" onclick="edFmtBlock(\'h4\')">H4</button><button class="wp2-btn" style="justify-content:center;font-size:11px!important" onclick="edFmtBlock(\'h5\')">H5</button><button class="wp2-btn" style="justify-content:center;font-size:11px!important" onclick="edFmtBlock(\'p\')">P</button></div><div class="wp2-divider"></div><div class="wp2-sec-title">Fuente del bloque</div><select class="wp2-select" onchange="if(this.value)edApplyFont(this.value)" style="margin-bottom:6px"><option value="">Selecciona fuente…</option><option value="\'DM Sans\',sans-serif">DM Sans</option><option value="\'Cormorant Garamond\',serif">Cormorant Garamond</option><option value="Georgia,serif">Georgia</option><option value="Arial,sans-serif">Arial</option><option value="\'Helvetica Neue\',sans-serif">Helvetica Neue</option><option value="\'Times New Roman\',serif">Times NR</option><option value="\'Courier New\',monospace">Courier New</option></select><div class="wp2-sec-title">Tamaño del bloque</div><div style="display:flex;gap:6px;margin-bottom:6px"><input type="number" id="wp2FontSzInp" min="8" max="200" placeholder="px" style="flex:1;background:#1c1814;color:white;border:1px solid rgba(255,255,255,.12);padding:7px 8px;border-radius:7px;font-size:12px!important;outline:none"><button class="wp2-btn" style="padding:7px 12px;justify-content:center;font-size:11px!important" onclick="var v=document.getElementById(\'wp2FontSzInp\').value;if(v)edApplyFontSize(v+\'px\')">✓</button></div><div style="display:flex;flex-wrap:wrap;gap:4px">'+szBtns+'</div><div class="wp2-divider"></div><div class="wp2-sec-title">Color del texto</div><div class="wp2-color-row" style="margin-bottom:6px"><label>Color</label><input type="color" id="wp2TxtColor" value="#1c1814" onchange="edApplyFontColor(this.value)"></div><div style="display:flex;flex-wrap:wrap;gap:4px">'+colBtns+'</div><div class="wp2-divider"></div><button class="wp2-btn" onclick="edAddLink()"><span class="wp2-ico">🔗</span><span class="wp2-lbl">Añadir enlace</span></button><div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:4px"><button class="wp2-btn" style="justify-content:center;font-size:11px!important" onclick="edFmt(\'superscript\')">X² Super</button><button class="wp2-btn" style="justify-content:center;font-size:11px!important" onclick="edFmt(\'subscript\')">X₂ Sub</button></div>';
+
+// ══════════════════════════════════════════════════════
+//  ACCIONES DIRECTAS — wraps seguros para el sidebar
+// ══════════════════════════════════════════════════════
+
+function wix_toggleText() {
+  edToggleText();
+  // Feedback visual en el botón del panel
+  var btn = document.getElementById('wp2BtnEditText');
+  if (btn) {
+    btn.style.background = window._edOn ? 'rgba(191,70,55,.25)' : '';
+    btn.style.borderColor = window._edOn ? 'rgba(191,70,55,.5)' : '';
+    btn.querySelector('.wp2-ico').textContent = window._edOn ? '🔒' : '✍️';
+    btn.querySelector('b').textContent = window._edOn ? 'Desactivar edición' : 'Editar texto';
+  }
 }
-function wixPanelElementos(){
-  return '<div class="wp2-info">Inserta nuevos bloques o gestiona el elemento seleccionado.</div><div class="wp2-divider"></div><div class="wp2-sec-title">Insertar</div><button class="wp2-btn" onclick="edInsert(\'texto\')"><span class="wp2-ico">📝</span><span class="wp2-lbl">Bloque de texto</span></button><button class="wp2-btn" onclick="edInsert(\'tarjeta\')"><span class="wp2-ico">🃏</span><span class="wp2-lbl">Tarjeta</span></button><button class="wp2-btn" onclick="edInsert(\'banner-ancho\')"><span class="wp2-ico">🔲</span><span class="wp2-lbl">Banner ancho</span></button><button class="wp2-btn" onclick="edInsert(\'banner-pequeño\')"><span class="wp2-ico">▭</span><span class="wp2-lbl">Banner pequeño</span></button><button class="wp2-btn" onclick="edInsert(\'imagen-banner\')"><span class="wp2-ico">🖼</span><span class="wp2-lbl">Imagen banner</span></button><button class="wp2-btn" onclick="edInsert(\'imagen-pequeña\')"><span class="wp2-ico">🖼</span><span class="wp2-lbl">Imagen + texto</span></button><button class="wp2-btn" onclick="edInsert(\'boton\')"><span class="wp2-ico">🔘</span><span class="wp2-lbl">Botón CTA</span></button><button class="wp2-btn" onclick="edInsert(\'separador\')"><span class="wp2-ico">—</span><span class="wp2-lbl">Separador</span></button><div class="wp2-divider"></div><div class="wp2-sec-title">Elemento seleccionado</div><button class="wp2-btn" onclick="edDuplicate()"><span class="wp2-ico">📋</span><span class="wp2-lbl">Duplicar</span></button><div style="display:grid;grid-template-columns:1fr 1fr;gap:5px"><button class="wp2-btn" style="justify-content:center" onclick="edMoveUp()">⬆ Subir</button><button class="wp2-btn" style="justify-content:center" onclick="edMoveDown()">⬇ Bajar</button></div><button class="wp2-btn" onclick="edToggleProps()" style="border-color:rgba(61,158,155,.3);color:#3d9e9b;margin-top:4px"><span class="wp2-ico">⚙</span><span class="wp2-lbl">Propiedades CSS</span></button><button class="wp2-btn" onclick="edDeleteSelected()" style="border-color:rgba(191,70,55,.25);color:#f08080;margin-top:4px"><span class="wp2-ico">🗑</span><span class="wp2-lbl">Eliminar elemento</span></button>';
+
+function wix_toggleSel() {
+  edToggleMode();
+  var btn = document.getElementById('wp2BtnSelMode');
+  if (btn) {
+    btn.style.background = window._edSelMode ? 'rgba(184,149,88,.2)' : '';
+    btn.style.borderColor = window._edSelMode ? 'rgba(184,149,88,.5)' : '';
+    btn.querySelector('.wp2-ico').textContent = window._edSelMode ? '✅' : '🎯';
+    btn.querySelector('b').textContent = window._edSelMode ? 'Selección ACTIVA' : 'Seleccionar elemento';
+  }
 }
-function wixPanelImagenes(){
-  return '<div class="wp2-info">Gestiona imágenes del elemento seleccionado o inserta una nueva.</div><div class="wp2-divider"></div><button class="wp2-btn" onclick="edChangeImage()"><span class="wp2-ico">🖼</span><span class="wp2-lbl">Gestionar imagen<span>URL, tamaño, posición, ajuste</span></span></button><div class="wp2-divider"></div><div class="wp2-sec-title">URL rápida</div><div class="wp2-info" style="font-size:10px!important;margin-bottom:6px">Formato Unsplash: https://images.unsplash.com/photo-ID?w=1200&q=80</div><input id="wp2ImgUrl" type="text" placeholder="https://…" style="width:100%;box-sizing:border-box;background:#1c1814;color:white;border:1px solid rgba(255,255,255,.15);padding:8px 10px;border-radius:8px;font-size:11px!important;outline:none;margin-bottom:6px"><button class="wp2-btn" style="justify-content:center" onclick="var u=document.getElementById(\'wp2ImgUrl\').value;if(u)document.getElementById(\'edImgUrl\').value=u;edImgPanelOpen()">→ Abrir gestor</button>';
+
+function wix_applyFont(sel) {
+  var v = sel.value; if (!v) return;
+  if (!wixNeedSel()) { sel.value = ''; return; }
+  edApplyFont(v);
+  sel.value = '';
 }
-function wixPanelDiseno(){
-  var padBtns=['0','8px','12px','16px','20px','24px','32px','40px','48px'].map(function(p){return'<button class="wp2-btn" style="padding:5px 8px;font-size:10px!important;justify-content:center" onclick="if(_edSel){_edSel.style.padding=\''+p+'\';edSnapshot()}">'+p+'</button>';}).join('');
-  var radBtns=['0','4px','8px','12px','16px','20px','100px','50%'].map(function(r){return'<button class="wp2-btn" style="padding:5px 8px;font-size:10px!important;justify-content:center" onclick="if(_edSel){_edSel.style.borderRadius=\''+r+'\';edSnapshot()}">'+r+'</button>';}).join('');
-  var bgColors=['#ffffff','#f7f5f1','#f0ece4','#1c1814','#2b7d7a','#b89558','#bf4637','#2c5f9e'].map(function(c){return'<button onclick="edApplyBg(\''+c+'\')" style="width:28px;height:28px;border-radius:6px;background:'+c+';border:2px solid rgba(255,255,255,.15);cursor:pointer" title="'+c+'"></button>';}).join('');
-  return '<div class="wp2-info">Edita el diseño del elemento seleccionado.</div><div class="wp2-divider"></div><div class="wp2-sec-title">Color de fondo</div><div class="wp2-color-row" style="margin-bottom:6px"><label>Fondo</label><input type="color" id="wp2BgColor" value="#ffffff" onchange="edApplyBg(this.value)"></div><div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px">'+bgColors+'</div><div class="wp2-divider"></div><div class="wp2-sec-title">Dimensiones</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px"><div><div style="font-size:10px!important;color:rgba(255,255,255,.35);margin-bottom:4px">Ancho</div><input id="wp2WidthInp" type="text" placeholder="px/%" style="width:100%;background:#1c1814;color:white;border:1px solid rgba(255,255,255,.12);padding:7px 8px;border-radius:7px;font-size:12px!important;outline:none"></div><div><div style="font-size:10px!important;color:rgba(255,255,255,.35);margin-bottom:4px">Alto</div><input id="wp2HeightInp" type="text" placeholder="px/auto" style="width:100%;background:#1c1814;color:white;border:1px solid rgba(255,255,255,.12);padding:7px 8px;border-radius:7px;font-size:12px!important;outline:none"></div></div><button class="wp2-btn" style="justify-content:center;font-size:11px!important;margin-bottom:8px" onclick="if(_edSel){_edSel.style.width=document.getElementById(\'wp2WidthInp\').value;_edSel.style.height=document.getElementById(\'wp2HeightInp\').value;edSnapshot()}">✓ Aplicar</button><div class="wp2-divider"></div><div class="wp2-sec-title">Padding</div><div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px">'+padBtns+'</div><div class="wp2-sec-title">Border radius</div><div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px">'+radBtns+'</div><div class="wp2-divider"></div><button class="wp2-btn" onclick="edToggleProps()" style="border-color:rgba(61,158,155,.3);color:#3d9e9b"><span class="wp2-ico">⚙</span><span class="wp2-lbl">Propiedades avanzadas<span>CSS, sombras, bordes, opacidad…</span></span></button>';
+
+function wix_applyFontSize(v) {
+  if (!v) return;
+  if (!window._edSel && !window._edOn) {
+    wixToast('⚠️ Selecciona un elemento (🎯) o activa edición de texto (✍️) primero');
+    return;
+  }
+  edApplyFontSize(v);
 }
-function wixPanelNav(){
-  return '<div class="wp2-info">Gestiona la navegación y páginas del sitio.</div><div class="wp2-divider"></div><button class="wp2-btn" onclick="navMgrOpen();wixPanelClose()"><span class="wp2-ico">📑</span><span class="wp2-lbl">Abrir Nav & Páginas<span>Editar menú, crear páginas</span></span></button><div class="wp2-divider"></div><div class="wp2-sec-title">Ir a página</div><button class="wp2-btn" onclick="goTo(\'public\')"><span class="wp2-ico">🏠</span><span class="wp2-lbl">Página pública</span></button><button class="wp2-btn" onclick="goTo(\'auth\')"><span class="wp2-ico">🔑</span><span class="wp2-lbl">Login / Registro</span></button><button class="wp2-btn" onclick="goTo(\'student\')"><span class="wp2-ico">📚</span><span class="wp2-lbl">Dashboard alumno</span></button><button class="wp2-btn" onclick="goTo(\'admin\')"><span class="wp2-ico">⚙</span><span class="wp2-lbl">Panel admin</span></button><div class="wp2-divider"></div><div class="wp2-sec-title">Historial</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:5px"><button class="wp2-btn" style="justify-content:center" onclick="edUndo()"><span style="font-size:16px">↩</span> Deshacer</button><button class="wp2-btn" style="justify-content:center" onclick="edRedo()"><span style="font-size:16px">↪</span> Rehacer</button></div>';
+
+function wix_applyFontSizeInput() {
+  var inp = document.getElementById('wp2FontSzInp');
+  if (!inp || !inp.value) { wixToast('⚠️ Introduce un tamaño en px'); return; }
+  wix_applyFontSize(inp.value + 'px');
+  inp.value = '';
 }
-function wixPanelAcciones(){
-  return '<div class="wp2-info">Acciones del editor y el elemento seleccionado.</div><div class="wp2-divider"></div><div class="wp2-sec-title">Editor</div><button class="wp2-btn" onclick="edToggleText()"><span class="wp2-ico">✍️</span><span class="wp2-lbl">Activar edición de texto</span></button><button class="wp2-btn" onclick="edToggleMode()"><span class="wp2-ico">🎯</span><span class="wp2-lbl">Modo selección</span></button><div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:4px"><button class="wp2-btn" style="justify-content:center" onclick="edUndo()">↩ Deshacer</button><button class="wp2-btn" style="justify-content:center" onclick="edRedo()">↪ Rehacer</button></div><div class="wp2-divider"></div><div class="wp2-sec-title">Elemento</div><button class="wp2-btn" onclick="edDuplicate()"><span class="wp2-ico">📋</span><span class="wp2-lbl">Duplicar</span></button><div style="display:grid;grid-template-columns:1fr 1fr;gap:5px"><button class="wp2-btn" style="justify-content:center" onclick="edMoveUp()">⬆ Subir</button><button class="wp2-btn" style="justify-content:center" onclick="edMoveDown()">⬇ Bajar</button></div><button class="wp2-btn" onclick="edAddLink()" style="margin-top:4px"><span class="wp2-ico">🔗</span><span class="wp2-lbl">Enlace</span></button><button class="wp2-btn" onclick="edChangeImage()"><span class="wp2-ico">🖼</span><span class="wp2-lbl">Imagen</span></button><button class="wp2-btn" onclick="edToggleProps()" style="border-color:rgba(61,158,155,.3);color:#3d9e9b"><span class="wp2-ico">⚙</span><span class="wp2-lbl">Propiedades CSS</span></button><button class="wp2-btn" onclick="edDeleteSelected()" style="border-color:rgba(191,70,55,.25);color:#f08080"><span class="wp2-ico">🗑</span><span class="wp2-lbl">Eliminar</span></button><div class="wp2-divider"></div><div class="wp2-sec-title">Guardar y salir</div><button class="wp2-btn" onclick="edSave()" style="border-color:rgba(184,149,88,.4);color:#b89558"><span class="wp2-ico">💾</span><span class="wp2-lbl">Guardar cambios</span></button><button class="wp2-btn" onclick="wixSideBarClose()" style="border-color:rgba(240,128,128,.2);color:#f08080;margin-top:4px"><span class="wp2-ico">✕</span><span class="wp2-lbl">Cerrar editor</span></button>';
+
+function wix_applyColor(v) {
+  if (!v) return;
+  if (!window._edSel && !window._edOn) {
+    wixToast('⚠️ Selecciona un elemento (🎯) o activa edición de texto (✍️) y selecciona texto');
+    return;
+  }
+  edApplyFontColor(v);
+}
+
+function wix_applyBg(v) {
+  if (!wixNeedSel()) return;
+  edApplyBg(v);
+}
+
+function wix_applyDim() {
+  if (!wixNeedSel()) return;
+  var w = document.getElementById('wp2WidthInp').value;
+  var h = document.getElementById('wp2HeightInp').value;
+  if (w) window._edSel.style.width = w;
+  if (h) window._edSel.style.height = h;
+  try { edSnapshot(); } catch(e) {}
+  wixToast('✅ Dimensiones aplicadas');
+}
+
+function wix_applyPad(v) {
+  if (!wixNeedSel()) return;
+  window._edSel.style.padding = v;
+  try { edSnapshot(); } catch(e) {}
+  wixToast('📐 Padding: ' + v);
+}
+
+function wix_applyRadius(v) {
+  if (!wixNeedSel()) return;
+  window._edSel.style.borderRadius = v;
+  try { edSnapshot(); } catch(e) {}
+  wixToast('🔘 Border radius: ' + v);
+}
+
+function wix_fmt(cmd) {
+  if (!window._edOn && !window._edSel) {
+    wixToast('⚠️ Activa «Editar texto» (✍️) para aplicar formato a texto seleccionado');
+    return;
+  }
+  edFmt(cmd);
+}
+
+function wix_fmtBlock(tag) {
+  if (!window._edOn) {
+    wixToast('⚠️ Activa «Editar texto» (✍️) primero, luego coloca el cursor en el párrafo');
+    return;
+  }
+  try { edFmtBlock(tag); } catch(e) { wixToast('⚠️ Error: ' + e.message); }
+}
+
+function wix_duplicate() {
+  if (!wixNeedSel()) return;
+  edDuplicate();
+}
+
+function wix_moveUp() {
+  if (!wixNeedSel()) return;
+  edMoveUp();
+}
+
+function wix_moveDown() {
+  if (!wixNeedSel()) return;
+  edMoveDown();
+}
+
+function wix_deleteEl() {
+  if (!wixNeedSel()) return;
+  if (!confirm('¿Eliminar este elemento? Esta acción se puede deshacer con ↩')) return;
+  edDeleteSelected();
+}
+
+function wix_addLink() {
+  if (!window._edSel && !window._edOn) {
+    wixToast('⚠️ Selecciona un elemento (🎯) o selecciona texto (✍️) para añadir enlace');
+    return;
+  }
+  edAddLink();
+}
+
+function wix_changeImage() {
+  edImgPanelOpen();
+}
+
+function wix_insertImgUrl() {
+  var u = document.getElementById('wp2ImgUrl');
+  if (!u || !u.value.trim()) { wixToast('⚠️ Introduce una URL de imagen'); return; }
+  var target = document.getElementById('edImgUrl');
+  if (target) target.value = u.value.trim();
+  edImgPanelOpen();
+}
+
+function wix_openProps() {
+  if (!wixNeedSel()) return;
+  edToggleProps();
+}
+
+function wix_undo() {
+  try { edUndo(); } catch(e) { wixToast('⚠️ Nada que deshacer'); }
+}
+
+function wix_redo() {
+  try { edRedo(); } catch(e) { wixToast('⚠️ Nada que rehacer'); }
+}
+
+function wix_save() {
+  edSave();
+}
+
+function wix_navOpen() {
+  navMgrOpen();
+}
+
+// ══════════════════════════════════════════════════════
+//  BUILDERS DE PANELES — HTML limpio con funciones wix_*
+// ══════════════════════════════════════════════════════
+
+function wixPanelTexto() {
+  var szBtns = ['12','14','16','18','20','24','28','32','40','48','56','64'].map(function(s) {
+    return '<button class="wp2-btn" style="padding:5px 6px;font-size:12px;justify-content:center;flex:1;min-width:36px" onclick="wix_applyFontSize(\''+s+'px\')">' + s + '</button>';
+  }).join('');
+  var colSwatches = ['#1c1814','#ffffff','#b89558','#2b7d7a','#bf4637','#2c5f9e','#7a7168','#f0ece4'].map(function(c) {
+    return '<button onclick="wix_applyColor(\''+c+'\')" style="width:30px;height:30px;border-radius:7px;background:'+c+';border:2px solid rgba(255,255,255,.2);cursor:pointer;flex-shrink:0" title="'+c+'"></button>';
+  }).join('');
+
+  return [
+    '<div class="wp2-info">Activa ✍️ para editar texto. Activa 🎯 para seleccionar bloques y aplicar fuente/tamaño al bloque completo.</div>',
+    '<div class="wp2-divider"></div>',
+
+    '<div class="wp2-sec-title">Modo edición</div>',
+    '<button class="wp2-btn" id="wp2BtnEditText" onclick="wix_toggleText()">',
+    '  <span class="wp2-ico">✍️</span><span class="wp2-lbl"><b>Editar texto</b><span>Activa para escribir directamente en la web</span></span>',
+    '</button>',
+    '<button class="wp2-btn" id="wp2BtnSelMode" onclick="wix_toggleSel()">',
+    '  <span class="wp2-ico">🎯</span><span class="wp2-lbl"><b>Seleccionar elemento</b><span>Clic en cualquier bloque para seleccionarlo</span></span>',
+    '</button>',
+    '<div class="wp2-divider"></div>',
+
+    '<div class="wp2-sec-title">Formato de texto (requiere ✍️ activo)</div>',
+    '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px">',
+    '  <button class="wp2-btn" style="justify-content:center;padding:10px 4px" onclick="wix_fmt(\'bold\')"><b>B</b></button>',
+    '  <button class="wp2-btn" style="justify-content:center;padding:10px 4px" onclick="wix_fmt(\'italic\')"><i style="font-style:italic">I</i></button>',
+    '  <button class="wp2-btn" style="justify-content:center;padding:10px 4px;text-decoration:underline" onclick="wix_fmt(\'underline\')">U</button>',
+    '  <button class="wp2-btn" style="justify-content:center;padding:10px 4px;text-decoration:line-through" onclick="wix_fmt(\'strikeThrough\')">S</button>',
+    '</div>',
+    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:5px">',
+    '  <button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'justifyLeft\')">≡ Izq.</button>',
+    '  <button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'justifyCenter\')">≡ Centro</button>',
+    '  <button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'justifyRight\')">≡ Der.</button>',
+    '</div>',
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:5px">',
+    '  <button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'insertUnorderedList\')">• Lista</button>',
+    '  <button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'insertOrderedList\')">1. Numerada</button>',
+    '</div>',
+    '<div class="wp2-divider"></div>',
+
+    '<div class="wp2-sec-title">Encabezados (requiere ✍️, cursor en párrafo)</div>',
+    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px">',
+    '  <button class="wp2-btn" style="justify-content:center;font-weight:700" onclick="wix_fmtBlock(\'h1\')">H1</button>',
+    '  <button class="wp2-btn" style="justify-content:center;font-weight:700" onclick="wix_fmtBlock(\'h2\')">H2</button>',
+    '  <button class="wp2-btn" style="justify-content:center;font-weight:700" onclick="wix_fmtBlock(\'h3\')">H3</button>',
+    '  <button class="wp2-btn" style="justify-content:center" onclick="wix_fmtBlock(\'h4\')">H4</button>',
+    '  <button class="wp2-btn" style="justify-content:center" onclick="wix_fmtBlock(\'h5\')">H5</button>',
+    '  <button class="wp2-btn" style="justify-content:center" onclick="wix_fmtBlock(\'p\')">P</button>',
+    '</div>',
+    '<div class="wp2-divider"></div>',
+
+    '<div class="wp2-sec-title">Fuente del bloque (requiere 🎯 + elemento seleccionado)</div>',
+    '<select class="wp2-select" onchange="wix_applyFont(this)" style="margin-bottom:6px">',
+    '  <option value="">Selecciona fuente…</option>',
+    '  <option value="\'DM Sans\',sans-serif">DM Sans</option>',
+    '  <option value="\'Cormorant Garamond\',serif">Cormorant Garamond</option>',
+    '  <option value="Georgia,serif">Georgia</option>',
+    '  <option value="Arial,sans-serif">Arial</option>',
+    '  <option value="\'Helvetica Neue\',sans-serif">Helvetica Neue</option>',
+    '  <option value="\'Times New Roman\',serif">Times New Roman</option>',
+    '  <option value="\'Courier New\',monospace">Courier New</option>',
+    '</select>',
+    '<div class="wp2-divider"></div>',
+
+    '<div class="wp2-sec-title">Tamaño de texto (px)</div>',
+    '<div style="display:flex;gap:6px;margin-bottom:8px;align-items:center">',
+    '  <input type="number" id="wp2FontSzInp" min="8" max="200" placeholder="ej: 18" style="flex:1;background:#1c1814;color:white;border:1px solid rgba(255,255,255,.2);padding:8px 10px;border-radius:8px;font-size:13px;outline:none">',
+    '  <button class="wp2-btn" style="padding:8px 14px;justify-content:center;flex-shrink:0" onclick="wix_applyFontSizeInput()">✓ Aplicar</button>',
+    '</div>',
+    '<div style="display:flex;flex-wrap:wrap;gap:4px">' + szBtns + '</div>',
+    '<div class="wp2-divider"></div>',
+
+    '<div class="wp2-sec-title">Color de texto</div>',
+    '<div class="wp2-color-row" style="margin-bottom:8px">',
+    '  <label>Elige color</label>',
+    '  <input type="color" value="#1c1814" onchange="wix_applyColor(this.value)">',
+    '</div>',
+    '<div style="display:flex;flex-wrap:wrap;gap:5px">' + colSwatches + '</div>',
+    '<div class="wp2-divider"></div>',
+
+    '<button class="wp2-btn" onclick="wix_addLink()">',
+    '  <span class="wp2-ico">🔗</span><span class="wp2-lbl"><b>Añadir enlace</b><span>Selecciona texto o elemento primero</span></span>',
+    '</button>',
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:5px">',
+    '  <button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'superscript\')">X² Superíndice</button>',
+    '  <button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'subscript\')">X₂ Subíndice</button>',
+    '</div>',
+  ].join('\n');
+}
+
+function wixPanelElementos() {
+  return [
+    '<div class="wp2-info">Activa 🎯 para seleccionar un elemento antes de usar las acciones de abajo.</div>',
+    '<div class="wp2-divider"></div>',
+    '<div class="wp2-sec-title">Insertar bloque en la página</div>',
+    '<button class="wp2-btn" onclick="edInsert(\'texto\')"><span class="wp2-ico">📝</span><span class="wp2-lbl"><b>Texto</b><span>Párrafo editable</span></span></button>',
+    '<button class="wp2-btn" onclick="edInsert(\'tarjeta\')"><span class="wp2-ico">🃏</span><span class="wp2-lbl"><b>Tarjeta</b><span>Bloque con fondo y sombra</span></span></button>',
+    '<button class="wp2-btn" onclick="edInsert(\'banner-ancho\')"><span class="wp2-ico">🔲</span><span class="wp2-lbl"><b>Banner ancho</b><span>Sección a todo el ancho</span></span></button>',
+    '<button class="wp2-btn" onclick="edInsert(\'banner-pequeño\')"><span class="wp2-ico">▭</span><span class="wp2-lbl"><b>Banner pequeño</b><span>Sección compacta centrada</span></span></button>',
+    '<button class="wp2-btn" onclick="edInsert(\'imagen-banner\')"><span class="wp2-ico">🖼</span><span class="wp2-lbl"><b>Imagen banner</b><span>Imagen a todo el ancho</span></span></button>',
+    '<button class="wp2-btn" onclick="edInsert(\'imagen-pequeña\')"><span class="wp2-ico">🖼</span><span class="wp2-lbl"><b>Imagen + texto</b><span>Imagen con descripción</span></span></button>',
+    '<button class="wp2-btn" onclick="edInsert(\'boton\')"><span class="wp2-ico">🔘</span><span class="wp2-lbl"><b>Botón</b><span>Llamada a la acción</span></span></button>',
+    '<button class="wp2-btn" onclick="edInsert(\'separador\')"><span class="wp2-ico">—</span><span class="wp2-lbl"><b>Separador</b><span>Línea divisoria</span></span></button>',
+    '<div class="wp2-divider"></div>',
+    '<div class="wp2-sec-title">Elemento seleccionado (activa 🎯 primero)</div>',
+    '<button class="wp2-btn" onclick="wix_duplicate()"><span class="wp2-ico">📋</span><span class="wp2-lbl"><b>Duplicar</b></span></button>',
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">',
+    '  <button class="wp2-btn" style="justify-content:center" onclick="wix_moveUp()">⬆ Subir</button>',
+    '  <button class="wp2-btn" style="justify-content:center" onclick="wix_moveDown()">⬇ Bajar</button>',
+    '</div>',
+    '<button class="wp2-btn" onclick="wix_openProps()" style="border-color:rgba(61,158,155,.35);color:#3d9e9b;margin-top:5px"><span class="wp2-ico">⚙</span><span class="wp2-lbl"><b>Propiedades CSS</b><span>Padding, sombra, borde, opacidad…</span></span></button>',
+    '<button class="wp2-btn" onclick="wix_deleteEl()" style="border-color:rgba(191,70,55,.3);color:#f08080;margin-top:5px"><span class="wp2-ico">🗑</span><span class="wp2-lbl"><b>Eliminar elemento</b></span></button>',
+  ].join('\n');
+}
+
+function wixPanelImagenes() {
+  return [
+    '<div class="wp2-info">Selecciona un elemento con imagen (🎯) o inserta una nueva con el gestor.</div>',
+    '<div class="wp2-divider"></div>',
+    '<button class="wp2-btn" onclick="wix_changeImage()"><span class="wp2-ico">🖼</span><span class="wp2-lbl"><b>Abrir gestor de imagen</b><span>URL, tamaño, posición, ajuste</span></span></button>',
+    '<div class="wp2-divider"></div>',
+    '<div class="wp2-sec-title">URL directa de imagen</div>',
+    '<input id="wp2ImgUrl" type="text" placeholder="https://images.unsplash.com/…" style="width:100%;box-sizing:border-box;background:#1c1814;color:white;border:1px solid rgba(255,255,255,.18);padding:9px 11px;border-radius:8px;font-size:12px;outline:none;margin-bottom:8px">',
+    '<button class="wp2-btn" style="justify-content:center" onclick="wix_insertImgUrl()">→ Previsualizar e insertar</button>',
+    '<div class="wp2-info" style="margin-top:8px;font-size:11px">Unsplash: https://images.unsplash.com/photo-ID?w=1200&amp;q=80</div>',
+  ].join('\n');
+}
+
+function wixPanelDiseno() {
+  var bgSwatches = ['#ffffff','#f7f5f1','#f0ece4','#1c1814','#252118','#2b7d7a','#b89558','#bf4637','#2c5f9e','transparent'].map(function(c) {
+    var bg = c === 'transparent' ? 'repeating-conic-gradient(#ccc 0% 25%,#fff 0% 50%) 0 0/10px 10px' : c;
+    return '<button onclick="wix_applyBg(\''+c+'\')" style="width:30px;height:30px;border-radius:7px;background:'+bg+';border:2px solid rgba(255,255,255,.2);cursor:pointer" title="'+c+'"></button>';
+  }).join('');
+  var padBtns = ['0','8px','12px','16px','20px','24px','32px','40px','48px'].map(function(p) {
+    return '<button class="wp2-btn" style="padding:5px 6px;font-size:11px;justify-content:center;flex:1;min-width:44px" onclick="wix_applyPad(\''+p+'\')">' + p + '</button>';
+  }).join('');
+  var radBtns = ['0','4px','8px','12px','16px','24px','100px','50%'].map(function(r) {
+    return '<button class="wp2-btn" style="padding:5px 6px;font-size:11px;justify-content:center;flex:1;min-width:44px" onclick="wix_applyRadius(\''+r+'\')">' + r + '</button>';
+  }).join('');
+
+  return [
+    '<div class="wp2-info">Activa 🎯 y haz clic en un elemento para seleccionarlo antes de aplicar cambios de diseño.</div>',
+    '<div class="wp2-divider"></div>',
+    '<div class="wp2-sec-title">Color de fondo</div>',
+    '<div class="wp2-color-row" style="margin-bottom:8px">',
+    '  <label>Elige color de fondo</label>',
+    '  <input type="color" value="#ffffff" onchange="wix_applyBg(this.value)">',
+    '</div>',
+    '<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px">' + bgSwatches + '</div>',
+    '<div class="wp2-divider"></div>',
+    '<div class="wp2-sec-title">Dimensiones</div>',
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">',
+    '  <div>',
+    '    <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:4px">Ancho</div>',
+    '    <input id="wp2WidthInp" type="text" placeholder="ej: 100% o 400px" style="width:100%;background:#1c1814;color:white;border:1px solid rgba(255,255,255,.18);padding:8px;border-radius:7px;font-size:12px;outline:none;box-sizing:border-box">',
+    '  </div>',
+    '  <div>',
+    '    <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:4px">Alto</div>',
+    '    <input id="wp2HeightInp" type="text" placeholder="ej: auto o 300px" style="width:100%;background:#1c1814;color:white;border:1px solid rgba(255,255,255,.18);padding:8px;border-radius:7px;font-size:12px;outline:none;box-sizing:border-box">',
+    '  </div>',
+    '</div>',
+    '<button class="wp2-btn" style="justify-content:center;margin-bottom:8px" onclick="wix_applyDim()">✓ Aplicar dimensiones</button>',
+    '<div class="wp2-divider"></div>',
+    '<div class="wp2-sec-title">Padding interior</div>',
+    '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px">' + padBtns + '</div>',
+    '<div class="wp2-sec-title">Border radius</div>',
+    '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px">' + radBtns + '</div>',
+    '<div class="wp2-divider"></div>',
+    '<button class="wp2-btn" onclick="wix_openProps()" style="border-color:rgba(61,158,155,.35);color:#3d9e9b">',
+    '  <span class="wp2-ico">⚙</span><span class="wp2-lbl"><b>Propiedades CSS avanzadas</b><span>Box-shadow, border, opacity, CSS libre…</span></span>',
+    '</button>',
+  ].join('\n');
+}
+
+function wixPanelNav() {
+  return [
+    '<div class="wp2-info">Gestiona el menú de navegación y las páginas del sitio.</div>',
+    '<div class="wp2-divider"></div>',
+    '<button class="wp2-btn" onclick="wix_navOpen()"><span class="wp2-ico">📑</span><span class="wp2-lbl"><b>Abrir Nav & Páginas</b><span>Editor completo de menú y páginas</span></span></button>',
+    '<div class="wp2-divider"></div>',
+    '<div class="wp2-sec-title">Ir a página</div>',
+    '<button class="wp2-btn" onclick="goTo(\'public\')"><span class="wp2-ico">🏠</span><span class="wp2-lbl"><b>Página pública</b><span>Landing page principal</span></span></button>',
+    '<button class="wp2-btn" onclick="goTo(\'auth\')"><span class="wp2-ico">🔑</span><span class="wp2-lbl"><b>Login / Registro</b></span></button>',
+    '<button class="wp2-btn" onclick="goTo(\'student\')"><span class="wp2-ico">📚</span><span class="wp2-lbl"><b>Dashboard alumno</b></span></button>',
+    '<button class="wp2-btn" onclick="goTo(\'admin\')"><span class="wp2-ico">⚙</span><span class="wp2-lbl"><b>Panel admin</b></span></button>',
+    '<div class="wp2-divider"></div>',
+    '<div class="wp2-sec-title">Historial de cambios</div>',
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">',
+    '  <button class="wp2-btn" style="justify-content:center" onclick="wix_undo()"><span style="font-size:18px">↩</span> Deshacer</button>',
+    '  <button class="wp2-btn" style="justify-content:center" onclick="wix_redo()"><span style="font-size:18px">↪</span> Rehacer</button>',
+    '</div>',
+  ].join('\n');
+}
+
+function wixPanelAcciones() {
+  return [
+    '<div class="wp2-info">Acciones globales del editor y sobre el elemento seleccionado.</div>',
+    '<div class="wp2-divider"></div>',
+    '<div class="wp2-sec-title">Modos de edición</div>',
+    '<button class="wp2-btn" id="wp2BtnEditText2" onclick="wix_toggleText()"><span class="wp2-ico">✍️</span><span class="wp2-lbl"><b>Editar texto</b><span>Activa/desactiva edición inline</span></span></button>',
+    '<button class="wp2-btn" id="wp2BtnSelMode2" onclick="wix_toggleSel()"><span class="wp2-ico">🎯</span><span class="wp2-lbl"><b>Modo selección</b><span>Clic en elemento para seleccionarlo</span></span></button>',
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px">',
+    '  <button class="wp2-btn" style="justify-content:center" onclick="wix_undo()">↩ Deshacer</button>',
+    '  <button class="wp2-btn" style="justify-content:center" onclick="wix_redo()">↪ Rehacer</button>',
+    '</div>',
+    '<div class="wp2-divider"></div>',
+    '<div class="wp2-sec-title">Elemento seleccionado</div>',
+    '<button class="wp2-btn" onclick="wix_duplicate()"><span class="wp2-ico">📋</span><span class="wp2-lbl"><b>Duplicar</b></span></button>',
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:5px">',
+    '  <button class="wp2-btn" style="justify-content:center" onclick="wix_moveUp()">⬆ Subir</button>',
+    '  <button class="wp2-btn" style="justify-content:center" onclick="wix_moveDown()">⬇ Bajar</button>',
+    '</div>',
+    '<button class="wp2-btn" onclick="wix_addLink()" style="margin-top:5px"><span class="wp2-ico">🔗</span><span class="wp2-lbl"><b>Añadir enlace</b></span></button>',
+    '<button class="wp2-btn" onclick="wix_changeImage()" style="margin-top:5px"><span class="wp2-ico">🖼</span><span class="wp2-lbl"><b>Cambiar imagen</b></span></button>',
+    '<button class="wp2-btn" onclick="wix_openProps()" style="border-color:rgba(61,158,155,.35);color:#3d9e9b;margin-top:5px"><span class="wp2-ico">⚙</span><span class="wp2-lbl"><b>Propiedades CSS</b></span></button>',
+    '<button class="wp2-btn" onclick="wix_deleteEl()" style="border-color:rgba(191,70,55,.3);color:#f08080;margin-top:5px"><span class="wp2-ico">🗑</span><span class="wp2-lbl"><b>Eliminar elemento</b></span></button>',
+    '<div class="wp2-divider"></div>',
+    '<div class="wp2-sec-title">Guardar y salir</div>',
+    '<button class="wp2-btn" onclick="wix_save()" style="border-color:rgba(184,149,88,.4);color:#b89558">',
+    '  <span class="wp2-ico">💾</span><span class="wp2-lbl"><b>Guardar y descargar</b><span>Descarga el HTML con todos los cambios</span></span>',
+    '</button>',
+    '<button class="wp2-btn" onclick="wixSideBarClose()" style="border-color:rgba(240,128,128,.25);color:#f08080;margin-top:5px">',
+    '  <span class="wp2-ico">✕</span><span class="wp2-lbl"><b>Cerrar editor</b></span>',
+    '</button>',
+  ].join('\n');
 }
 </script>
 
