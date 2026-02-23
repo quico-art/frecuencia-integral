@@ -1114,6 +1114,7 @@ async function onLogin(u) {
   document.getElementById('btnDash').style.display = '';
   document.getElementById('btnLogout').style.display = '';
   document.getElementById('btnAdmin').style.display = isAdmin ? '' : 'none';
+  document.getElementById('edOpenBtn').style.display = isAdmin ? '' : 'none';
 
   goTo('student');
   toast('Bienvenido/a, ' + name + '! ✨');
@@ -3773,9 +3774,11 @@ function wixSideBarClose() {
   try { edFmtBarHide();  } catch(e) {}
   var ep = document.getElementById('edPanel');
   if (ep) ep.style.display = 'none';
-  // Mostrar botón Editor flotante para volver a entrar
+  // Mostrar botón Editor flotante para volver a entrar (solo si es admin)
   var eb = document.getElementById('edOpenBtn');
-  if (eb) eb.style.display = '';
+  if (eb && window.user && (window.user._role === 'admin' || (typeof ADMIN_EMAILS !== 'undefined' && ADMIN_EMAILS.includes(window.user.email)))) {
+    eb.style.display = '';
+  }
   document.body.style.paddingBottom = '';
 }
 
