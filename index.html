@@ -2914,9 +2914,10 @@ function edHideEditorBtns() {
 }
 
 function edToggleEditorBtns() {
-  var eb = document.getElementById('edOpenBtn');
-  if(eb && eb.style.display !== 'none') {
-    edHideEditorBtns();
+  var sb = document.getElementById('wixSideBar');
+  // Si el sidebar está visible → cerrarlo. Si no → abrirlo.
+  if(sb && sb.style.display === 'flex') {
+    wixSideBarClose();
   } else {
     edShowEditorBtns();
   }
