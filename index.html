@@ -260,6 +260,7 @@ nav.sb-pushed-wide { left: 316px !important; right: 0 !important; }
   <div class="nav-btns">
     <button class="btn-ghost" id="btnLogin" onclick="goTo('auth')">Acceso Alumnos</button>
     <button class="btn-primary" id="btnInscribirse" onclick="document.getElementById('puertas').scrollIntoView({behavior:'smooth'})">Iniciarse Ahora</button>
+    <button class="btn-ghost" id="btnHome" style="display:none" onclick="goTo('public')">🏠 Inicio</button>
     <button class="btn-ghost" id="btnDash" style="display:none" onclick="goTo('student')">Mi Dashboard</button>
     <button class="btn-admin-nav" id="btnAdmin" style="display:none" onclick="goTo('admin')">⚙ Admin</button>
     <button class="btn-ghost" id="btnLogout" style="display:none" onclick="doLogout()">Salir</button>
@@ -1115,6 +1116,7 @@ async function onLogin(u) {
   document.getElementById('btnLogout').style.display = '';
   document.getElementById('btnAdmin').style.display = isAdmin ? '' : 'none';
   document.getElementById('edOpenBtn').style.display = isAdmin ? '' : 'none';
+  document.getElementById('btnHome').style.display = '';
 
   goTo('student');
   toast('Bienvenido/a, ' + name + '! ✨');
@@ -1129,6 +1131,7 @@ function onLogout() {
   document.getElementById('btnDash').style.display = 'none';
   document.getElementById('btnLogout').style.display = 'none';
   document.getElementById('btnAdmin').style.display = 'none';
+  document.getElementById('btnHome').style.display = 'none';
 }
 
 async function doLogout() {
@@ -3746,6 +3749,11 @@ function wixUnpushPage() {
 
 // ── Open / Close sidebar ──
 function wixSideBarOpen() {
+  // Si estamos en página admin, ir primero al dashboard para poder editar
+  var activePage = document.querySelector('.page.active');
+  if (activePage && activePage.id === 'page-admin') {
+    goTo('student');
+  }
   document.getElementById('wixSideBar').style.display = 'flex';
   wixPushPage(false);
   // Ocultar botones flotantes y barra inferior — todo está en el panel lateral
