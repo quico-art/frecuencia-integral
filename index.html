@@ -2128,7 +2128,7 @@ document.getElementById('week-modal').addEventListener('click', function(e){
 </div>
 
 <!-- BOTÓN EDITOR (oculto — aparece solo tras contraseña correcta) -->
-<button onclick="(function(){var sb=document.getElementById('wixSideBar');if(!sb){alert('ERROR: wixSideBar no encontrado');return;}sb.style.cssText='display:flex!important;position:fixed!important;top:0!important;left:0!important;bottom:0!important;z-index:999999!important;flex-direction:row!important;';var nav=document.querySelector('nav');var page=document.querySelector('.page.active');if(nav)nav.style.marginLeft='56px';if(page)page.style.marginLeft='56px';})()" id="edOpenBtn" style="position: fixed; bottom: 80px; left: 24px; z-index: 99999; background: rgb(28, 24, 20); color: white; border: 2px solid rgba(255, 255, 255, 0.2); padding: 10px 18px; border-radius: 100px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: &quot;DM Sans&quot;, sans-serif; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 20px; display: none;" class="">✏️ Editor</button>
+<button onclick="wixSideBarOpen()" id="edOpenBtn" style="position: fixed; bottom: 80px; left: 24px; z-index: 99999; background: rgb(28, 24, 20); color: white; border: 2px solid rgba(255, 255, 255, 0.2); padding: 10px 18px; border-radius: 100px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: &quot;DM Sans&quot;, sans-serif; box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 20px; display: none;" class="">✏️ Editor</button>
 
 <!-- BOTÓN GESTOR (visible solo con editor abierto) -->
 <button onclick="hcpOpen()" id="hcpOpenBtn" style="display:none;position:fixed;bottom:80px;left:130px;z-index:99999;background:#2b7d7a;color:white;border:2px solid rgba(255,255,255,.15);padding:10px 18px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 4px 20px rgba(0,0,0,.4)">🗂️ Navegación</button>
@@ -4139,8 +4139,7 @@ function wixPanelTexto() {
     '<button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'superscript\')">X² Super</button>',
     '<button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'subscript\')">X₂ Sub</button>',
     '</div>',
-  ].join('
-');
+  ].join('\n');
 }
 
 function wixPanelElementos() {
@@ -5399,4 +5398,10 @@ function nmToast(msg){
       </div>
     </div>
     <div style="display:flex;gap:8px;justify-content:flex-end">
-      <button onclick="edImgPanelClose()" style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);b
+      <button onclick="edImgPanelClose()" style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);border:none;padding:10px 20px;border-radius:8px;font-size:13px;cursor:pointer">Cancelar</button>
+      <button onclick="edImgApply()" style="background:#2b7d7a;color:white;border:none;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer">✓ Aplicar imagen</button>
+    </div>
+  </div>
+</div>
+
+<protonpass-root-fbbb data-protonpass-role="root" data-protonpass-theme="os"></protonpass-root-fbbb></body></html>
