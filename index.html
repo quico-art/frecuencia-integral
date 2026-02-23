@@ -2983,7 +2983,7 @@ button:not(.efb):not([style*="font-size: 1"]):not([style*="font-size:1"]) { font
 .efb2s{font-size:9px;font-weight:700}
 .edctx-btn{display:block;width:100%;background:none;border:none;color:rgba(255,255,255,.8);padding:7px 12px;text-align:left;font-size:12px;cursor:pointer;border-radius:6px}
 .edctx-btn:hover{background:rgba(255,255,255,.07)}
-.ed-selected-ring{outline:2px solid #3d9e9b !important;outline-offset:2px}
+.ed-selected-ring{outline:3px solid #2b7d7a!important;outline-offset:3px!important;box-shadow:0 0 0 6px rgba(43,125,122,.18)!important;position:relative!important}
 /* Floating format bar */
 .efb{background:#252118;color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.12);padding:3px 7px;border-radius:5px;font-size:11px;cursor:pointer;white-space:nowrap;min-width:24px;text-align:center}
 .efb:hover{background:#3d9e9b;border-color:#3d9e9b;color:white}
@@ -3046,15 +3046,28 @@ function edSyncHistBtns(){
 
 // ── Keyboard shortcuts ──
 document.addEventListener('keydown',function(e){
+  var sb=document.getElementById('wixSideBar');
   var panel=document.getElementById('edPanel');
-  if(!panel||panel.style.display!=='flex')return;
+  var editorActive=(panel&&panel.style.display==='flex')||(sb&&sb.style.display==='flex');
+  if(!editorActive)return;
   var cm=e.ctrlKey||e.metaKey;
   if(cm&&e.key==='z'&&!e.shiftKey){e.preventDefault();edUndo();}
   if(cm&&(e.key==='y'||(e.key==='z'&&e.shiftKey))){e.preventDefault();edRedo();}
   if(cm&&e.key==='b'&&_edOn){e.preventDefault();edFmt('bold');}
   if(cm&&e.key==='i'&&_edOn){e.preventDefault();edFmt('italic');}
-  if(e.key==='Escape'){edCtxClose();edClearSel();edFmtBarHide();}
-  if((e.key==='Delete'||e.key==='Backspace')&&_edSel&&!_edOn){e.preventDefault();edDeleteSelected();}
+  if(e.key==='Escape'){
+    edCtxClose();
+    if(_edSelMode){wix_toggleSel();}  // ESC deactivates selection mode
+    edClearSel();
+    edFmtBarHide();
+    // Close any open sub-panel but keep sidebar open
+    if(_wixCurrentPanel) wixPanelClose();
+  }
+  // Delete key removes selected element (only when not typing)
+  if((e.key==='Delete'||e.key==='Backspace')&&_edSel&&!_edOn&&!e.target.closest('input,textarea,select,[contenteditable]')){
+    e.preventDefault();
+    edDeleteSelected();
+  }
 });
 
 function edMsg(t){var m=document.getElementById('edMsg');if(m)m.textContent=t;}
@@ -3186,13 +3199,17 @@ function edClose(){
 function edToggleProps(){
   _edPropsOpen=!_edPropsOpen;
   var pp=document.getElementById('edPropsPanel');
+  if(pp) pp.style.display=_edPropsOpen?'block':'none';
   var btn=document.getElementById('edPropsBtn');
-  pp.style.display=_edPropsOpen?'block':'none';
-  btn.style.background=_edPropsOpen?'#3d9e9b':'#252118';
-  btn.style.color=_edPropsOpen?'white':'#3d9e9b';
-  btn.textContent=_edPropsOpen?'⚙ Props ✕':'⚙ Props →';
+  if(btn){
+    btn.style.background=_edPropsOpen?'#3d9e9b':'#252118';
+    btn.style.color=_edPropsOpen?'white':'#3d9e9b';
+    btn.textContent=_edPropsOpen?'⚙ Props ✕':'⚙ Props →';
+  }
   document.body.classList.toggle('ed-props-open',_edPropsOpen);
-  if(_edPropsOpen&&_edSel)edFillProps(_edSel);
+  if(_edPropsOpen&&_edSel) edFillProps(_edSel);
+  if(_edPropsOpen&&!_edSel) wixToast('⚠️ Selecciona un elemento (🎯) para ver sus propiedades CSS');
+  else if(_edPropsOpen) wixToast('⚙ Panel de propiedades abierto');
 }
 function edCloseProps(){
   _edPropsOpen=false;
@@ -3316,7 +3333,7 @@ function edPropCssRead(){
 function edFmtBarHide(){var b=document.getElementById('edFmtBar');if(b)b.style.display='none';}
 document.addEventListener('mouseup',function(e){
   if(!_edOn)return;
-  if(e.target.closest('#edFmtBar')||e.target.closest('#edPanel'))return;
+  if(e.target.closest('#edFmtBar')||e.target.closest('#edPanel')||e.target.closest('#wixSideBar'))return;
   setTimeout(function(){
     var sel=window.getSelection();
     if(!sel||!sel.rangeCount||!sel.toString().trim()){edFmtBarHide();return;}
@@ -3354,19 +3371,36 @@ document.addEventListener('mousedown',function(e){if(!e.target.closest('#edFmtBa
 
 // ── execCommand format ──
 function edFmt(cmd){
-  if(_edOn){document.execCommand(cmd,false,null);edSnapshot();}
+  if(_edOn){
+    document.execCommand(cmd,false,null);
+    try{edSnapshot();}catch(e){}
+    var labels={'bold':'Negrita','italic':'Cursiva','underline':'Subrayado','strikeThrough':'Tachado',
+      'justifyLeft':'Izquierda','justifyCenter':'Centrado','justifyRight':'Derecha','justifyFull':'Justificado',
+      'insertUnorderedList':'Lista • ','insertOrderedList':'Lista 1.','superscript':'Superíndice','subscript':'Subíndice'};
+    if(labels[cmd]) wixToast('✅ '+labels[cmd]+' aplicado');
+  }
   else if(_edSel){
     if(cmd==='justifyLeft'){_edSel.style.textAlign='left';edSnapshot();wixToast('⬛ Alineado a la izquierda');}
     else if(cmd==='justifyCenter'){_edSel.style.textAlign='center';edSnapshot();wixToast('⬛ Centrado');}
     else if(cmd==='justifyRight'){_edSel.style.textAlign='right';edSnapshot();wixToast('⬛ Alineado a la derecha');}
+    else if(cmd==='justifyFull'){_edSel.style.textAlign='justify';edSnapshot();wixToast('≡ Justificado');}
     else{edMsg('⚠️ Activa "Editar textos" para formato de texto'); wixToast('⚠️ Activa primero «Editar texto» para aplicar formato');}
   }
 }
 
-
-
-
-
+function edFmtBlock(tag){
+  if(!_edOn){
+    wixToast('⚠️ Activa «Editar texto» ✍️ primero, luego coloca el cursor dentro del párrafo a cambiar');
+    return;
+  }
+  try{
+    document.execCommand('formatBlock',false,tag);
+    try{edSnapshot();}catch(e2){}
+    wixToast('✅ Formato '+tag.toUpperCase()+' aplicado al párrafo');
+  }catch(e){
+    wixToast('⚠️ No se pudo aplicar '+tag+': '+e.message);
+  }
+}
 function edFmtHighlight(color){
   if(!_edOn){return;}
   var sel=window.getSelection();
@@ -3422,7 +3456,7 @@ function edToggleText(){
     edSnapshot();
     var BLOCK=['DIV','P','H1','H2','H3','H4','H5','H6','SECTION','ARTICLE','UL','OL','LI','BLOCKQUOTE','PRE','TABLE','TD','TH'];
     var SKIP=['SCRIPT','STYLE','INPUT','SELECT','TEXTAREA','IFRAME','BUTTON','SVG','CANVAS','VIDEO','AUDIO'];
-    document.querySelectorAll('#page-public *').forEach(function(el){
+    document.querySelectorAll('.page.active *').forEach(function(el){
       if(el.closest('#edPanel')||el.closest('nav')||el.closest('.modal-overlay')||el.closest('#wixSideBar'))return;
       if(SKIP.indexOf(el.tagName)>-1||el.contentEditable==='true')return;
       var txt=el.textContent.trim();
@@ -3684,8 +3718,11 @@ function edCtxAction(a){
   else if(a==='eliminar')edDeleteSelected();
 }
 document.addEventListener('contextmenu',function(e){
-  if(document.getElementById('edPanel').style.display!=='flex')return;
-  if(e.target.closest('#edPanel')||e.target.closest('#edCtxMenu'))return;
+  var sb=document.getElementById('wixSideBar');
+  var panel=document.getElementById('edPanel');
+  var editorActive=(panel&&panel.style.display==='flex')||(sb&&sb.style.display==='flex');
+  if(!editorActive)return;
+  if(e.target.closest('#edPanel')||e.target.closest('#edCtxMenu')||e.target.closest('#wixSideBar'))return;
   e.preventDefault();
   var el=e.target.closest('div,section,article,p,h1,h2,h3,img,button,span');
   if(el&&!el.closest('nav')){
@@ -3700,19 +3737,36 @@ document.addEventListener('contextmenu',function(e){
 document.addEventListener('click',function(e){
   if(e.target.closest('#edCtxMenu'))return;
   edCtxClose();
+  // Editor active = edPanel visible OR wixSideBar visible
+  var sb=document.getElementById('wixSideBar');
   var panel=document.getElementById('edPanel');
-  if(!panel||panel.style.display!=='flex')return;
-  if(e.target.closest('#edPanel')||e.target.closest('#edPropsPanel'))return;
+  var editorActive=(panel&&panel.style.display==='flex')||(sb&&sb.style.display==='flex');
+  if(!editorActive)return;
+  if(e.target.closest('#edPanel')||e.target.closest('#edPropsPanel')||e.target.closest('#wixSideBar'))return;
+  if(e.target.closest('#navMgrPanel')||e.target.closest('#edImgPanel')||e.target.closest('#edPwdModal'))return;
   if(_edOn)return;
   if(_edSelMode){
-    var el2=e.target.closest('div[style],section,article,p,h1,h2,h3,h4,img,button,span[style]');
-    if(el2&&!el2.closest('nav')){e.stopPropagation();edSelectEl(el2);}
+    // Walk up from click target to find a meaningful selectable element
+    var el2 = e.target;
+    // Skip tiny inline elements - walk up to a block/meaningful container
+    var skip = ['A','STRONG','EM','B','I','BR','SPAN'];
+    while(el2 && skip.indexOf(el2.tagName) > -1) el2 = el2.parentElement;
+    // Now find nearest block container
+    if(el2) el2 = el2.closest('div,section,article,p,h1,h2,h3,h4,h5,h6,img,figure,blockquote,li,ul,ol,header,footer,main');
+    if(el2 && !el2.closest('nav') && !el2.closest('#wixSideBar') && el2 !== document.body && el2 !== document.documentElement){
+      e.stopPropagation();
+      edSelectEl(el2);
+      var label = el2.tagName.toLowerCase() + (el2.id ? '#'+el2.id : '') + (el2.className && typeof el2.className === 'string' ? ' .'+el2.className.trim().split(/\s+/)[0] : '');
+      wixToast('✅ '+label+' seleccionado');
+    } else {
+      wixToast('⚠️ No se encontró un bloque seleccionable — prueba a hacer clic en otro elemento');
+    }
     return;
   }
   var btn=e.target.closest('button');
-  if(btn&&!btn.closest('#edPanel')){_edSelBtn=btn;edSelectEl(btn);return;}
+  if(btn&&!btn.closest('#edPanel')&&!btn.closest('#wixSideBar')){_edSelBtn=btn;edSelectEl(btn);return;}
   var sec=e.target.closest('[id],[style*="border-radius"],section');
-  if(sec&&!sec.closest('#edPanel')&&!sec.closest('nav')&&sec!==document.documentElement&&sec!==document.body)edSelectEl(sec);
+  if(sec&&!sec.closest('#edPanel')&&!sec.closest('#wixSideBar')&&!sec.closest('nav')&&sec!==document.documentElement&&sec!==document.body)edSelectEl(sec);
 });
 
 // ── Insertar bloques ──
@@ -3777,18 +3831,29 @@ function edSave(){
   document.querySelectorAll('[contenteditable]').forEach(function(el){
     el.removeAttribute('contenteditable');el.style.outline='';el.style.cursor='';
   });
-  var openBtn=document.getElementById('edOpenBtn');
   var panel=document.getElementById('edPanel');
   if(panel)panel.style.display='none';
   setTimeout(function(){
-    var blob=new Blob(['<!DOCTYPE html>'+document.documentElement.outerHTML],{type:'text/html'});
-    var a=document.createElement('a');
-    a.href=URL.createObjectURL(blob);
-    a.download='frecuencia-integral-editada.html';
-    document.body.appendChild(a);a.click();document.body.removeChild(a);
-    wixToast('✅ Guardado — renombra a index.html y sube a Vercel');
-    toast('✅ Guardado — renombra a index.html y sube a Vercel');
-  },200);
+    // Hide sidebar temporarily for clean snapshot
+    var sb=document.getElementById('wixSideBar');
+    var sbWas = sb ? sb.style.display : 'none';
+    if(sb) sb.style.display='none';
+    wixUnpushPage();
+    var toast_el=document.getElementById('wixToastEl');
+    if(toast_el) toast_el.style.display='none';
+    setTimeout(function(){
+      var blob=new Blob(['<!DOCTYPE html>'+document.documentElement.outerHTML],{type:'text/html'});
+      var a=document.createElement('a');
+      a.href=URL.createObjectURL(blob);
+      a.download='frecuencia-integral-editada.html';
+      document.body.appendChild(a);a.click();document.body.removeChild(a);
+      // Restore sidebar
+      if(sb) sb.style.display=sbWas;
+      if(toast_el) toast_el.style.display='';
+      wixPushPage(false);
+      wixToast('✅ Guardado — renombra a index.html y sube a Vercel');
+    },100);
+  },100);
 }
 
 </script>
@@ -3968,7 +4033,30 @@ function wixPanel(name) {
   document.getElementById('wixP2Body').innerHTML = wixBuildPanel(name);
   var p2 = document.getElementById('wixPanel2');
   p2.style.display = 'flex';
-  wixPushPage(true);  // push ancho (iconos + panel)
+  wixPushPage(true);
+  // Restore visual state of mode buttons after panel rebuild
+  setTimeout(function(){
+    ['wp2BtnEditText','wp2BtnEditText2'].forEach(function(id){
+      var btn = document.getElementById(id);
+      if(!btn) return;
+      btn.style.background = window._edOn ? 'rgba(191,70,55,.25)' : '';
+      btn.style.borderColor = window._edOn ? 'rgba(191,70,55,.6)' : '';
+      var ico = btn.querySelector('.wp2-ico');
+      var lbl = btn.querySelector('b');
+      if(ico) ico.textContent = window._edOn ? '🔒' : '✍️';
+      if(lbl) lbl.textContent = window._edOn ? 'Desactivar edición' : 'Editar texto';
+    });
+    ['wp2BtnSelMode','wp2BtnSelMode2'].forEach(function(id){
+      var btn = document.getElementById(id);
+      if(!btn) return;
+      btn.style.background = window._edSelMode ? 'rgba(184,149,88,.25)' : '';
+      btn.style.borderColor = window._edSelMode ? 'rgba(184,149,88,.6)' : '';
+      var ico = btn.querySelector('.wp2-ico');
+      var lbl = btn.querySelector('b');
+      if(ico) ico.textContent = window._edSelMode ? '✅' : '🎯';
+      if(lbl) lbl.textContent = window._edSelMode ? 'Selección ACTIVA — clic en elemento' : 'Seleccionar elemento';
+    });
+  }, 20);
 }
 
 function wixBuildPanel(n) {
@@ -3987,25 +4075,32 @@ function wixBuildPanel(n) {
 
 function wix_toggleText() {
   edToggleText();
-  // Feedback visual en el botón del panel
-  var btn = document.getElementById('wp2BtnEditText');
-  if (btn) {
+  // Update any sidebar buttons that show text-edit mode state
+  ['wp2BtnEditText','wp2BtnEditText2'].forEach(function(id){
+    var btn = document.getElementById(id);
+    if(!btn) return;
     btn.style.background = window._edOn ? 'rgba(191,70,55,.25)' : '';
-    btn.style.borderColor = window._edOn ? 'rgba(191,70,55,.5)' : '';
-    btn.querySelector('.wp2-ico').textContent = window._edOn ? '🔒' : '✍️';
-    btn.querySelector('b').textContent = window._edOn ? 'Desactivar edición' : 'Editar texto';
-  }
+    btn.style.borderColor = window._edOn ? 'rgba(191,70,55,.6)' : '';
+    var ico = btn.querySelector('.wp2-ico');
+    var lbl = btn.querySelector('b');
+    if(ico) ico.textContent = window._edOn ? '🔒' : '✍️';
+    if(lbl) lbl.textContent = window._edOn ? 'Desactivar edición' : 'Editar texto';
+  });
 }
 
 function wix_toggleSel() {
   edToggleMode();
-  var btn = document.getElementById('wp2BtnSelMode');
-  if (btn) {
-    btn.style.background = window._edSelMode ? 'rgba(184,149,88,.2)' : '';
-    btn.style.borderColor = window._edSelMode ? 'rgba(184,149,88,.5)' : '';
-    btn.querySelector('.wp2-ico').textContent = window._edSelMode ? '✅' : '🎯';
-    btn.querySelector('b').textContent = window._edSelMode ? 'Selección ACTIVA' : 'Seleccionar elemento';
-  }
+  // Update any sidebar buttons that show sel mode state (safe - they may not exist)
+  ['wp2BtnSelMode','wp2BtnSelMode2'].forEach(function(id){
+    var btn = document.getElementById(id);
+    if(!btn) return;
+    btn.style.background = window._edSelMode ? 'rgba(184,149,88,.25)' : '';
+    btn.style.borderColor = window._edSelMode ? 'rgba(184,149,88,.6)' : '';
+    var ico = btn.querySelector('.wp2-ico');
+    var lbl = btn.querySelector('b');
+    if(ico) ico.textContent = window._edSelMode ? '✅' : '🎯';
+    if(lbl) lbl.textContent = window._edSelMode ? 'Selección ACTIVA — clic en elemento' : 'Seleccionar elemento';
+  });
 }
 
 function wix_applyFont(sel) {
@@ -4102,7 +4197,6 @@ function wix_moveDown() {
 
 function wix_deleteEl() {
   if (!wixNeedSel()) return;
-  if (!confirm('¿Eliminar este elemento? Esta acción se puede deshacer con ↩')) return;
   edDeleteSelected();
 }
 
@@ -4120,14 +4214,23 @@ function wix_changeImage() {
 
 function wix_insertImgUrl() {
   var u = document.getElementById('wp2ImgUrl');
-  if (!u || !u.value.trim()) { wixToast('⚠️ Introduce una URL de imagen'); return; }
+  if (!u || !u.value.trim()) { wixToast('⚠️ Introduce una URL de imagen primero'); return; }
+  var url = u.value.trim();
+  // Pre-fill the image manager URL field
   var target = document.getElementById('edImgUrl');
-  if (target) target.value = u.value.trim();
+  if (target) target.value = url;
   edImgPanelOpen();
+  // Auto-preview after a short delay
+  setTimeout(function(){ try{edImgPreview();}catch(e){} }, 200);
 }
 
 function wix_openProps() {
-  if (!wixNeedSel()) return;
+  if (!_edSel) {
+    wixToast('⚠️ Activa 🎯 Modo selección y haz clic en un elemento primero');
+    // Still open props panel so user can see it - they can use it once they select
+    if(!_edPropsOpen) edToggleProps();
+    return;
+  }
   edToggleProps();
 }
 
@@ -4145,6 +4248,8 @@ function wix_save() {
 
 function wix_navOpen() {
   navMgrOpen();
+  // Optionally close the secondary panel to give nav manager more room
+  // (Nav manager opens as full overlay so no issue)
 }
 
 // ══════════════════════════════════════════════════════
@@ -4160,84 +4265,99 @@ function wixPanelTexto() {
   }).join('');
 
   return [
-    '<div class="wp2-info">Activa ✍️ para editar texto. Activa 🎯 para seleccionar bloques y aplicar fuente/tamaño al bloque completo.</div>',
+    /* === INFO === */
+    '<div class="wp2-info">',
+    '<b>Flujo correcto:</b><br>',
+    '1. Clic en ✍️ Editar texto → escribe en la web<br>',
+    '2. Clic en 🎯 Seleccionar → clic en un bloque para seleccionarlo',
+    '</div>',
     '<div class="wp2-divider"></div>',
 
-    '<div class="wp2-sec-title">Modo edición</div>',
+    /* === MODOS === */
+    '<div class="wp2-sec-title">Modos de edición</div>',
     '<button class="wp2-btn" id="wp2BtnEditText" onclick="wix_toggleText()">',
-    '  <span class="wp2-ico">✍️</span><span class="wp2-lbl"><b>Editar texto</b><span>Activa para escribir directamente en la web</span></span>',
+    '<span class="wp2-ico">✍️</span><span class="wp2-lbl"><b>Editar texto</b><span>Activa/desactiva escritura inline</span></span>',
     '</button>',
     '<button class="wp2-btn" id="wp2BtnSelMode" onclick="wix_toggleSel()">',
-    '  <span class="wp2-ico">🎯</span><span class="wp2-lbl"><b>Seleccionar elemento</b><span>Clic en cualquier bloque para seleccionarlo</span></span>',
+    '<span class="wp2-ico">🎯</span><span class="wp2-lbl"><b>Seleccionar elemento</b><span>Luego haz clic en cualquier bloque</span></span>',
     '</button>',
     '<div class="wp2-divider"></div>',
 
-    '<div class="wp2-sec-title">Formato de texto (requiere ✍️ activo)</div>',
+    /* === FORMATO INLINE === */
+    '<div class="wp2-sec-title">Formato de texto — requiere ✍️ + texto seleccionado</div>',
     '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px">',
-    '  <button class="wp2-btn" style="justify-content:center;padding:10px 4px" onclick="wix_fmt(\'bold\')"><b>B</b></button>',
-    '  <button class="wp2-btn" style="justify-content:center;padding:10px 4px" onclick="wix_fmt(\'italic\')"><i style="font-style:italic">I</i></button>',
-    '  <button class="wp2-btn" style="justify-content:center;padding:10px 4px;text-decoration:underline" onclick="wix_fmt(\'underline\')">U</button>',
-    '  <button class="wp2-btn" style="justify-content:center;padding:10px 4px;text-decoration:line-through" onclick="wix_fmt(\'strikeThrough\')">S</button>',
+    '<button class="wp2-btn" style="justify-content:center;padding:10px 4px" onclick="wix_fmt(\'bold\')"><b>B</b></button>',
+    '<button class="wp2-btn" style="justify-content:center;padding:10px 4px" onclick="wix_fmt(\'italic\')"><i style="font-style:italic">I</i></button>',
+    '<button class="wp2-btn" style="justify-content:center;padding:10px 4px;text-decoration:underline" onclick="wix_fmt(\'underline\')">U</button>',
+    '<button class="wp2-btn" style="justify-content:center;padding:10px 4px;text-decoration:line-through" onclick="wix_fmt(\'strikeThrough\')">S</button>',
     '</div>',
-    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:5px">',
-    '  <button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'justifyLeft\')">≡ Izq.</button>',
-    '  <button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'justifyCenter\')">≡ Centro</button>',
-    '  <button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'justifyRight\')">≡ Der.</button>',
+
+    /* === ALINEACIÓN 4 opciones === */
+    '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:5px">',
+    '<button class="wp2-btn" style="justify-content:center;font-size:11px;padding:8px 3px" onclick="wix_fmt(\'justifyLeft\')">⬛ Izq.</button>',
+    '<button class="wp2-btn" style="justify-content:center;font-size:11px;padding:8px 3px" onclick="wix_fmt(\'justifyCenter\')">Cent.</button>',
+    '<button class="wp2-btn" style="justify-content:center;font-size:11px;padding:8px 3px" onclick="wix_fmt(\'justifyRight\')">Der. ⬛</button>',
+    '<button class="wp2-btn" style="justify-content:center;font-size:11px;padding:8px 3px" onclick="wix_fmt(\'justifyFull\')">Justif.</button>',
     '</div>',
+
+    /* === LISTAS === */
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:5px">',
-    '  <button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'insertUnorderedList\')">• Lista</button>',
-    '  <button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'insertOrderedList\')">1. Numerada</button>',
+    '<button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'insertUnorderedList\')">• Lista</button>',
+    '<button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'insertOrderedList\')">1. Numerada</button>',
     '</div>',
     '<div class="wp2-divider"></div>',
 
-    '<div class="wp2-sec-title">Encabezados (requiere ✍️, cursor en párrafo)</div>',
+    /* === ENCABEZADOS === */
+    '<div class="wp2-sec-title">Encabezados — requiere ✍️, cursor dentro del párrafo</div>',
     '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px">',
-    '  <button class="wp2-btn" style="justify-content:center;font-weight:700" onclick="wix_fmtBlock(\'h1\')">H1</button>',
-    '  <button class="wp2-btn" style="justify-content:center;font-weight:700" onclick="wix_fmtBlock(\'h2\')">H2</button>',
-    '  <button class="wp2-btn" style="justify-content:center;font-weight:700" onclick="wix_fmtBlock(\'h3\')">H3</button>',
-    '  <button class="wp2-btn" style="justify-content:center" onclick="wix_fmtBlock(\'h4\')">H4</button>',
-    '  <button class="wp2-btn" style="justify-content:center" onclick="wix_fmtBlock(\'h5\')">H5</button>',
-    '  <button class="wp2-btn" style="justify-content:center" onclick="wix_fmtBlock(\'p\')">P</button>',
+    '<button class="wp2-btn" style="justify-content:center;font-weight:700;font-size:14px" onclick="wix_fmtBlock(\'h1\')">H1</button>',
+    '<button class="wp2-btn" style="justify-content:center;font-weight:700;font-size:13px" onclick="wix_fmtBlock(\'h2\')">H2</button>',
+    '<button class="wp2-btn" style="justify-content:center;font-weight:700;font-size:12px" onclick="wix_fmtBlock(\'h3\')">H3</button>',
+    '<button class="wp2-btn" style="justify-content:center;font-size:11px" onclick="wix_fmtBlock(\'h4\')">H4</button>',
+    '<button class="wp2-btn" style="justify-content:center;font-size:11px" onclick="wix_fmtBlock(\'h5\')">H5</button>',
+    '<button class="wp2-btn" style="justify-content:center;font-size:11px" onclick="wix_fmtBlock(\'p\')">¶ P</button>',
     '</div>',
     '<div class="wp2-divider"></div>',
 
-    '<div class="wp2-sec-title">Fuente del bloque (requiere 🎯 + elemento seleccionado)</div>',
+    /* === FUENTE BLOQUE === */
+    '<div class="wp2-sec-title">Fuente del bloque — requiere 🎯 seleccionado</div>',
     '<select class="wp2-select" onchange="wix_applyFont(this)" style="margin-bottom:6px">',
-    '  <option value="">Selecciona fuente…</option>',
-    '  <option value="\'DM Sans\',sans-serif">DM Sans</option>',
-    '  <option value="\'Cormorant Garamond\',serif">Cormorant Garamond</option>',
-    '  <option value="Georgia,serif">Georgia</option>',
-    '  <option value="Arial,sans-serif">Arial</option>',
-    '  <option value="\'Helvetica Neue\',sans-serif">Helvetica Neue</option>',
-    '  <option value="\'Times New Roman\',serif">Times New Roman</option>',
-    '  <option value="\'Courier New\',monospace">Courier New</option>',
+    '<option value="">Selecciona fuente…</option>',
+    '<option value="\'DM Sans\',sans-serif">DM Sans</option>',
+    '<option value="\'Cormorant Garamond\',serif">Cormorant Garamond</option>',
+    '<option value="Georgia,serif">Georgia</option>',
+    '<option value="Arial,sans-serif">Arial</option>',
+    '<option value="\'Helvetica Neue\',sans-serif">Helvetica Neue</option>',
+    '<option value="\'Times New Roman\',serif">Times New Roman</option>',
+    '<option value="\'Courier New\',monospace">Courier New</option>',
     '</select>',
     '<div class="wp2-divider"></div>',
 
-    '<div class="wp2-sec-title">Tamaño de texto (px)</div>',
+    /* === TAMAÑO === */
+    '<div class="wp2-sec-title">Tamaño de texto — bloque (🎯) o inline (✍️ + selección)</div>',
     '<div style="display:flex;gap:6px;margin-bottom:8px;align-items:center">',
-    '  <input type="number" id="wp2FontSzInp" min="8" max="200" placeholder="ej: 18" style="flex:1;background:#1c1814;color:white;border:1px solid rgba(255,255,255,.2);padding:8px 10px;border-radius:8px;font-size:13px;outline:none">',
-    '  <button class="wp2-btn" style="padding:8px 14px;justify-content:center;flex-shrink:0" onclick="wix_applyFontSizeInput()">✓ Aplicar</button>',
+    '<input type="number" id="wp2FontSzInp" min="8" max="200" placeholder="ej: 18" style="flex:1;background:#1c1814;color:white;border:1px solid rgba(255,255,255,.2);padding:8px 10px;border-radius:8px;font-size:13px;outline:none">',
+    '<button class="wp2-btn" style="padding:8px 14px;justify-content:center;flex-shrink:0" onclick="wix_applyFontSizeInput()">✓ Aplicar</button>',
     '</div>',
     '<div style="display:flex;flex-wrap:wrap;gap:4px">' + szBtns + '</div>',
     '<div class="wp2-divider"></div>',
 
+    /* === COLOR === */
     '<div class="wp2-sec-title">Color de texto</div>',
-    '<div class="wp2-color-row" style="margin-bottom:8px">',
-    '  <label>Elige color</label>',
-    '  <input type="color" value="#1c1814" onchange="wix_applyColor(this.value)">',
-    '</div>',
+    '<div class="wp2-color-row" style="margin-bottom:8px"><label>Elige color</label><input type="color" value="#1c1814" onchange="wix_applyColor(this.value)"></div>',
     '<div style="display:flex;flex-wrap:wrap;gap:5px">' + colSwatches + '</div>',
     '<div class="wp2-divider"></div>',
 
+    /* === EXTRAS === */
     '<button class="wp2-btn" onclick="wix_addLink()">',
-    '  <span class="wp2-ico">🔗</span><span class="wp2-lbl"><b>Añadir enlace</b><span>Selecciona texto o elemento primero</span></span>',
+    '<span class="wp2-ico">🔗</span><span class="wp2-lbl"><b>Añadir enlace</b><span>Selecciona texto o elemento primero</span></span>',
     '</button>',
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:5px">',
-    '  <button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'superscript\')">X² Superíndice</button>',
-    '  <button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'subscript\')">X₂ Subíndice</button>',
+    '<button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'superscript\')">X² Super</button>',
+    '<button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'subscript\')">X₂ Sub</button>',
     '</div>',
-  ].join('\n');
+  ].join('
+');
 }
 
 function wixPanelElementos() {
