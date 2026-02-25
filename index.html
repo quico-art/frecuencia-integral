@@ -577,170 +577,158 @@ nav.sb-pushed-wide { left: 316px !important; right: 0 !important; }
     </div>
   </div>
 
-       <!-- 9 PILARES MANDALA -->
-  <div id="pilares-mandala" style="padding:80px 32px;background:#2e2820">
-    <div style="max-width:1100px;margin:0 auto;text-align:center">
-      <div style="font-size:11px;font-weight:700;color:#b89558;text-transform:uppercase;letter-spacing:.15em;margin-bottom:12px">La Integración Total</div>
-      <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,48px);font-weight:300;color:white;margin-bottom:12px">12 Pilares · Un Solo Ser</h2>
-      <p style="font-size:14px;color:rgba(255,255,255,.45);max-width:600px;margin:0 auto 56px;line-height:1.75">Cada tradición y herramienta ilumina el mismo centro. No hay jerarquía — hay convergencia. Todas las sendas apuntan al mismo punto: tú.</p>
+<!-- 9 PILARES MANDALA -->
+<div id="pilares-mandala" style="padding:80px 32px;background:#2e2820">
+  <div style="max-width:1100px;margin:0 auto;text-align:center">
+    <div style="font-size:11px;font-weight:700;color:#b89558;text-transform:uppercase;letter-spacing:.15em;margin-bottom:12px">La Integración Total</div>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,48px);font-weight:300;color:white;margin-bottom:12px">12 Pilares · Un Solo Ser</h2>
+    <p style="font-size:14px;color:rgba(255,255,255,.45);max-width:600px;margin:0 auto 56px;line-height:1.75">Cada tradición y herramienta ilumina el mismo centro. No hay jerarquía — hay convergencia. Todas las sendas apuntan al mismo punto: tú.</p>
 
-      <!-- Hint de clic -->
-      <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px;opacity:.6">
-        <span style="font-size:12px;color:#b89558;font-family:'DM Sans',sans-serif;letter-spacing:.08em">Haz clic para ver en pantalla completa</span>
-        <span style="font-size:14px">🔍</span>
-      </div>
+    <div id="mandala-wrap" onclick="openMandalaModal()" style="position:relative;width:min(800px,92vw);aspect-ratio:1;margin:0 auto;cursor:zoom-in;transition:transform .2s" onmouseover="this.style.transform='scale(1.01)'" onmouseout="this.style.transform='scale(1)'">
+      <svg id="mandala-svg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+        <defs>
+          <radialGradient id="mbg" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#b89558" stop-opacity=".12"/>
+            <stop offset="100%" stop-color="#b89558" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="mcenter" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#b89558" stop-opacity=".35"/>
+            <stop offset="100%" stop-color="#b89558" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="mglow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="mglows"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
 
-      <div id="mandala-wrap" onclick="openMandalaModal()" style="position:relative;width:min(1000px,92vw);aspect-ratio:1;margin:0 auto;cursor:zoom-in;transition:transform .2s" onmouseover="this.style.transform='scale(1.01)'" onmouseout="this.style.transform='scale(1)'">
-        <div style="position:absolute;top:12px;right:12px;z-index:2;width:36px;height:36px;background:rgba(184,149,88,.15);border:1px solid rgba(184,149,88,.4);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;pointer-events:none">⛶</div>
-        <svg id="mandala-svg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
-          <defs>
-            <radialGradient id="mbg" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#b89558" stop-opacity=".12"/>
-              <stop offset="100%" stop-color="#b89558" stop-opacity="0"/>
-            </radialGradient>
-            <radialGradient id="mcenter" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#b89558" stop-opacity=".35"/>
-              <stop offset="100%" stop-color="#b89558" stop-opacity="0"/>
-            </radialGradient>
-            <filter id="mglow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-            <filter id="mglows"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          </defs>
+        <circle cx="400" cy="400" r="380" fill="url(#mbg)"/>
+        <circle cx="400" cy="400" r="350" fill="none" stroke="rgba(184,149,88,.08)" stroke-width="1"/>
+        <circle cx="400" cy="400" r="300" fill="none" stroke="rgba(184,149,88,.18)" stroke-width="1.5"/>
+        <circle cx="400" cy="400" r="210" fill="none" stroke="rgba(184,149,88,.07)" stroke-width="1" stroke-dasharray="4,12"/>
+        <circle cx="400" cy="400" r="120" fill="none" stroke="rgba(184,149,88,.1)" stroke-width="1"/>
 
-          <!-- Background glow -->
-          <circle cx="400" cy="400" r="380" fill="url(#mbg)"/>
+        <g stroke="rgba(184,149,88,.28)" stroke-width="1.2">
+          <line x1="400" y1="400" x2="400.0" y2="100.0"/>
+          <line x1="400" y1="400" x2="550.0" y2="140.2"/>
+          <line x1="400" y1="400" x2="659.8" y2="250.0"/>
+          <line x1="400" y1="400" x2="700.0" y2="400.0"/>
+          <line x1="400" y1="400" x2="659.8" y2="550.0"/>
+          <line x1="400" y1="400" x2="550.0" y2="659.8"/>
+          <line x1="400" y1="400" x2="400.0" y2="700.0"/>
+          <line x1="400" y1="400" x2="250.0" y2="659.8"/>
+          <line x1="400" y1="400" x2="140.2" y2="550.0"/>
+          <line x1="400" y1="400" x2="100.0" y2="400.0"/>
+          <line x1="400" y1="400" x2="140.2" y2="250.0"/>
+          <line x1="400" y1="400" x2="250.0" y2="140.2"/>
+        </g>
 
-          <!-- Rings -->
-          <circle cx="400" cy="400" r="350" fill="none" stroke="rgba(184,149,88,.08)" stroke-width="1"/>
-          <circle cx="400" cy="400" r="300" fill="none" stroke="rgba(184,149,88,.18)" stroke-width="1.5"/>
-          <circle cx="400" cy="400" r="210" fill="none" stroke="rgba(184,149,88,.07)" stroke-width="1" stroke-dasharray="4,12"/>
-          <circle cx="400" cy="400" r="120" fill="none" stroke="rgba(184,149,88,.1)"  stroke-width="1"/>
+        <g filter="url(#mglows)">
+          <circle cx="400.0" cy="100.0" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
+          <text x="400.0" y="90" text-anchor="middle" font-size="26">🏔️</text>
+          <text x="400.0" y="108" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Dzogchen</text>
+        </g>
+        <g filter="url(#mglows)">
+          <circle cx="550.0" cy="140.2" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
+          <text x="550.0" y="130" text-anchor="middle" font-size="26">⚙️</text>
+          <text x="550.0" y="148" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">IV Camino</text>
+        </g>
+        <g filter="url(#mglows)">
+          <circle cx="659.8" cy="250.0" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
+          <text x="659.8" y="240" text-anchor="middle" font-size="26">💛</text>
+          <text x="659.8" y="258" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">UCDM</text>
+        </g>
+        <g filter="url(#mglows)">
+          <circle cx="700.0" cy="400.0" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
+          <text x="700.0" y="390" text-anchor="middle" font-size="26">🌿</text>
+          <text x="700.0" y="408" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Cuencos I</text>
+        </g>
+        <g filter="url(#mglows)">
+          <circle cx="659.8" cy="550.0" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
+          <text x="659.8" y="540" text-anchor="middle" font-size="26">🔥</text>
+          <text x="659.8" y="558" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Cuencos II</text>
+        </g>
+        <g filter="url(#mglows)">
+          <circle cx="550.0" cy="659.8" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
+          <text x="550.0" y="650" text-anchor="middle" font-size="26">🔵</text>
+          <text x="550.0" y="668" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Cuencos III</text>
+        </g>
+        <g filter="url(#mglows)">
+          <circle cx="400.0" cy="700.0" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
+          <text x="400.0" y="690" text-anchor="middle" font-size="26">🌈</text>
+          <text x="400.0" y="708" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Cuencos IV</text>
+        </g>
+        <g filter="url(#mglows)">
+          <circle cx="250.0" cy="659.8" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
+          <text x="250.0" y="650" text-anchor="middle" font-size="26">🏃</text>
+          <text x="250.0" y="668" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Deportista</text>
+        </g>
+        <g filter="url(#mglows)">
+          <circle cx="140.2" cy="550.0" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
+          <text x="140.2" y="540" text-anchor="middle" font-size="26">🧘</text>
+          <text x="140.2" y="558" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Ser Consciente</text>
+        </g>
+        <g filter="url(#mglows)">
+          <circle cx="100.0" cy="400.0" r="44" fill="#2e2820" stroke="#3d9e9b" stroke-width="2"/>
+          <text x="100.0" y="390" text-anchor="middle" font-size="26">🌀</text>
+          <text x="100.0" y="406" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Armonización</text>
+          <text x="100.0" y="418" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Energética</text>
+        </g>
+        <g filter="url(#mglows)">
+          <circle cx="140.2" cy="250.0" r="44" fill="#2e2820" stroke="#3d9e9b" stroke-width="2"/>
+          <text x="140.2" y="240" text-anchor="middle" font-size="26">💎</text>
+          <text x="140.2" y="256" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Joyería</text>
+          <text x="140.2" y="268" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Sagrada</text>
+        </g>
+        <g filter="url(#mglows)">
+          <circle cx="250.0" cy="140.2" r="44" fill="#2e2820" stroke="#3d9e9b" stroke-width="2"/>
+          <text x="250.0" y="130" text-anchor="middle" font-size="26">🎨</text>
+          <text x="250.0" y="146" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Arte &</text>
+          <text x="250.0" y="158" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Arteterapia</text>
+        </g>
 
-          <!-- Lines from center to each node -->
-          <g stroke="rgba(184,149,88,.28)" stroke-width="1.2">
-            <line x1="400" y1="400" x2="400.0" y2="100.0"/>
-            <line x1="400" y1="400" x2="550.0" y2="140.2"/>
-            <line x1="400" y1="400" x2="659.8" y2="250.0"/>
-            <line x1="400" y1="400" x2="700.0" y2="400.0"/>
-            <line x1="400" y1="400" x2="659.8" y2="550.0"/>
-            <line x1="400" y1="400" x2="550.0" y2="659.8"/>
-            <line x1="400" y1="400" x2="400.0" y2="700.0"/>
-            <line x1="400" y1="400" x2="250.0" y2="659.8"/>
-            <line x1="400" y1="400" x2="140.2" y2="550.0"/>
-            <line x1="400" y1="400" x2="100.0" y2="400.0"/>
-            <line x1="400" y1="400" x2="140.2" y2="250.0"/>
-            <line x1="400" y1="400" x2="250.0" y2="140.2"/>
-          </g>
-
-          <!-- Node 1: Dzogchen -->
-          <g filter="url(#mglows)">
-            <circle cx="400.0" cy="100.0" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
-            <text x="400.0" y="90" text-anchor="middle" font-size="26">🏔️</text>
-            <text x="400.0" y="108" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Dzogchen</text>
-          </g>
-          <!-- Node 2: IV Camino -->
-          <g filter="url(#mglows)">
-            <circle cx="550.0" cy="140.2" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
-            <text x="550.0" y="130" text-anchor="middle" font-size="26">⚙️</text>
-            <text x="550.0" y="148" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">IV Camino</text>
-          </g>
-          <!-- Node 3: UCDM -->
-          <g filter="url(#mglows)">
-            <circle cx="659.8" cy="250.0" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
-            <text x="659.8" y="240" text-anchor="middle" font-size="26">💛</text>
-            <text x="659.8" y="258" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">UCDM</text>
-          </g>
-          <!-- Node 4: Cuencos I -->
-          <g filter="url(#mglows)">
-            <circle cx="700.0" cy="400.0" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
-            <text x="700.0" y="390" text-anchor="middle" font-size="26">🌿</text>
-            <text x="700.0" y="408" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Cuencos I</text>
-          </g>
-          <!-- Node 5: Cuencos II -->
-          <g filter="url(#mglows)">
-            <circle cx="659.8" cy="550.0" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
-            <text x="659.8" y="540" text-anchor="middle" font-size="26">🔥</text>
-            <text x="659.8" y="558" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Cuencos II</text>
-          </g>
-          <!-- Node 6: Cuencos III -->
-          <g filter="url(#mglows)">
-            <circle cx="550.0" cy="659.8" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
-            <text x="550.0" y="650" text-anchor="middle" font-size="26">🔵</text>
-            <text x="550.0" y="668" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Cuencos III</text>
-          </g>
-          <!-- Node 7: Cuencos IV -->
-          <g filter="url(#mglows)">
-            <circle cx="400.0" cy="700.0" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
-            <text x="400.0" y="690" text-anchor="middle" font-size="26">🌈</text>
-            <text x="400.0" y="708" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Cuencos IV</text>
-          </g>
-          <!-- Node 8: Deportista -->
-          <g filter="url(#mglows)">
-            <circle cx="250.0" cy="659.8" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
-            <text x="250.0" y="650" text-anchor="middle" font-size="26">🏃</text>
-            <text x="250.0" y="668" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Deportista</text>
-          </g>
-          <!-- Node 9: Ser Consciente -->
-          <g filter="url(#mglows)">
-            <circle cx="140.2" cy="550.0" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
-            <text x="140.2" y="540" text-anchor="middle" font-size="26">🧘</text>
-            <text x="140.2" y="558" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Ser Consciente</text>
-          </g>
-          <!-- Node 10: Armonización Energética (NUEVO) -->
-          <g filter="url(#mglows)">
-            <circle cx="100.0" cy="400.0" r="44" fill="#2e2820" stroke="#3d9e9b" stroke-width="2"/>
-            <text x="100.0" y="390" text-anchor="middle" font-size="26">🌀</text>
-            <text x="100.0" y="406" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Armonización</text>
-            <text x="100.0" y="418" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Energética</text>
-          </g>
-          <!-- Node 11: Joyería Sagrada (NUEVO) -->
-          <g filter="url(#mglows)">
-            <circle cx="140.2" cy="250.0" r="44" fill="#2e2820" stroke="#3d9e9b" stroke-width="2"/>
-            <text x="140.2" y="240" text-anchor="middle" font-size="26">💎</text>
-            <text x="140.2" y="256" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Joyería</text>
-            <text x="140.2" y="268" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Sagrada</text>
-          </g>
-          <!-- Node 12: Arte & Arteterapia (NUEVO) -->
-          <g filter="url(#mglows)">
-            <circle cx="250.0" cy="140.2" r="44" fill="#2e2820" stroke="#3d9e9b" stroke-width="2"/>
-            <text x="250.0" y="130" text-anchor="middle" font-size="26">🎨</text>
-            <text x="250.0" y="146" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Arte &</text>
-            <text x="250.0" y="158" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.7)" font-family="DM Sans, sans-serif" font-weight="500">Arteterapia</text>
-          </g>
-
-          <!-- Center glow -->
-          <circle cx="400" cy="400" r="80" fill="url(#mcenter)" filter="url(#mglow)"/>
-          <circle cx="400" cy="400" r="62" fill="#2e2820" stroke="rgba(184,149,88,.5)" stroke-width="2"/>
-          <circle cx="400" cy="400" r="50" fill="rgba(184,149,88,.06)" stroke="rgba(184,149,88,.2)" stroke-width="1"/>
-
-          <!-- "El Ser" — encima de la estrella -->
-          <text x="400" y="376" text-anchor="middle" font-size="12" fill="#d4a85a" font-family="Cormorant Garamond, serif" font-style="italic" font-weight="600">El Ser</text>
-
-          <!-- Estrella 12 puntas pequeña y angulosa -->
-          <polygon
-            points="400.0,381.0 402.6,390.3 409.5,383.5 407.1,392.9 416.5,390.5 409.7,397.4 419.0,400.0 409.7,402.6 416.5,409.5 407.1,407.1 409.5,416.5 402.6,409.7 400.0,419.0 397.4,409.7 390.5,416.5 392.9,407.1 383.5,409.5 390.3,402.6 381.0,400.0 390.3,397.4 383.5,390.5 392.9,392.9 390.5,383.5 397.4,390.3"
-            fill="#b89558" opacity=".95" filter="url(#mglow)"/>
-
-          <!-- "Humano" — debajo de la estrella -->
-          <text x="400" y="426" text-anchor="middle" font-size="12" fill="#d4a85a" font-family="Cormorant Garamond, serif" font-style="italic" font-weight="600">Humano</text>
-        </svg>
-      </div><!-- /mandala-wrap -->
-    </div>
-  </div>
-
-  <!-- MODAL MANDALA FULLSCREEN -->
-  <div id="mandala-modal" onclick="closeMandalaModal()" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(20,16,12,.96);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:24px">
-    <div onclick="event.stopPropagation()" style="position:relative;width:min(90vw,90vh);aspect-ratio:1;max-width:960px">
-      <!-- Botón cerrar -->
-      <button onclick="closeMandalaModal()" style="position:absolute;top:-48px;right:0;background:rgba(184,149,88,.15);border:1px solid rgba(184,149,88,.4);color:#b89558;width:36px;height:36px;border-radius:8px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:sans-serif;line-height:1">✕</button>
-      <!-- Hint -->
-      <div style="position:absolute;top:-48px;left:0;font-size:12px;color:rgba(184,149,88,.5);font-family:'DM Sans',sans-serif">Clic fuera para cerrar · Pellizca para hacer zoom</div>
-      <svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
-        <!-- copia del SVG se inyecta por JS -->
+        <circle cx="400" cy="400" r="80" fill="url(#mcenter)" filter="url(#mglow)"/>
+        <circle cx="400" cy="400" r="62" fill="#2e2820" stroke="rgba(184,149,88,.5)" stroke-width="2"/>
+        <circle cx="400" cy="400" r="50" fill="rgba(184,149,88,.06)" stroke="rgba(184,149,88,.2)" stroke-width="1"/>
+        <text x="400" y="374" text-anchor="middle" font-size="13" fill="#d4a85a" font-family="Cormorant Garamond, serif" font-style="italic" font-weight="600">El Ser</text>
+        <polygon points="400.0,362.0 410.0,382.7 419.0,367.1 417.3,390.0 432.9,381.0 420.0,400.0 438.0,400.0 417.3,410.0 432.9,419.0 410.0,417.3 419.0,432.9 400.0,420.0 400.0,438.0 390.0,417.3 381.0,432.9 382.7,410.0 367.1,419.0 380.0,400.0 362.0,400.0 382.7,390.0 367.1,381.0 390.0,382.7 381.0,367.1 400.0,380.0" fill="#b89558" opacity=".95" filter="url(#mglow)"/>
+        <text x="400" y="432" text-anchor="middle" font-size="13" fill="#d4a85a" font-family="Cormorant Garamond, serif" font-style="italic" font-weight="600">Humano</text>
       </svg>
     </div>
   </div>
+</div>
 
-  <!-- JOYAS -->
+<!-- MODAL MANDALA FULLSCREEN -->
+<div id="mandala-modal" onclick="closeMandalaModal()" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(20,16,12,.96);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:24px">
+  <div onclick="event.stopPropagation()" style="position:relative;width:min(90vw,90vh);aspect-ratio:1;max-width:960px">
+    <button onclick="closeMandalaModal()" style="position:absolute;top:-48px;right:0;background:rgba(184,149,88,.15);border:1px solid rgba(184,149,88,.4);color:#b89558;width:36px;height:36px;border-radius:8px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:sans-serif;line-height:1">✕</button>
+    <div style="position:absolute;top:-48px;left:0;font-size:12px;color:rgba(184,149,88,.5);font-family:'DM Sans',sans-serif">Clic fuera para cerrar · Escape para salir</div>
+    <svg id="mandala-modal-svg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%"></svg>
+  </div>
+</div>
+
+<script>
+// ── MODAL MANDALA ──
+function openMandalaModal() {
+  var modal = document.getElementById('mandala-modal');
+  var src   = document.getElementById('mandala-svg');
+  var dest  = document.getElementById('mandala-modal-svg');
+  if (!modal || !src || !dest) return;
+  dest.innerHTML = src.innerHTML;
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMandalaModal() {
+  var modal = document.getElementById('mandala-modal');
+  if (!modal) return;
+  modal.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeMandalaModal();
+});
+</script>
+
+    <!-- JOYAS -->
   <div id="joyas" style="padding:80px 32px;background:white" class="">
     <div style="max-width:1100px;margin:0 auto" class="">
       <div style="font-size: 11px; font-weight: 700; color: rgb(184, 149, 88); text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px;">Las Joyas del Sistema</div>
