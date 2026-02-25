@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&amp;family=DM+Sans:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
+html,body{overflow-x:hidden;max-width:100%}
 body{font-family:'DM Sans',sans-serif;background:#f7f5f1;color:#1c1814}
 
 /* NAV */
@@ -249,6 +250,11 @@ nav.sb-pushed-wide { left: 316px !important; right: 0 !important; }
   .main-content{margin-left:0}
   .nav-links{display:none}
 }
+@media(min-width:1024px){
+  #pilares-mandala > div > div:last-child {
+    width: min(1100px, 92vw) !important;
+  }
+}
 </style>
 <style id="nmDynStyle">.nav-links a{color:#3d3730!important}.nav-links a:hover{color:#2b7d7a!important}</style></head>
 <body class="" data-nm-state="{&quot;nav&quot;:[{&quot;id&quot;:&quot;nav17716996591321&quot;,&quot;label&quot;:&quot;El Viaje&quot;,&quot;linkType&quot;:&quot;anchor&quot;,&quot;anchor&quot;:&quot;&quot;,&quot;color&quot;:&quot;&quot;,&quot;style&quot;:&quot;normal&quot;,&quot;emoji&quot;:&quot;&quot;,&quot;newTab&quot;:false,&quot;children&quot;:[]},{&quot;id&quot;:&quot;nav17716996591322&quot;,&quot;label&quot;:&quot;Precios&quot;,&quot;linkType&quot;:&quot;anchor&quot;,&quot;anchor&quot;:&quot;#Estructura del Sistema TCT Las Cinco Puertas&quot;,&quot;color&quot;:&quot;&quot;,&quot;style&quot;:&quot;normal&quot;,&quot;emoji&quot;:&quot;&quot;,&quot;newTab&quot;:false,&quot;children&quot;:[],&quot;url&quot;:&quot;&quot;,&quot;pageSlug&quot;:&quot;&quot;}],&quot;pages&quot;:[],&quot;cats&quot;:[]}">
@@ -298,50 +304,12 @@ nav.sb-pushed-wide { left: 316px !important; right: 0 !important; }
       <div style="position:absolute;bottom:20px;left:20px;color:white;font-family:'Cormorant Garamond',serif;font-size:18px;text-shadow:0 2px 8px rgba(0,0,0,.5)">Transformación</div>
     </div>
   </div>
-<!-- BLOQUE MÉTODO TCT -->
-<div style="padding:100px 32px;background:white">
-  <div style="max-width:1000px;margin:0 auto;text-align:center">
 
-    <div style="font-size:11px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.15em;margin-bottom:14px">
-      Método TCT
-    </div>
-
-    <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(34px,4vw,56px);font-weight:300;margin-bottom:20px">
-      Presencia aplicada a la vida real
-    </h2>
-
-    <p style="font-size:15px;color:#7a7168;line-height:1.8;max-width:760px;margin:0 auto 50px">
-      48 semanas estructuradas.  
-      4 Puertas progresivas.  
-      Integración real.
-    </p>
-
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:30px;max-width:600px;margin:0 auto">
-      <div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:40px">48</div>
-        <div style="font-size:12px;color:#7a7168">Semanas</div>
-      </div>
-      <div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:40px">4</div>
-        <div style="font-size:12px;color:#7a7168">Puertas</div>
-      </div>
-      <div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:40px">12</div>
-        <div style="font-size:12px;color:#7a7168">Semanas por etapa</div>
-      </div>
-    </div>
-
-  </div>
-</div>
   <!-- LAS PUERTAS -->
   <div id="puertas" style="background:white;padding:80px 32px">
     <div class="section" style="padding:0">
       <div class="s-tag" style="">Estructura del Sistema TCT</div>
       <h2 class="s-title" style="">Las Cinco Puertas</h2>
-     <p style="text-align:center;font-size:13px;color:#a89e93;margin-top:10px">
-Puedes comenzar por cualquier Puerta.  
-La Integración requiere completar las tres anteriores.
-</p>
       <p class="s-sub" style="">Un recorrido progresivo de 48 semanas hacia la maestría del ser.</p>
       <div class="puertas-grid">
         <div class="puerta-card">
@@ -621,8 +589,15 @@ La Integración requiere completar las tres anteriores.
       <h2 style="font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,48px);font-weight:300;color:white;margin-bottom:12px">12 Pilares · Un Solo Ser</h2>
       <p style="font-size:14px;color:rgba(255,255,255,.45);max-width:600px;margin:0 auto 56px;line-height:1.75">Cada tradición y herramienta ilumina el mismo centro. No hay jerarquía — hay convergencia. Todas las sendas apuntan al mismo punto: tú.</p>
 
-      <div style="position:relative;width:min(800px,92vw);aspect-ratio:1;margin:0 auto">
-        <svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+      <!-- Hint de clic -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:16px;opacity:.6">
+        <span style="font-size:12px;color:#b89558;font-family:'DM Sans',sans-serif;letter-spacing:.08em">Haz clic para ver en pantalla completa</span>
+        <span style="font-size:14px">🔍</span>
+      </div>
+
+      <div id="mandala-wrap" onclick="openMandalaModal()" style="position:relative;width:min(1000px,92vw);aspect-ratio:1;margin:0 auto;cursor:zoom-in;transition:transform .2s" onmouseover="this.style.transform='scale(1.01)'" onmouseout="this.style.transform='scale(1)'">
+        <div style="position:absolute;top:12px;right:12px;z-index:2;width:36px;height:36px;background:rgba(184,149,88,.15);border:1px solid rgba(184,149,88,.4);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;pointer-events:none">⛶</div>
+        <svg id="mandala-svg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
           <defs>
             <radialGradient id="mbg" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stop-color="#b89558" stop-opacity=".12"/>
@@ -742,19 +717,31 @@ La Integración requiere completar las tres anteriores.
           <circle cx="400" cy="400" r="62" fill="#2e2820" stroke="rgba(184,149,88,.5)" stroke-width="2"/>
           <circle cx="400" cy="400" r="50" fill="rgba(184,149,88,.06)" stroke="rgba(184,149,88,.2)" stroke-width="1"/>
 
-          <!-- "El Ser" — encima de la estrella, fuera del radio de puntas (r_outer=38, centro en 400) -->
-          <text x="400" y="374" text-anchor="middle" font-size="13" fill="#d4a85a" font-family="Cormorant Garamond, serif" font-style="italic" font-weight="600">El Ser</text>
+          <!-- "El Ser" — encima de la estrella -->
+          <text x="400" y="376" text-anchor="middle" font-size="12" fill="#d4a85a" font-family="Cormorant Garamond, serif" font-style="italic" font-weight="600">El Ser</text>
 
-          <!-- Estrella 12 puntas alineada con las 12 líneas -->
+          <!-- Estrella 12 puntas pequeña y angulosa -->
           <polygon
-  points="400.0,372.0 403.6,386.5 414.0,375.8 409.9,390.1 424.2,386.0 413.5,396.4 428.0,400.0 413.5,403.6 424.2,414.0 409.9,409.9 414.0,424.2 403.6,413.5 400.0,428.0 396.4,413.5 386.0,424.2 390.1,409.9 375.8,414.0 386.5,403.6 372.0,400.0 386.5,396.4 375.8,386.0 390.1,390.1 386.0,375.8 396.4,386.5"
-  fill="#b89558" opacity=".95" filter="url(#mglow)"/>
-  transform="scale(0.9) translate(171, 171)"/>
+            points="400.0,381.0 402.6,390.3 409.5,383.5 407.1,392.9 416.5,390.5 409.7,397.4 419.0,400.0 409.7,402.6 416.5,409.5 407.1,407.1 409.5,416.5 402.6,409.7 400.0,419.0 397.4,409.7 390.5,416.5 392.9,407.1 383.5,409.5 390.3,402.6 381.0,400.0 390.3,397.4 383.5,390.5 392.9,392.9 390.5,383.5 397.4,390.3"
+            fill="#b89558" opacity=".95" filter="url(#mglow)"/>
 
           <!-- "Humano" — debajo de la estrella -->
-          <text x="400" y="432" text-anchor="middle" font-size="13" fill="#d4a85a" font-family="Cormorant Garamond, serif" font-style="italic" font-weight="600">Humano</text>
+          <text x="400" y="426" text-anchor="middle" font-size="12" fill="#d4a85a" font-family="Cormorant Garamond, serif" font-style="italic" font-weight="600">Humano</text>
         </svg>
-      </div>
+      </div><!-- /mandala-wrap -->
+    </div>
+  </div>
+
+  <!-- MODAL MANDALA FULLSCREEN -->
+  <div id="mandala-modal" onclick="closeMandalaModal()" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(20,16,12,.96);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:24px">
+    <div onclick="event.stopPropagation()" style="position:relative;width:min(90vw,90vh);aspect-ratio:1;max-width:960px">
+      <!-- Botón cerrar -->
+      <button onclick="closeMandalaModal()" style="position:absolute;top:-48px;right:0;background:rgba(184,149,88,.15);border:1px solid rgba(184,149,88,.4);color:#b89558;width:36px;height:36px;border-radius:8px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:sans-serif;line-height:1">✕</button>
+      <!-- Hint -->
+      <div style="position:absolute;top:-48px;left:0;font-size:12px;color:rgba(184,149,88,.5);font-family:'DM Sans',sans-serif">Clic fuera para cerrar · Pellizca para hacer zoom</div>
+      <svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%">
+        <!-- copia del SVG se inyecta por JS -->
+      </svg>
     </div>
   </div>
 
@@ -925,28 +912,7 @@ La Integración requiere completar las tres anteriores.
     <div class="main-content">
 
       <!-- DASHBOARD VIEW -->
-     <div id="view-dashboard">
-
-    <!-- CABECERA MÉTODO TCT -->
-    <div style="margin-bottom:32px;">
-        <div style="font-size:11px;
-                    font-weight:700;
-                    color:#7a7168;
-                    text-transform:uppercase;
-                    letter-spacing:.12em;
-                    margin-bottom:8px;">
-            Método TCT
-        </div>
-
-        <div style="font-family:'Cormorant Garamond',serif;
-                    font-size:28px;
-                    font-weight:300;
-                    color:#1c1814;">
-            Presencia aplicada a la vida real
-        </div>
-    </div>
-
-    <h1 style="...">Bienvenido...</h1>
+      <div id="view-dashboard">
         <h1 style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;margin-bottom:8px">Bienvenido, <span id="dash-name">Alumno</span> ✦</h1>
         <p style="color:#7a7168;font-size:14px;margin-bottom:28px">Sistema TCT — Tu camino de transformación</p>
         <div class="dashboard-grid">
@@ -2844,6 +2810,15 @@ button:not(.efb):not([style*="font-size: 1"]):not([style*="font-size:1"]) { font
   /* Viaje section sticky col */
   div[style*="1fr 1fr"][style*="align-items:start"],
   div[style*="1fr 1fr"][style*="align-items: start"]{grid-template-columns:1fr !important;gap:32px !important}
+  /* Pilares grid — 1 columna en tablet/mobile */
+  #pilares{padding:56px 16px}
+  #pilares div[style*="grid-template-columns:repeat(3,1fr)"]{grid-template-columns:1fr !important}
+  /* Padding reducido en todas las secciones con 32px fijo */
+  #puertas,#viaje,#tradiciones,#joyas,#testimonios,#pilares-mandala,#pilares{padding-left:16px !important;padding-right:16px !important}
+  /* Evitar que botones de nav desborden */
+  .nav-btns{gap:6px}
+  /* Joyas grid 1 col */
+  #joyas div[style*="grid-template-columns:repeat(auto-fit"]{grid-template-columns:1fr !important}
 }
 
 @media(max-width:480px){
@@ -2852,6 +2827,8 @@ button:not(.efb):not([style*="font-size: 1"]):not([style*="font-size:1"]) { font
   .tradiciones-grid{grid-template-columns:1fr !important}
   .dashboard-grid{grid-template-columns:1fr}
   div[style*="grid-template-columns:repeat(3,1fr)"]{grid-template-columns:1fr !important}
+  #pilares div[style*="grid-template-columns:repeat(3,1fr)"]{grid-template-columns:1fr !important}
+  #pilares{padding:40px 12px}
   div[style*="grid-template-columns:repeat(2,1fr)"]{grid-template-columns:1fr !important}
   /* Pricing cards */
   div[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:1fr !important;gap:16px !important}
@@ -3775,7 +3752,7 @@ function edSave(){
   </div>
 
   <!-- Panel secundario (nivel 2) -->
-  <div id="wixPanel2" style="display:none;width:260px;height:100%;background:#252118;box-shadow:2px 0 16px rgba(0,0,0,.35);overflow-y:auto;flex-direction:column;flex-shrink:0">
+  <div id="wixPanel2" style="display:none;width:300px;height:100%;background:#252118;box-shadow:2px 0 16px rgba(0,0,0,.35);overflow-y:auto;flex-direction:column;flex-shrink:0">
     <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px;border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0;background:#252118;z-index:2">
       <div id="wixP2Title" style="font-size:13px;font-weight:700;color:white"></div>
       <button onclick="wixPanelClose()" style="background:none;border:none;color:rgba(255,255,255,.3);font-size:16px;cursor:pointer;padding:2px 6px">✕</button>
@@ -3788,19 +3765,39 @@ function edSave(){
 .wsb-icon{width:40px;height:40px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:rgba(255,255,255,.65);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
 .wsb-icon:hover,.wsb-icon.active{background:#2b7d7a;border-color:#2b7d7a;color:white}
 .wsb-icon.active{box-shadow:0 0 0 2px rgba(43,125,122,.4)}
-.wp2-btn{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:9px;padding:10px 12px;color:rgba(255,255,255,.8);font-size:13px;cursor:pointer;width:100%;text-align:left;transition:all .15s;font-family:'DM Sans',sans-serif}
-.wp2-btn:hover{background:rgba(43,125,122,.15);border-color:rgba(43,125,122,.4);color:white}
-.wp2-btn .wp2-ico{font-size:16px;width:22px;text-align:center;flex-shrink:0}
+.wp2-btn{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:11px 13px;color:rgba(255,255,255,.85);font-size:13px;cursor:pointer;width:100%;text-align:left;transition:all .15s;font-family:'DM Sans',sans-serif;box-sizing:border-box}
+.wp2-btn:hover{background:rgba(43,125,122,.18);border-color:rgba(43,125,122,.5);color:white;transform:translateX(1px)}
+.wp2-btn:active{transform:scale(.98)}
+.wp2-btn .wp2-ico{font-size:17px;width:24px;text-align:center;flex-shrink:0}
 .wp2-btn .wp2-lbl{display:flex;flex-direction:column}
-.wp2-btn .wp2-lbl span{font-size:10px;color:rgba(255,255,255,.35);font-weight:400;margin-top:1px}
-.wp2-divider{height:1px;background:rgba(255,255,255,.07);margin:8px 0}
-.wp2-sec-title{font-size:9px;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.1em;padding:8px 2px 5px}
-.wp2-color-row{display:flex;align-items:center;gap:8px;padding:8px 10px;background:rgba(255,255,255,.04);border-radius:8px;border:1px solid rgba(255,255,255,.07)}
+.wp2-btn .wp2-lbl b{font-size:13px;font-weight:600}
+.wp2-btn .wp2-lbl span{font-size:10px;color:rgba(255,255,255,.35);font-weight:400;margin-top:2px;line-height:1.4}
+.wp2-btn-danger{border-color:rgba(240,80,80,.3)!important;color:#f08080!important}
+.wp2-btn-danger:hover{background:rgba(240,80,80,.12)!important;border-color:rgba(240,80,80,.5)!important}
+.wp2-btn-gold{border-color:rgba(184,149,88,.35)!important;color:#c9aa6a!important}
+.wp2-btn-gold:hover{background:rgba(184,149,88,.12)!important}
+.wp2-btn-teal{border-color:rgba(43,125,122,.4)!important;color:#3ec9c5!important}
+.wp2-btn-teal:hover{background:rgba(43,125,122,.15)!important}
+.wp2-divider{height:1px;background:rgba(255,255,255,.07);margin:10px 0}
+.wp2-sec-title{font-size:9px;font-weight:700;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.12em;padding:10px 2px 6px;display:flex;align-items:center;gap:6px}
+.wp2-sec-title::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.06)}
+.wp2-group{background:rgba(0,0,0,.2);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:12px;margin-bottom:8px}
+.wp2-color-row{display:flex;align-items:center;gap:8px;padding:9px 11px;background:rgba(255,255,255,.05);border-radius:9px;border:1px solid rgba(255,255,255,.08)}
 .wp2-color-row label{font-size:11px;color:rgba(255,255,255,.5);flex:1}
-.wp2-color-row input[type=color]{width:28px;height:28px;border:none;border-radius:5px;cursor:pointer;padding:0}
-.wp2-select{width:100%;background:#1c1814;color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.12);padding:8px 10px;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.wp2-color-row input[type=color]{width:32px;height:32px;border:none;border-radius:6px;cursor:pointer;padding:0}
+.wp2-select{width:100%;background:#1c1814;color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.12);padding:9px 11px;border-radius:9px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif}
 .wp2-select:focus{outline:none;border-color:#2b7d7a}
-.wp2-info{background:rgba(184,149,88,.08);border:1px solid rgba(184,149,88,.2);border-radius:8px;padding:8px 12px;font-size:11px;color:rgba(184,149,88,.8);line-height:1.5}
+.wp2-info{background:rgba(184,149,88,.08);border:1px solid rgba(184,149,88,.2);border-radius:10px;padding:10px 13px;font-size:11px;color:rgba(184,149,88,.85);line-height:1.6}
+.wp2-step-row{display:flex;align-items:center;gap:8px}
+.wp2-step-btn{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:white;width:30px;height:30px;border-radius:7px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s}
+.wp2-step-btn:hover{background:rgba(43,125,122,.3)}
+.wp2-step-inp{flex:1;background:#1c1814;color:white;border:1px solid rgba(255,255,255,.18);padding:6px 8px;border-radius:8px;font-size:13px;outline:none;text-align:center;min-width:0}
+.wp2-step-inp:focus{border-color:#2b7d7a}
+.wp2-slider{width:100%;accent-color:#2b7d7a;cursor:pointer;margin:6px 0}
+.wp2-shortcut-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.wp2-shortcut-btn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);color:rgba(255,255,255,.75);padding:6px 4px;border-radius:7px;font-size:11px;cursor:pointer;text-align:center;transition:all .15s;font-family:'DM Sans',sans-serif;font-weight:600}
+.wp2-shortcut-btn:hover{background:rgba(43,125,122,.2);color:white;border-color:rgba(43,125,122,.4)}
+.wp2-tag{display:inline-block;background:rgba(43,125,122,.18);color:#3ec9c5;border-radius:4px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:4px}
 #wixPanel2,#wixIconBar{font-size:revert!important}
 #wixPanel2 *,#wixIconBar *{font-size:revert!important}
 </style>
@@ -4047,6 +4044,74 @@ function wix_applyDim() {
   wixToast('✅ Dimensiones aplicadas');
 }
 
+// Lee las dimensiones actuales del elemento y las carga en los inputs
+function wix_readDims() {
+  if (!wixNeedSel()) return;
+  var el = window._edSel;
+  var cs = window.getComputedStyle(el);
+  var w = el.style.width || Math.round(parseFloat(cs.width)) + 'px';
+  var h = el.style.height || Math.round(parseFloat(cs.height)) + 'px';
+  var wi = document.getElementById('wp2WidthInp');
+  var hi = document.getElementById('wp2HeightInp');
+  var ws = document.getElementById('wp2WidthSlider');
+  var hs = document.getElementById('wp2HeightSlider');
+  if (wi) wi.value = w;
+  if (hi) hi.value = h;
+  if (ws) ws.value = parseInt(w) || 0;
+  if (hs) hs.value = parseInt(h) || 0;
+  wixToast('🔍 Ancho: ' + w + ' · Alto: ' + h);
+}
+
+// Aplica un valor directamente y actualiza el slider
+function wix_applyDimLive(axis, val) {
+  if (!wixNeedSel()) return;
+  var el = window._edSel;
+  if (axis === 'w') {
+    el.style.width = val;
+    var wi = document.getElementById('wp2WidthInp');
+    var ws = document.getElementById('wp2WidthSlider');
+    if (wi) wi.value = val;
+    if (ws) ws.value = parseInt(val) || 0;
+  } else {
+    el.style.height = val;
+    var hi = document.getElementById('wp2HeightInp');
+    var hs = document.getElementById('wp2HeightSlider');
+    if (hi) hi.value = val;
+    if (hs) hs.value = parseInt(val) || 0;
+  }
+  try { edSnapshot(); } catch(e) {}
+  wixToast('📐 ' + (axis==='w'?'Ancho':'Alto') + ': ' + val);
+}
+
+// Mueve el slider y actualiza el elemento en tiempo real
+function wix_dimSlide(axis, px) {
+  if (!window._edSel) return;
+  var val = px + 'px';
+  var el = window._edSel;
+  if (axis === 'w') {
+    el.style.width = val;
+    var wi = document.getElementById('wp2WidthInp');
+    if (wi) wi.value = val;
+  } else {
+    el.style.height = val;
+    var hi = document.getElementById('wp2HeightInp');
+    if (hi) hi.value = val;
+  }
+}
+
+// Incrementa/decrementa en pasos
+function wix_dimStep(axis, step) {
+  if (!wixNeedSel()) return;
+  var el = window._edSel;
+  var cs = window.getComputedStyle(el);
+  var current = axis === 'w'
+    ? (el.style.width ? parseInt(el.style.width) : Math.round(parseFloat(cs.width)))
+    : (el.style.height ? parseInt(el.style.height) : Math.round(parseFloat(cs.height)));
+  if (isNaN(current)) current = 0;
+  var newVal = Math.max(0, current + step) + 'px';
+  wix_applyDimLive(axis, newVal);
+}
+
 function wix_applyPad(v) {
   if (!wixNeedSel()) return;
   window._edSel.style.padding = v;
@@ -4155,187 +4220,269 @@ function wix_navOpen() {
 
 function wixPanelTexto() {
   var szBtns = ['12','14','16','18','20','24','28','32','40','48','56','64'].map(function(s) {
-    return '<button class="wp2-btn" style="padding:5px 6px;font-size:12px;justify-content:center;flex:1;min-width:36px" onclick="wix_applyFontSize(\''+s+'px\')">' + s + '</button>';
+    return '<button class="wp2-shortcut-btn" onclick="wix_applyFontSize(\''+s+'px\')">' + s + '</button>';
   }).join('');
   var colSwatches = ['#1c1814','#ffffff','#b89558','#2b7d7a','#bf4637','#2c5f9e','#7a7168','#f0ece4'].map(function(c) {
-    return '<button onclick="wix_applyColor(\''+c+'\')" style="width:30px;height:30px;border-radius:7px;background:'+c+';border:2px solid rgba(255,255,255,.2);cursor:pointer;flex-shrink:0" title="'+c+'"></button>';
+    return '<button onclick="wix_applyColor(\''+c+'\')" style="width:32px;height:32px;border-radius:8px;background:'+c+';border:2px solid rgba(255,255,255,.15);cursor:pointer;flex-shrink:0;transition:transform .1s" onmouseover="this.style.transform=\'scale(1.15)\'" onmouseout="this.style.transform=\'\'" title="'+c+'"></button>';
   }).join('');
 
   return [
-    /* === INFO === */
-    '<div class="wp2-info">',
-    '<b>Flujo correcto:</b><br>',
-    '1. Clic en ✍️ Editar texto → escribe en la web<br>',
-    '2. Clic en 🎯 Seleccionar → clic en un bloque para seleccionarlo',
-    '</div>',
+    '<div class="wp2-info">1. Pulsa <b>✍️ Escribir</b> para editar texto directamente en la página.<br>2. Pulsa <b>🎯 Seleccionar</b> para seleccionar un bloque entero.</div>',
     '<div class="wp2-divider"></div>',
 
-    /* === MODOS === */
-    '<div class="wp2-sec-title">Modos de edición</div>',
+    '<div class="wp2-sec-title">Modos</div>',
     '<button class="wp2-btn" id="wp2BtnEditText" onclick="wix_toggleText()">',
-    '<span class="wp2-ico">✍️</span><span class="wp2-lbl"><b>Editar texto</b><span>Activa/desactiva escritura inline</span></span>',
+    '<span class="wp2-ico">✍️</span><span class="wp2-lbl"><b>Escribir en la página</b><span>Clic aquí, luego clic sobre el texto</span></span>',
     '</button>',
-    '<button class="wp2-btn" id="wp2BtnSelMode" onclick="wix_toggleSel()">',
-    '<span class="wp2-ico">🎯</span><span class="wp2-lbl"><b>Seleccionar elemento</b><span>Luego haz clic en cualquier bloque</span></span>',
+    '<button class="wp2-btn" id="wp2BtnSelMode" onclick="wix_toggleSel()" style="margin-top:5px">',
+    '<span class="wp2-ico">🎯</span><span class="wp2-lbl"><b>Seleccionar bloque</b><span>Para cambiar fuente, tamaño o color de todo el bloque</span></span>',
     '</button>',
     '<div class="wp2-divider"></div>',
 
-    /* === FORMATO INLINE === */
-    '<div class="wp2-sec-title">Formato de texto — requiere ✍️ + texto seleccionado</div>',
-    '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px">',
-    '<button class="wp2-btn" style="justify-content:center;padding:10px 4px" onclick="wix_fmt(\'bold\')"><b>B</b></button>',
-    '<button class="wp2-btn" style="justify-content:center;padding:10px 4px" onclick="wix_fmt(\'italic\')"><i style="font-style:italic">I</i></button>',
-    '<button class="wp2-btn" style="justify-content:center;padding:10px 4px;text-decoration:underline" onclick="wix_fmt(\'underline\')">U</button>',
-    '<button class="wp2-btn" style="justify-content:center;padding:10px 4px;text-decoration:line-through" onclick="wix_fmt(\'strikeThrough\')">S</button>',
+    '<div class="wp2-sec-title">Formato rápido <span class="wp2-tag">requiere ✍️ + texto seleccionado</span></div>',
+    '<div class="wp2-group">',
+    '  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px">',
+    '    <button class="wp2-shortcut-btn" style="font-weight:700;font-size:14px" onclick="wix_fmt(\'bold\')"><b>B</b></button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_fmt(\'italic\')"><i style="font-style:italic">I</i></button>',
+    '    <button class="wp2-shortcut-btn" style="text-decoration:underline" onclick="wix_fmt(\'underline\')">U</button>',
+    '    <button class="wp2-shortcut-btn" style="text-decoration:line-through" onclick="wix_fmt(\'strikeThrough\')">S</button>',
+    '  </div>',
+    '  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">',
+    '    <button class="wp2-shortcut-btn" onclick="wix_fmt(\'justifyLeft\')">⬛▬▬</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_fmt(\'justifyCenter\')">▬⬛▬</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_fmt(\'justifyRight\')">▬▬⬛</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_fmt(\'justifyFull\')">▬▬▬</button>',
+    '  </div>',
+    '  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px">',
+    '    <button class="wp2-shortcut-btn" onclick="wix_fmt(\'insertUnorderedList\')">• Lista puntos</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_fmt(\'insertOrderedList\')">1. Lista números</button>',
+    '  </div>',
     '</div>',
 
-    /* === ALINEACIÓN 4 opciones === */
-    '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:5px">',
-    '<button class="wp2-btn" style="justify-content:center;font-size:11px;padding:8px 3px" onclick="wix_fmt(\'justifyLeft\')">⬛ Izq.</button>',
-    '<button class="wp2-btn" style="justify-content:center;font-size:11px;padding:8px 3px" onclick="wix_fmt(\'justifyCenter\')">Cent.</button>',
-    '<button class="wp2-btn" style="justify-content:center;font-size:11px;padding:8px 3px" onclick="wix_fmt(\'justifyRight\')">Der. ⬛</button>',
-    '<button class="wp2-btn" style="justify-content:center;font-size:11px;padding:8px 3px" onclick="wix_fmt(\'justifyFull\')">Justif.</button>',
+    '<div class="wp2-sec-title">Encabezados <span class="wp2-tag">cursor dentro del texto</span></div>',
+    '<div class="wp2-group">',
+    '  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px">',
+    '    <button class="wp2-shortcut-btn" style="font-weight:800;font-size:15px" onclick="wix_fmtBlock(\'h1\')">H1 Título</button>',
+    '    <button class="wp2-shortcut-btn" style="font-weight:700;font-size:13px" onclick="wix_fmtBlock(\'h2\')">H2 Sección</button>',
+    '    <button class="wp2-shortcut-btn" style="font-weight:600;font-size:12px" onclick="wix_fmtBlock(\'h3\')">H3 Subtít.</button>',
+    '    <button class="wp2-shortcut-btn" style="font-size:11px" onclick="wix_fmtBlock(\'h4\')">H4</button>',
+    '    <button class="wp2-shortcut-btn" style="font-size:11px" onclick="wix_fmtBlock(\'h5\')">H5</button>',
+    '    <button class="wp2-shortcut-btn" style="font-size:11px" onclick="wix_fmtBlock(\'p\')">¶ Normal</button>',
+    '  </div>',
     '</div>',
 
-    /* === LISTAS === */
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:5px">',
-    '<button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'insertUnorderedList\')">• Lista</button>',
-    '<button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'insertOrderedList\')">1. Numerada</button>',
-    '</div>',
-    '<div class="wp2-divider"></div>',
-
-    /* === ENCABEZADOS === */
-    '<div class="wp2-sec-title">Encabezados — requiere ✍️, cursor dentro del párrafo</div>',
-    '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:5px">',
-    '<button class="wp2-btn" style="justify-content:center;font-weight:700;font-size:14px" onclick="wix_fmtBlock(\'h1\')">H1</button>',
-    '<button class="wp2-btn" style="justify-content:center;font-weight:700;font-size:13px" onclick="wix_fmtBlock(\'h2\')">H2</button>',
-    '<button class="wp2-btn" style="justify-content:center;font-weight:700;font-size:12px" onclick="wix_fmtBlock(\'h3\')">H3</button>',
-    '<button class="wp2-btn" style="justify-content:center;font-size:11px" onclick="wix_fmtBlock(\'h4\')">H4</button>',
-    '<button class="wp2-btn" style="justify-content:center;font-size:11px" onclick="wix_fmtBlock(\'h5\')">H5</button>',
-    '<button class="wp2-btn" style="justify-content:center;font-size:11px" onclick="wix_fmtBlock(\'p\')">¶ P</button>',
-    '</div>',
-    '<div class="wp2-divider"></div>',
-
-    /* === FUENTE BLOQUE === */
-    '<div class="wp2-sec-title">Fuente del bloque — requiere 🎯 seleccionado</div>',
-    '<select class="wp2-select" onchange="wix_applyFont(this)" style="margin-bottom:6px">',
-    '<option value="">Selecciona fuente…</option>',
-    '<option value="\'DM Sans\',sans-serif">DM Sans</option>',
-    '<option value="\'Cormorant Garamond\',serif">Cormorant Garamond</option>',
-    '<option value="Georgia,serif">Georgia</option>',
-    '<option value="Arial,sans-serif">Arial</option>',
+    '<div class="wp2-sec-title">Fuente <span class="wp2-tag">🎯 bloque seleccionado</span></div>',
+    '<select class="wp2-select" onchange="wix_applyFont(this)" style="margin-bottom:4px">',
+    '<option value="">— Selecciona una fuente —</option>',
+    '<option value="\'DM Sans\',sans-serif">DM Sans (moderna, limpia)</option>',
+    '<option value="\'Cormorant Garamond\',serif">Cormorant Garamond (elegante)</option>',
+    '<option value="Georgia,serif">Georgia (clásica)</option>',
+    '<option value="Arial,sans-serif">Arial (neutra)</option>',
     '<option value="\'Helvetica Neue\',sans-serif">Helvetica Neue</option>',
     '<option value="\'Times New Roman\',serif">Times New Roman</option>',
-    '<option value="\'Courier New\',monospace">Courier New</option>',
+    '<option value="\'Courier New\',monospace">Courier New (código)</option>',
     '</select>',
     '<div class="wp2-divider"></div>',
 
-    /* === TAMAÑO === */
-    '<div class="wp2-sec-title">Tamaño de texto — bloque (🎯) o inline (✍️ + selección)</div>',
-    '<div style="display:flex;gap:6px;margin-bottom:8px;align-items:center">',
-    '<input type="number" id="wp2FontSzInp" min="8" max="200" placeholder="ej: 18" style="flex:1;background:#1c1814;color:white;border:1px solid rgba(255,255,255,.2);padding:8px 10px;border-radius:8px;font-size:13px;outline:none">',
-    '<button class="wp2-btn" style="padding:8px 14px;justify-content:center;flex-shrink:0" onclick="wix_applyFontSizeInput()">✓ Aplicar</button>',
+    '<div class="wp2-sec-title">Tamaño de texto</div>',
+    '<div class="wp2-group">',
+    '  <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">',
+    '    <input type="number" id="wp2FontSzInp" min="8" max="200" placeholder="px" style="flex:1;background:#1c1814;color:white;border:1px solid rgba(255,255,255,.2);padding:8px 10px;border-radius:8px;font-size:14px;outline:none;min-width:0">',
+    '    <button class="wp2-btn" style="padding:9px 14px;justify-content:center;flex-shrink:0;width:auto" onclick="wix_applyFontSizeInput()">✓ Aplicar</button>',
+    '  </div>',
+    '  <div class="wp2-shortcut-grid">' + szBtns + '</div>',
     '</div>',
-    '<div style="display:flex;flex-wrap:wrap;gap:4px">' + szBtns + '</div>',
-    '<div class="wp2-divider"></div>',
 
-    /* === COLOR === */
     '<div class="wp2-sec-title">Color de texto</div>',
-    '<div class="wp2-color-row" style="margin-bottom:8px"><label>Elige color</label><input type="color" value="#1c1814" onchange="wix_applyColor(this.value)"></div>',
-    '<div style="display:flex;flex-wrap:wrap;gap:5px">' + colSwatches + '</div>',
-    '<div class="wp2-divider"></div>',
-
-    /* === EXTRAS === */
-    '<button class="wp2-btn" onclick="wix_addLink()">',
-    '<span class="wp2-ico">🔗</span><span class="wp2-lbl"><b>Añadir enlace</b><span>Selecciona texto o elemento primero</span></span>',
-    '</button>',
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:5px">',
-    '<button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'superscript\')">X² Super</button>',
-    '<button class="wp2-btn" style="justify-content:center;font-size:12px" onclick="wix_fmt(\'subscript\')">X₂ Sub</button>',
+    '<div class="wp2-group">',
+    '  <div class="wp2-color-row" style="margin-bottom:8px"><label>Elige cualquier color</label><input type="color" value="#1c1814" onchange="wix_applyColor(this.value)"></div>',
+    '  <div style="display:flex;flex-wrap:wrap;gap:6px">' + colSwatches + '</div>',
     '</div>',
+
+    '<div class="wp2-sec-title">Extras</div>',
+    '<button class="wp2-btn wp2-btn-teal" onclick="wix_addLink()">',
+    '<span class="wp2-ico">🔗</span><span class="wp2-lbl"><b>Crear enlace</b><span>Selecciona el texto primero</span></span>',
+    '</button>',
   ].join('\n');
 }
 
+
+
 function wixPanelElementos() {
   return [
-    '<div class="wp2-info">Activa 🎯 para seleccionar un elemento antes de usar las acciones de abajo.</div>',
+    '<div class="wp2-info">Inserta nuevos bloques en la página, o selecciona uno con 🎯 para moverlo, duplicarlo o borrarlo.</div>',
     '<div class="wp2-divider"></div>',
-    '<div class="wp2-sec-title">Insertar bloque en la página</div>',
-    '<button class="wp2-btn" onclick="edInsert(\'texto\')"><span class="wp2-ico">📝</span><span class="wp2-lbl"><b>Texto</b><span>Párrafo editable</span></span></button>',
-    '<button class="wp2-btn" onclick="edInsert(\'tarjeta\')"><span class="wp2-ico">🃏</span><span class="wp2-lbl"><b>Tarjeta</b><span>Bloque con fondo y sombra</span></span></button>',
-    '<button class="wp2-btn" onclick="edInsert(\'banner-ancho\')"><span class="wp2-ico">🔲</span><span class="wp2-lbl"><b>Banner ancho</b><span>Sección a todo el ancho</span></span></button>',
-    '<button class="wp2-btn" onclick="edInsert(\'banner-pequeño\')"><span class="wp2-ico">▭</span><span class="wp2-lbl"><b>Banner pequeño</b><span>Sección compacta centrada</span></span></button>',
-    '<button class="wp2-btn" onclick="edInsert(\'imagen-banner\')"><span class="wp2-ico">🖼</span><span class="wp2-lbl"><b>Imagen banner</b><span>Imagen a todo el ancho</span></span></button>',
-    '<button class="wp2-btn" onclick="edInsert(\'imagen-pequeña\')"><span class="wp2-ico">🖼</span><span class="wp2-lbl"><b>Imagen + texto</b><span>Imagen con descripción</span></span></button>',
-    '<button class="wp2-btn" onclick="edInsert(\'boton\')"><span class="wp2-ico">🔘</span><span class="wp2-lbl"><b>Botón</b><span>Llamada a la acción</span></span></button>',
-    '<button class="wp2-btn" onclick="edInsert(\'separador\')"><span class="wp2-ico">—</span><span class="wp2-lbl"><b>Separador</b><span>Línea divisoria</span></span></button>',
-    '<div class="wp2-divider"></div>',
-    '<div class="wp2-sec-title">Elemento seleccionado (activa 🎯 primero)</div>',
-    '<button class="wp2-btn" onclick="wix_duplicate()"><span class="wp2-ico">📋</span><span class="wp2-lbl"><b>Duplicar</b></span></button>',
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">',
-    '  <button class="wp2-btn" style="justify-content:center" onclick="wix_moveUp()">⬆ Subir</button>',
-    '  <button class="wp2-btn" style="justify-content:center" onclick="wix_moveDown()">⬇ Bajar</button>',
+
+    '<div class="wp2-sec-title">➕ Insertar nuevo bloque</div>',
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:4px">',
+    '  <button class="wp2-btn" style="flex-direction:column;align-items:center;padding:14px 8px;gap:6px;text-align:center" onclick="edInsert(\'texto\')">',
+    '    <span style="font-size:22px">📝</span><span style="font-size:12px;font-weight:600">Texto</span>',
+    '    <span style="font-size:10px;color:rgba(255,255,255,.35)">Párrafo editable</span>',
+    '  </button>',
+    '  <button class="wp2-btn" style="flex-direction:column;align-items:center;padding:14px 8px;gap:6px;text-align:center" onclick="edInsert(\'tarjeta\')">',
+    '    <span style="font-size:22px">🃏</span><span style="font-size:12px;font-weight:600">Tarjeta</span>',
+    '    <span style="font-size:10px;color:rgba(255,255,255,.35)">Bloque con fondo</span>',
+    '  </button>',
+    '  <button class="wp2-btn" style="flex-direction:column;align-items:center;padding:14px 8px;gap:6px;text-align:center" onclick="edInsert(\'banner-ancho\')">',
+    '    <span style="font-size:22px">🔲</span><span style="font-size:12px;font-weight:600">Banner ancho</span>',
+    '    <span style="font-size:10px;color:rgba(255,255,255,.35)">Sección completa</span>',
+    '  </button>',
+    '  <button class="wp2-btn" style="flex-direction:column;align-items:center;padding:14px 8px;gap:6px;text-align:center" onclick="edInsert(\'banner-pequeño\')">',
+    '    <span style="font-size:22px">▭</span><span style="font-size:12px;font-weight:600">Banner pequeño</span>',
+    '    <span style="font-size:10px;color:rgba(255,255,255,.35)">Sección compacta</span>',
+    '  </button>',
+    '  <button class="wp2-btn" style="flex-direction:column;align-items:center;padding:14px 8px;gap:6px;text-align:center" onclick="edInsert(\'imagen-banner\')">',
+    '    <span style="font-size:22px">🖼</span><span style="font-size:12px;font-weight:600">Imagen banner</span>',
+    '    <span style="font-size:10px;color:rgba(255,255,255,.35)">Imagen a todo el ancho</span>',
+    '  </button>',
+    '  <button class="wp2-btn" style="flex-direction:column;align-items:center;padding:14px 8px;gap:6px;text-align:center" onclick="edInsert(\'imagen-pequeña\')">',
+    '    <span style="font-size:22px">🖼</span><span style="font-size:12px;font-weight:600">Imagen + texto</span>',
+    '    <span style="font-size:10px;color:rgba(255,255,255,.35)">Con descripción</span>',
+    '  </button>',
+    '  <button class="wp2-btn" style="flex-direction:column;align-items:center;padding:14px 8px;gap:6px;text-align:center" onclick="edInsert(\'boton\')">',
+    '    <span style="font-size:22px">🔘</span><span style="font-size:12px;font-weight:600">Botón</span>',
+    '    <span style="font-size:10px;color:rgba(255,255,255,.35)">Llamada a acción</span>',
+    '  </button>',
+    '  <button class="wp2-btn" style="flex-direction:column;align-items:center;padding:14px 8px;gap:6px;text-align:center" onclick="edInsert(\'separador\')">',
+    '    <span style="font-size:22px">—</span><span style="font-size:12px;font-weight:600">Separador</span>',
+    '    <span style="font-size:10px;color:rgba(255,255,255,.35)">Línea divisoria</span>',
+    '  </button>',
     '</div>',
-    '<button class="wp2-btn" onclick="wix_openProps()" style="border-color:rgba(61,158,155,.35);color:#3d9e9b;margin-top:5px"><span class="wp2-ico">⚙</span><span class="wp2-lbl"><b>Propiedades CSS</b><span>Padding, sombra, borde, opacidad…</span></span></button>',
-    '<button class="wp2-btn" onclick="wix_deleteEl()" style="border-color:rgba(191,70,55,.3);color:#f08080;margin-top:5px"><span class="wp2-ico">🗑</span><span class="wp2-lbl"><b>Eliminar elemento</b></span></button>',
+    '<div class="wp2-divider"></div>',
+
+    '<div class="wp2-sec-title">🎯 Elemento seleccionado</div>',
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px">',
+    '  <button class="wp2-btn" style="justify-content:center;padding:10px" onclick="wix_moveUp()"><span style="font-size:16px">⬆</span> Subir</button>',
+    '  <button class="wp2-btn" style="justify-content:center;padding:10px" onclick="wix_moveDown()"><span style="font-size:16px">⬇</span> Bajar</button>',
+    '</div>',
+    '<button class="wp2-btn" onclick="wix_duplicate()" style="margin-bottom:5px">',
+    '<span class="wp2-ico">📋</span><span class="wp2-lbl"><b>Duplicar</b><span>Crea una copia justo debajo</span></span>',
+    '</button>',
+    '<button class="wp2-btn wp2-btn-teal" onclick="wix_openProps()" style="margin-bottom:5px">',
+    '<span class="wp2-ico">⚙</span><span class="wp2-lbl"><b>Propiedades CSS</b><span>Sombra, borde, opacidad y más</span></span>',
+    '</button>',
+    '<button class="wp2-btn wp2-btn-danger" onclick="wix_deleteEl()">',
+    '<span class="wp2-ico">🗑</span><span class="wp2-lbl"><b>Eliminar este bloque</b></span>',
+    '</button>',
   ].join('\n');
 }
 
 function wixPanelImagenes() {
   return [
-    '<div class="wp2-info">Selecciona un elemento con imagen (🎯) o inserta una nueva con el gestor.</div>',
+    '<div class="wp2-info">Selecciona una imagen con 🎯, luego usa las opciones de abajo para cambiarla.</div>',
     '<div class="wp2-divider"></div>',
-    '<button class="wp2-btn" onclick="wix_changeImage()"><span class="wp2-ico">🖼</span><span class="wp2-lbl"><b>Abrir gestor de imagen</b><span>URL, tamaño, posición, ajuste</span></span></button>',
-    '<div class="wp2-divider"></div>',
-    '<div class="wp2-sec-title">URL directa de imagen</div>',
-    '<input id="wp2ImgUrl" type="text" placeholder="https://images.unsplash.com/…" style="width:100%;box-sizing:border-box;background:#1c1814;color:white;border:1px solid rgba(255,255,255,.18);padding:9px 11px;border-radius:8px;font-size:12px;outline:none;margin-bottom:8px">',
-    '<button class="wp2-btn" style="justify-content:center" onclick="wix_insertImgUrl()">→ Previsualizar e insertar</button>',
-    '<div class="wp2-info" style="margin-top:8px;font-size:11px">Unsplash: https://images.unsplash.com/photo-ID?w=1200&amp;q=80</div>',
+
+    '<div class="wp2-sec-title">🖼 Cambiar imagen</div>',
+    '<button class="wp2-btn" onclick="wix_changeImage()" style="margin-bottom:8px">',
+    '<span class="wp2-ico">🖼</span><span class="wp2-lbl"><b>Abrir gestor de imagen</b><span>Cambia URL, tamaño, posición y ajuste</span></span>',
+    '</button>',
+
+    '<div class="wp2-sec-title">URL directa</div>',
+    '<div class="wp2-group">',
+    '  <input id="wp2ImgUrl" type="text" placeholder="Pega aquí la URL de la imagen…" style="width:100%;box-sizing:border-box;background:#1c1814;color:white;border:1px solid rgba(255,255,255,.18);padding:9px 11px;border-radius:8px;font-size:12px;outline:none;margin-bottom:8px">',
+    '  <button class="wp2-btn" style="justify-content:center" onclick="wix_insertImgUrl()">→ Previsualizar e insertar</button>',
+    '  <div style="margin-top:8px;padding:8px;background:rgba(255,255,255,.03);border-radius:7px;font-size:10px;color:rgba(255,255,255,.3);line-height:1.6">',
+    '    💡 <b style="color:rgba(255,255,255,.5)">Unsplash gratuito:</b><br>https://images.unsplash.com/photo-ID?w=1200&amp;q=80',
+    '  </div>',
+    '</div>',
   ].join('\n');
 }
 
 function wixPanelDiseno() {
-  var bgSwatches = ['#ffffff','#f7f5f1','#f0ece4','#1c1814','#252118','#2b7d7a','#b89558','#bf4637','#2c5f9e','transparent'].map(function(c) {
-    var bg = c === 'transparent' ? 'repeating-conic-gradient(#ccc 0% 25%,#fff 0% 50%) 0 0/10px 10px' : c;
-    return '<button onclick="wix_applyBg(\''+c+'\')" style="width:30px;height:30px;border-radius:7px;background:'+bg+';border:2px solid rgba(255,255,255,.2);cursor:pointer" title="'+c+'"></button>';
-  }).join('');
-  var padBtns = ['0','8px','12px','16px','20px','24px','32px','40px','48px'].map(function(p) {
-    return '<button class="wp2-btn" style="padding:5px 6px;font-size:11px;justify-content:center;flex:1;min-width:44px" onclick="wix_applyPad(\''+p+'\')">' + p + '</button>';
-  }).join('');
-  var radBtns = ['0','4px','8px','12px','16px','24px','100px','50%'].map(function(r) {
-    return '<button class="wp2-btn" style="padding:5px 6px;font-size:11px;justify-content:center;flex:1;min-width:44px" onclick="wix_applyRadius(\''+r+'\')">' + r + '</button>';
+  var bgSwatches = [
+    {c:'#ffffff',n:'Blanco'},
+    {c:'#f7f5f1',n:'Crema'},
+    {c:'#f0ece4',n:'Arena'},
+    {c:'#1c1814',n:'Oscuro'},
+    {c:'#252118',n:'Negro'},
+    {c:'#2b7d7a',n:'Teal'},
+    {c:'#b89558',n:'Dorado'},
+    {c:'#bf4637',n:'Rojo'},
+    {c:'#2c5f9e',n:'Azul'},
+    {c:'transparent',n:'Ninguno'}
+  ].map(function(item) {
+    var bg = item.c === 'transparent' ? 'repeating-conic-gradient(#555 0% 25%,#222 0% 50%) 0 0/10px 10px' : item.c;
+    return '<div style="display:flex;flex-direction:column;align-items:center;gap:3px"><button onclick="wix_applyBg(\''+item.c+'\')" style="width:36px;height:36px;border-radius:9px;background:'+bg+';border:2px solid rgba(255,255,255,.15);cursor:pointer;transition:transform .1s" onmouseover="this.style.transform=\'scale(1.12)\'" onmouseout="this.style.transform=\'\'" title="'+item.c+'"></button><span style="font-size:9px;color:rgba(255,255,255,.3)">'+item.n+'</span></div>';
   }).join('');
 
   return [
-    '<div class="wp2-info">Activa 🎯 y haz clic en un elemento para seleccionarlo antes de aplicar cambios de diseño.</div>',
+    '<div class="wp2-info">Activa 🎯 y haz clic en un bloque para seleccionarlo. Luego aplica cambios de diseño.</div>',
     '<div class="wp2-divider"></div>',
-    '<div class="wp2-sec-title">Color de fondo</div>',
-    '<div class="wp2-color-row" style="margin-bottom:8px">',
-    '  <label>Elige color de fondo</label>',
-    '  <input type="color" value="#ffffff" onchange="wix_applyBg(this.value)">',
+
+    '<div class="wp2-sec-title">🎨 Color de fondo</div>',
+    '<div class="wp2-group">',
+    '  <div class="wp2-color-row" style="margin-bottom:10px"><label>Elige cualquier color</label><input type="color" value="#ffffff" onchange="wix_applyBg(this.value)"></div>',
+    '  <div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:space-between">' + bgSwatches + '</div>',
     '</div>',
-    '<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px">' + bgSwatches + '</div>',
-    '<div class="wp2-divider"></div>',
-    '<div class="wp2-sec-title">Dimensiones</div>',
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">',
-    '  <div>',
-    '    <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:4px">Ancho</div>',
-    '    <input id="wp2WidthInp" type="text" placeholder="ej: 100% o 400px" style="width:100%;background:#1c1814;color:white;border:1px solid rgba(255,255,255,.18);padding:8px;border-radius:7px;font-size:12px;outline:none;box-sizing:border-box">',
+
+    '<div class="wp2-sec-title">📐 Ancho y alto</div>',
+    '<button class="wp2-btn wp2-btn-gold" onclick="wix_readDims()" style="margin-bottom:8px">',
+    '<span class="wp2-ico">🔍</span><span class="wp2-lbl"><b>Leer tamaño actual</b><span>Carga los valores del elemento en los controles</span></span>',
+    '</button>',
+
+    '<div class="wp2-group" style="margin-bottom:6px">',
+    '  <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">↔ Ancho</div>',
+    '  <div class="wp2-step-row" style="margin-bottom:8px">',
+    '    <button class="wp2-step-btn" onclick="wix_dimStep(\'w\',-10)">−</button>',
+    '    <input id="wp2WidthInp" class="wp2-step-inp" type="text" placeholder="auto" onchange="wix_applyDimLive(\'w\',this.value)">',
+    '    <button class="wp2-step-btn" onclick="wix_dimStep(\'w\',10)">+</button>',
     '  </div>',
-    '  <div>',
-    '    <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:4px">Alto</div>',
-    '    <input id="wp2HeightInp" type="text" placeholder="ej: auto o 300px" style="width:100%;background:#1c1814;color:white;border:1px solid rgba(255,255,255,.18);padding:8px;border-radius:7px;font-size:12px;outline:none;box-sizing:border-box">',
+    '  <input type="range" min="0" max="1400" step="10" value="0" oninput="wix_dimSlide(\'w\',this.value)" id="wp2WidthSlider" class="wp2-slider">',
+    '  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:8px">',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyDimLive(\'w\',\'100%\')">100%</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyDimLive(\'w\',\'auto\')">Auto</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyDimLive(\'w\',\'50%\')">50%</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyDimLive(\'w\',\'unset\')">Libre</button>',
     '  </div>',
     '</div>',
-    '<button class="wp2-btn" style="justify-content:center;margin-bottom:8px" onclick="wix_applyDim()">✓ Aplicar dimensiones</button>',
+
+    '<div class="wp2-group" style="margin-bottom:6px">',
+    '  <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">↕ Alto</div>',
+    '  <div class="wp2-step-row" style="margin-bottom:8px">',
+    '    <button class="wp2-step-btn" onclick="wix_dimStep(\'h\',-10)">−</button>',
+    '    <input id="wp2HeightInp" class="wp2-step-inp" type="text" placeholder="auto" onchange="wix_applyDimLive(\'h\',this.value)">',
+    '    <button class="wp2-step-btn" onclick="wix_dimStep(\'h\',10)">+</button>',
+    '  </div>',
+    '  <input type="range" min="0" max="900" step="10" value="0" oninput="wix_dimSlide(\'h\',this.value)" id="wp2HeightSlider" class="wp2-slider">',
+    '  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:8px">',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyDimLive(\'h\',\'auto\')">Auto</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyDimLive(\'h\',\'100vh\')">Pantalla</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyDimLive(\'h\',\'300px\')">300px</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyDimLive(\'h\',\'unset\')">Libre</button>',
+    '  </div>',
+    '</div>',
+
+    '<div class="wp2-sec-title">📏 Espacio interior (padding)</div>',
+    '<div class="wp2-group">',
+    '  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px">',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyPad(\'0\')">Nada</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyPad(\'8px\')">Poco</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyPad(\'16px\')">Normal</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyPad(\'24px\')">Medio</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyPad(\'32px\')">Grande</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyPad(\'40px\')">Más</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyPad(\'48px\')">Máximo</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyPad(\'80px\')">Extra</button>',
+    '  </div>',
+    '</div>',
+
+    '<div class="wp2-sec-title">🔵 Esquinas redondeadas</div>',
+    '<div class="wp2-group">',
+    '  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px">',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyRadius(\'0\')">Rectas</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyRadius(\'4px\')">Leve</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyRadius(\'8px\')">Suave</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyRadius(\'12px\')">Media</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyRadius(\'16px\')">Bastante</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyRadius(\'24px\')">Mucho</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyRadius(\'100px\')">Píldora</button>',
+    '    <button class="wp2-shortcut-btn" onclick="wix_applyRadius(\'50%\')">Círculo</button>',
+    '  </div>',
+    '</div>',
+
     '<div class="wp2-divider"></div>',
-    '<div class="wp2-sec-title">Padding interior</div>',
-    '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px">' + padBtns + '</div>',
-    '<div class="wp2-sec-title">Border radius</div>',
-    '<div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px">' + radBtns + '</div>',
-    '<div class="wp2-divider"></div>',
-    '<button class="wp2-btn" onclick="wix_openProps()" style="border-color:rgba(61,158,155,.35);color:#3d9e9b">',
-    '  <span class="wp2-ico">⚙</span><span class="wp2-lbl"><b>Propiedades CSS avanzadas</b><span>Box-shadow, border, opacity, CSS libre…</span></span>',
+    '<button class="wp2-btn wp2-btn-teal" onclick="wix_openProps()">',
+    '<span class="wp2-ico">⚙</span><span class="wp2-lbl"><b>CSS avanzado</b><span>Sombra, borde, opacidad, CSS libre…</span></span>',
     '</button>',
   ].join('\n');
 }
@@ -4362,33 +4509,57 @@ function wixPanelNav() {
 
 function wixPanelAcciones() {
   return [
-    '<div class="wp2-info">Acciones globales del editor y sobre el elemento seleccionado.</div>',
+    '<div class="wp2-info">Acciones globales del editor.</div>',
     '<div class="wp2-divider"></div>',
-    '<div class="wp2-sec-title">Modos de edición</div>',
-    '<button class="wp2-btn" id="wp2BtnEditText2" onclick="wix_toggleText()"><span class="wp2-ico">✍️</span><span class="wp2-lbl"><b>Editar texto</b><span>Activa/desactiva edición inline</span></span></button>',
-    '<button class="wp2-btn" id="wp2BtnSelMode2" onclick="wix_toggleSel()"><span class="wp2-ico">🎯</span><span class="wp2-lbl"><b>Modo selección</b><span>Clic en elemento para seleccionarlo</span></span></button>',
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px">',
-    '  <button class="wp2-btn" style="justify-content:center" onclick="wix_undo()">↩ Deshacer</button>',
-    '  <button class="wp2-btn" style="justify-content:center" onclick="wix_redo()">↪ Rehacer</button>',
-    '</div>',
-    '<div class="wp2-divider"></div>',
-    '<div class="wp2-sec-title">Elemento seleccionado</div>',
-    '<button class="wp2-btn" onclick="wix_duplicate()"><span class="wp2-ico">📋</span><span class="wp2-lbl"><b>Duplicar</b></span></button>',
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:5px">',
-    '  <button class="wp2-btn" style="justify-content:center" onclick="wix_moveUp()">⬆ Subir</button>',
-    '  <button class="wp2-btn" style="justify-content:center" onclick="wix_moveDown()">⬇ Bajar</button>',
-    '</div>',
-    '<button class="wp2-btn" onclick="wix_addLink()" style="margin-top:5px"><span class="wp2-ico">🔗</span><span class="wp2-lbl"><b>Añadir enlace</b></span></button>',
-    '<button class="wp2-btn" onclick="wix_changeImage()" style="margin-top:5px"><span class="wp2-ico">🖼</span><span class="wp2-lbl"><b>Cambiar imagen</b></span></button>',
-    '<button class="wp2-btn" onclick="wix_openProps()" style="border-color:rgba(61,158,155,.35);color:#3d9e9b;margin-top:5px"><span class="wp2-ico">⚙</span><span class="wp2-lbl"><b>Propiedades CSS</b></span></button>',
-    '<button class="wp2-btn" onclick="wix_deleteEl()" style="border-color:rgba(191,70,55,.3);color:#f08080;margin-top:5px"><span class="wp2-ico">🗑</span><span class="wp2-lbl"><b>Eliminar elemento</b></span></button>',
-    '<div class="wp2-divider"></div>',
-    '<div class="wp2-sec-title">Guardar y salir</div>',
-    '<button class="wp2-btn" onclick="wix_save()" style="border-color:rgba(184,149,88,.4);color:#b89558">',
-    '  <span class="wp2-ico">💾</span><span class="wp2-lbl"><b>Guardar y descargar</b><span>Descarga el HTML con todos los cambios</span></span>',
+
+    '<div class="wp2-sec-title">✏️ Modos de edición</div>',
+    '<button class="wp2-btn" id="wp2BtnEditText2" onclick="wix_toggleText()">',
+    '<span class="wp2-ico">✍️</span><span class="wp2-lbl"><b>Escribir texto</b><span>Activa/desactiva escritura directa en la web</span></span>',
     '</button>',
-    '<button class="wp2-btn" onclick="wixSideBarClose()" style="border-color:rgba(240,128,128,.25);color:#f08080;margin-top:5px">',
-    '  <span class="wp2-ico">✕</span><span class="wp2-lbl"><b>Cerrar editor</b></span>',
+    '<button class="wp2-btn" id="wp2BtnSelMode2" onclick="wix_toggleSel()" style="margin-top:5px">',
+    '<span class="wp2-ico">🎯</span><span class="wp2-lbl"><b>Seleccionar bloque</b><span>Clic en cualquier elemento para editarlo</span></span>',
+    '</button>',
+    '<div class="wp2-divider"></div>',
+
+    '<div class="wp2-sec-title">↩ Historial</div>',
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px">',
+    '  <button class="wp2-btn" style="justify-content:center;padding:12px;flex-direction:column;gap:4px" onclick="wix_undo()">',
+    '    <span style="font-size:20px">↩</span><span style="font-size:12px">Deshacer</span>',
+    '  </button>',
+    '  <button class="wp2-btn" style="justify-content:center;padding:12px;flex-direction:column;gap:4px" onclick="wix_redo()">',
+    '    <span style="font-size:20px">↪</span><span style="font-size:12px">Rehacer</span>',
+    '  </button>',
+    '</div>',
+    '<div class="wp2-divider"></div>',
+
+    '<div class="wp2-sec-title">🎯 Elemento seleccionado</div>',
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px">',
+    '  <button class="wp2-btn" style="justify-content:center;padding:10px" onclick="wix_moveUp()">⬆ Subir</button>',
+    '  <button class="wp2-btn" style="justify-content:center;padding:10px" onclick="wix_moveDown()">⬇ Bajar</button>',
+    '</div>',
+    '<button class="wp2-btn" onclick="wix_duplicate()" style="margin-bottom:5px">',
+    '<span class="wp2-ico">📋</span><span class="wp2-lbl"><b>Duplicar</b></span>',
+    '</button>',
+    '<button class="wp2-btn" onclick="wix_addLink()" style="margin-bottom:5px">',
+    '<span class="wp2-ico">🔗</span><span class="wp2-lbl"><b>Crear enlace</b></span>',
+    '</button>',
+    '<button class="wp2-btn" onclick="wix_changeImage()" style="margin-bottom:5px">',
+    '<span class="wp2-ico">🖼</span><span class="wp2-lbl"><b>Cambiar imagen</b></span>',
+    '</button>',
+    '<button class="wp2-btn wp2-btn-teal" onclick="wix_openProps()" style="margin-bottom:5px">',
+    '<span class="wp2-ico">⚙</span><span class="wp2-lbl"><b>Propiedades CSS</b></span>',
+    '</button>',
+    '<button class="wp2-btn wp2-btn-danger" onclick="wix_deleteEl()" style="margin-bottom:4px">',
+    '<span class="wp2-ico">🗑</span><span class="wp2-lbl"><b>Eliminar elemento</b></span>',
+    '</button>',
+    '<div class="wp2-divider"></div>',
+
+    '<div class="wp2-sec-title">💾 Guardar</div>',
+    '<button class="wp2-btn wp2-btn-gold" onclick="wix_save()" style="margin-bottom:6px">',
+    '<span class="wp2-ico">💾</span><span class="wp2-lbl"><b>Guardar y descargar</b><span>Descarga el HTML con todos los cambios</span></span>',
+    '</button>',
+    '<button class="wp2-btn wp2-btn-danger" onclick="wixSideBarClose()">',
+    '<span class="wp2-ico">✕</span><span class="wp2-lbl"><b>Cerrar editor</b></span>',
     '</button>',
   ].join('\n');
 }
@@ -5518,4 +5689,29 @@ function nmToast(msg){
   </div>
 </div>
 
-<protonpass-root-fbbb data-protonpass-role="root" data-protonpass-theme="os"></protonpass-root-fbbb></body></html>
+<protonpass-root-fbbb data-protonpass-role="root" data-protonpass-theme="os"></protonpass-root-fbbb>
+<script>
+function openMandalaModal() {
+  var modal = document.getElementById('mandala-modal');
+  // Clonar el SVG del mandala original al modal
+  var srcSvg = document.getElementById('mandala-svg');
+  var modalSvgWrap = modal.querySelector('div > svg');
+  // Reemplazar el SVG del modal con el original clonado
+  var clone = srcSvg.cloneNode(true);
+  clone.style.cssText = 'width:100%;height:100%';
+  clone.removeAttribute('id');
+  modalSvgWrap.parentNode.replaceChild(clone, modalSvgWrap);
+  // Mostrar modal
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeMandalaModal() {
+  document.getElementById('mandala-modal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+// Cerrar con ESC
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape') closeMandalaModal();
+});
+</script>
+</body></html>
