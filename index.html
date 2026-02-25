@@ -2974,7 +2974,7 @@ function edShowEditorBtns() {
 function edHideEditorBtns() {
   var eb = document.getElementById('edOpenBtn');
   var nb = document.getElementById('navMgrBtn');
-  var isAdmin=window.user&&(window.user._role==='admin'||(typeof ADMIN_EMAILS!=='undefined'&&ADMIN_EMAILS.includes(window.user.email)));
+  var isAdmin=user&&(user._role==='admin'||(typeof ADMIN_EMAILS!=='undefined'&&ADMIN_EMAILS.includes(user.email)));
   if(eb&&!isAdmin) eb.style.display = 'none';
   if(nb) nb.style.display = 'none';
   // Close panels if open
@@ -3013,7 +3013,7 @@ function editorOpen(){
     var sb=document.getElementById('wixSideBar');
     if(!sb||sb.style.display==='none'){
       var eb=document.getElementById('edOpenBtn');
-      var isAdmin=window.user&&(window.user._role==='admin'||(typeof ADMIN_EMAILS!=='undefined'&&ADMIN_EMAILS.includes(window.user.email)));
+      var isAdmin=user&&(user._role==='admin'||(typeof ADMIN_EMAILS!=='undefined'&&ADMIN_EMAILS.includes(user.email)));
       if(eb&&!isAdmin) eb.style.display='none';
       document.getElementById('navMgrBtn').style.display='none';
     }
@@ -3030,7 +3030,7 @@ function edClose(){
   if(!sb||sb.style.display==='none'){
     // Mantener botón Editor visible si es admin
     var eb=document.getElementById('edOpenBtn');
-    var isAdmin=window.user&&(window.user._role==='admin'||(typeof ADMIN_EMAILS!=='undefined'&&ADMIN_EMAILS.includes(window.user.email)));
+    var isAdmin=user&&(user._role==='admin'||(typeof ADMIN_EMAILS!=='undefined'&&ADMIN_EMAILS.includes(user.email)));
     if(eb&&!isAdmin) eb.style.display='none';
     document.getElementById('navMgrBtn').style.display='none';
   }
@@ -3876,7 +3876,7 @@ function wixSideBarClose() {
   if (ep) ep.style.display = 'none';
   // Mostrar botón Editor flotante para volver a entrar (solo si es admin)
   var eb = document.getElementById('edOpenBtn');
-  if (eb && window.user && (window.user._role === 'admin' || (typeof ADMIN_EMAILS !== 'undefined' && ADMIN_EMAILS.includes(window.user.email)))) {
+  if (eb && user && (user._role === 'admin' || (typeof ADMIN_EMAILS !== 'undefined' && ADMIN_EMAILS.includes(user.email)))) {
     eb.style.display = '';
   }
   document.body.style.paddingBottom = '';
