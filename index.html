@@ -1260,12 +1260,15 @@ async function onLogin(u) {
   document.getElementById('edOpenBtn').style.display = isAdmin ? '' : 'none';
   document.getElementById('btnHome').style.display = '';
 
- const pendingPlan = sessionStorage.getItem('pendingPlan');
+const pendingPlan = sessionStorage.getItem('pendingPlan');
   if (pendingPlan) {
     sessionStorage.removeItem('pendingPlan');
     goTo('student');
     toast('Bienvenido/a, ' + name + '! Iniciando pago... ✨');
-    setTimeout(function(){ handlePurchase(pendingPlan); }, 800);
+    setTimeout(async function(){
+      const { data: { session } } = await sb.auth.getSession();
+      if (session) handlePurchase(pendingPlan);
+    }, 1500);
   } else {
     goTo('student');
     toast('Bienvenido/a, ' + name + '! ✨');
