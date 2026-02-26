@@ -1192,9 +1192,12 @@ async function doRegister() {
 
   try {
     if (sb) {
-      const { error } = await sb.auth.signUp({ email, password: pass, options: { data: { full_name: name } } });
+      const pendingPlanReg = localStorage.getItem('pendingPlan');
+      const { data: signUpData, error } = await sb.auth.signUp({ email, password: pass, options: { data: { full_name: name } } });
       if (error) throw error;
-      toast('Revisa tu email para confirmar la cuenta ✉️');
+      if (pendingPlanReg && signUpData?.user) {
+        setTimeout(function(){ handlePurchase(pendingPlanReg); }, 1500);
+      }
     }
   } catch(e) {
     toast('Error: ' + e.message);
