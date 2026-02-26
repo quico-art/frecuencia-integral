@@ -1260,9 +1260,9 @@ async function onLogin(u) {
   document.getElementById('edOpenBtn').style.display = isAdmin ? '' : 'none';
   document.getElementById('btnHome').style.display = '';
 
-const pendingPlan = sessionStorage.getItem('pendingPlan');
+const pendingPlan = localStorage.getItem('pendingPlan');
   if (pendingPlan) {
-    sessionStorage.removeItem('pendingPlan');
+    localStorage.removeItem('pendingPlan');
     goTo('student');
     toast('Bienvenido/a, ' + name + '! Iniciando pago... ✨');
     setTimeout(async function(){
@@ -1677,7 +1677,7 @@ function renderProgreso() {
 // ── STRIPE ──
 async function handlePurchase(planId) {
   if (!user) {
-    sessionStorage.setItem('pendingPlan', planId);
+    localStorage.setItem('pendingPlan', planId);
     goTo('auth');
     return;
   }
