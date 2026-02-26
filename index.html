@@ -1260,8 +1260,16 @@ async function onLogin(u) {
   document.getElementById('edOpenBtn').style.display = isAdmin ? '' : 'none';
   document.getElementById('btnHome').style.display = '';
 
-  goTo('student');
-  toast('Bienvenido/a, ' + name + '! ✨');
+ const pendingPlan = sessionStorage.getItem('pendingPlan');
+  if (pendingPlan) {
+    sessionStorage.removeItem('pendingPlan');
+    goTo('student');
+    toast('Bienvenido/a, ' + name + '! Iniciando pago... ✨');
+    setTimeout(function(){ handlePurchase(pendingPlan); }, 800);
+  } else {
+    goTo('student');
+    toast('Bienvenido/a, ' + name + '! ✨');
+  }
 }
 
 function onLogout() {
@@ -1665,7 +1673,11 @@ function renderProgreso() {
 
 // ── STRIPE ──
 async function handlePurchase(planId) {
-  if (!user) { goTo('auth'); return; }
+  if (!user) {
+    sessionStorage.setItem('pendingPlan', planId);
+    goTo('auth');
+    return;
+  }
   toast('Preparando pago...');
   try {
     const { data: { session } } = await sb.auth.getSession();
