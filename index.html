@@ -1196,7 +1196,7 @@ async function doRegister() {
       const { data: signUpData, error } = await sb.auth.signUp({ email, password: pass, options: { data: { full_name: name } } });
       if (error) throw error;
       if (pendingPlanReg && signUpData?.user) {
-        setTimeout(function(){ handlePurchase(pendingPlanReg); }, 1500);
+        setTimeout(function(){ handlePurchase(pendingPlanReg); }, 3000);
       }
     }
   } catch(e) {
