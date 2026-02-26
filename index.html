@@ -1,5 +1,6 @@
 <html lang="es">
 <head>
+<script src="https://js.stripe.com/v3/"></script> 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Frecuencia Integral Academy</title>
@@ -1684,19 +1685,32 @@ async function handlePurchase(planId) {
     goTo('auth');
     return;
   }
+
+  const PRICE_IDS = {
+    puerta_blanca:   'price_1T2dOo9g6L3yEuP8z4nhJh2N',
+    puerta_roja:     'price_1T2dSk9g6L3yEuP8IayBJ1Ne',
+    puerta_azul:     'price_1T2db29g6L3yEuP8e7cjDFbA',
+    puerta_arcoiris: 'price_1T2ddN9g6L3yEuP881UkvwWN',
+    puerta_oro:      'price_1T2dsD9g6L3yEuP8jX1yHQ35',
+  };
+
+  const priceId = PRICE_IDS[planId];
+  if (!priceId) { toast('Plan no válido'); return; }
+
   toast('Preparando pago...');
+
   try {
-    const { data: { session } } = await sb.auth.getSession();
-    const res = await fetch('https://jtwbbyjspanirbsuoipa.supabase.co/functions/v1/create-checkout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token },
-      body: JSON.stringify({ plan_id: planId, success_url: location.href + '?paid=ok', cancel_url: location.href })
+    const stripe = Stripe('pk_test_51T2dEF9g6L3yEuP8TNBsNCT3lQ4afJyLwLc37kp8uuvYpYUIYU9TGaSYq8uRhFf3MJ1NjKdHPzw2BDj04tDfNuWR00iQ7g5Cpq');
+    const { error } = await stripe.redirectToCheckout({
+      lineItems: [{ price: priceId, quantity: 1 }],
+      mode: 'subscription',
+      successUrl: location.origin + location.pathname + '?paid=ok',
+      cancelUrl: location.href,
+      customerEmail: user.email,
     });
-    const d = await res.json();
-    if (d.checkout_url) window.location.href = d.checkout_url;
-    else toast('Error: ' + (d.error || 'Inténtalo de nuevo'));
+    if (error) toast('Error: ' + error.message);
   } catch(e) {
-    toast('Configura Stripe para activar pagos');
+    toast('Error al conectar con Stripe');
   }
 }
 
