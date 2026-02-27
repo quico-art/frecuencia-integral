@@ -1963,8 +1963,10 @@ function filterMedia(cat) {
     if (t === cat) { btn.style.background='#2b7d7a'; btn.style.color='white'; btn.style.borderColor='#2b7d7a'; }
     else { btn.style.background='white'; btn.style.color='#7a7168'; btn.style.borderColor='#e4ddd3'; }
   });
-  document.querySelectorAll('[data-cat]').forEach(function(card) {
-    card.style.display = (cat==='todos' || card.getAttribute('data-cat')===cat) ? '' : 'none';
+  var grid = document.getElementById('media-grid');
+  if (!grid) return;
+  Array.from(grid.children).forEach(function(card) {
+    card.style.display = (cat==='todos' || card.getAttribute('data-cat')===cat) ? 'block' : 'none';
   });
 }
 
