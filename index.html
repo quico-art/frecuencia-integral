@@ -1149,24 +1149,38 @@ function filterWeeksByPlan() {
     'Oro':      { min: 1,  max: 48 },
   };
   const range = planRanges[plan] || planRanges['Blanca'];
+  const nextPuerta = { 'Blanca': 'Roja', 'Roja': 'Azul', 'Azul': 'Arcoiris', 'Arcoiris': 'Oro' };
 
   document.querySelectorAll('.week-card').forEach(function(card) {
     const match = (card.getAttribute('onclick') || '').match(/openWeekModal\((\d+)\)/);
     const w = match ? parseInt(match[1]) : 0;
 
-    // Fuera del rango del plan — bloqueado totalmente
+    // Fuera del rango del plan — candado con mensaje
     if (w < range.min || w > range.max) {
-      card.style.opacity = '0.3';
+      const puertaNecesaria = w <= 12 ? 'Blanca' : w <= 24 ? 'Roja' : w <= 36 ? 'Azul' : 'Arcoiris';
+      card.style.opacity = '0.4';
       card.style.pointerEvents = 'none';
-      card.title = 'Requiere otra puerta';
+      card.style.position = 'relative';
+      if (!card.querySelector('.lock-overlay')) {
+        const lock = document.createElement('div');
+        lock.className = 'lock-overlay';
+        lock.style.cssText = 'position:absolute;top:8px;right:8px;font-size:14px;';
+        lock.textContent = '🔒';
+        lock.title = 'Requiere Puerta ' + puertaNecesaria;
+        card.appendChild(lock);
+      }
       return;
     }
 
-    // Dentro del plan — primeras 3 de la puerta siempre abiertas
+    // Dentro del plan — lógica progresiva
     const firstThree = w <= range.min + 2;
     const isCompleted = completedWeeks.includes(w);
     const prevCompleted = completedWeeks.includes(w - 1) || w === range.min;
     const unlocked = firstThree || isCompleted || prevCompleted;
+
+    // Quitar candado si existe
+    const existingLock = card.querySelector('.lock-overlay');
+    if (existingLock) existingLock.remove();
 
     if (unlocked) {
       card.style.opacity = '1';
@@ -1176,47 +1190,16 @@ function filterWeeksByPlan() {
       card.style.opacity = '0.4';
       card.style.pointerEvents = 'none';
       card.title = 'Completa la semana anterior para desbloquear';
+      if (!card.querySelector('.lock-overlay')) {
+        const lock = document.createElement('div');
+        lock.className = 'lock-overlay';
+        lock.style.cssText = 'position:absolute;top:8px;right:8px;font-size:14px;';
+        lock.textContent = '🔒';
+        card.appendChild(lock);
+      }
     }
   });
 }
-
-// ── AUTH ──
-function switchTab(tab) {
-  document.getElementById('form-login').style.display = tab === 'login' ? 'block' : 'none';
-  document.getElementById('form-register').style.display = tab === 'register' ? 'block' : 'none';
-  document.getElementById('tab-login').classList.toggle('active', tab === 'login');
-  document.getElementById('tab-register').classList.toggle('active', tab === 'register');
-}
-
-async function doLogin() {
-  const email = document.getElementById('inp-email').value.trim();
-  const pass  = document.getElementById('inp-pass').value;
-  if (!email || !pass) { toast('Completa email y contraseña'); return; }
-
-  const btn = document.getElementById('btn-login');
-  btn.textContent = 'Conectando...';
-  btn.disabled = true;
-
-  try {
-    if (sb) {
-      const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
-      if (error) throw error;
-    } else {
-      // Demo fallback
-      if (email !== 'test@frecuenciaintegral.com') throw new Error('Email incorrecto');
-      if (pass !== 'TestUser2026!') throw new Error('Contraseña incorrecta');
-      user = { id: 'demo', email, user_metadata: { full_name: 'Alumno TCT' } };
-      onLogin(user);
-    }
-  } catch(e) {
-    // Fallback demo
-    if (email === 'test@frecuenciaintegral.com' && pass === 'TestUser2026!') {
-      user = { id: 'demo', email, user_metadata: { full_name: 'Alumno TCT' } };
-      onLogin(user);
-    } else {
-      toast('Error: ' + e.message);
-    }
-  }
 
   btn.textContent = 'Entrar al Área de Alumnos';
   btn.disabled = false;
@@ -1428,6 +1411,7 @@ function filterWeeks(puerta, btn) {
   document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
   btn.classList.add('active');
   renderWeeks();
+  filterWeeksByPlan();
 }
 
 // ── WEEK MODAL ──
