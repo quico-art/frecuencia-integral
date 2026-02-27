@@ -1697,18 +1697,18 @@ async function handlePurchase(planId) {
   const priceId = PRICE_IDS[planId];
   if (!priceId) { toast('Plan no válido'); return; }
 
-  toast('Preparando pago...');
+toast('Preparando pago...');
 
   try {
-    const stripe = Stripe('pk_test_51T2dEF9g6L3yEuP8TNBsNCT3lQ4afJyLwLc37kp8uuvYpYUIYU9TGaSYq8uRhFf3MJ1NjKdHPzw2BDj04tDfNuWR00iQ7g5Cpq');
-    const { error } = await stripe.redirectToCheckout({
-      lineItems: [{ price: priceId, quantity: 1 }],
-      mode: 'subscription',
-      successUrl: location.origin + location.pathname + '?paid=ok',
-      cancelUrl: location.href,
-      customerEmail: user.email,
+    const { data: { session } } = await sb.auth.getSession();
+    const res = await fetch('https://jtwbbyjspanirbsuoipa.supabase.co/functions/v1/create-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token },
+      body: JSON.stringify({ plan_id: planId, success_url: location.href + '?paid=ok', cancel_url: location.href })
     });
-    if (error) toast('Error: ' + error.message);
+    const d = await res.json();
+    if (d.checkout_url) window.location.href = d.checkout_url;
+    else toast('Error: ' + (d.error || 'Inténtalo de nuevo'));
   } catch(e) {
     toast('Error al conectar con Stripe');
   }
