@@ -1137,9 +1137,13 @@ function showView(view) {
   if (view === 'progreso') renderProgreso();
   if (view === 'materiales') renderMateriales();
   if (view === 'formaciones') filterWeeksByPlan();
-  if (view === 'multimedia') filterMedia('todos');
-}
-
+  if (view === 'multimedia') {
+    setTimeout(function(){
+      Array.from(document.getElementById('media-grid').children).forEach(function(c){c.style.display='';});
+      filterMedia('todos');
+    }, 50);
+  }
+ }
 function filterWeeksByPlan() {
   const plan = user ? (user._plan || 'Blanca') : 'Blanca';
   const planRanges = {
