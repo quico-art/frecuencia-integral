@@ -1137,15 +1137,17 @@ function showView(view) {
   if (view === 'progreso') renderProgreso();
   if (view === 'materiales') renderMateriales();
   if (view === 'formaciones') filterWeeksByPlan();
-if (view === 'multimedia') {
-    setTimeout(function(){
-      var grid = document.getElementById('media-grid');
-      Array.from(grid.children).forEach(function(c){ c.style.removeProperty('display'); });
-      var btn = document.getElementById('mtab-todos');
-      if(btn) btn.click();
-    }, 100);
+  if (view === 'multimedia') {
+    var grid = document.getElementById('media-grid');
+    if (grid) Array.from(grid.children).forEach(function(c){ c.style.display = 'block'; });
+    ['todos','cuencos','meditacion','frecuencia','teoria','canalizacion'].forEach(function(t){
+      var b = document.getElementById('mtab-' + t);
+      if (!b) return;
+      if (t === 'todos') { b.style.background='#2b7d7a'; b.style.color='white'; b.style.borderColor='#2b7d7a'; }
+      else { b.style.background='white'; b.style.color='#7a7168'; b.style.borderColor='#e4ddd3'; }
+    });
   }
-}   
+}
 function filterWeeksByPlan() {
   const plan = user ? (user._plan || 'Blanca') : 'Blanca';
   const planRanges = {
@@ -1969,12 +1971,7 @@ function filterMedia(cat) {
   var grid = document.getElementById('media-grid');
   if (!grid) return;
   Array.from(grid.children).forEach(function(card) {
-    var cardCat = card.getAttribute('data-cat');
-    if (cat === 'todos') {
-      card.style.removeProperty('display');
-    } else {
-      card.style.display = (cardCat === cat) ? '' : 'none';
-    }
+    card.style.display = (cat==='todos' || card.getAttribute('data-cat')===cat) ? 'block' : 'none';
   });
 }
 
