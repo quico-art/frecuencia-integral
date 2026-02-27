@@ -1201,6 +1201,32 @@ function filterWeeksByPlan() {
   });
 }
 
+async function doLogin() {
+  const email = document.getElementById('inp-email').value.trim();
+  const pass  = document.getElementById('inp-pass').value;
+  if (!email || !pass) { toast('Completa email y contraseña'); return; }
+
+  const btn = document.getElementById('btn-login');
+  btn.textContent = 'Conectando...';
+  btn.disabled = true;
+
+  try {
+    if (sb) {
+      const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+      if (error) throw error;
+    } else {
+      if (email !== 'test@frecuenciaintegal.com') throw new Error('Email incorrecto');
+      if (pass !== 'TestUser2026!') throw new Error('Contraseña incorrecta');
+      user = { id: 'demo', email, user_metadata: { full_name: 'Alumno TCT' } };
+      onLogin(user);
+    }
+  } catch(e) {
+    toast('Error: ' + e.message);
+  }
+
+  btn.textContent = 'Entrar al Área de Alumnos';
+  btn.disabled = false;
+}
 
 async function doRegister() {
   const name  = document.getElementById('inp-name').value.trim();
