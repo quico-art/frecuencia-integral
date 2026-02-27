@@ -1136,6 +1136,48 @@ function showView(view) {
   event.currentTarget.classList.add('active');
   if (view === 'progreso') renderProgreso();
   if (view === 'materiales') renderMateriales();
+  if (view === 'formaciones') filterWeeksByPlan();
+}
+
+function filterWeeksByPlan() {
+  const plan = user ? (user._plan || 'Blanca') : 'Blanca';
+  const planRanges = {
+    'Blanca':   { min: 1,  max: 12 },
+    'Roja':     { min: 13, max: 24 },
+    'Azul':     { min: 25, max: 36 },
+    'Arcoiris': { min: 37, max: 48 },
+    'Oro':      { min: 1,  max: 48 },
+  };
+  const range = planRanges[plan] || planRanges['Blanca'];
+
+  document.querySelectorAll('.week-card').forEach(function(card) {
+    const match = (card.getAttribute('onclick') || '').match(/openWeekModal\((\d+)\)/);
+    const w = match ? parseInt(match[1]) : 0;
+
+    // Fuera del rango del plan — bloqueado totalmente
+    if (w < range.min || w > range.max) {
+      card.style.opacity = '0.3';
+      card.style.pointerEvents = 'none';
+      card.title = 'Requiere otra puerta';
+      return;
+    }
+
+    // Dentro del plan — primeras 3 de la puerta siempre abiertas
+    const firstThree = w <= range.min + 2;
+    const isCompleted = completedWeeks.includes(w);
+    const prevCompleted = completedWeeks.includes(w - 1) || w === range.min;
+    const unlocked = firstThree || isCompleted || prevCompleted;
+
+    if (unlocked) {
+      card.style.opacity = '1';
+      card.style.pointerEvents = '';
+      card.title = '';
+    } else {
+      card.style.opacity = '0.4';
+      card.style.pointerEvents = 'none';
+      card.title = 'Completa la semana anterior para desbloquear';
+    }
+  });
 }
 
 // ── AUTH ──
