@@ -1137,13 +1137,15 @@ function showView(view) {
   if (view === 'progreso') renderProgreso();
   if (view === 'materiales') renderMateriales();
   if (view === 'formaciones') filterWeeksByPlan();
-  if (view === 'multimedia') {
+if (view === 'multimedia') {
     setTimeout(function(){
-      Array.from(document.getElementById('media-grid').children).forEach(function(c){c.style.display='';});
-      filterMedia('todos');
-    }, 50);
+      var grid = document.getElementById('media-grid');
+      Array.from(grid.children).forEach(function(c){ c.style.removeProperty('display'); });
+      var btn = document.getElementById('mtab-todos');
+      if(btn) btn.click();
+    }, 100);
   }
- }
+}   
 function filterWeeksByPlan() {
   const plan = user ? (user._plan || 'Blanca') : 'Blanca';
   const planRanges = {
