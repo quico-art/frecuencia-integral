@@ -1159,14 +1159,18 @@ function filterWeeksByPlan() {
     if (w < range.min || w > range.max) {
       const puertaNecesaria = w <= 12 ? 'Blanca' : w <= 24 ? 'Roja' : w <= 36 ? 'Azul' : 'Arcoiris';
       card.style.opacity = '0.4';
-      card.style.pointerEvents = 'none';
       card.style.position = 'relative';
+      card.style.cursor = 'pointer';
+      card.style.pointerEvents = '';
+      card.onclick = (function(pn) { return function(e) {
+        e.stopPropagation();
+        toast('🔒 Para acceder a la Puerta ' + pn + ' primero debes completar todas las semanas de tu puerta actual y adquirirla.');
+      }; })(puertaNecesaria);
       if (!card.querySelector('.lock-overlay')) {
         const lock = document.createElement('div');
         lock.className = 'lock-overlay';
         lock.style.cssText = 'position:absolute;top:8px;right:8px;font-size:14px;';
         lock.textContent = '🔒';
-        lock.title = 'Requiere Puerta ' + puertaNecesaria;
         card.appendChild(lock);
       }
       return;
@@ -1185,11 +1189,18 @@ function filterWeeksByPlan() {
     if (unlocked) {
       card.style.opacity = '1';
       card.style.pointerEvents = '';
+      card.style.cursor = '';
+      card.onclick = null;
       card.title = '';
     } else {
       card.style.opacity = '0.4';
-      card.style.pointerEvents = 'none';
-      card.title = 'Completa la semana anterior para desbloquear';
+      card.style.cursor = 'pointer';
+      card.style.pointerEvents = '';
+      card.title = '';
+      card.onclick = function(e) {
+        e.stopPropagation();
+        toast('🔒 Completa la semana anterior para desbloquear esta.');
+      };
       if (!card.querySelector('.lock-overlay')) {
         const lock = document.createElement('div');
         lock.className = 'lock-overlay';
