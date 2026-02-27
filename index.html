@@ -1965,8 +1965,14 @@ function filterMedia(cat) {
   });
   var grid = document.getElementById('media-grid');
   if (!grid) return;
+  var catMap = {
+    'cuencos':'cuencos', 'meditacion':'meditaci', 'frecuencia':'frecuencia',
+    'teoria':'teor', 'canalizacion':'canaliz'
+  };
   Array.from(grid.children).forEach(function(card) {
-    card.style.display = (cat==='todos' || card.getAttribute('data-cat')===cat) ? 'block' : 'none';
+    if (cat === 'todos') { card.style.display = 'block'; return; }
+    var text = card.textContent.toLowerCase();
+    card.style.display = text.indexOf(catMap[cat] || cat) !== -1 ? 'block' : 'none';
   });
 }
 
