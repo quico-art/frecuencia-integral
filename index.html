@@ -1700,10 +1700,11 @@ async function handlePurchase(planId) {
 toast('Preparando pago...');
 
   try {
-    const { data: { session } } = await sb.auth.getSession();
-    const res = await fetch('https://jtwbbyjspanirbsuoipa.supabase.co/functions/v1/create-checkout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token },
+const { data: { session } } = await sb.auth.getSession();
+if (!session) { toast('Sesión expirada, vuelve a entrar'); return; }
+const res = await fetch('https://jtwbbyjspanirbsuoipa.supabase.co/functions/v1/create-checkout', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + session.access_token, 'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp0d2JieWpzcGFuaXJic3VvaXBhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzk5NzYwNDcsImV4cCI6MjA1NTU1MjA0N30.tn3FDDDkMmOHFSMWZLhMaVp9xwFqN8YFxRkqjDvTcJ0' },
       body: JSON.stringify({ plan_id: planId, success_url: location.href + '?paid=ok', cancel_url: location.href })
     });
     const d = await res.json();
