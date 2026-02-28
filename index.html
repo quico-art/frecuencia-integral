@@ -1975,7 +1975,20 @@ function filterMedia(cat) {
     card.style.display = text.indexOf(catMap[cat] || cat) !== -1 ? 'block' : 'none';
   });
 }
-
+document.addEventListener('DOMContentLoaded', function() {
+  var grid = document.getElementById('media-grid');
+  if (!grid) return;
+  var catWords = {
+    'cuencos': 'cuencos', 'canaliz': 'canalizacion', 'meditaci': 'meditacion',
+    'frecuencia': 'frecuencia', 'teor': 'teoria', 'dzogchen': 'teoria', 'ucdm': 'teoria'
+  };
+  Array.from(grid.children).forEach(function(card) {
+    var text = card.textContent.toLowerCase();
+    Object.keys(catWords).forEach(function(word) {
+      if (text.indexOf(word) !== -1) card.setAttribute('data-cat', catWords[word]);
+    });
+  });
+});
 var _mediaExpanded = false;
 function openMediaModal(card) {
   var src = card.getAttribute('data-src');
