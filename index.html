@@ -320,7 +320,7 @@ nav.sb-pushed-wide { left: 316px !important; right: 0 !important; }
             <button class="btn-puerta" onclick="handlePurchase('puerta_blanca')">Seleccionar</button>
           </div>
         </div>
-        <div class="puerta-card">
+        <div class="puerta-card" style="opacity:0.6;position:relative">
           <div class="pc-head pc-roja">
             <div class="pc-icon" style="">🔥</div>
             <div class="pc-name" style="">Puerta Roja</div>
@@ -328,33 +328,36 @@ nav.sb-pushed-wide { left: 316px !important; right: 0 !important; }
           </div>
           <div class="pc-body">
             <div class="pc-price" style="">€95<span style="font-size: 14px; color: rgb(122, 113, 104);">/mes</span></div>
-            <div class="pc-billing" style="">Requiere Puerta Blanca</div>
-            <button class="btn-puerta" onclick="handlePurchase('puerta_roja')">Seleccionar</button>
+            <div class="pc-billing" style="">Requiere completar Puerta Blanca</div>
+            <button class="btn-puerta" style="background:#bbb;cursor:not-allowed" onclick="toast('\uD83D\uDD12 Para acceder a la Puerta Roja primero debes completar las 12 semanas de la Puerta Blanca.')">Seleccionar</button>
           </div>
+          <div style="position:absolute;top:12px;right:12px;font-size:20px;z-index:2">\uD83D\uDD12</div>
         </div>
-        <div class="puerta-card">
+        <div class="puerta-card" style="opacity:0.6;position:relative">
           <div class="pc-head pc-azul">
-            <div class="pc-icon" style="">🔵</div>
+            <div class="pc-icon" style="">\uD83D\uDD35</div>
             <div class="pc-name" style="">Puerta Azul</div>
-            <div class="pc-weeks" style="">Semanas 25–36 · Maestría</div>
+            <div class="pc-weeks" style="">Semanas 25\u201336 \u00B7 Maestr\u00EDa</div>
           </div>
           <div class="pc-body">
-            <div class="pc-price" style="">€95<span style="font-size: 14px; color: rgb(122, 113, 104);">/mes</span></div>
-            <div class="pc-billing" style="">Requiere Puerta Roja</div>
-            <button class="btn-puerta" onclick="handlePurchase('puerta_azul')">Seleccionar</button>
+            <div class="pc-price" style="">\u20AC95<span style="font-size: 14px; color: rgb(122, 113, 104);">/mes</span></div>
+            <div class="pc-billing" style="">Requiere completar Puerta Roja</div>
+            <button class="btn-puerta" style="background:#bbb;cursor:not-allowed" onclick="toast('\uD83D\uDD12 Para acceder a la Puerta Azul primero debes completar las 24 semanas de la Puerta Roja.')">Seleccionar</button>
           </div>
+          <div style="position:absolute;top:12px;right:12px;font-size:20px;z-index:2">\uD83D\uDD12</div>
         </div>
-        <div class="puerta-card">
+        <div class="puerta-card" style="opacity:0.6;position:relative">
           <div class="pc-head" style="background:linear-gradient(135deg,#7b4fa6,#5a3080)">
-            <div class="pc-icon" style="">🌈</div>
+            <div class="pc-icon" style="">\uD83C\uDF08</div>
             <div class="pc-name" style="">Puerta Arcoiris</div>
-            <div class="pc-weeks" style="">Transformación Avanzada</div>
+            <div class="pc-weeks" style="">Transformaci\u00F3n Avanzada</div>
           </div>
           <div class="pc-body">
-            <div class="pc-price" style="">€95<span style="font-size: 14px; color: rgb(122, 113, 104);">/mes</span></div>
-            <div class="pc-billing" style="">Requiere las 3 puertas</div>
-            <button class="btn-puerta" onclick="handlePurchase('puerta_arcoiris')">Seleccionar</button>
+            <div class="pc-price" style="">\u20AC95<span style="font-size: 14px; color: rgb(122, 113, 104);">/mes</span></div>
+            <div class="pc-billing" style="">Requiere las 3 puertas anteriores</div>
+            <button class="btn-puerta" style="background:#bbb;cursor:not-allowed" onclick="toast('\uD83D\uDD12 Para acceder a la Puerta Arcoiris primero debes completar las Puertas Blanca, Roja y Azul.')">Seleccionar</button>
           </div>
+          <div style="position:absolute;top:12px;right:12px;font-size:20px;z-index:2">\uD83D\uDD12</div>
         </div>
         <div class="puerta-card" style="border-color:#b89558">
           <div class="pc-head pc-arcoiris">
