@@ -1335,7 +1335,13 @@ async function onLogin(u) {
 
   document.getElementById('btnLogin').style.display = 'none';
   document.getElementById('btnInscribirse').style.display = 'none';
-  document.getElementById('btnDash').style.display = '';
+  const DASH_VISIBLE_EMAILS = [
+    'quico@frecuenciaintegral.com',
+    'admin@frecuenciaintegral.com',
+    'test@frecuenciaintegal.com',
+    'marga-test@yopmail.com'
+  ];
+  document.getElementById('btnDash').style.display = (isAdmin || DASH_VISIBLE_EMAILS.includes(u.email)) ? '' : 'none';
   document.getElementById('btnLogout').style.display = '';
   document.getElementById('btnAdmin').style.display = isAdmin ? '' : 'none';
   document.getElementById('edOpenBtn').style.display = isAdmin ? '' : 'none';
