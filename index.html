@@ -250,18 +250,6 @@ nav.sb-pushed-wide { left: 316px !important; right: 0 !important; }
   .sidebar{display:none}
   .main-content{margin-left:0}
   .nav-links{display:none}
-  /* Header */
-  .nav-logo{font-size:15px}
-  .nav-logo span{font-size:10px}
-  .btn-ghost{padding:6px 10px;font-size:11px}
-  .btn-primary{padding:6px 10px;font-size:11px}
-  nav{padding:0 12px}
-  /* Imágenes hero */
-  .hero-imgs{grid-template-columns:1fr!important;height:auto!important}
-  .hero-imgs>div{height:200px}
-  /* Panel auth */
-  .auth-right{padding:24px 16px}
-  .auth-box{max-width:100%;padding:28px 20px;border-radius:16px}
 }
 </style>
 <style id="nmDynStyle">.nav-links a{color:#3d3730!important}.nav-links a:hover{color:#2b7d7a!important}</style></head>
@@ -3038,7 +3026,7 @@ button:not(.efb):not([style*="font-size: 1"]):not([style*="font-size:1"]) { font
   .nav-btns .btn-ghost:not(#btnLogin):not(#btnLogout):not(#btnDash){display:none}
   .btn-primary{padding:9px 16px;font-size:14px}
   /* Hero */
-  .hero{padding:90px 20px 56px}
+  .hero{padding:90px 20px 36px;min-height:auto}
   .hero h1{font-size:clamp(30px,8vw,44px)}
   .hero p{font-size:16px}
   .hero-btns{flex-direction:column;align-items:stretch;gap:10px}
@@ -3085,6 +3073,20 @@ button:not(.efb):not([style*="font-size: 1"]):not([style*="font-size:1"]) { font
   .nav-btns{gap:6px}
   /* Joyas grid 1 col */
   #joyas div[style*="grid-template-columns:repeat(auto-fit"]{grid-template-columns:1fr !important}
+  /* Header logo y botones */
+  .nav-logo{font-size:15px}
+  .nav-logo span{font-size:10px}
+  .btn-ghost{padding:6px 10px;font-size:11px}
+  /* Panel auth: ancho completo */
+  .auth-right{padding:20px 16px}
+  .auth-box{max-width:100%;padding:28px 20px;border-radius:16px}
+  /* Imágenes hero: 1 columna */
+  .hero-imgs{grid-template-columns:1fr!important;height:auto!important}
+  .hero-imgs>div{height:220px}
+  /* Secciones: padding horizontal uniforme */
+  .section{padding:48px 16px}
+  /* Toast: ocupa ancho en mobile */
+  .toast{bottom:16px;right:16px;left:16px;text-align:center}
 }
 
 @media(max-width:480px){
