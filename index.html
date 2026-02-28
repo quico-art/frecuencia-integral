@@ -1137,12 +1137,19 @@ function showView(view) {
   if (view === 'progreso') renderProgreso();
   if (view === 'materiales') renderMateriales();
   if (view === 'formaciones') filterWeeksByPlan();
-  if (view === 'multimedia') {
+   if (view === 'multimedia') {
     var grid = document.getElementById('media-grid');
-    if (grid) Array.from(grid.children).forEach(function(c){ c.style.display = 'block'; });
+    if (!grid) return;
+    var catWords = {'cuencos':'cuencos','canaliz':'canalizacion','meditaci':'meditacion','frecuencia':'frecuencia','teor':'teoria','dzogchen':'teoria','ucdm':'teoria'};
+    Array.from(grid.children).forEach(function(card) {
+      card.style.display = 'block';
+      if (!card.getAttribute('data-cat')) {
+        var text = card.textContent.toLowerCase();
+        Object.keys(catWords).forEach(function(w){ if(text.indexOf(w)!==-1) card.setAttribute('data-cat',catWords[w]); });
+      }
+    });
   }
 }
-
 function filterWeeksByPlan() {
   const plan = user ? (user._plan || 'Blanca') : 'Blanca';
   const planRanges = {
