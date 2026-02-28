@@ -1975,7 +1975,7 @@ function filterMedia(cat) {
     card.style.display = text.indexOf(catMap[cat] || cat) !== -1 ? 'block' : 'none';
   });
 }
-document.addEventListener('DOMContentLoaded', function() {
+(function() {
   var grid = document.getElementById('media-grid');
   if (!grid) return;
   var catWords = {
@@ -1988,7 +1988,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (text.indexOf(word) !== -1) card.setAttribute('data-cat', catWords[word]);
     });
   });
-});
+})();
 var _mediaExpanded = false;
 function openMediaModal(card) {
   var src = card.getAttribute('data-src');
