@@ -1202,8 +1202,8 @@ function filterWeeksByPlan() {
     if (unlocked) {
       card.style.opacity = '1';
       card.style.pointerEvents = '';
-      card.style.cursor = '';
-      card.onclick = null;
+      card.style.cursor = 'pointer';
+      card.onclick = (function(wn){ return function(){ openWeekModal(wn); }; })(w);
       card.title = '';
     } else {
       card.style.opacity = '0.4';
@@ -1641,6 +1641,7 @@ async function markComplete(weekNum) {
   if (weekNum === currentWeek && currentWeek < 48) currentWeek++;
   closeModal();
   refreshDashboard();
+  filterWeeksByPlan();
   toast('Semana ' + weekNum + ' completada! 🎉');
 }
 
