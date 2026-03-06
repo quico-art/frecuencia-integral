@@ -5557,23 +5557,43 @@ function wixNeedText(action) {
 
 // ── Page push helpers (Wix-style) ──
 function wixPushPage(wide) {
-  var w = wide ? 356 : 56; // iconBar(56) + panel2(300) or just iconBar
-  var nav = document.querySelector('nav');
+  var w = wide ? 356 : 56;
+  var nav  = document.querySelector('nav');
   var allPages = document.querySelectorAll('.page');
+
   // Push nav
   if (nav) {
-    nav.style.left  = w + 'px';
-    nav.style.right = '0px';
-    nav.style.width = 'auto';
+    nav.style.left     = w + 'px';
+    nav.style.right    = '0px';
+    nav.style.width    = 'auto';
+    // Scale down nav items when panel is open
+    nav.style.fontSize = wide ? '11px' : '12px';
+    nav.style.height   = wide ? '54px' : '60px';
+    // Scale nav logo text
+    var logoText = nav.querySelector('.nav-logo-text');
+    if (logoText) logoText.style.fontSize = wide ? '11px' : '';
+    // Scale nav buttons
+    nav.querySelectorAll('.btn-primary, .btn-ghost, .btn-admin-nav').forEach(function(b) {
+      b.style.padding   = wide ? '6px 10px' : '';
+      b.style.fontSize  = wide ? '11px'     : '';
+    });
+    // Scale nav links
+    nav.querySelectorAll('.nav-links a').forEach(function(a) {
+      a.style.fontSize = wide ? '11px' : '';
+      a.style.padding  = wide ? '0 8px' : '';
+    });
   }
-  // Push all pages (active and inactive — prevents layout jump on page switch)
+
+  // Push + zoom pages
   allPages.forEach(function(p) {
-    p.style.marginLeft  = w + 'px';
-    p.style.maxWidth    = 'calc(100vw - ' + w + 'px)';
-    p.style.overflowX   = 'hidden';
-    p.style.boxSizing   = 'border-box';
+    p.style.marginLeft    = w + 'px';
+    p.style.maxWidth      = 'calc(100vw - ' + w + 'px)';
+    p.style.overflowX     = 'hidden';
+    p.style.boxSizing     = 'border-box';
+    p.style.zoom          = wide ? '0.82' : '0.92';
+    p.style.transformOrigin = 'top left';
   });
-  // Also push any fixed editor panels
+
   var fmtBar = document.getElementById('edFmtBar');
   if (fmtBar) fmtBar.style.left = w + 'px';
 }
@@ -5581,15 +5601,29 @@ function wixUnpushPage() {
   var nav = document.querySelector('nav');
   var allPages = document.querySelectorAll('.page');
   if (nav) {
-    nav.style.left  = '';
-    nav.style.right = '';
-    nav.style.width = '';
+    nav.style.left     = '';
+    nav.style.right    = '';
+    nav.style.width    = '';
+    nav.style.fontSize = '';
+    nav.style.height   = '';
+    var logoText = nav.querySelector('.nav-logo-text');
+    if (logoText) logoText.style.fontSize = '';
+    nav.querySelectorAll('.btn-primary, .btn-ghost, .btn-admin-nav').forEach(function(b) {
+      b.style.padding  = '';
+      b.style.fontSize = '';
+    });
+    nav.querySelectorAll('.nav-links a').forEach(function(a) {
+      a.style.fontSize = '';
+      a.style.padding  = '';
+    });
   }
   allPages.forEach(function(p) {
-    p.style.marginLeft = '';
-    p.style.maxWidth   = '';
-    p.style.overflowX  = '';
-    p.style.boxSizing  = '';
+    p.style.marginLeft    = '';
+    p.style.maxWidth      = '';
+    p.style.overflowX     = '';
+    p.style.boxSizing     = '';
+    p.style.zoom          = '';
+    p.style.transformOrigin = '';
   });
   var fmtBar = document.getElementById('edFmtBar');
   if (fmtBar) fmtBar.style.left = '';
