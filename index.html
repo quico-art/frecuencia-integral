@@ -285,8 +285,14 @@ html, body { overflow-x: hidden; }
   border-bottom: 1px solid rgba(255,255,255,.06);
 }
 .dtab-row-2 {
-  background: #141210;
-  border-top: 1px solid rgba(255,255,255,.06);
+  background: #111009;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+.dtab-row-2 .dtab {
+  color: rgba(255,255,255,.7);
+}
+.dtab-row-2 .dtab.active {
+  color: #3d9e9b;
 }
 .dtab {
   flex: 1 1 0;
@@ -301,12 +307,12 @@ html, body { overflow-x: hidden; }
 }
 .dtab.active { color: #3d9e9b; }
 .dtab:active { opacity: .7; }
-.dtab-icon { font-size: 20px; line-height: 1; display: block; }
+.dtab-icon { font-size: 20px; line-height: 1; display: block; min-width: 20px; text-align: center; }
 .dtab-label { font-size: 9px; letter-spacing: .01em; white-space: nowrap; overflow: hidden; max-width: 100%; text-overflow: ellipsis; text-align: center; }
 .dtab-editor { color: rgba(188,150,64,.6) !important; }
 .dtab-editor.active, .dtab-editor:hover { color: #D4AA5A !important; }
-.dtab-logout { color: rgba(255,255,255,.25) !important; }
-.dtab-logout:hover { color: rgba(255,100,100,.6) !important; }
+.dtab-logout { color: rgba(255,120,120,.7) !important; }
+.dtab-logout:hover { color: rgba(255,100,100,1) !important; }
 
 @media(max-width: 900px) {
   #dash-tab-bar { display: flex; }
@@ -5897,6 +5903,49 @@ function edSave(){
 .wsb-icon{width:40px;height:40px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:rgba(255,255,255,.65);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
 .wsb-icon:hover,.wsb-icon.active{background:#2b7d7a;border-color:#2b7d7a;color:white}
 .wsb-icon.active{box-shadow:0 0 0 2px rgba(43,125,122,.4)}
+
+/* ── MOBILE: sidebar becomes horizontal top bar ── */
+@media(max-width:900px){
+  #wixSideBar {
+    flex-direction: column !important;
+    top: 66px !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    z-index: 99995 !important;
+  }
+  #wixIconBar {
+    width: 100% !important;
+    height: auto !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    padding: 8px 10px !important;
+    gap: 8px !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,.4) !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    scrollbar-width: none !important;
+  }
+  #wixIconBar::-webkit-scrollbar { display: none; }
+  #wixIconBar > div:first-child { display: none !important; } /* hide ED TCT label */
+  #wixIconBar > div[style*="height:1px"] { display: none !important; } /* hide separators */
+  #wixIconBar > div[style*="flex:1"] { display: none !important; } /* hide spacer */
+  #wixIconBar .wsb-icon { flex-shrink: 0 !important; width: 38px !important; height: 38px !important; }
+  #wixPanel2 {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 50vh !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,.5) !important;
+    flex-shrink: 0 !important;
+  }
+  /* Push page content down when editor bar is open */
+  body.wix-open .page.active {
+    top: calc(66px + 58px) !important;
+  }
+}
 .wp2-btn{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:11px 13px;color:rgba(255,255,255,.85);font-size:13px;cursor:pointer;width:100%;text-align:left;transition:all .15s;font-family:'DM Sans',sans-serif;box-sizing:border-box}
 .wp2-btn:hover{background:rgba(43,125,122,.18);border-color:rgba(43,125,122,.5);color:white;transform:translateX(1px)}
 .wp2-btn:active{transform:scale(.98)}
