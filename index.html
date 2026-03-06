@@ -35,10 +35,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,245,241,
 nav, .page.active {
   transition: margin-left .25s cubic-bezier(.4,0,.2,1), left .25s cubic-bezier(.4,0,.2,1);
 }
-nav.sb-pushed { left: 56px !important; right: 0 !important; }
-nav.sb-pushed-wide { left: 316px !important; right: 0 !important; }
-.page.active.sb-pushed { margin-left: 0; }
-.page.active.sb-pushed-wide { margin-left: 0; }
+/* sb-pushed disabled — sidebar is fixed overlay, no page push */
 
 /* PUBLIC PAGE */
 .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:100px 32px 60px;background:linear-gradient(135deg,#f7f5f1 0%,#f0ece4 100%)}
@@ -2269,7 +2266,8 @@ function goTo(page) {
   if(sb && sb.style.display !== 'none') {
     var p2 = document.getElementById('wixPanel2');
     var isWide = p2 && p2.style.display !== 'none';
-    newPage.classList.add(isWide ? 'sb-pushed-wide' : 'sb-pushed');
+    /* no push on page navigation */
+
   }
   window.scrollTo(0,0);
   if (page === 'student') refreshDashboard();
@@ -5556,21 +5554,10 @@ function wixNeedText(action) {
 
 // ── Page push helpers (Wix-style) ──
 function wixPushPage(wide) {
-  var nav = document.querySelector('nav');
-  var page = document.querySelector('.page.active');
-  if (wide) {
-    if (nav)  { nav.classList.remove('sb-pushed');      nav.classList.add('sb-pushed-wide');  }
-    if (page) { page.classList.remove('sb-pushed');     page.classList.add('sb-pushed-wide'); }
-  } else {
-    if (nav)  { nav.classList.remove('sb-pushed-wide'); nav.classList.add('sb-pushed');       }
-    if (page) { page.classList.remove('sb-pushed-wide');page.classList.add('sb-pushed');      }
-  }
+  // Panel es position:fixed — no desplaza el contenido
 }
 function wixUnpushPage() {
-  var nav = document.querySelector('nav');
-  var page = document.querySelector('.page.active');
-  if (nav)  nav.classList.remove('sb-pushed', 'sb-pushed-wide');
-  if (page) page.classList.remove('sb-pushed', 'sb-pushed-wide');
+  // No-op: el panel flota sobre la página sin moverla
 }
 
 // ── Open / Close sidebar ──
