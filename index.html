@@ -1231,12 +1231,28 @@ button:focus-visible, input:focus-visible {
   .h-puerta-title { font-size: 2.2rem; }
   .h-puerta-price { font-size: 1.6rem; }
 
-  /* Oro */
-  .h-puerta-oro-wrap { grid-template-columns: 1fr; gap: 1.5rem; padding: 2.5rem 1.2rem; }
+  /* Oro mobile — igual que las otras puertas */
+  .h-puerta-oro-wrap {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 3rem 1.4rem;
+  }
   .h-oro-wm { display: none; }
-  .h-oro-title { font-size: 4rem; }
-  .h-oro-price { font-size: 3rem; }
-  .h-oro-right { align-items: flex-start; }
+  .h-puerta-oro-wrap::before { display: none; }
+  .h-oro-title { font-size: clamp(3rem, 12vw, 4.5rem); }
+  .h-oro-badge { margin-bottom: 1rem; }
+  .h-oro-sub { margin-bottom: 1rem; }
+  .h-oro-desc { font-size: 1rem; line-height: 1.7; }
+  .h-oro-right {
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+    border-top: 1px solid rgba(188,150,64,0.2);
+    padding-top: 1.5rem;
+  }
+  .h-oro-price { font-size: clamp(2.5rem, 10vw, 3.5rem); }
+  .h-oro-price-sub { font-size: 0.78rem; margin-bottom: 1.2rem; }
+  .h-oro-btn { width: 100%; text-align: center; padding: 1rem 1.5rem; font-size: 0.75rem; }
 
   /* Mandala */
   #h-mandala-wrap { padding: 2.5rem 0; overflow: hidden; }
