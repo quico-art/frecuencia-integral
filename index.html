@@ -341,7 +341,7 @@ html, body { overflow-x: hidden; }
 #mob-ed-bar {
   position: fixed;
   top: 0; left: 0; right: 0;
-  z-index: 99995;
+  z-index: 999999;
   background: #1c1814;
   border-bottom: 2px solid rgba(188,150,64,.4);
   box-shadow: 0 4px 20px rgba(0,0,0,.6);
@@ -4993,8 +4993,11 @@ function edPwdCancel() {
 }
 
 function edShowEditorBtns() {
-  // Abre directamente el panel lateral — no se necesitan los botones flotantes
-  wixSideBarOpen();
+  if (window.innerWidth <= 900) {
+    mobEdOpen();
+  } else {
+    wixSideBarOpen();
+  }
 }
 
 function edHideEditorBtns() {
@@ -5011,8 +5014,12 @@ function edHideEditorBtns() {
 }
 
 function edToggleEditorBtns() {
+  if (window.innerWidth <= 900) {
+    var mb = document.getElementById('mob-ed-bar');
+    if (mb && mb.style.display !== 'none') { mobEdClose(); } else { mobEdOpen(); }
+    return;
+  }
   var sb = document.getElementById('wixSideBar');
-  // Si el sidebar está visible → cerrarlo. Si no → abrirlo.
   if(sb && sb.style.display === 'flex') {
     wixSideBarClose();
   } else {
@@ -5312,37 +5319,37 @@ document.addEventListener('mouseup',function(e){
     if(!sel||!sel.rangeCount||!sel.toString().trim()){edFmtBarHide();return;}
     var rect=sel.getRangeAt(0).getBoundingClientRect();
     var bar=document.getElementById('edFmtBar');
-    var barH = 80; // altura estimada de la barra
-    var margin = 12;
+    bar.style.display='flex'; // render first to measure
+    var barH = bar.offsetHeight || 72;
+    var margin = 14;
     var sbW = 0;
     var sb = document.getElementById('wixSideBar');
-    if (sb && sb.style.display === 'flex') {
+    if (sb && sb.style.display === 'flex' && window.innerWidth > 900) {
       var p2 = document.getElementById('wixPanel2');
       sbW = (p2 && p2.style.display === 'flex') ? 356 : 56;
     }
+    // Account for mobile editor bar at top
+    var topOffset = 0;
+    var mobBar = document.getElementById('mob-ed-bar');
+    if (mobBar && mobBar.style.display !== 'none') topOffset = mobBar.offsetHeight || 62;
+    var navH = 66 + topOffset;
     var availW = window.innerWidth - sbW;
-    // Centrar horizontalmente en el espacio disponible (después del sidebar)
-    var bx = sbW + (rect.left - sbW) + rect.width/2 - 300;
-    var leftPos = Math.max(sbW + 6, Math.min(bx, sbW + availW - 610));
-    bar.style.left = leftPos + 'px';
+    // Centre horizontally in available space
+    var bx = sbW + (rect.left - sbW) + rect.width / 2 - Math.min(availW / 2, 300);
+    var maxLeft = sbW + availW - Math.min(availW, 620) - 6;
+    bar.style.left = Math.max(sbW + 6, Math.min(bx, maxLeft)) + 'px';
     bar.style.bottom = '';
-    // Decidir si va ARRIBA o ABAJO del texto seleccionado
-    var spaceAbove = rect.top; // espacio libre encima
-    var spaceBelow = window.innerHeight - rect.bottom; // espacio libre abajo
-    if (spaceAbove >= barH + margin + 10) {
-      // Hay espacio arriba → mostrar encima (posición habitual)
-      bar.style.top    = (rect.top - barH - margin + window.scrollY) + 'px';
-      bar.style.bottom = '';
+    // Decide: ABOVE or BELOW the selection
+    var spaceAbove = rect.top - navH;
+    var spaceBelow = window.innerHeight - rect.bottom - (window.innerWidth <= 900 ? 130 : 0);
+    if (spaceAbove >= barH + margin) {
+      bar.style.top = (rect.top - barH - margin + window.scrollY) + 'px';
     } else if (spaceBelow >= barH + margin) {
-      // No hay espacio arriba pero sí abajo → mostrar debajo
-      bar.style.top    = (rect.bottom + margin + window.scrollY) + 'px';
-      bar.style.bottom = '';
+      bar.style.top = (rect.bottom + margin + window.scrollY) + 'px';
     } else {
-      // Poco espacio arriba y abajo → anclar al top visible con offset
-      bar.style.top    = (window.scrollY + 80) + 'px';
-      bar.style.bottom = '';
+      // Fallback: just below nav
+      bar.style.top = (window.scrollY + navH + 8) + 'px';
     }
-    bar.style.display='flex';
     // sync color picker with selection
     try{
       var anc=sel.anchorNode;
