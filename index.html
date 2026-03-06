@@ -4941,9 +4941,36 @@ document.addEventListener('mouseup',function(e){
     if(!sel||!sel.rangeCount||!sel.toString().trim()){edFmtBarHide();return;}
     var rect=sel.getRangeAt(0).getBoundingClientRect();
     var bar=document.getElementById('edFmtBar');
-    var bx=rect.left+rect.width/2-300;
-    bar.style.left=Math.max(6,Math.min(bx,window.innerWidth-610))+'px';
-    bar.style.top=(rect.top-58+window.scrollY)+'px';
+    var barH = 80; // altura estimada de la barra
+    var margin = 12;
+    var sbW = 0;
+    var sb = document.getElementById('wixSideBar');
+    if (sb && sb.style.display === 'flex') {
+      var p2 = document.getElementById('wixPanel2');
+      sbW = (p2 && p2.style.display === 'flex') ? 356 : 56;
+    }
+    var availW = window.innerWidth - sbW;
+    // Centrar horizontalmente en el espacio disponible (después del sidebar)
+    var bx = sbW + (rect.left - sbW) + rect.width/2 - 300;
+    var leftPos = Math.max(sbW + 6, Math.min(bx, sbW + availW - 610));
+    bar.style.left = leftPos + 'px';
+    bar.style.bottom = '';
+    // Decidir si va ARRIBA o ABAJO del texto seleccionado
+    var spaceAbove = rect.top; // espacio libre encima
+    var spaceBelow = window.innerHeight - rect.bottom; // espacio libre abajo
+    if (spaceAbove >= barH + margin + 10) {
+      // Hay espacio arriba → mostrar encima (posición habitual)
+      bar.style.top    = (rect.top - barH - margin + window.scrollY) + 'px';
+      bar.style.bottom = '';
+    } else if (spaceBelow >= barH + margin) {
+      // No hay espacio arriba pero sí abajo → mostrar debajo
+      bar.style.top    = (rect.bottom + margin + window.scrollY) + 'px';
+      bar.style.bottom = '';
+    } else {
+      // Poco espacio arriba y abajo → anclar al top visible con offset
+      bar.style.top    = (window.scrollY + 80) + 'px';
+      bar.style.bottom = '';
+    }
     bar.style.display='flex';
     // sync color picker with selection
     try{
