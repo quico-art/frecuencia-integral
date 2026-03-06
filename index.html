@@ -1187,6 +1187,28 @@ button:focus-visible, input:focus-visible {
   /* Puertas */
   .h-puertas-grid { grid-template-columns: 1fr 1fr; }
 
+  /* Oro — tablet */
+  .h-puerta-oro-wrap {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 3rem 2rem !important;
+    gap: 2rem !important;
+  }
+  .h-oro-wm { display: none !important; }
+  .h-puerta-oro-wrap::before { display: none !important; }
+  .h-oro-right {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 2rem !important;
+    flex-wrap: wrap !important;
+    width: 100% !important;
+    border-top: 1px solid rgba(188,150,64,0.25) !important;
+    padding-top: 1.5rem !important;
+    flex-shrink: unset !important;
+  }
+  .h-oro-btn { flex-shrink: 0 !important; }
+
   /* Quiénes */
   #h-quienes { grid-template-columns: 1fr; gap: 2.5rem; }
   .h-quienes-visual { height: auto; position: static; display: flex; flex-direction: column; gap: 1.5rem; }
@@ -1231,28 +1253,72 @@ button:focus-visible, input:focus-visible {
   .h-puerta-title { font-size: 2.2rem; }
   .h-puerta-price { font-size: 1.6rem; }
 
-  /* Oro mobile — igual que las otras puertas */
+  /* Oro mobile — columna única, igual que las otras puertas */
   .h-puerta-oro-wrap {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    padding: 3rem 1.4rem;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 2.5rem 1.4rem !important;
+    gap: 0 !important;
+    overflow: hidden !important;
   }
-  .h-oro-wm { display: none; }
-  .h-puerta-oro-wrap::before { display: none; }
-  .h-oro-title { font-size: clamp(3rem, 12vw, 4.5rem); }
-  .h-oro-badge { margin-bottom: 1rem; }
-  .h-oro-sub { margin-bottom: 1rem; }
-  .h-oro-desc { font-size: 1rem; line-height: 1.7; }
-  .h-oro-right {
-    align-items: flex-start;
-    text-align: left;
+  .h-puerta-oro-wrap::before,
+  .h-puerta-oro-wrap::after { display: none !important; }
+  .h-oro-wm { display: none !important; }
+  .h-oro-left {
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    border-top: 1px solid rgba(188,150,64,0.2);
-    padding-top: 1.5rem;
   }
-  .h-oro-price { font-size: clamp(2.5rem, 10vw, 3.5rem); }
-  .h-oro-price-sub { font-size: 0.78rem; margin-bottom: 1.2rem; }
-  .h-oro-btn { width: 100%; text-align: center; padding: 1rem 1.5rem; font-size: 0.75rem; }
+  .h-oro-badge {
+    font-size: 0.58rem;
+    margin-bottom: 0.8rem;
+  }
+  .h-oro-title {
+    font-size: clamp(2.5rem, 10vw, 3.5rem) !important;
+    margin-bottom: 0.5rem;
+    line-height: 1.05;
+  }
+  .h-oro-sub {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    margin-bottom: 0.8rem;
+  }
+  .h-oro-desc {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    max-width: 100%;
+    color: rgba(250,248,245,0.55);
+  }
+  .h-oro-right {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    width: 100% !important;
+    flex-shrink: 0 !important;
+    border-top: 1px solid rgba(188,150,64,0.3) !important;
+    margin-top: 1.8rem !important;
+    padding-top: 1.5rem !important;
+    gap: 0.4rem !important;
+    box-sizing: border-box !important;
+  }
+  .h-oro-price {
+    font-size: clamp(2.8rem, 10vw, 3.2rem) !important;
+    line-height: 1 !important;
+  }
+  .h-oro-price-sub {
+    font-size: 0.75rem !important;
+    margin-bottom: 1rem !important;
+  }
+  .h-oro-btn {
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+    padding: 0.9rem 1.2rem !important;
+    font-size: 0.72rem !important;
+    box-sizing: border-box !important;
+    white-space: normal !important;
+  }
 
   /* Mandala */
   #h-mandala-wrap { padding: 2.5rem 0; overflow: hidden; }
