@@ -262,7 +262,7 @@ html, body { overflow-x: hidden; }
   .modal-body{padding:20px 16px}
 }
 
-/* ── DASHBOARD TAB BAR MOBILE ── */
+/* ── DASHBOARD TAB BAR MOBILE — 2 filas ── */
 #dash-tab-bar {
   display: none;
   position: fixed;
@@ -270,58 +270,59 @@ html, body { overflow-x: hidden; }
   z-index: 1000;
   background: #1c1814;
   border-top: 1px solid rgba(255,255,255,.08);
-  padding: 6px 0 calc(env(safe-area-inset-bottom) + 6px);
-  grid-template-columns: repeat(5, 1fr);
-  gap: 0;
-  box-shadow: 0 -4px 20px rgba(0,0,0,.3);
+  box-shadow: 0 -4px 20px rgba(0,0,0,.35);
+  flex-direction: column;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.dtab-row {
+  display: flex;
+  width: 100%;
+}
+.dtab-row-1 {
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.dtab-row-2 {
+  background: rgba(0,0,0,.15);
 }
 .dtab {
+  flex: 1;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 3px; padding: 6px 4px;
+  gap: 2px; padding: 6px 2px;
   background: none; border: none; cursor: pointer;
-  color: rgba(255,255,255,.45);
+  color: rgba(255,255,255,.4);
   font-family: 'DM Sans', sans-serif;
   transition: color .2s;
   min-width: 0;
 }
 .dtab.active { color: #3d9e9b; }
-.dtab:hover { color: rgba(255,255,255,.7); }
-.dtab-icon { font-size: 20px; line-height: 1; }
-.dtab-label { font-size: 9px; letter-spacing: .02em; white-space: nowrap; overflow: hidden; max-width: 56px; text-overflow: ellipsis; }
-.dtab-drawer {
-  display: flex; align-items: center; gap: 10px;
-  padding: 14px 16px; border-radius: 12px;
-  background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08);
-  color: rgba(255,255,255,.75); font-size: 13px;
-  font-family: 'DM Sans', sans-serif; cursor: pointer; width: 100%;
-  transition: background .2s;
-}
-.dtab-drawer:hover { background: rgba(255,255,255,.1); }
+.dtab:active { opacity: .7; }
+.dtab-icon { font-size: 18px; line-height: 1; }
+.dtab-label { font-size: 8.5px; letter-spacing: .01em; white-space: nowrap; overflow: hidden; max-width: 52px; text-overflow: ellipsis; }
+.dtab-editor { color: rgba(188,150,64,.6) !important; }
+.dtab-editor.active, .dtab-editor:hover { color: #D4AA5A !important; }
+.dtab-logout { color: rgba(255,255,255,.25) !important; }
+.dtab-logout:hover { color: rgba(255,100,100,.6) !important; }
 
 @media(max-width: 900px) {
-  #dash-tab-bar { display: grid; }
+  #dash-tab-bar { display: flex; }
   .sidebar { display: none !important; }
   .main-content {
     margin-left: 0 !important;
-    padding: 20px 16px 80px !important;
+    padding: 20px 16px 120px !important;
   }
-  /* Dashboard grid — 2 cols on tablet */
+  /* Hide floating editor button — it's in tab bar */
+  #edOpenBtn { display: none !important; }
+  /* Dashboard grid */
   .dashboard-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
-  /* Formaciones / semanas — 1 col */
-  .semanas-grid, .weeks-grid { grid-template-columns: 1fr !important; }
-  /* Stat cards */
   .stat-card { padding: 16px !important; }
   .stat-value { font-size: 28px !important; }
 }
 
 @media(max-width: 600px) {
   .dashboard-grid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
-  .main-content { padding: 16px 12px 80px !important; }
+  .main-content { padding: 16px 12px 120px !important; }
   .stat-value { font-size: 24px !important; }
-  /* Week cards in formaciones */
   .week-card, .semana-card { padding: 16px !important; }
-  /* Progress section */
-  #progreso-list { gap: 10px !important; }
 }
 
 </style>
@@ -2077,43 +2078,45 @@ document.addEventListener('keydown', function(e) {
     </div>
 
     <!-- TAB BAR MOBILE -->
+    <!-- TAB BAR MOBILE -->
     <nav id="dash-tab-bar">
-      <button class="dtab active" onclick="showView('dashboard');dtabActive(this)">
-        <span class="dtab-icon">🏠</span><span class="dtab-label">Inicio</span>
-      </button>
-      <button class="dtab" onclick="showView('formaciones');dtabActive(this)">
-        <span class="dtab-icon">📚</span><span class="dtab-label">Formaciones</span>
-      </button>
-      <button class="dtab" onclick="showView('multimedia');dtabActive(this)">
-        <span class="dtab-icon">🎵</span><span class="dtab-label">Multimedia</span>
-      </button>
-      <button class="dtab" onclick="showView('progreso');dtabActive(this)">
-        <span class="dtab-icon">📊</span><span class="dtab-label">Progreso</span>
-      </button>
-      <button class="dtab" onclick="showDashMore()">
-        <span class="dtab-icon">☰</span><span class="dtab-label">Más</span>
-      </button>
-    </nav>
-
-    <!-- DRAWER "MÁS" MOBILE -->
-    <div id="dash-drawer-overlay" onclick="hideDashMore()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1100"></div>
-    <div id="dash-drawer" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1c1814;border-radius:20px 20px 0 0;z-index:1101;padding:8px 0 calc(env(safe-area-inset-bottom)+8px) 0;box-shadow:0 -8px 32px rgba(0,0,0,.4)">
-      <div style="width:36px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:8px auto 16px"></div>
-      <div style="padding:0 16px 8px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <button class="dtab-drawer" onclick="showView('materiales');hideDashMore();dtabActive(null)">
-          <span>📄</span> Materiales PDF
+      <!-- FILA 1: siempre visible -->
+      <div class="dtab-row dtab-row-1">
+        <button class="dtab active" onclick="showView('dashboard');dtabActive(this,0)">
+          <span class="dtab-icon">🏠</span><span class="dtab-label">Inicio</span>
         </button>
-        <button class="dtab-drawer" onclick="showView('notas');hideDashMore();dtabActive(null)">
-          <span>📝</span> Notas
+        <button class="dtab" onclick="showView('formaciones');dtabActive(this,1)">
+          <span class="dtab-icon">📚</span><span class="dtab-label">Formaciones</span>
         </button>
-        <button class="dtab-drawer" onclick="showView('arteterapia');hideDashMore();dtabActive(null)">
-          <span>🎨</span> Arteterapia
+        <button class="dtab" onclick="showView('multimedia');dtabActive(this,2)">
+          <span class="dtab-icon">🎵</span><span class="dtab-label">Multimedia</span>
         </button>
-        <button class="dtab-drawer" onclick="doLogout()" style="color:rgba(255,255,255,.4)">
-          <span>🚪</span> Cerrar Sesión
+        <button class="dtab" onclick="showView('progreso');dtabActive(this,3)">
+          <span class="dtab-icon">📊</span><span class="dtab-label">Progreso</span>
+        </button>
+        <button class="dtab dtab-mas" id="dtab-mas-btn" onclick="dtabToggleMas(this)">
+          <span class="dtab-icon">☰</span><span class="dtab-label">Más</span>
+        </button>
+        <button class="dtab dtab-editor" id="dtab-editor-btn" onclick="wixSideBarOpen()" style="display:none">
+          <span class="dtab-icon">✏️</span><span class="dtab-label">Editor</span>
         </button>
       </div>
-    </div>
+      <!-- FILA 2: visible solo al pulsar Más -->
+      <div class="dtab-row dtab-row-2" id="dtab-row-2" style="display:none">
+        <button class="dtab" onclick="showView('materiales');dtabActive(this,4);dtabCloseMas()">
+          <span class="dtab-icon">📄</span><span class="dtab-label">Materiales</span>
+        </button>
+        <button class="dtab" onclick="showView('notas');dtabActive(this,5);dtabCloseMas()">
+          <span class="dtab-icon">📝</span><span class="dtab-label">Notas</span>
+        </button>
+        <button class="dtab" onclick="showView('arteterapia');dtabActive(this,6);dtabCloseMas()">
+          <span class="dtab-icon">🎨</span><span class="dtab-label">Arteterapia</span>
+        </button>
+        <button class="dtab dtab-logout" onclick="doLogout()">
+          <span class="dtab-icon">🚪</span><span class="dtab-label">Salir</span>
+        </button>
+      </div>
+    </nav>
 
     <!-- MAIN -->
     <div class="main-content">
@@ -2488,7 +2491,7 @@ function goTo(page) {
 
 function showView(view, el) {
   // Sync tab bar
-  var tabMap = {'dashboard':0,'formaciones':1,'multimedia':2,'progreso':3};
+  var tabMap = {'dashboard':0,'formaciones':1,'multimedia':2,'progreso':3,'materiales':4,'notas':5,'arteterapia':6};
   if (typeof tabMap[view] !== 'undefined') {
     document.querySelectorAll('.dtab').forEach(function(b,i){ b.classList.toggle('active', i===tabMap[view]); });
   } else {
@@ -2714,6 +2717,7 @@ async function onLogin(u) {
   document.getElementById('btnLogout').style.display = '';
   document.getElementById('btnAdmin').style.display = isAdmin ? '' : 'none';
   var edBtn = document.getElementById('edOpenBtn'); if(edBtn) edBtn.style.display = isAdmin ? '' : 'none';
+  var dtabEd = document.getElementById('dtab-editor-btn'); if(dtabEd) dtabEd.style.display = isAdmin ? '' : 'none';
   document.getElementById('btnHome').style.display = '';
 
 try {
@@ -5134,18 +5138,24 @@ function edPropCssRead(){
 
 
 // ── Dashboard tab bar ──
-function dtabActive(btn) {
+function dtabActive(btn, idx) {
   document.querySelectorAll('.dtab').forEach(function(b){ b.classList.remove('active'); });
   if (btn) btn.classList.add('active');
 }
-function showDashMore() {
-  document.getElementById('dash-drawer').style.display = 'block';
-  document.getElementById('dash-drawer-overlay').style.display = 'block';
+function dtabToggleMas(btn) {
+  var row2 = document.getElementById('dtab-row-2');
+  var open = row2 && row2.style.display !== 'none';
+  if (row2) row2.style.display = open ? 'none' : 'flex';
+  if (btn) btn.classList.toggle('active', !open);
 }
-function hideDashMore() {
-  document.getElementById('dash-drawer').style.display = 'none';
-  document.getElementById('dash-drawer-overlay').style.display = 'none';
+function dtabCloseMas() {
+  var row2 = document.getElementById('dtab-row-2');
+  if (row2) row2.style.display = 'none';
+  var masBtn = document.getElementById('dtab-mas-btn');
+  if (masBtn) masBtn.classList.remove('active');
 }
+function showDashMore() {}
+function hideDashMore() {}
 // Sync tab bar with showView calls
 var _origShowView = typeof showView === 'function' ? showView : null;
 
