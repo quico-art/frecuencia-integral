@@ -37,8 +37,8 @@ nav, .page.active {
 }
 nav.sb-pushed { left: 56px !important; right: 0 !important; }
 nav.sb-pushed-wide { left: 316px !important; right: 0 !important; }
-.page.active.sb-pushed { margin-left: 56px; }
-.page.active.sb-pushed-wide { margin-left: 316px; }
+.page.active.sb-pushed { margin-left: 0; }
+.page.active.sb-pushed-wide { margin-left: 0; }
 
 /* PUBLIC PAGE */
 .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:100px 32px 60px;background:linear-gradient(135deg,#f7f5f1 0%,#f0ece4 100%)}
@@ -2044,6 +2044,134 @@ document.addEventListener('keydown', function(e) {
         <div id="progreso-list"></div>
       </div>
 
+      <!-- NOTAS VIEW -->
+      <div id="view-notas" style="display:none">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px">
+          <h2 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300">Mi Diario TCT</h2>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button onclick="notasSetView('editor')" id="notas-btn-editor" style="padding:6px 14px;border-radius:8px;border:1.5px solid #2b7d7a;background:#2b7d7a;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">✏️ Escribir</button>
+            <button onclick="notasSetView('calendario')" id="notas-btn-cal" style="padding:6px 14px;border-radius:8px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">📅 Calendario</button>
+          </div>
+        </div>
+
+        <!-- EDITOR PANEL -->
+        <div id="notas-panel-editor">
+          <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;align-items:center">
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <label style="font-size:11px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.06em">Semana</label>
+              <select id="notas-semana" onchange="notasLoadEntry()" style="padding:7px 12px;border:1.5px solid #e4ddd3;border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;background:white;color:#3d3730;cursor:pointer">
+                <option value="">— Selecciona semana —</option>
+              </select>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <label style="font-size:11px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.06em">Fecha</label>
+              <input type="date" id="notas-fecha" style="padding:7px 12px;border:1.5px solid #e4ddd3;border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;color:#3d3730">
+            </div>
+            <div style="margin-top:auto">
+              <button onclick="notasSave()" style="padding:8px 20px;background:#2b7d7a;color:white;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.04em">💾 Guardar</button>
+            </div>
+          </div>
+          <!-- Toolbar markdown -->
+          <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap">
+            <button onclick="notasMd('**','**')" title="Negrita" style="padding:4px 10px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:13px;cursor:pointer;font-weight:700">B</button>
+            <button onclick="notasMd('*','*')" title="Cursiva" style="padding:4px 10px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:13px;cursor:pointer;font-style:italic">I</button>
+            <button onclick="notasMd('### ','')" title="Título" style="padding:4px 10px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:13px;cursor:pointer">H</button>
+            <button onclick="notasMd('- ','')" title="Lista" style="padding:4px 10px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:13px;cursor:pointer">—</button>
+            <button onclick="notasMd('> ','')" title="Cita" style="padding:4px 10px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:13px;cursor:pointer">❝</button>
+            <button onclick="notasTogglePreview()" id="notas-preview-btn" style="padding:4px 12px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:12px;cursor:pointer;margin-left:auto;font-family:'DM Sans',sans-serif">👁 Vista previa</button>
+          </div>
+          <textarea id="notas-editor" placeholder="Escribe aquí tu reflexión del día... Puedes usar **negrita**, *cursiva*, ### títulos, - listas, > citas" style="width:100%;min-height:340px;padding:16px;border:1.5px solid #e4ddd3;border-radius:12px;font-size:14px;font-family:'DM Sans',sans-serif;line-height:1.75;resize:vertical;box-sizing:border-box;color:#3d3730;background:white;outline:none"></textarea>
+          <div id="notas-preview" style="display:none;min-height:340px;padding:16px;border:1.5px solid #e4ddd3;border-radius:12px;background:#faf8f5;font-size:14px;line-height:1.75;color:#3d3730;overflow-y:auto"></div>
+          <div id="notas-save-msg" style="margin-top:10px;font-size:12px;color:#2b7d7a;display:none">✓ Nota guardada</div>
+        </div>
+
+        <!-- CALENDARIO PANEL -->
+        <div id="notas-panel-calendario" style="display:none">
+          <div style="display:flex;gap:12px;margin-bottom:20px;align-items:center">
+            <button onclick="notasCalNav(-1)" style="padding:6px 14px;border:1.5px solid #e4ddd3;border-radius:8px;background:white;cursor:pointer;font-size:16px">‹</button>
+            <div id="notas-cal-title" style="flex:1;text-align:center;font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:#1c1814"></div>
+            <button onclick="notasCalNav(1)" style="padding:6px 14px;border:1.5px solid #e4ddd3;border-radius:8px;background:white;cursor:pointer;font-size:16px">›</button>
+          </div>
+          <!-- Puerta tabs -->
+          <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+            <button onclick="notasCalPuerta('all')" id="ncal-all" style="padding:5px 14px;border-radius:100px;border:1.5px solid #2b7d7a;background:#2b7d7a;color:white;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">Todas</button>
+            <button onclick="notasCalPuerta('Blanca')" id="ncal-blanca" style="padding:5px 14px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">🌿 Blanca</button>
+            <button onclick="notasCalPuerta('Roja')" id="ncal-roja" style="padding:5px 14px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">🔥 Roja</button>
+            <button onclick="notasCalPuerta('Azul')" id="ncal-azul" style="padding:5px 14px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">🔵 Azul</button>
+            <button onclick="notasCalPuerta('Arcoiris')" id="ncal-arc" style="padding:5px 14px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">🌈 Arcoíris</button>
+          </div>
+          <div id="notas-calendario-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px"></div>
+          <div style="display:flex;gap:16px;margin-top:12px;flex-wrap:wrap">
+            <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#7a7168"><div style="width:12px;height:12px;border-radius:50%;background:#2b7d7a"></div>Con nota</div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#7a7168"><div style="width:12px;height:12px;border-radius:50%;background:#e4ddd3"></div>Sin nota</div>
+          </div>
+        </div>
+
+        <!-- MODAL LECTURA NOTA -->
+        <div id="notas-read-modal" style="display:none;position:fixed;inset:0;z-index:8000;background:rgba(28,24,20,.7);align-items:center;justify-content:center;padding:24px">
+          <div style="background:white;border-radius:16px;width:100%;max-width:560px;max-height:80vh;overflow-y:auto;padding:28px;position:relative">
+            <button onclick="document.getElementById('notas-read-modal').style.display='none'" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:18px;cursor:pointer;color:#7a7168">✕</button>
+            <div id="notas-read-date" style="font-size:11px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px"></div>
+            <div id="notas-read-semana" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#BC9640;margin-bottom:16px"></div>
+            <div id="notas-read-content" style="font-size:14px;line-height:1.8;color:#3d3730"></div>
+            <div style="margin-top:20px;display:flex;gap:8px">
+              <button onclick="notasEditFromModal()" style="padding:7px 16px;background:#2b7d7a;color:white;border:none;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif">✏️ Editar</button>
+              <button onclick="notasDeleteEntry()" style="padding:7px 16px;background:none;color:#bf4637;border:1.5px solid #bf4637;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif">🗑 Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ARTETERAPIA VIEW -->
+      <div id="view-arteterapia" style="display:none">
+        <div style="max-width:760px">
+          <div style="display:flex;align-items:center;gap:16px;margin-bottom:32px">
+            <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#BC9640,#8A6E2A);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0">🎨</div>
+            <div>
+              <div style="font-size:11px;font-weight:700;color:#BC9640;text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px">Manual Complementario</div>
+              <h2 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;margin:0;color:#1c1814">Arteterapia del Sistema TCT</h2>
+            </div>
+          </div>
+
+          <div style="background:linear-gradient(135deg,#BC964012,#BC964006);border:1px solid #BC964030;border-radius:16px;padding:28px;margin-bottom:28px">
+            <div style="font-size:11px;font-weight:700;color:#BC9640;text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px">✦ Presentación del Manual</div>
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;color:#1c1814;line-height:1.4;margin-bottom:14px">Manual de Arteterapia del Sistema TCT:<br><em style="color:#BC9640">48 Semanas de Práctica Creativa</em></h3>
+            <p style="font-size:14px;line-height:1.85;color:#3d3730;margin:0">Este manual complementa el programa del Sistema TCT, ofreciendo un ejercicio de arteterapia semanal diseñado para profundizar e integrar los conceptos de cada etapa. El arte se convierte en un puente entre el entendimiento intelectual y la sabiduría encarnada, permitiendo explorar, expresar y transformar nuestro mundo interior de una manera directa y simbólica.</p>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px">
+            <div style="background:#f7f5f1;border-radius:12px;padding:20px;border-left:3px solid #b8ad9e">
+              <div style="font-size:1.8rem;margin-bottom:8px">🌿</div>
+              <div style="font-size:12px;font-weight:700;color:#8a8078;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Puerta Blanca (S. 1–12)</div>
+              <div style="font-size:13px;color:#6B6358;line-height:1.6">Materiales táctiles y primarios — arcilla, carboncillo, pasteles. Reconectar con la experiencia sensorial directa.</div>
+            </div>
+            <div style="background:#f7f5f1;border-radius:12px;padding:20px;border-left:3px solid #bf4637">
+              <div style="font-size:1.8rem;margin-bottom:8px">🔥</div>
+              <div style="font-size:12px;font-weight:700;color:#bf4637;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Puerta Roja (S. 13–24)</div>
+              <div style="font-size:13px;color:#6B6358;line-height:1.6">Color y medios fluidos — acuarelas, tintas, acrílicos. Explorar la energía emocional y la transformación.</div>
+            </div>
+            <div style="background:#f7f5f1;border-radius:12px;padding:20px;border-left:3px solid #2c5f9e">
+              <div style="font-size:1.8rem;margin-bottom:8px">🔵</div>
+              <div style="font-size:12px;font-weight:700;color:#2c5f9e;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Puerta Azul (S. 25–36)</div>
+              <div style="font-size:13px;color:#6B6358;line-height:1.6">Medios conceptuales y simbólicos — collage, fotografía, mandalas. Explorar la naturaleza de la mente.</div>
+            </div>
+            <div style="background:#f7f5f1;border-radius:12px;padding:20px;border-left:3px solid #7b4fa6">
+              <div style="font-size:1.8rem;margin-bottom:8px">🌈</div>
+              <div style="font-size:12px;font-weight:700;color:#7b4fa6;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Puerta Arcoíris (S. 37–48)</div>
+              <div style="font-size:13px;color:#6B6358;line-height:1.6">Técnica mixta, diarios visuales, arte efímero. Tejer los hilos de las tres puertas en una vida integrada.</div>
+            </div>
+          </div>
+
+          <div style="background:#1c1814;border-radius:14px;padding:24px;display:flex;align-items:center;gap:20px">
+            <div style="font-size:2rem;flex-shrink:0">✦</div>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:#BC9640;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Accede a los ejercicios</div>
+              <div style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.6;margin-bottom:12px">Cada semana de tu formación incluye su ejercicio de arteterapia. Encuéntralo en la pestaña <strong style="color:white">🎨 Arteterapia</strong> dentro de cada semana.</div>
+              <button onclick="showView('formaciones')" style="padding:8px 18px;background:#BC9640;color:white;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.04em">Ir a las Formaciones →</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div><!-- /page-student -->
@@ -5472,6 +5600,9 @@ function wixSideBarClose() {
   wixUnpushPage();
   document.querySelectorAll('.wsb-icon').forEach(function (b) { b.classList.remove('active'); });
   _wixCurrentPanel = null;
+  var eb = document.getElementById('edOpenBtn');
+  var isAdmin = user && (user._role==='admin' || (typeof ADMIN_EMAILS!=='undefined' && ADMIN_EMAILS.includes(user.email)));
+  if (eb && isAdmin) eb.style.display = '';
   // Apagar modos activos
   try { if (window._edOn)      edToggleText();  } catch(e) {}
   try { if (window._edSelMode) edToggleMode();  } catch(e) {}
@@ -7276,134 +7407,5 @@ function nmToast(msg){
   </div>
 </div>
 <script>function filterMedia(cat){var tabs=['todos','cuencos','meditacion','frecuencia','teoria','canalizacion'];tabs.forEach(function(t){var btn=document.getElementById('mtab-'+t);if(!btn)return;if(t===cat){btn.style.background='#2b7d7a';btn.style.color='white';btn.style.borderColor='#2b7d7a';}else{btn.style.background='white';btn.style.color='#7a7168';btn.style.borderColor='#e4ddd3';}});var grid=document.getElementById('media-grid');if(!grid)return;Array.from(grid.children).forEach(function(card){card.style.display=(cat==='todos'||card.getAttribute('data-cat')===cat)?'':'none';});}</script>
-<protonpass-root-fbbb data-protonpass-role="root" data-protonpass-theme="os"></protonpass-root-fbbb></body></html>
-      <!-- NOTAS VIEW -->
-      <div id="view-notas" style="display:none">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px">
-          <h2 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300">Mi Diario TCT</h2>
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <button onclick="notasSetView('editor')" id="notas-btn-editor" style="padding:6px 14px;border-radius:8px;border:1.5px solid #2b7d7a;background:#2b7d7a;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">✏️ Escribir</button>
-            <button onclick="notasSetView('calendario')" id="notas-btn-cal" style="padding:6px 14px;border-radius:8px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">📅 Calendario</button>
-          </div>
-        </div>
-
-        <!-- EDITOR PANEL -->
-        <div id="notas-panel-editor">
-          <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;align-items:center">
-            <div style="display:flex;flex-direction:column;gap:4px">
-              <label style="font-size:11px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.06em">Semana</label>
-              <select id="notas-semana" onchange="notasLoadEntry()" style="padding:7px 12px;border:1.5px solid #e4ddd3;border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;background:white;color:#3d3730;cursor:pointer">
-                <option value="">— Selecciona semana —</option>
-              </select>
-            </div>
-            <div style="display:flex;flex-direction:column;gap:4px">
-              <label style="font-size:11px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.06em">Fecha</label>
-              <input type="date" id="notas-fecha" style="padding:7px 12px;border:1.5px solid #e4ddd3;border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;color:#3d3730">
-            </div>
-            <div style="margin-top:auto">
-              <button onclick="notasSave()" style="padding:8px 20px;background:#2b7d7a;color:white;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.04em">💾 Guardar</button>
-            </div>
-          </div>
-          <!-- Toolbar markdown -->
-          <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap">
-            <button onclick="notasMd('**','**')" title="Negrita" style="padding:4px 10px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:13px;cursor:pointer;font-weight:700">B</button>
-            <button onclick="notasMd('*','*')" title="Cursiva" style="padding:4px 10px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:13px;cursor:pointer;font-style:italic">I</button>
-            <button onclick="notasMd('### ','')" title="Título" style="padding:4px 10px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:13px;cursor:pointer">H</button>
-            <button onclick="notasMd('- ','')" title="Lista" style="padding:4px 10px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:13px;cursor:pointer">—</button>
-            <button onclick="notasMd('> ','')" title="Cita" style="padding:4px 10px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:13px;cursor:pointer">❝</button>
-            <button onclick="notasTogglePreview()" id="notas-preview-btn" style="padding:4px 12px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:12px;cursor:pointer;margin-left:auto;font-family:'DM Sans',sans-serif">👁 Vista previa</button>
-          </div>
-          <textarea id="notas-editor" placeholder="Escribe aquí tu reflexión del día... Puedes usar **negrita**, *cursiva*, ### títulos, - listas, > citas" style="width:100%;min-height:340px;padding:16px;border:1.5px solid #e4ddd3;border-radius:12px;font-size:14px;font-family:'DM Sans',sans-serif;line-height:1.75;resize:vertical;box-sizing:border-box;color:#3d3730;background:white;outline:none"></textarea>
-          <div id="notas-preview" style="display:none;min-height:340px;padding:16px;border:1.5px solid #e4ddd3;border-radius:12px;background:#faf8f5;font-size:14px;line-height:1.75;color:#3d3730;overflow-y:auto"></div>
-          <div id="notas-save-msg" style="margin-top:10px;font-size:12px;color:#2b7d7a;display:none">✓ Nota guardada</div>
-        </div>
-
-        <!-- CALENDARIO PANEL -->
-        <div id="notas-panel-calendario" style="display:none">
-          <div style="display:flex;gap:12px;margin-bottom:20px;align-items:center">
-            <button onclick="notasCalNav(-1)" style="padding:6px 14px;border:1.5px solid #e4ddd3;border-radius:8px;background:white;cursor:pointer;font-size:16px">‹</button>
-            <div id="notas-cal-title" style="flex:1;text-align:center;font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:300;color:#1c1814"></div>
-            <button onclick="notasCalNav(1)" style="padding:6px 14px;border:1.5px solid #e4ddd3;border-radius:8px;background:white;cursor:pointer;font-size:16px">›</button>
-          </div>
-          <!-- Puerta tabs -->
-          <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
-            <button onclick="notasCalPuerta('all')" id="ncal-all" style="padding:5px 14px;border-radius:100px;border:1.5px solid #2b7d7a;background:#2b7d7a;color:white;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">Todas</button>
-            <button onclick="notasCalPuerta('Blanca')" id="ncal-blanca" style="padding:5px 14px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">🌿 Blanca</button>
-            <button onclick="notasCalPuerta('Roja')" id="ncal-roja" style="padding:5px 14px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">🔥 Roja</button>
-            <button onclick="notasCalPuerta('Azul')" id="ncal-azul" style="padding:5px 14px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">🔵 Azul</button>
-            <button onclick="notasCalPuerta('Arcoiris')" id="ncal-arc" style="padding:5px 14px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">🌈 Arcoíris</button>
-          </div>
-          <div id="notas-calendario-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px"></div>
-          <div style="display:flex;gap:16px;margin-top:12px;flex-wrap:wrap">
-            <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#7a7168"><div style="width:12px;height:12px;border-radius:50%;background:#2b7d7a"></div>Con nota</div>
-            <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#7a7168"><div style="width:12px;height:12px;border-radius:50%;background:#e4ddd3"></div>Sin nota</div>
-          </div>
-        </div>
-
-        <!-- MODAL LECTURA NOTA -->
-        <div id="notas-read-modal" style="display:none;position:fixed;inset:0;z-index:8000;background:rgba(28,24,20,.7);align-items:center;justify-content:center;padding:24px">
-          <div style="background:white;border-radius:16px;width:100%;max-width:560px;max-height:80vh;overflow-y:auto;padding:28px;position:relative">
-            <button onclick="document.getElementById('notas-read-modal').style.display='none'" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:18px;cursor:pointer;color:#7a7168">✕</button>
-            <div id="notas-read-date" style="font-size:11px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px"></div>
-            <div id="notas-read-semana" style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#BC9640;margin-bottom:16px"></div>
-            <div id="notas-read-content" style="font-size:14px;line-height:1.8;color:#3d3730"></div>
-            <div style="margin-top:20px;display:flex;gap:8px">
-              <button onclick="notasEditFromModal()" style="padding:7px 16px;background:#2b7d7a;color:white;border:none;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif">✏️ Editar</button>
-              <button onclick="notasDeleteEntry()" style="padding:7px 16px;background:none;color:#bf4637;border:1.5px solid #bf4637;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif">🗑 Eliminar</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- ARTETERAPIA VIEW -->
-      <div id="view-arteterapia" style="display:none">
-        <div style="max-width:760px">
-          <div style="display:flex;align-items:center;gap:16px;margin-bottom:32px">
-            <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#BC9640,#8A6E2A);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0">🎨</div>
-            <div>
-              <div style="font-size:11px;font-weight:700;color:#BC9640;text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px">Manual Complementario</div>
-              <h2 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;margin:0;color:#1c1814">Arteterapia del Sistema TCT</h2>
-            </div>
-          </div>
-
-          <div style="background:linear-gradient(135deg,#BC964012,#BC964006);border:1px solid #BC964030;border-radius:16px;padding:28px;margin-bottom:28px">
-            <div style="font-size:11px;font-weight:700;color:#BC9640;text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px">✦ Presentación del Manual</div>
-            <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;color:#1c1814;line-height:1.4;margin-bottom:14px">Manual de Arteterapia del Sistema TCT:<br><em style="color:#BC9640">48 Semanas de Práctica Creativa</em></h3>
-            <p style="font-size:14px;line-height:1.85;color:#3d3730;margin:0">Este manual complementa el programa del Sistema TCT, ofreciendo un ejercicio de arteterapia semanal diseñado para profundizar e integrar los conceptos de cada etapa. El arte se convierte en un puente entre el entendimiento intelectual y la sabiduría encarnada, permitiendo explorar, expresar y transformar nuestro mundo interior de una manera directa y simbólica.</p>
-          </div>
-
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px">
-            <div style="background:#f7f5f1;border-radius:12px;padding:20px;border-left:3px solid #b8ad9e">
-              <div style="font-size:1.8rem;margin-bottom:8px">🌿</div>
-              <div style="font-size:12px;font-weight:700;color:#8a8078;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Puerta Blanca (S. 1–12)</div>
-              <div style="font-size:13px;color:#6B6358;line-height:1.6">Materiales táctiles y primarios — arcilla, carboncillo, pasteles. Reconectar con la experiencia sensorial directa.</div>
-            </div>
-            <div style="background:#f7f5f1;border-radius:12px;padding:20px;border-left:3px solid #bf4637">
-              <div style="font-size:1.8rem;margin-bottom:8px">🔥</div>
-              <div style="font-size:12px;font-weight:700;color:#bf4637;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Puerta Roja (S. 13–24)</div>
-              <div style="font-size:13px;color:#6B6358;line-height:1.6">Color y medios fluidos — acuarelas, tintas, acrílicos. Explorar la energía emocional y la transformación.</div>
-            </div>
-            <div style="background:#f7f5f1;border-radius:12px;padding:20px;border-left:3px solid #2c5f9e">
-              <div style="font-size:1.8rem;margin-bottom:8px">🔵</div>
-              <div style="font-size:12px;font-weight:700;color:#2c5f9e;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Puerta Azul (S. 25–36)</div>
-              <div style="font-size:13px;color:#6B6358;line-height:1.6">Medios conceptuales y simbólicos — collage, fotografía, mandalas. Explorar la naturaleza de la mente.</div>
-            </div>
-            <div style="background:#f7f5f1;border-radius:12px;padding:20px;border-left:3px solid #7b4fa6">
-              <div style="font-size:1.8rem;margin-bottom:8px">🌈</div>
-              <div style="font-size:12px;font-weight:700;color:#7b4fa6;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Puerta Arcoíris (S. 37–48)</div>
-              <div style="font-size:13px;color:#6B6358;line-height:1.6">Técnica mixta, diarios visuales, arte efímero. Tejer los hilos de las tres puertas en una vida integrada.</div>
-            </div>
-          </div>
-
-          <div style="background:#1c1814;border-radius:14px;padding:24px;display:flex;align-items:center;gap:20px">
-            <div style="font-size:2rem;flex-shrink:0">✦</div>
-            <div>
-              <div style="font-size:12px;font-weight:700;color:#BC9640;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px">Accede a los ejercicios</div>
-              <div style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.6;margin-bottom:12px">Cada semana de tu formación incluye su ejercicio de arteterapia. Encuéntralo en la pestaña <strong style="color:white">🎨 Arteterapia</strong> dentro de cada semana.</div>
-              <button onclick="showView('formaciones')" style="padding:8px 18px;background:#BC9640;color:white;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.04em">Ir a las Formaciones →</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
+</body>
+</html>
