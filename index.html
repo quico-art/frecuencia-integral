@@ -5558,40 +5558,44 @@ function wixNeedText(action) {
 // ── Page push helpers (Wix-style) ──
 function wixPushPage(wide) {
   var w = wide ? 356 : 56;
-  var nav  = document.querySelector('nav');
+  var scale = wide ? 0.78 : 0.90;
+  var nav = document.querySelector('nav');
   var allPages = document.querySelectorAll('.page');
 
-  // Push nav
+  // Push + scale nav
   if (nav) {
-    nav.style.left     = w + 'px';
-    nav.style.right    = '0px';
-    nav.style.width    = 'auto';
-    // Scale down nav items when panel is open
-    nav.style.fontSize = wide ? '11px' : '12px';
-    nav.style.height   = wide ? '54px' : '60px';
-    // Scale nav logo text
+    nav.style.left      = w + 'px';
+    nav.style.right     = '0px';
+    nav.style.width     = 'auto';
+    nav.style.fontSize  = wide ? '11px' : '12px';
+    nav.style.height    = wide ? '54px' : '60px';
     var logoText = nav.querySelector('.nav-logo-text');
     if (logoText) logoText.style.fontSize = wide ? '11px' : '';
-    // Scale nav buttons
-    nav.querySelectorAll('.btn-primary, .btn-ghost, .btn-admin-nav').forEach(function(b) {
-      b.style.padding   = wide ? '6px 10px' : '';
-      b.style.fontSize  = wide ? '11px'     : '';
+    nav.querySelectorAll('.btn-primary,.btn-ghost,.btn-admin-nav').forEach(function(b){
+      b.style.padding  = wide ? '5px 8px' : '';
+      b.style.fontSize = wide ? '11px' : '';
     });
-    // Scale nav links
-    nav.querySelectorAll('.nav-links a').forEach(function(a) {
+    nav.querySelectorAll('.nav-links a').forEach(function(a){
       a.style.fontSize = wide ? '11px' : '';
-      a.style.padding  = wide ? '0 8px' : '';
+      a.style.padding  = wide ? '0 6px' : '';
     });
   }
 
-  // Push + zoom pages
+  // Scale pages using transform so content fits exactly in remaining space
+  // Available width = 100vw - w  →  scale = (100vw-w)/100vw
   allPages.forEach(function(p) {
-    p.style.marginLeft    = w + 'px';
-    p.style.maxWidth      = 'calc(100vw - ' + w + 'px)';
-    p.style.overflowX     = 'hidden';
-    p.style.boxSizing     = 'border-box';
-    p.style.zoom          = wide ? '0.82' : '0.92';
-    p.style.transformOrigin = 'top left';
+    p.style.position       = 'fixed';
+    p.style.top            = '66px';
+    p.style.left           = w + 'px';
+    p.style.right          = '0';
+    p.style.bottom         = '0';
+    p.style.width          = 'calc(100vw - ' + w + 'px)';
+    p.style.overflowY      = 'auto';
+    p.style.overflowX      = 'hidden';
+    p.style.zoom           = '1';
+    p.style.transform      = '';
+    p.style.marginLeft     = '';
+    p.style.boxSizing      = 'border-box';
   });
 
   var fmtBar = document.getElementById('edFmtBar');
@@ -5601,29 +5605,30 @@ function wixUnpushPage() {
   var nav = document.querySelector('nav');
   var allPages = document.querySelectorAll('.page');
   if (nav) {
-    nav.style.left     = '';
-    nav.style.right    = '';
-    nav.style.width    = '';
-    nav.style.fontSize = '';
-    nav.style.height   = '';
+    nav.style.left = nav.style.right = nav.style.width = '';
+    nav.style.fontSize = nav.style.height = '';
     var logoText = nav.querySelector('.nav-logo-text');
     if (logoText) logoText.style.fontSize = '';
-    nav.querySelectorAll('.btn-primary, .btn-ghost, .btn-admin-nav').forEach(function(b) {
-      b.style.padding  = '';
-      b.style.fontSize = '';
+    nav.querySelectorAll('.btn-primary,.btn-ghost,.btn-admin-nav').forEach(function(b){
+      b.style.padding = b.style.fontSize = '';
     });
-    nav.querySelectorAll('.nav-links a').forEach(function(a) {
-      a.style.fontSize = '';
-      a.style.padding  = '';
+    nav.querySelectorAll('.nav-links a').forEach(function(a){
+      a.style.fontSize = a.style.padding = '';
     });
   }
   allPages.forEach(function(p) {
-    p.style.marginLeft    = '';
-    p.style.maxWidth      = '';
-    p.style.overflowX     = '';
-    p.style.boxSizing     = '';
-    p.style.zoom          = '';
-    p.style.transformOrigin = '';
+    p.style.position   = '';
+    p.style.top        = '';
+    p.style.left       = '';
+    p.style.right      = '';
+    p.style.bottom     = '';
+    p.style.width      = '';
+    p.style.overflowY  = '';
+    p.style.overflowX  = '';
+    p.style.zoom       = '';
+    p.style.transform  = '';
+    p.style.marginLeft = '';
+    p.style.boxSizing  = '';
   });
   var fmtBar = document.getElementById('edFmtBar');
   if (fmtBar) fmtBar.style.left = '';
