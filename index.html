@@ -330,6 +330,59 @@ html, body { overflow-x: hidden; }
   .week-card, .semana-card { padding: 16px !important; }
 }
 
+
+/* ── MOBILE EDITOR TOOLBAR ── */
+#mob-ed-bar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 99995;
+  background: #1c1814;
+  border-bottom: 2px solid rgba(188,150,64,.4);
+  box-shadow: 0 4px 20px rgba(0,0,0,.6);
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+#mob-ed-bar::-webkit-scrollbar { display: none; }
+#mob-ed-inner {
+  display: flex;
+  align-items: center;
+  padding: 6px 8px;
+  min-width: max-content;
+  height: 62px;
+  box-sizing: border-box;
+  gap: 0;
+}
+.mob-ed-group {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 4px;
+}
+.mob-ed-sep {
+  width: 1px; height: 32px;
+  background: rgba(255,255,255,.12);
+  margin: 0 4px; flex-shrink: 0;
+}
+.mob-ed-btn {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 2px; padding: 4px 8px; min-width: 44px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: 8px; cursor: pointer;
+  color: rgba(255,255,255,.75);
+  font-family: 'DM Sans', sans-serif;
+  transition: background .15s; flex-shrink: 0; line-height: 1;
+}
+.mob-ed-btn > span:first-child { font-size: 18px; }
+.mob-ed-btn > span:last-child  { font-size: 8px; letter-spacing:.02em; white-space:nowrap; color:rgba(255,255,255,.5); }
+.mob-ed-btn:hover, .mob-ed-btn.active { background:rgba(43,125,122,.3); border-color:rgba(43,125,122,.5); color:#3d9e9b; }
+.mob-ed-close { background:rgba(191,70,55,.15)!important; border-color:rgba(191,70,55,.3)!important; color:rgba(255,100,80,.8)!important; }
+body.mob-ed-open nav { top: 62px !important; }
+body.mob-ed-open .page.active { padding-top: 78px !important; }
+
 </style>
 <style id="nmDynStyle">.nav-links a{color:#3d3730!important}.nav-links a:hover{color:#2b7d7a!important}</style>
 
@@ -2102,7 +2155,7 @@ document.addEventListener('keydown', function(e) {
         <button class="dtab dtab-mas" id="dtab-mas-btn" onclick="dtabToggleMas(this)">
           <span class="dtab-icon">☰</span><span class="dtab-label">Más</span>
         </button>
-        <button class="dtab dtab-editor" id="dtab-editor-btn" onclick="wixSideBarOpen()" style="display:none">
+        <button class="dtab dtab-editor" id="dtab-editor-btn" onclick="window.innerWidth<=900?mobEdOpen():wixSideBarOpen()" style="display:none">
           <span class="dtab-icon">✏️</span><span class="dtab-label">Editor</span>
         </button>
       </div>
@@ -5142,6 +5195,31 @@ function edPropCssRead(){
 // ── Floating format bar ──
 
 
+
+// ── MOBILE EDITOR TOOLBAR ──
+function mobEdOpen() {
+  document.getElementById('mob-ed-bar').style.display = 'block';
+  document.body.classList.add('mob-ed-open');
+  // Activate text editing
+  if (!window._edOn) edToggleText();
+  if (!_edHistory.length) edSnapshot();
+}
+function mobEdClose() {
+  document.getElementById('mob-ed-bar').style.display = 'none';
+  document.body.classList.remove('mob-ed-open');
+  if (window._edOn) edToggleText();
+}
+function mobEdToggleText() {
+  edToggleText();
+  var btn = document.getElementById('mob-ed-text-btn');
+  if (btn) btn.classList.toggle('active', !!window._edOn);
+}
+function mobEdToggleSel() {
+  wix_toggleSel();
+  var btn = document.getElementById('mob-ed-sel-btn');
+  if (btn) btn.classList.toggle('active', !!window._edSelMode);
+}
+
 // ── Dashboard tab bar ──
 function dtabActive(btn, idx) {
   document.querySelectorAll('.dtab').forEach(function(b){ b.classList.remove('active'); });
@@ -5895,6 +5973,8 @@ function wixNeedText(action) {
 
 // ── Page push helpers (Wix-style) ──
 function wixPushPage(wide) {
+  // On mobile, never push — sidebar is hidden anyway
+  if (window.innerWidth <= 900) return;
   var w = wide ? 356 : 56;
   var scale = wide ? 0.78 : 0.90;
   var nav = document.querySelector('nav');
@@ -5940,6 +6020,7 @@ function wixPushPage(wide) {
   if (fmtBar) fmtBar.style.left = w + 'px';
 }
 function wixUnpushPage() {
+  if (window.innerWidth <= 900) return;
   var nav = document.querySelector('nav');
   var allPages = document.querySelectorAll('.page');
   if (nav) {
@@ -5974,6 +6055,8 @@ function wixUnpushPage() {
 
 // ── Open / Close sidebar ──
 function wixSideBarOpen() {
+  // On mobile, use the horizontal toolbar instead
+  if (window.innerWidth <= 900) { mobEdOpen(); return; }
   // Si estamos en página admin, ir primero al dashboard para poder editar
   var activePage = document.querySelector('.page.active');
   if (activePage && activePage.id === 'page-admin') {
@@ -7806,5 +7889,90 @@ function nmToast(msg){
   </div>
 </div>
 <script>function filterMedia(cat){var tabs=['todos','cuencos','meditacion','frecuencia','teoria','canalizacion'];tabs.forEach(function(t){var btn=document.getElementById('mtab-'+t);if(!btn)return;if(t===cat){btn.style.background='#2b7d7a';btn.style.color='white';btn.style.borderColor='#2b7d7a';}else{btn.style.background='white';btn.style.color='#7a7168';btn.style.borderColor='#e4ddd3';}});var grid=document.getElementById('media-grid');if(!grid)return;Array.from(grid.children).forEach(function(card){card.style.display=(cat==='todos'||card.getAttribute('data-cat')===cat)?'':'none';});}</script>
+
+<!-- ══════════════════════════════════════════════════
+     MOBILE EDITOR TOOLBAR (≤900px) — carrusel superior
+═══════════════════════════════════════════════════ -->
+<div id="mob-ed-bar" style="display:none">
+  <div id="mob-ed-inner">
+    <!-- Grupo: Modos -->
+    <div class="mob-ed-group">
+      <button class="mob-ed-btn" id="mob-ed-text-btn" onclick="mobEdToggleText()">
+        <span>✍️</span><span>Escribir</span>
+      </button>
+      <button class="mob-ed-btn" id="mob-ed-sel-btn" onclick="mobEdToggleSel()">
+        <span>🎯</span><span>Seleccionar</span>
+      </button>
+    </div>
+    <div class="mob-ed-sep"></div>
+    <!-- Grupo: Formato texto -->
+    <div class="mob-ed-group">
+      <button class="mob-ed-btn" onclick="edFmt('bold')"><span>𝐁</span><span>Negrita</span></button>
+      <button class="mob-ed-btn" onclick="edFmt('italic')"><span>𝐼</span><span>Cursiva</span></button>
+      <button class="mob-ed-btn" onclick="edFmt('underline')"><span>U̲</span><span>Subrayar</span></button>
+    </div>
+    <div class="mob-ed-sep"></div>
+    <!-- Grupo: Color -->
+    <div class="mob-ed-group">
+      <div class="mob-ed-btn" style="cursor:default">
+        <input type="color" id="mob-ed-color" value="#1c1814"
+          onchange="edApplyFontColor(this.value)"
+          style="width:28px;height:28px;border:none;border-radius:6px;cursor:pointer;padding:0;background:none">
+        <span>Color</span>
+      </div>
+    </div>
+    <div class="mob-ed-sep"></div>
+    <!-- Grupo: Fuente -->
+    <div class="mob-ed-group">
+      <div class="mob-ed-btn" style="cursor:default;min-width:90px">
+        <select onchange="if(this.value){edApplyFontInline(this.value);this.value=''}"
+          style="background:#2a2420;color:white;border:1px solid rgba(255,255,255,.15);
+                 padding:4px 2px;border-radius:6px;font-size:10px;width:100%;cursor:pointer">
+          <option value="">Fuente…</option>
+          <option value="'DM Sans',sans-serif">DM Sans</option>
+          <option value="'Cormorant Garamond',serif">Cormorant</option>
+          <option value="'Jost',sans-serif">Jost</option>
+          <option value="Georgia,serif">Georgia</option>
+        </select>
+        <span>Tipografía</span>
+      </div>
+      <div class="mob-ed-btn" style="cursor:default;min-width:72px">
+        <select onchange="if(this.value){edApplyFontSize(this.value);this.value=''}"
+          style="background:#2a2420;color:white;border:1px solid rgba(255,255,255,.15);
+                 padding:4px 2px;border-radius:6px;font-size:10px;width:100%;cursor:pointer">
+          <option value="">Tam…</option>
+          <option value="12px">12</option><option value="14px">14</option>
+          <option value="16px">16</option><option value="18px">18</option>
+          <option value="20px">20</option><option value="24px">24</option>
+          <option value="28px">28</option><option value="32px">32</option>
+          <option value="36px">36</option><option value="48px">48</option>
+        </select>
+        <span>Tamaño</span>
+      </div>
+    </div>
+    <div class="mob-ed-sep"></div>
+    <!-- Grupo: Alineación -->
+    <div class="mob-ed-group">
+      <button class="mob-ed-btn" onclick="edFmt('justifyLeft')"><span>⬅</span><span>Izq</span></button>
+      <button class="mob-ed-btn" onclick="edFmt('justifyCenter')"><span>↔</span><span>Centro</span></button>
+      <button class="mob-ed-btn" onclick="edFmt('justifyRight')"><span>➡</span><span>Der</span></button>
+    </div>
+    <div class="mob-ed-sep"></div>
+    <!-- Grupo: Acciones -->
+    <div class="mob-ed-group">
+      <button class="mob-ed-btn" onclick="edUndo()"><span>↩</span><span>Deshacer</span></button>
+      <button class="mob-ed-btn" onclick="edRedo()"><span>↪</span><span>Rehacer</span></button>
+      <button class="mob-ed-btn" onclick="edSave()"><span>💾</span><span>Guardar</span></button>
+    </div>
+    <div class="mob-ed-sep"></div>
+    <!-- Cerrar -->
+    <div class="mob-ed-group">
+      <button class="mob-ed-btn mob-ed-close" onclick="mobEdClose()">
+        <span>✕</span><span>Cerrar</span>
+      </button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
