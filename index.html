@@ -269,35 +269,40 @@ html, body { overflow-x: hidden; }
   bottom: 0; left: 0; right: 0;
   z-index: 1000;
   background: #1c1814;
-  border-top: 1px solid rgba(255,255,255,.08);
-  box-shadow: 0 -4px 20px rgba(0,0,0,.35);
+  border-top: 1px solid rgba(255,255,255,.1);
+  box-shadow: 0 -4px 24px rgba(0,0,0,.5);
   flex-direction: column;
-  padding-bottom: env(safe-area-inset-bottom);
+  width: 100%;
+  box-sizing: border-box;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 .dtab-row {
   display: flex;
   width: 100%;
+  min-width: 0;
 }
 .dtab-row-1 {
-  border-bottom: 1px solid rgba(255,255,255,.05);
+  border-bottom: 1px solid rgba(255,255,255,.06);
 }
 .dtab-row-2 {
-  background: rgba(0,0,0,.15);
+  background: #141210;
+  border-top: 1px solid rgba(255,255,255,.06);
 }
 .dtab {
-  flex: 1;
+  flex: 1 1 0;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 2px; padding: 6px 2px;
+  gap: 3px; padding: 8px 4px;
   background: none; border: none; cursor: pointer;
-  color: rgba(255,255,255,.4);
+  color: rgba(255,255,255,.45);
   font-family: 'DM Sans', sans-serif;
-  transition: color .2s;
+  transition: color .18s;
   min-width: 0;
+  overflow: hidden;
 }
 .dtab.active { color: #3d9e9b; }
 .dtab:active { opacity: .7; }
-.dtab-icon { font-size: 18px; line-height: 1; }
-.dtab-label { font-size: 8.5px; letter-spacing: .01em; white-space: nowrap; overflow: hidden; max-width: 52px; text-overflow: ellipsis; }
+.dtab-icon { font-size: 20px; line-height: 1; display: block; }
+.dtab-label { font-size: 9px; letter-spacing: .01em; white-space: nowrap; overflow: hidden; max-width: 100%; text-overflow: ellipsis; text-align: center; }
 .dtab-editor { color: rgba(188,150,64,.6) !important; }
 .dtab-editor.active, .dtab-editor:hover { color: #D4AA5A !important; }
 .dtab-logout { color: rgba(255,255,255,.25) !important; }
@@ -308,7 +313,7 @@ html, body { overflow-x: hidden; }
   .sidebar { display: none !important; }
   .main-content {
     margin-left: 0 !important;
-    padding: 20px 16px 120px !important;
+    padding: 20px 16px 130px !important;
   }
   /* Hide floating editor button — it's in tab bar */
   #edOpenBtn { display: none !important; }
