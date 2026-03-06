@@ -261,6 +261,69 @@ html, body { overflow-x: hidden; }
   .modal-sidebar{display:none}
   .modal-body{padding:20px 16px}
 }
+
+/* ── DASHBOARD TAB BAR MOBILE ── */
+#dash-tab-bar {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: #1c1814;
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding: 6px 0 calc(env(safe-area-inset-bottom) + 6px);
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0;
+  box-shadow: 0 -4px 20px rgba(0,0,0,.3);
+}
+.dtab {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px; padding: 6px 4px;
+  background: none; border: none; cursor: pointer;
+  color: rgba(255,255,255,.45);
+  font-family: 'DM Sans', sans-serif;
+  transition: color .2s;
+  min-width: 0;
+}
+.dtab.active { color: #3d9e9b; }
+.dtab:hover { color: rgba(255,255,255,.7); }
+.dtab-icon { font-size: 20px; line-height: 1; }
+.dtab-label { font-size: 9px; letter-spacing: .02em; white-space: nowrap; overflow: hidden; max-width: 56px; text-overflow: ellipsis; }
+.dtab-drawer {
+  display: flex; align-items: center; gap: 10px;
+  padding: 14px 16px; border-radius: 12px;
+  background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08);
+  color: rgba(255,255,255,.75); font-size: 13px;
+  font-family: 'DM Sans', sans-serif; cursor: pointer; width: 100%;
+  transition: background .2s;
+}
+.dtab-drawer:hover { background: rgba(255,255,255,.1); }
+
+@media(max-width: 900px) {
+  #dash-tab-bar { display: grid; }
+  .sidebar { display: none !important; }
+  .main-content {
+    margin-left: 0 !important;
+    padding: 20px 16px 80px !important;
+  }
+  /* Dashboard grid — 2 cols on tablet */
+  .dashboard-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+  /* Formaciones / semanas — 1 col */
+  .semanas-grid, .weeks-grid { grid-template-columns: 1fr !important; }
+  /* Stat cards */
+  .stat-card { padding: 16px !important; }
+  .stat-value { font-size: 28px !important; }
+}
+
+@media(max-width: 600px) {
+  .dashboard-grid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
+  .main-content { padding: 16px 12px 80px !important; }
+  .stat-value { font-size: 24px !important; }
+  /* Week cards in formaciones */
+  .week-card, .semana-card { padding: 16px !important; }
+  /* Progress section */
+  #progreso-list { gap: 10px !important; }
+}
+
 </style>
 <style id="nmDynStyle">.nav-links a{color:#3d3730!important}.nav-links a:hover{color:#2b7d7a!important}</style>
 
@@ -2013,6 +2076,45 @@ document.addEventListener('keydown', function(e) {
       </div>
     </div>
 
+    <!-- TAB BAR MOBILE -->
+    <nav id="dash-tab-bar">
+      <button class="dtab active" onclick="showView('dashboard');dtabActive(this)">
+        <span class="dtab-icon">🏠</span><span class="dtab-label">Inicio</span>
+      </button>
+      <button class="dtab" onclick="showView('formaciones');dtabActive(this)">
+        <span class="dtab-icon">📚</span><span class="dtab-label">Formaciones</span>
+      </button>
+      <button class="dtab" onclick="showView('multimedia');dtabActive(this)">
+        <span class="dtab-icon">🎵</span><span class="dtab-label">Multimedia</span>
+      </button>
+      <button class="dtab" onclick="showView('progreso');dtabActive(this)">
+        <span class="dtab-icon">📊</span><span class="dtab-label">Progreso</span>
+      </button>
+      <button class="dtab" onclick="showDashMore()">
+        <span class="dtab-icon">☰</span><span class="dtab-label">Más</span>
+      </button>
+    </nav>
+
+    <!-- DRAWER "MÁS" MOBILE -->
+    <div id="dash-drawer-overlay" onclick="hideDashMore()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1100"></div>
+    <div id="dash-drawer" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#1c1814;border-radius:20px 20px 0 0;z-index:1101;padding:8px 0 calc(env(safe-area-inset-bottom)+8px) 0;box-shadow:0 -8px 32px rgba(0,0,0,.4)">
+      <div style="width:36px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:8px auto 16px"></div>
+      <div style="padding:0 16px 8px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button class="dtab-drawer" onclick="showView('materiales');hideDashMore();dtabActive(null)">
+          <span>📄</span> Materiales PDF
+        </button>
+        <button class="dtab-drawer" onclick="showView('notas');hideDashMore();dtabActive(null)">
+          <span>📝</span> Notas
+        </button>
+        <button class="dtab-drawer" onclick="showView('arteterapia');hideDashMore();dtabActive(null)">
+          <span>🎨</span> Arteterapia
+        </button>
+        <button class="dtab-drawer" onclick="doLogout()" style="color:rgba(255,255,255,.4)">
+          <span>🚪</span> Cerrar Sesión
+        </button>
+      </div>
+    </div>
+
     <!-- MAIN -->
     <div class="main-content">
 
@@ -2376,13 +2478,22 @@ function goTo(page) {
     var p2 = document.getElementById('wixPanel2');
     var isWide = p2 && p2.style.display !== 'none';
     /* no push on page navigation */
-
   }
+  // Show/hide mobile tab bar
+  var tb = document.getElementById('dash-tab-bar');
+  if (tb) tb.style.display = (page === 'student' && window.innerWidth <= 900) ? 'grid' : 'none';
   window.scrollTo(0,0);
   if (page === 'student') refreshDashboard();
 }
 
 function showView(view, el) {
+  // Sync tab bar
+  var tabMap = {'dashboard':0,'formaciones':1,'multimedia':2,'progreso':3};
+  if (typeof tabMap[view] !== 'undefined') {
+    document.querySelectorAll('.dtab').forEach(function(b,i){ b.classList.toggle('active', i===tabMap[view]); });
+  } else {
+    document.querySelectorAll('.dtab').forEach(function(b){ b.classList.remove('active'); });
+  }
   ['dashboard','formaciones','multimedia','materiales','progreso','notas','arteterapia'].forEach(function(v){
     var el2 = document.getElementById('view-' + v);
     if(el2) el2.style.display = v === view ? 'block' : 'none';
@@ -5020,6 +5131,23 @@ function edPropCssRead(){
 }
 
 // ── Floating format bar ──
+
+
+// ── Dashboard tab bar ──
+function dtabActive(btn) {
+  document.querySelectorAll('.dtab').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+}
+function showDashMore() {
+  document.getElementById('dash-drawer').style.display = 'block';
+  document.getElementById('dash-drawer-overlay').style.display = 'block';
+}
+function hideDashMore() {
+  document.getElementById('dash-drawer').style.display = 'none';
+  document.getElementById('dash-drawer-overlay').style.display = 'none';
+}
+// Sync tab bar with showView calls
+var _origShowView = typeof showView === 'function' ? showView : null;
 
 // ── TCT Color Swatches ──
 var _efbSwatchOpen = false;
