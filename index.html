@@ -1647,6 +1647,30 @@ document.addEventListener('keydown', function(e) {
   align-items: center;
   overflow: hidden;
   margin-top: 1px;
+  cursor: pointer;
+  transition: all 0.4s;
+}
+.h-puerta-oro-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(135deg, #BC9640, #D4AF60, #f0d080, #BC9640);
+  transition: height 0.4s, opacity 0.4s;
+  opacity: 1;
+  pointer-events: none;
+  z-index: 0;
+}
+.h-puerta-oro-wrap:hover {
+  background: linear-gradient(135deg, #1f1a08 0%, #2a2210 40%, #1f1a08 100%);
+}
+.h-puerta-oro-wrap:hover::after {
+  height: 100%;
+  opacity: 0.08;
+}
+.h-puerta-oro-wrap > * {
+  position: relative;
+  z-index: 1;
 }
 .h-oro-wm {
   position: absolute;
