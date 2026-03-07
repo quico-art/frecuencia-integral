@@ -267,7 +267,7 @@ html, body { overflow-x: hidden; }
   display: none;
   position: fixed;
   bottom: 0; left: 0; right: 0;
-  z-index: 99995;
+  z-index: 1000;
   background: #1c1814;
   border-top: 1px solid rgba(255,255,255,.1);
   box-shadow: 0 -4px 24px rgba(0,0,0,.5);
@@ -340,9 +340,8 @@ html, body { overflow-x: hidden; }
 /* ── MOBILE EDITOR TOOLBAR ── */
 #mob-ed-bar {
   position: fixed;
-  top: auto;
-  bottom: 62px; left: 0; right: 0;
-  z-index: 99993;
+  top: 0; left: 0; right: 0;
+  z-index: 999999;
   background: #1c1814;
   border-bottom: 2px solid rgba(188,150,64,.4);
   box-shadow: 0 4px 20px rgba(0,0,0,.6);
@@ -387,8 +386,8 @@ html, body { overflow-x: hidden; }
 .mob-ed-btn > span:last-child  { font-size: 8px; letter-spacing:.02em; white-space:nowrap; color:rgba(255,255,255,.5); }
 .mob-ed-btn:hover, .mob-ed-btn.active { background:rgba(43,125,122,.3); border-color:rgba(43,125,122,.5); color:#3d9e9b; }
 .mob-ed-close { background:rgba(191,70,55,.15)!important; border-color:rgba(191,70,55,.3)!important; color:rgba(255,100,80,.8)!important; }
-/* mob-ed-bar is now at bottom, no nav offset needed */
-body.mob-ed-open .page.active { padding-bottom: 80px !important; }
+body.mob-ed-open nav { top: 62px !important; }
+body.mob-ed-open .page.active { padding-top: 78px !important; }
 
 </style>
 <style id="nmDynStyle">.nav-links a{color:#3d3730!important}.nav-links a:hover{color:#2b7d7a!important}</style>
@@ -2536,8 +2535,22 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 // ── NAVIGATION ──
-function _goToLegacy(page) {
-  // legacy — superseded by goTo below
+function goTo(page) {
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  var newPage = document.getElementById('page-' + page);
+  newPage.classList.add('active');
+  // Maintain sidebar push if open
+  var sb = document.getElementById('wixSideBar');
+  if(sb && sb.style.display !== 'none') {
+    var p2 = document.getElementById('wixPanel2');
+    var isWide = p2 && p2.style.display !== 'none';
+    /* no push on page navigation */
+  }
+  // Show/hide mobile tab bar
+  var tb = document.getElementById('dash-tab-bar');
+  if (tb) tb.style.display = (page === 'student' && window.innerWidth <= 900) ? 'flex' : 'none';
+  window.scrollTo(0,0);
+  if (page === 'student') refreshDashboard();
 }
 
 function showView(view, el) {
@@ -2768,7 +2781,7 @@ async function onLogin(u) {
   document.getElementById('btnLogout').style.display = '';
   document.getElementById('btnAdmin').style.display = isAdmin ? '' : 'none';
   var edBtn = document.getElementById('edOpenBtn'); if(edBtn) edBtn.style.display = isAdmin ? '' : 'none';
-  var dtabEd = document.getElementById('dtab-editor-btn'); if(dtabEd) dtabEd.style.display = isAdmin ? '' : 'none';
+  var dtabEd = document.getElementById('dtab-editor-btn'); if(dtabEd) dtabEd.style.display = isAdmin ? 'flex' : 'none';
   document.getElementById('btnHome').style.display = '';
 
 try {
@@ -3673,15 +3686,8 @@ var _originalGoTo = goTo;
 function goTo(page) {
   document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
   document.getElementById('page-' + page).classList.add('active');
-  // Show/hide mobile tab bar
   var tb = document.getElementById('dash-tab-bar');
   if (tb) tb.style.display = (page === 'student' && window.innerWidth <= 900) ? 'flex' : 'none';
-  // Show/hide admin editor button
-  var edBtn = document.getElementById('dtab-editor-btn');
-  if (edBtn && page === 'student') {
-    var isAdmin = window.user && (window.user._role === 'admin' || (typeof ADMIN_EMAILS !== 'undefined' && ADMIN_EMAILS.includes(window.user.email)));
-    edBtn.style.display = isAdmin ? 'flex' : 'none';
-  }
   window.scrollTo(0,0);
   if (page === 'student') refreshDashboard();
   if (page === 'admin') loadAdminData();
@@ -5207,91 +5213,16 @@ function edPropCssRead(){
 
 // ── MOBILE EDITOR TOOLBAR ──
 function mobEdOpen() {
-  var bar = document.getElementById('mob-ed-bar');
-  bar.style.display = 'block';
+  document.getElementById('mob-ed-bar').style.display = 'block';
   document.body.classList.add('mob-ed-open');
+  // Activate text editing
+  if (!window._edOn) edToggleText();
   if (!_edHistory.length) edSnapshot();
 }
 function mobEdClose() {
   document.getElementById('mob-ed-bar').style.display = 'none';
-  mobEdPanelClose();
   document.body.classList.remove('mob-ed-open');
   if (window._edOn) edToggleText();
-}
-function mobWixPanel(name) {
-  var panel = document.getElementById('mob-ed-panel');
-  var title = document.getElementById('mob-ed-panel-title');
-  var body  = document.getElementById('mob-ed-panel-body');
-  if (!panel || !title || !body) return;
-
-  var names = {texto:'✍️ Textos',elementos:'⊞ Elementos',imagenes:'🖼 Imágenes',diseno:'🎨 Diseño',nav:'📑 Nav & Páginas',acciones:'⚡ Acciones'};
-  title.textContent = names[name] || name;
-
-  // Build content directly — same logic as desktop wixPanel builders
-  var html = '';
-  var btnClass = 'style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:11px 13px;color:rgba(255,255,255,.85);font-size:13px;cursor:pointer;width:100%;text-align:left;font-family:DM Sans,sans-serif;box-sizing:border-box;margin-bottom:4px"';
-
-  if (name === 'texto') {
-    html = '<button '+btnClass+' onclick="wix_toggleText()">✍️ <b>Activar edición de texto</b></button>' +
-           '<button '+btnClass+' onclick="edFmt('bold')">𝐁 <b>Negrita</b></button>' +
-           '<button '+btnClass+' onclick="edFmt('italic')">𝐼 <b>Cursiva</b></button>' +
-           '<button '+btnClass+' onclick="edFmt('underline')">U̲ <b>Subrayado</b></button>' +
-           '<button '+btnClass+' onclick="edFmt('justifyLeft')">⬅ <b>Alinear izquierda</b></button>' +
-           '<button '+btnClass+' onclick="edFmt('justifyCenter')">↔ <b>Centrar</b></button>' +
-           '<button '+btnClass+' onclick="edFmt('justifyRight')">➡ <b>Alinear derecha</b></button>' +
-           '<button '+btnClass+' onclick="edFmt('insertUnorderedList')">• <b>Lista</b></button>' +
-           '<button '+btnClass+' onclick="wix_addLink()">🔗 <b>Añadir enlace</b></button>';
-  } else if (name === 'elementos') {
-    html = '<button '+btnClass+' onclick="wix_toggleSel()">🎯 <b>Seleccionar elemento</b></button>' +
-           '<button '+btnClass+' onclick="wix_openProps()">⚙️ <b>Propiedades del elemento</b></button>' +
-           '<button '+btnClass+' onclick="wix_deleteEl()" style="color:rgba(255,100,80,.8)">🗑 <b>Eliminar elemento</b></button>';
-  } else if (name === 'imagenes') {
-    html = '<p style="color:rgba(255,255,255,.5);font-size:12px;padding:8px 0">Selecciona una imagen en la página para editarla.</p>' +
-           '<button '+btnClass+' onclick="wix_toggleSel()">🎯 <b>Seleccionar imagen</b></button>' +
-           '<button '+btnClass+' onclick="wix_openProps()">⚙️ <b>Propiedades de imagen</b></button>';
-  } else if (name === 'diseno') {
-    html = '<button '+btnClass+' onclick="wix_toggleSel()">🎯 <b>Seleccionar sección</b></button>' +
-           '<button '+btnClass+' onclick="wix_openProps()">🎨 <b>Editar diseño</b></button>' +
-           '<div style="padding:8px 0;color:rgba(255,255,255,.5);font-size:11px">Color de fondo:</div>' +
-           '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
-           ['#0E0C0A','#1c1814','#2b7d7a','#BC9640','#FAF8F5','#bf4637','#2c5f9e','#7b4fa6','#ffffff'].map(function(c){
-             return '<button onclick="edApplyBgColor(''+c+'')" style="width:32px;height:32px;background:'+c+';border:2px solid rgba(255,255,255,.2);border-radius:6px;cursor:pointer"></button>';
-           }).join('') + '</div>';
-  } else if (name === 'nav') {
-    html = '<button '+btnClass+' onclick="goTo('public')">🏠 <b>Página pública</b></button>' +
-           '<button '+btnClass+' onclick="goTo('auth')">🔑 <b>Login / Registro</b></button>' +
-           '<button '+btnClass+' onclick="goTo('student')">📚 <b>Dashboard alumno</b></button>' +
-           '<button '+btnClass+' onclick="goTo('admin')">⚙️ <b>Panel admin</b></button>' +
-           '<hr style="border-color:rgba(255,255,255,.1);margin:8px 0">' +
-           '<button '+btnClass+' onclick="wix_navOpen()">📑 <b>Editor de navegación</b></button>';
-  } else if (name === 'acciones') {
-    html = '<button '+btnClass+' onclick="edUndo()">↩ <b>Deshacer</b></button>' +
-           '<button '+btnClass+' onclick="edRedo()">↪ <b>Rehacer</b></button>' +
-           '<button '+btnClass+' onclick="edSave()" style="color:#b89558">💾 <b>Guardar cambios</b></button>' +
-           '<hr style="border-color:rgba(255,255,255,.1);margin:8px 0">' +
-           '<button '+btnClass+' onclick="mobEdClose();wixSideBarClose()" style="color:rgba(255,100,80,.8)">✕ <b>Cerrar editor</b></button>';
-  }
-
-  body.innerHTML = html;
-  panel.style.display = 'flex';
-  panel.style.flexDirection = 'column';
-
-  // Position panel above mob-ed-bar
-  var bar = document.getElementById('mob-ed-bar');
-  var barH = bar ? bar.offsetHeight : 62;
-  // panel bottom = tab bar height + mob-ed-bar height
-  var tabBarH = 54; // approx tab bar height
-  panel.style.bottom = (barH + tabBarH) + 'px';
-  panel.style.top = 'auto';
-}
-function mobEdPanelClose() {
-  var panel = document.getElementById('mob-ed-panel');
-  if (panel) panel.style.display = 'none';
-  var bar = document.getElementById('mob-ed-bar');
-  if (bar) bar.style.bottom = '';
-}
-function edApplyBgColor(color) {
-  document.execCommand('hiliteColor', false, color);
 }
 function mobEdToggleText() {
   edToggleText();
@@ -8022,19 +7953,7 @@ function nmToast(msg){
 ═══════════════════════════════════════════════════ -->
 <div id="mob-ed-bar" style="display:none">
   <div id="mob-ed-inner">
-
-    <!-- ── GRUPO 1: Paneles (igual que desktop sidebar) ── -->
-    <div class="mob-ed-group">
-      <button class="mob-ed-btn" onclick="mobWixPanel('texto')"><span>T</span><span>Textos</span></button>
-      <button class="mob-ed-btn" onclick="mobWixPanel('elementos')"><span>⊞</span><span>Elementos</span></button>
-      <button class="mob-ed-btn" onclick="mobWixPanel('imagenes')"><span>🖼</span><span>Imágenes</span></button>
-      <button class="mob-ed-btn" onclick="mobWixPanel('diseno')"><span>🎨</span><span>Diseño</span></button>
-      <button class="mob-ed-btn" onclick="mobWixPanel('nav')"><span>📑</span><span>Nav</span></button>
-      <button class="mob-ed-btn" onclick="mobWixPanel('acciones')"><span>⚡</span><span>Acciones</span></button>
-    </div>
-    <div class="mob-ed-sep"></div>
-
-    <!-- ── GRUPO 2: Modo edición ── -->
+    <!-- Grupo: Modos -->
     <div class="mob-ed-group">
       <button class="mob-ed-btn" id="mob-ed-text-btn" onclick="mobEdToggleText()">
         <span>✍️</span><span>Escribir</span>
@@ -8044,28 +7963,26 @@ function nmToast(msg){
       </button>
     </div>
     <div class="mob-ed-sep"></div>
-
-    <!-- ── GRUPO 3: Formato texto ── -->
+    <!-- Grupo: Formato texto -->
     <div class="mob-ed-group">
       <button class="mob-ed-btn" onclick="edFmt('bold')"><span>𝐁</span><span>Negrita</span></button>
       <button class="mob-ed-btn" onclick="edFmt('italic')"><span>𝐼</span><span>Cursiva</span></button>
       <button class="mob-ed-btn" onclick="edFmt('underline')"><span>U̲</span><span>Subrayar</span></button>
-      <button class="mob-ed-btn" onclick="edFmt('strikeThrough')"><span>S̶</span><span>Tachado</span></button>
     </div>
     <div class="mob-ed-sep"></div>
-
-    <!-- ── GRUPO 4: Alineación ── -->
+    <!-- Grupo: Color -->
     <div class="mob-ed-group">
-      <button class="mob-ed-btn" onclick="edFmt('justifyLeft')"><span>▤</span><span>Izq</span></button>
-      <button class="mob-ed-btn" onclick="edFmt('justifyCenter')"><span>▥</span><span>Centro</span></button>
-      <button class="mob-ed-btn" onclick="edFmt('justifyRight')"><span>▦</span><span>Der</span></button>
-      <button class="mob-ed-btn" onclick="edFmt('justifyFull')"><span>▧</span><span>Justif</span></button>
+      <div class="mob-ed-btn" style="cursor:default">
+        <input type="color" id="mob-ed-color" value="#1c1814"
+          onchange="edApplyFontColor(this.value)"
+          style="width:28px;height:28px;border:none;border-radius:6px;cursor:pointer;padding:0;background:none">
+        <span>Color</span>
+      </div>
     </div>
     <div class="mob-ed-sep"></div>
-
-    <!-- ── GRUPO 5: Tipografía ── -->
+    <!-- Grupo: Fuente -->
     <div class="mob-ed-group">
-      <div class="mob-ed-btn" style="cursor:default;min-width:96px">
+      <div class="mob-ed-btn" style="cursor:default;min-width:90px">
         <select onchange="if(this.value){edApplyFontInline(this.value);this.value=''}"
           style="background:#2a2420;color:white;border:1px solid rgba(255,255,255,.15);
                  padding:4px 2px;border-radius:6px;font-size:10px;width:100%;cursor:pointer">
@@ -8074,8 +7991,6 @@ function nmToast(msg){
           <option value="'Cormorant Garamond',serif">Cormorant</option>
           <option value="'Jost',sans-serif">Jost</option>
           <option value="Georgia,serif">Georgia</option>
-          <option value="'Playfair Display',serif">Playfair</option>
-          <option value="monospace">Monospace</option>
         </select>
         <span>Tipografía</span>
       </div>
@@ -8084,76 +7999,37 @@ function nmToast(msg){
           style="background:#2a2420;color:white;border:1px solid rgba(255,255,255,.15);
                  padding:4px 2px;border-radius:6px;font-size:10px;width:100%;cursor:pointer">
           <option value="">Tam…</option>
-          <option value="11px">11</option><option value="12px">12</option>
-          <option value="14px">14</option><option value="16px">16</option>
-          <option value="18px">18</option><option value="20px">20</option>
-          <option value="24px">24</option><option value="28px">28</option>
-          <option value="32px">32</option><option value="36px">36</option>
-          <option value="48px">48</option><option value="64px">64</option>
+          <option value="12px">12</option><option value="14px">14</option>
+          <option value="16px">16</option><option value="18px">18</option>
+          <option value="20px">20</option><option value="24px">24</option>
+          <option value="28px">28</option><option value="32px">32</option>
+          <option value="36px">36</option><option value="48px">48</option>
         </select>
         <span>Tamaño</span>
       </div>
     </div>
     <div class="mob-ed-sep"></div>
-
-    <!-- ── GRUPO 6: Color ── -->
+    <!-- Grupo: Alineación -->
     <div class="mob-ed-group">
-      <div class="mob-ed-btn" style="cursor:default">
-        <input type="color" id="mob-ed-color" value="#1c1814"
-          onchange="edApplyFontColor(this.value)"
-          style="width:28px;height:28px;border:none;border-radius:6px;cursor:pointer;padding:0;background:none">
-        <span>Color texto</span>
-      </div>
-      <div class="mob-ed-btn" style="cursor:default">
-        <input type="color" id="mob-ed-bgcolor" value="#FAF8F5"
-          onchange="edApplyBgColor(this.value)"
-          style="width:28px;height:28px;border:none;border-radius:6px;cursor:pointer;padding:0;background:none">
-        <span>Fondo</span>
-      </div>
+      <button class="mob-ed-btn" onclick="edFmt('justifyLeft')"><span>⬅</span><span>Izq</span></button>
+      <button class="mob-ed-btn" onclick="edFmt('justifyCenter')"><span>↔</span><span>Centro</span></button>
+      <button class="mob-ed-btn" onclick="edFmt('justifyRight')"><span>➡</span><span>Der</span></button>
     </div>
     <div class="mob-ed-sep"></div>
-
-    <!-- ── GRUPO 7: Listas y bloques ── -->
-    <div class="mob-ed-group">
-      <button class="mob-ed-btn" onclick="edFmt('insertUnorderedList')"><span>•≡</span><span>Lista</span></button>
-      <button class="mob-ed-btn" onclick="edFmt('insertOrderedList')"><span>1≡</span><span>Numerada</span></button>
-      <button class="mob-ed-btn" onclick="edFmt('formatBlock','H2')"><span>H2</span><span>Título</span></button>
-      <button class="mob-ed-btn" onclick="edFmt('formatBlock','P')"><span>¶</span><span>Párrafo</span></button>
-    </div>
-    <div class="mob-ed-sep"></div>
-
-    <!-- ── GRUPO 8: Enlace ── -->
-    <div class="mob-ed-group">
-      <button class="mob-ed-btn" onclick="wix_addLink()"><span>🔗</span><span>Enlace</span></button>
-      <button class="mob-ed-btn" onclick="edFmt('unlink')"><span>🔗̶</span><span>Quitar</span></button>
-    </div>
-    <div class="mob-ed-sep"></div>
-
-    <!-- ── GRUPO 9: Historial + Guardar ── -->
+    <!-- Grupo: Acciones -->
     <div class="mob-ed-group">
       <button class="mob-ed-btn" onclick="edUndo()"><span>↩</span><span>Deshacer</span></button>
       <button class="mob-ed-btn" onclick="edRedo()"><span>↪</span><span>Rehacer</span></button>
-      <button class="mob-ed-btn" onclick="edSave()" style="color:#b89558;border-color:rgba(184,149,88,.4)"><span>💾</span><span>Guardar</span></button>
+      <button class="mob-ed-btn" onclick="edSave()"><span>💾</span><span>Guardar</span></button>
     </div>
     <div class="mob-ed-sep"></div>
-
-    <!-- ── GRUPO 10: Cerrar ── -->
+    <!-- Cerrar -->
     <div class="mob-ed-group">
       <button class="mob-ed-btn mob-ed-close" onclick="mobEdClose()">
         <span>✕</span><span>Cerrar</span>
       </button>
     </div>
-
   </div>
-</div>
-
-<!-- Panel secundario mobile (para paneles del sidebar) -->
-<div id="mob-ed-panel" style="display:none;position:fixed;left:0;right:0;bottom:62px;z-index:99994;background:#252118;border-top:2px solid rgba(188,150,64,.4);max-height:50vh;overflow-y:auto;box-shadow:0 -4px 24px rgba(0,0,0,.6)">
-  <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0;background:#252118;z-index:2">
-    <div id="mob-ed-panel-title" style="font-size:13px;font-weight:700;color:white"></div>
-    <button onclick="mobEdPanelClose()" style="background:none;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:2px 8px">✕</button>
-  </div>
-  <div id="mob-ed-panel-body" style="padding:12px 14px;display:flex;flex-direction:column;gap:6px"></div>
 </div>
 
 </body>
