@@ -257,65 +257,76 @@ html, body { overflow-x: hidden; }
   /* Dashboard week grid */
   .weeks-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
   /* Modal full screen on mobile */
-  .modal { border-radius:0; }
-  .modal-header { padding: 14px 16px; }
-  .modal-week-badge { width: 36px; height: 36px; font-size: 14px; }
-  .modal-title { font-size: 18px; }
+  .modal { border-radius: 0 !important; flex-direction: column !important; }
+  .modal-header { padding: 12px 14px !important; border-bottom: 1px solid #e4ddd3; flex-shrink:0; }
+  .modal-week-badge { width: 30px !important; height: 30px !important; font-size: 13px !important; }
+  .modal-title { font-size: 15px !important; }
+  .modal-puerta-tag { font-size: 10px !important; }
+  .modal-header-left { gap: 10px !important; }
+  .modal-layout { flex-direction: column; flex: 1; overflow: hidden; min-height: 0; }
+  .modal-body { padding: 14px 12px 16px !important; overflow-y: auto; flex: 1; }
 
-  /* Sidebar → tab bar horizontal en mobile */
-  /* Modal mobile */
-  .modal {
-    flex-direction: column !important;
-  }
-  .modal-header {
-    padding: 14px 14px !important;
-    border-bottom: 1px solid #e4ddd3 !important;
-  }
-  .modal-layout {
-    flex-direction: column;
-    overflow: hidden;
-    flex: 1;
-  }
-  /* Sidebar → barra tabs ARRIBA (order:1) */
+  /* Sidebar → carrusel scrollable ABAJO */
   .modal-sidebar {
     display: flex !important;
     flex-direction: row !important;
     width: 100% !important;
-    background: #1c1814;
+    background: #1c1814 !important;
     padding: 0 !important;
     gap: 0 !important;
-    overflow-x: hidden !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    flex-shrink: 0 !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch;
+    border-top: 2px solid rgba(188,150,64,.4) !important;
+  }
+  .modal-sidebar::-webkit-scrollbar { display: none; }
+  /* Contenedor relativo para el fade */
+  .modal-sidebar-wrap {
+    position: relative;
+    background: #1c1814;
+    border-top: 2px solid rgba(188,150,64,.4);
     flex-shrink: 0;
   }
+  .modal-carousel-fade {
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 40px;
+    background: linear-gradient(to right, transparent, #1c1814 65%);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 8px;
+    font-size: 20px;
+    color: rgba(188,150,64,.9);
+    pointer-events: none;
+    z-index: 3;
+  }
+  /* Quitar el borde del sidebar original (lo tiene el wrap) */
+  .modal-sidebar { border-top: none !important; }
   .modal-nav-btn {
-    flex: 1 1 0 !important;
-    flex-direction: column !important;
-    gap: 1px !important;
-    padding: 6px 1px !important;
-    font-size: 3px !important;
-    letter-spacing: -.03em;
+    flex-direction: row !important;
+    gap: 6px !important;
+    padding: 10px 16px !important;
+    font-size: 12px !important;
+    letter-spacing: 0 !important;
     border-left: none !important;
     border-bottom: 3px solid transparent !important;
-    white-space: nowrap;
-    min-width: 0 !important;
-    align-items: center !important;
-    justify-content: center !important;
-    overflow: hidden;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
     width: auto !important;
-    color: rgba(255,255,255,.5) !important;
+    min-width: auto !important;
+    flex: none !important;
+    align-items: center !important;
+    color: rgba(255,255,255,.6) !important;
   }
   .modal-nav-btn.active {
     border-left: none !important;
     border-bottom: 3px solid #3d9e9b !important;
     color: #3d9e9b !important;
   }
-  .modal-nav-icon { font-size: 13px !important; width: auto !important; display: block; }
-  .modal-body { padding: 14px 12px 80px; overflow-y: auto; flex: 1; }
-  /* Header compacto */
-  .modal-week-badge { width: 30px !important; height: 30px !important; font-size: 13px !important; }
-  .modal-title { font-size: 14px !important; }
-  .modal-puerta-tag { font-size: 10px !important; }
-  .modal-header-left { gap: 10px !important; }
+  .modal-nav-icon { font-size: 15px !important; width: auto !important; }
 }
 
 /* ── DASHBOARD TAB BAR MOBILE — 2 filas ── */
@@ -378,7 +389,7 @@ html, body { overflow-x: hidden; }
   nav { height: 56px !important; }
   .main-content {
     margin-left: 0 !important;
-    padding: 8px 16px 130px !important;
+    padding: 24px 16px 130px !important;
     overflow-x: hidden !important;
     width: 100% !important;
     box-sizing: border-box !important;
@@ -775,7 +786,7 @@ nav {
 .modal-header { box-shadow: var(--shadow-sm); }
 .modal-sidebar { background: #18150f !important; }
 .modal-nav-btn {
-  font-size: 9px !important;
+  font-size: 12.5px !important;
   transition: all var(--transition) !important;
 }
 .modal-nav-btn.active {
@@ -2142,39 +2153,33 @@ document.addEventListener('keydown', function(e) {
 /* Grid 4 columnas (sin oro) */
 
 @media(min-width: 901px) {
-  .modal { flex-direction: row !important; flex-wrap: wrap; }
+  .modal-sidebar-wrap { display: contents; }
+  .modal-carousel-fade { display: none !important; }
   .modal-sidebar {
     width: 200px !important;
     flex-direction: column !important;
-    height: calc(100vh - 0px);
-    order: 2 !important;
-    flex-shrink: 0;
-    overflow-y: auto;
+    flex-shrink: 0 !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    border-top: none !important;
+    order: 0 !important;
   }
-  .modal-header {
-    width: 100%;
-    order: 1 !important;
-    flex-shrink: 0;
-  }
-  .modal-layout {
-    flex: 1;
-    order: 3 !important;
-    min-width: 0;
-    overflow: hidden;
-    display: flex;
-  }
+  .modal-layout { flex-direction: row !important; }
   .modal-nav-btn {
     flex-direction: row !important;
     font-size: 13px !important;
     padding: 12px 20px !important;
     border-bottom: none !important;
     border-left: 3px solid transparent !important;
+    white-space: normal !important;
     width: 100% !important;
     flex: none !important;
+    color: rgba(255,255,255,.55) !important;
   }
   .modal-nav-btn.active {
     border-bottom: none !important;
     border-left: 3px solid #3d9e9b !important;
+    color: #3d9e9b !important;
   }
   .modal-nav-icon { font-size: 16px !important; }
 }
@@ -2712,28 +2717,6 @@ document.addEventListener('keydown', function(e) {
 <!-- MODAL SEMANA -->
 <div class="modal-overlay" id="week-modal">
   <div class="modal">
-    <!-- Barra tabs: siempre arriba en mobile (primer hijo del modal) -->
-    <div class="modal-sidebar">
-      <button class="modal-nav-btn active" onclick="switchModalTab(0,this)" data-tab="0">
-        <span class="modal-nav-icon">📖</span>Descripción
-      </button>
-      <button class="modal-nav-btn" onclick="switchModalTab(1,this)" data-tab="1">
-        <span class="modal-nav-icon">💡</span>Conceptos
-      </button>
-      <button class="modal-nav-btn" onclick="switchModalTab(2,this)" data-tab="2">
-        <span class="modal-nav-icon">🧘</span>Ejercicio
-      </button>
-      <button class="modal-nav-btn" onclick="switchModalTab(3,this)" data-tab="3">
-        <span class="modal-nav-icon">📄</span>Materiales
-      </button>
-      <button class="modal-nav-btn" onclick="switchModalTab(4,this)" data-tab="4">
-        <span class="modal-nav-icon">✅</span>Completar
-      </button>
-      <button class="modal-nav-btn" onclick="switchModalTab(5,this)" data-tab="5">
-        <span class="modal-nav-icon">🎨</span>Arteterapia
-      </button>
-    </div>
-    <!-- Header: debajo de la barra -->
     <div class="modal-header">
       <div class="modal-header-left">
         <div class="modal-week-badge" id="modal-badge">📚</div>
@@ -2744,8 +2727,29 @@ document.addEventListener('keydown', function(e) {
       </div>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
-    <!-- Contenido -->
     <div class="modal-layout">
+      <!-- Sidebar navegación -->
+      <div class="modal-sidebar">
+        <button class="modal-nav-btn active" onclick="switchModalTab(0,this)" data-tab="0">
+          <span class="modal-nav-icon">📖</span>Descripción
+        </button>
+        <button class="modal-nav-btn" onclick="switchModalTab(1,this)" data-tab="1">
+          <span class="modal-nav-icon">💡</span>Conceptos
+        </button>
+        <button class="modal-nav-btn" onclick="switchModalTab(2,this)" data-tab="2">
+          <span class="modal-nav-icon">🧘</span>Ejercicio
+        </button>
+        <button class="modal-nav-btn" onclick="switchModalTab(3,this)" data-tab="3">
+          <span class="modal-nav-icon">📄</span>Materiales
+        </button>
+        <button class="modal-nav-btn" onclick="switchModalTab(4,this)" data-tab="4">
+          <span class="modal-nav-icon">✅</span>Completar
+        </button>
+        <button class="modal-nav-btn" onclick="switchModalTab(5,this)" data-tab="5">
+          <span class="modal-nav-icon">🎨</span>Arteterapia
+        </button>
+      </div>
+      <!-- Contenido -->
       <div class="modal-body">
         <div id="modal-content"></div>
       </div>
