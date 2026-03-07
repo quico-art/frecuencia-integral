@@ -2549,7 +2549,7 @@ function goTo(page) {
   }
   // Show/hide mobile tab bar
   var tb = document.getElementById('dash-tab-bar');
-  if (tb) tb.style.display = (page === 'student' && window.innerWidth <= 900) ? 'grid' : 'none';
+  if (tb) tb.style.display = (page === 'student' && window.innerWidth <= 900) ? 'flex' : 'none';
   window.scrollTo(0,0);
   if (page === 'student') refreshDashboard();
 }
