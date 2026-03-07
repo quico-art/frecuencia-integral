@@ -12,7 +12,7 @@ html,body{overflow-x:hidden;max-width:100%;margin:0;padding:0} #page-public{over
 body{font-family:'DM Sans',sans-serif;background:#f7f5f1;color:#1c1814}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,245,241,.95);backdrop-filter:blur(12px);border-bottom:1px solid #e4ddd3;height:66px;display:flex;align-items:center;padding:0 28px;justify-content:space-between}
+nav{position:fixed;top:0;left:0;right:0;z-index:9999;background:rgba(247,245,241,.97);backdrop-filter:blur(12px);border-bottom:1px solid #e4ddd3;height:66px;display:flex;align-items:center;padding:0 28px;justify-content:space-between}
 .nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none}
 .nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:#1c1814}
 .nav-logo-text span{font-size:10px;display:block;color:#7a7168;letter-spacing:.12em;text-transform:uppercase;margin-top:1px}
@@ -1444,8 +1444,11 @@ button:focus-visible, input:focus-visible {
 /* ── MOBILE (≤600px) ── */
 @media(max-width:600px){
   /* Nav */
-  .nav-btns .btn-ghost:not(#btnLogin):not(#btnDash):not(#btnLogout) { display: none; }
+  .nav-btns .btn-ghost:not(#btnLogin):not(#btnDash):not(#btnLogout):not(#btnHome) { display: none; }
   #btnInscribirse { display: none; }
+  /* Siempre visibles en mobile cuando hay sesión */
+  #btnHome, #btnDash, #btnAdmin, #btnLogout { display: inline-flex !important; }
+  /* Pero solo si JS los activa (display:none inline se respeta via JS) */
 
   /* Hero */
   #h-hero { padding: 4.5rem 1.2rem 2.5rem; }
@@ -1567,6 +1570,18 @@ button:focus-visible, input:focus-visible {
   .h-section-title { font-size: 1.6rem; }
   .nav-logo-text { display: none; }
   .h-symbol-svg { width: 65vw; height: 65vw; }
+}
+
+/* Nav mobile compacto — siempre visible con botones de sesión */
+@media(max-width: 600px) {
+  nav { padding: 0 12px !important; height: 56px !important; }
+  #page-student .main-content, #page-admin .main-content { padding-top: 72px !important; }
+  .nav-logo-text { display: none !important; }
+  .nav-btns { gap: 4px !important; }
+  #btnHome { font-size: 11px !important; padding: 6px 10px !important; }
+  #btnDash { font-size: 11px !important; padding: 6px 10px !important; }
+  #btnAdmin { font-size: 11px !important; padding: 6px 10px !important; }
+  #btnLogout { font-size: 11px !important; padding: 6px 10px !important; }
 }
 </style>
 
