@@ -133,7 +133,7 @@ html, body { overflow-x: hidden; }
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(28,24,20,.7);backdrop-filter:blur(6px);z-index:99998;align-items:center;justify-content:center;padding:0}
 .modal-overlay.open{display:flex}
 .modal{background:white;width:100%;height:100vh;max-width:100%;overflow:hidden;display:flex;flex-direction:column}
-.modal-header{padding:20px 40px;border-bottom:1px solid #e4ddd3;display:flex;align-items:center;justify-content:space-between;background:white;flex-shrink:0}
+.modal-header{padding:20px 40px;border-bottom:1px solid #e4ddd3;display:flex;align-items:center;justify-content:space-between;background:white;flex-shrink:0;padding-top:calc(20px + env(safe-area-inset-top, 0px))}
 .modal-header-left{display:flex;align-items:center;gap:20px}
 .modal-week-badge{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .modal-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;line-height:1.2}
@@ -2153,8 +2153,8 @@ document.addEventListener('keydown', function(e) {
 /* Grid 4 columnas (sin oro) */
 
 @media(min-width: 901px) {
-  .modal-sidebar-wrap { display: contents; }
-  .modal-carousel-fade { display: none !important; }
+  #modal-arrow-left { display: none !important; }
+  #modal-arrow-right { display: none !important; }
   .modal-sidebar {
     width: 200px !important;
     flex-direction: column !important;
@@ -2717,6 +2717,7 @@ document.addEventListener('keydown', function(e) {
 <!-- MODAL SEMANA -->
 <div class="modal-overlay" id="week-modal">
   <div class="modal">
+    <!-- Header -->
     <div class="modal-header">
       <div class="modal-header-left">
         <div class="modal-week-badge" id="modal-badge">📚</div>
@@ -2727,9 +2728,9 @@ document.addEventListener('keydown', function(e) {
       </div>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
-    <div class="modal-layout">
-      <!-- Sidebar navegación -->
-      <div class="modal-sidebar">
+    <!-- Carrusel tabs (abajo en mobile, lateral en desktop) -->
+    <div style="position:relative;flex-shrink:0">
+      <div class="modal-sidebar" id="modal-sidebar-scroll">
         <button class="modal-nav-btn active" onclick="switchModalTab(0,this)" data-tab="0">
           <span class="modal-nav-icon">📖</span>Descripción
         </button>
@@ -2749,6 +2750,10 @@ document.addEventListener('keydown', function(e) {
           <span class="modal-nav-icon">🎨</span>Arteterapia
         </button>
       </div>
+      <div id="modal-arrow-left" onclick="modalCarouselScroll(-1)" style="position:absolute;left:0;top:0;bottom:0;width:44px;background:linear-gradient(to left,transparent,#1c1814 60%);display:none;align-items:center;justify-content:flex-start;padding-left:8px;font-size:24px;color:#BC9640;pointer-events:auto;z-index:5;font-weight:bold;cursor:pointer">‹</div>
+      <div id="modal-arrow-right" onclick="modalCarouselScroll(1)" style="position:absolute;right:0;top:0;bottom:0;width:44px;background:linear-gradient(to right,transparent,#1c1814 60%);display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:24px;color:#BC9640;pointer-events:auto;z-index:5;font-weight:bold;cursor:pointer">›</div>
+    </div>
+    <div class="modal-layout">
       <!-- Contenido -->
       <div class="modal-body">
         <div id="modal-content"></div>
@@ -3596,6 +3601,25 @@ function openWeekModal(weekNum) {
   // Reset sidebar nav
   document.querySelectorAll('.modal-nav-btn').forEach(function(t,i){ t.classList.toggle('active', i===0); });
   document.getElementById('week-modal').classList.add('open');
+  // Flechas carrusel
+  var scr = document.getElementById('modal-sidebar-scroll');
+  var arL = document.getElementById('modal-arrow-left');
+  var arR = document.getElementById('modal-arrow-right');
+  function updateCarouselArrows() {
+    if (!scr || !arL || !arR) return;
+    var atStart = scr.scrollLeft <= 5;
+    var atEnd = scr.scrollLeft + scr.clientWidth >= scr.scrollWidth - 5;
+    arL.style.display = atStart ? 'none' : 'flex';
+    arR.style.display = atEnd ? 'none' : 'flex';
+  }
+  if (scr) {
+    scr.addEventListener('scroll', updateCarouselArrows);
+    setTimeout(updateCarouselArrows, 100);
+  }
+  window.modalCarouselScroll = function(dir) {
+    var s = document.getElementById('modal-sidebar-scroll');
+    if (s) { s.scrollBy({ left: dir * 120, behavior: 'smooth' }); }
+  };
   // Ocultar tab bar bajo el modal
   var tb = document.getElementById('dash-tab-bar');
   if (tb) tb.style.display = 'none';
