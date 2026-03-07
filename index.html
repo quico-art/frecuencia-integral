@@ -5219,8 +5219,47 @@ function mobEdOpen() {
 }
 function mobEdClose() {
   document.getElementById('mob-ed-bar').style.display = 'none';
+  mobEdPanelClose();
   document.body.classList.remove('mob-ed-open');
   if (window._edOn) edToggleText();
+}
+function mobWixPanel(name) {
+  // Reuse desktop panel builders but show in mobile panel
+  var panel = document.getElementById('mob-ed-panel');
+  var title = document.getElementById('mob-ed-panel-title');
+  var body  = document.getElementById('mob-ed-panel-body');
+  if (!panel || !title || !body) return;
+  // Use same wixPanel logic to populate
+  _wixCurrentPanel = name;
+  var names = {texto:'✍ Textos',elementos:'⊞ Elementos',imagenes:'🖼 Imágenes',diseno:'🎨 Diseño',nav:'📑 Nav & Páginas',acciones:'⚡ Acciones'};
+  title.textContent = names[name] || name;
+  body.innerHTML = '';
+  // Call desktop panel builder to get HTML
+  var desktopBody = document.getElementById('wixP2Body');
+  if (desktopBody) {
+    // Trigger desktop panel build
+    wixPanel(name);
+    // Copy content to mobile panel
+    setTimeout(function(){
+      body.innerHTML = desktopBody.innerHTML;
+      // Re-bind onclick events by cloning
+    }, 50);
+  }
+  panel.style.display = 'block';
+  // Adjust mob-ed-bar bottom so panel doesn't cover it
+  var bar = document.getElementById('mob-ed-bar');
+  if (bar) bar.style.bottom = (panel.offsetHeight || 200) + 'px';
+}
+function mobEdPanelClose() {
+  var panel = document.getElementById('mob-ed-panel');
+  if (panel) panel.style.display = 'none';
+  var bar = document.getElementById('mob-ed-bar');
+  if (bar) bar.style.bottom = '';
+  // Also close desktop panel
+  wixPanelClose && wixPanelClose();
+}
+function edApplyBgColor(color) {
+  document.execCommand('hiliteColor', false, color);
 }
 function mobEdToggleText() {
   edToggleText();
@@ -7951,7 +7990,19 @@ function nmToast(msg){
 ═══════════════════════════════════════════════════ -->
 <div id="mob-ed-bar" style="display:none">
   <div id="mob-ed-inner">
-    <!-- Grupo: Modos -->
+
+    <!-- ── GRUPO 1: Paneles (igual que desktop sidebar) ── -->
+    <div class="mob-ed-group">
+      <button class="mob-ed-btn" onclick="mobWixPanel('texto')"><span>T</span><span>Textos</span></button>
+      <button class="mob-ed-btn" onclick="mobWixPanel('elementos')"><span>⊞</span><span>Elementos</span></button>
+      <button class="mob-ed-btn" onclick="mobWixPanel('imagenes')"><span>🖼</span><span>Imágenes</span></button>
+      <button class="mob-ed-btn" onclick="mobWixPanel('diseno')"><span>🎨</span><span>Diseño</span></button>
+      <button class="mob-ed-btn" onclick="mobWixPanel('nav')"><span>📑</span><span>Nav</span></button>
+      <button class="mob-ed-btn" onclick="mobWixPanel('acciones')"><span>⚡</span><span>Acciones</span></button>
+    </div>
+    <div class="mob-ed-sep"></div>
+
+    <!-- ── GRUPO 2: Modo edición ── -->
     <div class="mob-ed-group">
       <button class="mob-ed-btn" id="mob-ed-text-btn" onclick="mobEdToggleText()">
         <span>✍️</span><span>Escribir</span>
@@ -7961,26 +8012,28 @@ function nmToast(msg){
       </button>
     </div>
     <div class="mob-ed-sep"></div>
-    <!-- Grupo: Formato texto -->
+
+    <!-- ── GRUPO 3: Formato texto ── -->
     <div class="mob-ed-group">
       <button class="mob-ed-btn" onclick="edFmt('bold')"><span>𝐁</span><span>Negrita</span></button>
       <button class="mob-ed-btn" onclick="edFmt('italic')"><span>𝐼</span><span>Cursiva</span></button>
       <button class="mob-ed-btn" onclick="edFmt('underline')"><span>U̲</span><span>Subrayar</span></button>
+      <button class="mob-ed-btn" onclick="edFmt('strikeThrough')"><span>S̶</span><span>Tachado</span></button>
     </div>
     <div class="mob-ed-sep"></div>
-    <!-- Grupo: Color -->
+
+    <!-- ── GRUPO 4: Alineación ── -->
     <div class="mob-ed-group">
-      <div class="mob-ed-btn" style="cursor:default">
-        <input type="color" id="mob-ed-color" value="#1c1814"
-          onchange="edApplyFontColor(this.value)"
-          style="width:28px;height:28px;border:none;border-radius:6px;cursor:pointer;padding:0;background:none">
-        <span>Color</span>
-      </div>
+      <button class="mob-ed-btn" onclick="edFmt('justifyLeft')"><span>▤</span><span>Izq</span></button>
+      <button class="mob-ed-btn" onclick="edFmt('justifyCenter')"><span>▥</span><span>Centro</span></button>
+      <button class="mob-ed-btn" onclick="edFmt('justifyRight')"><span>▦</span><span>Der</span></button>
+      <button class="mob-ed-btn" onclick="edFmt('justifyFull')"><span>▧</span><span>Justif</span></button>
     </div>
     <div class="mob-ed-sep"></div>
-    <!-- Grupo: Fuente -->
+
+    <!-- ── GRUPO 5: Tipografía ── -->
     <div class="mob-ed-group">
-      <div class="mob-ed-btn" style="cursor:default;min-width:90px">
+      <div class="mob-ed-btn" style="cursor:default;min-width:96px">
         <select onchange="if(this.value){edApplyFontInline(this.value);this.value=''}"
           style="background:#2a2420;color:white;border:1px solid rgba(255,255,255,.15);
                  padding:4px 2px;border-radius:6px;font-size:10px;width:100%;cursor:pointer">
@@ -7989,6 +8042,8 @@ function nmToast(msg){
           <option value="'Cormorant Garamond',serif">Cormorant</option>
           <option value="'Jost',sans-serif">Jost</option>
           <option value="Georgia,serif">Georgia</option>
+          <option value="'Playfair Display',serif">Playfair</option>
+          <option value="monospace">Monospace</option>
         </select>
         <span>Tipografía</span>
       </div>
@@ -7997,37 +8052,76 @@ function nmToast(msg){
           style="background:#2a2420;color:white;border:1px solid rgba(255,255,255,.15);
                  padding:4px 2px;border-radius:6px;font-size:10px;width:100%;cursor:pointer">
           <option value="">Tam…</option>
-          <option value="12px">12</option><option value="14px">14</option>
-          <option value="16px">16</option><option value="18px">18</option>
-          <option value="20px">20</option><option value="24px">24</option>
-          <option value="28px">28</option><option value="32px">32</option>
-          <option value="36px">36</option><option value="48px">48</option>
+          <option value="11px">11</option><option value="12px">12</option>
+          <option value="14px">14</option><option value="16px">16</option>
+          <option value="18px">18</option><option value="20px">20</option>
+          <option value="24px">24</option><option value="28px">28</option>
+          <option value="32px">32</option><option value="36px">36</option>
+          <option value="48px">48</option><option value="64px">64</option>
         </select>
         <span>Tamaño</span>
       </div>
     </div>
     <div class="mob-ed-sep"></div>
-    <!-- Grupo: Alineación -->
+
+    <!-- ── GRUPO 6: Color ── -->
     <div class="mob-ed-group">
-      <button class="mob-ed-btn" onclick="edFmt('justifyLeft')"><span>⬅</span><span>Izq</span></button>
-      <button class="mob-ed-btn" onclick="edFmt('justifyCenter')"><span>↔</span><span>Centro</span></button>
-      <button class="mob-ed-btn" onclick="edFmt('justifyRight')"><span>➡</span><span>Der</span></button>
+      <div class="mob-ed-btn" style="cursor:default">
+        <input type="color" id="mob-ed-color" value="#1c1814"
+          onchange="edApplyFontColor(this.value)"
+          style="width:28px;height:28px;border:none;border-radius:6px;cursor:pointer;padding:0;background:none">
+        <span>Color texto</span>
+      </div>
+      <div class="mob-ed-btn" style="cursor:default">
+        <input type="color" id="mob-ed-bgcolor" value="#FAF8F5"
+          onchange="edApplyBgColor(this.value)"
+          style="width:28px;height:28px;border:none;border-radius:6px;cursor:pointer;padding:0;background:none">
+        <span>Fondo</span>
+      </div>
     </div>
     <div class="mob-ed-sep"></div>
-    <!-- Grupo: Acciones -->
+
+    <!-- ── GRUPO 7: Listas y bloques ── -->
+    <div class="mob-ed-group">
+      <button class="mob-ed-btn" onclick="edFmt('insertUnorderedList')"><span>•≡</span><span>Lista</span></button>
+      <button class="mob-ed-btn" onclick="edFmt('insertOrderedList')"><span>1≡</span><span>Numerada</span></button>
+      <button class="mob-ed-btn" onclick="edFmt('formatBlock','H2')"><span>H2</span><span>Título</span></button>
+      <button class="mob-ed-btn" onclick="edFmt('formatBlock','P')"><span>¶</span><span>Párrafo</span></button>
+    </div>
+    <div class="mob-ed-sep"></div>
+
+    <!-- ── GRUPO 8: Enlace ── -->
+    <div class="mob-ed-group">
+      <button class="mob-ed-btn" onclick="wix_addLink()"><span>🔗</span><span>Enlace</span></button>
+      <button class="mob-ed-btn" onclick="edFmt('unlink')"><span>🔗̶</span><span>Quitar</span></button>
+    </div>
+    <div class="mob-ed-sep"></div>
+
+    <!-- ── GRUPO 9: Historial + Guardar ── -->
     <div class="mob-ed-group">
       <button class="mob-ed-btn" onclick="edUndo()"><span>↩</span><span>Deshacer</span></button>
       <button class="mob-ed-btn" onclick="edRedo()"><span>↪</span><span>Rehacer</span></button>
-      <button class="mob-ed-btn" onclick="edSave()"><span>💾</span><span>Guardar</span></button>
+      <button class="mob-ed-btn" onclick="edSave()" style="color:#b89558;border-color:rgba(184,149,88,.4)"><span>💾</span><span>Guardar</span></button>
     </div>
     <div class="mob-ed-sep"></div>
-    <!-- Cerrar -->
+
+    <!-- ── GRUPO 10: Cerrar ── -->
     <div class="mob-ed-group">
       <button class="mob-ed-btn mob-ed-close" onclick="mobEdClose()">
         <span>✕</span><span>Cerrar</span>
       </button>
     </div>
+
   </div>
+</div>
+
+<!-- Panel secundario mobile (para paneles del sidebar) -->
+<div id="mob-ed-panel" style="display:none;position:fixed;left:0;right:0;bottom:0;z-index:999998;background:#252118;border-top:2px solid rgba(188,150,64,.4);max-height:50vh;overflow-y:auto;box-shadow:0 -4px 24px rgba(0,0,0,.6)">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.08);position:sticky;top:0;background:#252118;z-index:2">
+    <div id="mob-ed-panel-title" style="font-size:13px;font-weight:700;color:white"></div>
+    <button onclick="mobEdPanelClose()" style="background:none;border:none;color:rgba(255,255,255,.4);font-size:18px;cursor:pointer;padding:2px 8px">✕</button>
+  </div>
+  <div id="mob-ed-panel-body" style="padding:12px 14px;display:flex;flex-direction:column;gap:6px"></div>
 </div>
 
 </body>
