@@ -271,30 +271,29 @@ html, body { overflow-x: hidden; }
     background: #1c1814;
     padding: 0 !important;
     gap: 0 !important;
-    overflow-x: auto;
+    overflow-x: hidden !important;
     flex-shrink: 0;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
   }
-  .modal-sidebar::-webkit-scrollbar { display: none; }
   .modal-nav-btn {
+    flex: 1 1 0 !important;
     flex-direction: column !important;
-    gap: 2px !important;
-    padding: 8px 10px !important;
-    font-size: 10px !important;
+    gap: 1px !important;
+    padding: 7px 2px !important;
+    font-size: 9px !important;
     border-left: none !important;
     border-bottom: 3px solid transparent !important;
     white-space: nowrap;
-    min-width: 60px;
+    min-width: 0 !important;
     align-items: center !important;
     justify-content: center !important;
-    flex-shrink: 0;
+    overflow: hidden;
+    width: auto !important;
   }
   .modal-nav-btn.active {
     border-left: none !important;
     border-bottom: 3px solid #3d9e9b !important;
   }
-  .modal-nav-icon { font-size: 18px !important; width: auto !important; }
+  .modal-nav-icon { font-size: 16px !important; width: auto !important; display: block; }
   .modal-body { padding: 16px 14px 80px; overflow-y: auto; flex: 1; }
 }
 
@@ -3492,10 +3491,18 @@ function openWeekModal(weekNum) {
   // Reset sidebar nav
   document.querySelectorAll('.modal-nav-btn').forEach(function(t,i){ t.classList.toggle('active', i===0); });
   document.getElementById('week-modal').classList.add('open');
+  // Ocultar tab bar bajo el modal
+  var tb = document.getElementById('dash-tab-bar');
+  if (tb) tb.style.display = 'none';
 }
 
 function closeModal() {
   document.getElementById('week-modal').classList.remove('open');
+  // Restaurar tab bar
+  if (window.innerWidth <= 900) {
+    var tb = document.getElementById('dash-tab-bar');
+    if (tb) tb.style.display = 'flex';
+  }
 }
 
 function switchModalTab(idx, btn) {
