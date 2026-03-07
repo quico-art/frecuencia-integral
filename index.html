@@ -321,6 +321,12 @@ html, body { overflow-x: hidden; }
   .main-content {
     margin-left: 0 !important;
     padding: 20px 16px 130px !important;
+    overflow-x: hidden !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  #page-student {
+    overflow-x: hidden !important;
   }
   /* Hide floating editor button — it's in tab bar */
   #edOpenBtn { display: none !important; }
@@ -331,10 +337,63 @@ html, body { overflow-x: hidden; }
 }
 
 @media(max-width: 600px) {
+  /* Layout base */
   .dashboard-grid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
-  .main-content { padding: 16px 12px 120px !important; }
+  .main-content { padding: 16px 12px 130px !important; overflow-x: hidden !important; }
   .stat-value { font-size: 24px !important; }
   .week-card, .semana-card { padding: 16px !important; }
+
+  /* Overflow global */
+  #page-student { overflow-x: hidden !important; }
+  .main-content > div { max-width: 100% !important; overflow-x: hidden !important; }
+
+  /* Notas: header flex columna */
+  #view-notas > div:first-child { flex-direction: column !important; align-items: flex-start !important; }
+  #view-notas > div:first-child > div { width: 100% !important; justify-content: flex-start !important; }
+
+  /* Notas: controles semana/fecha/guardar en columna */
+  #notas-panel-editor > div:first-child { flex-direction: column !important; align-items: stretch !important; }
+  #notas-panel-editor > div:first-child > div { width: 100% !important; }
+  #notas-panel-editor > div:first-child > div select,
+  #notas-panel-editor > div:first-child > div input { width: 100% !important; box-sizing: border-box !important; }
+  #notas-panel-editor > div:first-child > div:last-child { margin-top: 0 !important; }
+  #notas-panel-editor > div:first-child > div:last-child button { width: 100% !important; }
+
+  /* Notas: textarea full width */
+  #notas-editor, #notas-preview { min-height: 220px !important; width: 100% !important; box-sizing: border-box !important; }
+
+  /* Formaciones: cards en columna */
+  #view-formaciones .formacion-grid,
+  #view-formaciones [style*="grid"] { grid-template-columns: 1fr !important; }
+
+  /* Multimedia: cards ajuste */
+  #view-multimedia [style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+
+  /* Progreso: tabla responsive */
+  #view-progreso table { font-size: 12px !important; }
+  #view-progreso td, #view-progreso th { padding: 8px 6px !important; }
+
+  /* Materiales: ajuste */
+  #view-materiales [style*="grid"] { grid-template-columns: 1fr !important; }
+
+  /* Arteterapia: ajuste */
+  #view-arteterapia [style*="max-width"] { max-width: 100% !important; }
+  #view-arteterapia [style*="grid"] { grid-template-columns: 1fr !important; }
+
+  /* Calendario notas: días más pequeños */
+  #notas-calendario-grid { gap: 3px !important; }
+  #notas-calendario-grid > * { padding: 4px 2px !important; font-size: 10px !important; }
+
+  /* Dashboard botones de acción */
+  #view-dashboard [style*="display:flex"] { flex-wrap: wrap !important; }
+  #view-dashboard .btn-cta, #view-dashboard [style*="Ver Formaciones"] { width: 100% !important; }
+}
+
+@media(max-width: 400px) {
+  .dtab-label { font-size: 8px !important; }
+  .dtab-icon { font-size: 17px !important; }
+  .main-content { padding: 12px 10px 130px !important; }
+  .stat-value { font-size: 20px !important; }
 }
 
 
@@ -2210,6 +2269,27 @@ document.addEventListener('keydown', function(e) {
         </button>
         <button class="dtab dtab-logout" onclick="doLogout()">
           <span class="dtab-icon">🚪</span><span class="dtab-label">Salir</span>
+        </button>
+      </div>
+      <!-- FILA EDITOR: visible solo cuando el editor está abierto -->
+      <div class="dtab-row dtab-row-editor" id="dtab-row-editor">
+        <button class="dtab dtab-panel-btn" id="dtab-ed-paneles-btn" onclick="mobEdPanelToggle(this)" style="flex:0.8 1 0;min-width:40px">
+          <span class="dtab-icon">☰</span><span class="dtab-label">Paneles</span>
+        </button>
+        <button class="dtab" onclick="showView('dashboard');dtabCloseMas()" style="flex:1">
+          <span class="dtab-icon">🏠</span><span class="dtab-label">Inicio</span>
+        </button>
+        <button class="dtab" onclick="edUndo()" style="flex:1">
+          <span class="dtab-icon">↩</span><span class="dtab-label">Deshacer</span>
+        </button>
+        <button class="dtab" onclick="edRedo()" style="flex:1">
+          <span class="dtab-icon">↪</span><span class="dtab-label">Rehacer</span>
+        </button>
+        <button class="dtab" onclick="edSave()" style="flex:1;color:#D4AA5A">
+          <span class="dtab-icon">💾</span><span class="dtab-label">Guardar</span>
+        </button>
+        <button class="dtab dtab-logout" onclick="mobEdClose()" style="flex:0.8 1 0">
+          <span class="dtab-icon">✕</span><span class="dtab-label">Cerrar</span>
         </button>
       </div>
     </nav>
@@ -4905,6 +4985,20 @@ button:not(.efb):not([style*="font-size: 1"]):not([style*="font-size:1"]):not(.b
 .epp-css{width:100%;background:#0a0806;color:#3d9e9b;border:1px solid rgba(255,255,255,.1);border-radius:5px;padding:7px;font-family:monospace;font-size:10px;resize:vertical;outline:none;box-sizing:border-box}
 /* Page adjust when panel open */
 body.ed-props-open #page-public{margin-right:268px;transition:margin .2s}
+
+/* Tab bar en modo editor: mostrar fila simplificada */
+body.mob-ed-open #dash-tab-bar .dtab-row-1 { display: none !important; }
+body.mob-ed-open #dash-tab-bar .dtab-row-2 { display: none !important; }
+body.mob-ed-open #dash-tab-bar .dtab-row-editor { display: flex !important; }
+.dtab-row-editor {
+  display: none;
+  width: 100%;
+  background: #111009;
+  border-top: 1px solid rgba(188,150,64,.2);
+}
+.dtab-row-editor .dtab { color: rgba(255,255,255,.6); }
+.dtab-row-editor .dtab-panel-btn { flex: 1.5 1 0; color: rgba(188,150,64,.8) !important; }
+.dtab-row-editor .dtab-panel-btn.active { color: #D4AA5A !important; }
 </style>
 
 <script>
@@ -5247,7 +5341,9 @@ function edPropCssRead(){
 function mobEdOpen() {
   document.getElementById('mob-ed-bar').style.display = 'block';
   document.body.classList.add('mob-ed-open');
-  // Activate text editing
+  // Show editor tab bar row
+  var edRow = document.getElementById('dtab-row-editor');
+  if (edRow) edRow.style.display = 'flex';
   if (!window._edOn) edToggleText();
   if (!_edHistory.length) edSnapshot();
 }
@@ -5255,6 +5351,9 @@ function mobEdClose() {
   document.getElementById('mob-ed-bar').style.display = 'none';
   mobEdPanelClose();
   document.body.classList.remove('mob-ed-open');
+  // Restore normal tab bar rows
+  var edRow = document.getElementById('dtab-row-editor');
+  if (edRow) edRow.style.display = 'none';
   if (window._edOn) edToggleText();
 }
 function mobEdPanel(name) {
@@ -5346,6 +5445,20 @@ function dtabCloseMas() {
   if (row2) row2.style.display = 'none';
   var masBtn = document.getElementById('dtab-mas-btn');
   if (masBtn) masBtn.classList.remove('active');
+}
+function mobEdPanelToggle(btn) {
+  // Toggle panel secundario (paneles de editor) desde la fila editor
+  var panel = document.getElementById('mob-ed-panel');
+  if (!panel) return;
+  var open = panel.style.display !== 'none';
+  if (open) {
+    mobEdPanelClose();
+    if (btn) btn.classList.remove('active');
+  } else {
+    // Mostrar menú de paneles
+    mobEdPanel('acciones');
+    if (btn) btn.classList.add('active');
+  }
 }
 function showDashMore() {}
 function hideDashMore() {}
