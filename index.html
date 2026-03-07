@@ -12,7 +12,7 @@ html,body{overflow-x:hidden;max-width:100%;margin:0;padding:0} #page-public{over
 body{font-family:'DM Sans',sans-serif;background:#f7f5f1;color:#1c1814}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:9999;background:rgba(247,245,241,.97);backdrop-filter:blur(12px);border-bottom:1px solid #e4ddd3;height:66px;display:flex;align-items:center;padding:0 28px;justify-content:space-between}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,245,241,.95);backdrop-filter:blur(12px);border-bottom:1px solid #e4ddd3;height:66px;display:flex;align-items:center;padding:0 28px;justify-content:space-between}
 .nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none}
 .nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:#1c1814}
 .nav-logo-text span{font-size:10px;display:block;color:#7a7168;letter-spacing:.12em;text-transform:uppercase;margin-top:1px}
@@ -130,7 +130,7 @@ html, body { overflow-x: hidden; }
 .week-status{font-size:11px;margin-top:8px}
 
 /* MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(28,24,20,.7);backdrop-filter:blur(6px);z-index:400;align-items:center;justify-content:center;padding:0}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(28,24,20,.7);backdrop-filter:blur(6px);z-index:99998;align-items:center;justify-content:center;padding:0}
 .modal-overlay.open{display:flex}
 .modal{background:white;width:100%;height:100vh;max-width:100%;overflow:hidden;display:flex;flex-direction:column}
 .modal-header{padding:20px 40px;border-bottom:1px solid #e4ddd3;display:flex;align-items:center;justify-content:space-between;background:white;flex-shrink:0}
@@ -257,9 +257,45 @@ html, body { overflow-x: hidden; }
   /* Dashboard week grid */
   .weeks-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
   /* Modal full screen on mobile */
-  .modal{border-radius:0}
-  .modal-sidebar{display:none}
-  .modal-body{padding:20px 16px}
+  .modal { border-radius:0; }
+  .modal-header { padding: 14px 16px; }
+  .modal-week-badge { width: 36px; height: 36px; font-size: 14px; }
+  .modal-title { font-size: 18px; }
+
+  /* Sidebar → tab bar horizontal en mobile */
+  .modal-layout { flex-direction: column; overflow: hidden; }
+  .modal-sidebar {
+    display: flex !important;
+    flex-direction: row !important;
+    width: 100% !important;
+    background: #1c1814;
+    padding: 0 !important;
+    gap: 0 !important;
+    overflow-x: auto;
+    flex-shrink: 0;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .modal-sidebar::-webkit-scrollbar { display: none; }
+  .modal-nav-btn {
+    flex-direction: column !important;
+    gap: 2px !important;
+    padding: 8px 10px !important;
+    font-size: 10px !important;
+    border-left: none !important;
+    border-bottom: 3px solid transparent !important;
+    white-space: nowrap;
+    min-width: 60px;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0;
+  }
+  .modal-nav-btn.active {
+    border-left: none !important;
+    border-bottom: 3px solid #3d9e9b !important;
+  }
+  .modal-nav-icon { font-size: 18px !important; width: auto !important; }
+  .modal-body { padding: 16px 14px 80px; overflow-y: auto; flex: 1; }
 }
 
 /* ── DASHBOARD TAB BAR MOBILE — 2 filas ── */
@@ -318,9 +354,11 @@ html, body { overflow-x: hidden; }
 @media(max-width: 900px) {
   #dash-tab-bar { display: flex; }
   .sidebar { display: none !important; }
+  .student-wrap { padding-top: 56px !important; }
+  nav { height: 56px !important; }
   .main-content {
     margin-left: 0 !important;
-    padding: 20px 16px 130px !important;
+    padding: 8px 16px 130px !important;
     overflow-x: hidden !important;
     width: 100% !important;
     box-sizing: border-box !important;
@@ -339,7 +377,7 @@ html, body { overflow-x: hidden; }
 @media(max-width: 600px) {
   /* Layout base */
   .dashboard-grid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
-  .main-content { padding: 16px 12px 130px !important; overflow-x: hidden !important; }
+  .main-content { padding: 8px 12px 130px !important; overflow-x: hidden !important; }
   .stat-value { font-size: 24px !important; }
   .week-card, .semana-card { padding: 16px !important; }
 
@@ -1444,11 +1482,8 @@ button:focus-visible, input:focus-visible {
 /* ── MOBILE (≤600px) ── */
 @media(max-width:600px){
   /* Nav */
-  .nav-btns .btn-ghost:not(#btnLogin):not(#btnDash):not(#btnLogout):not(#btnHome) { display: none; }
+  .nav-btns .btn-ghost:not(#btnLogin):not(#btnDash):not(#btnLogout) { display: none; }
   #btnInscribirse { display: none; }
-  /* Siempre visibles en mobile cuando hay sesión */
-  #btnHome, #btnDash, #btnAdmin, #btnLogout { display: inline-flex !important; }
-  /* Pero solo si JS los activa (display:none inline se respeta via JS) */
 
   /* Hero */
   #h-hero { padding: 4.5rem 1.2rem 2.5rem; }
@@ -1572,17 +1607,6 @@ button:focus-visible, input:focus-visible {
   .h-symbol-svg { width: 65vw; height: 65vw; }
 }
 
-/* Nav mobile compacto — siempre visible con botones de sesión */
-@media(max-width: 600px) {
-  nav { padding: 0 12px !important; height: 56px !important; }
-  #page-student .main-content, #page-admin .main-content { padding-top: 72px !important; }
-  .nav-logo-text { display: none !important; }
-  .nav-btns { gap: 4px !important; }
-  #btnHome { font-size: 11px !important; padding: 6px 10px !important; }
-  #btnDash { font-size: 11px !important; padding: 6px 10px !important; }
-  #btnAdmin { font-size: 11px !important; padding: 6px 10px !important; }
-  #btnLogout { font-size: 11px !important; padding: 6px 10px !important; }
-}
 </style>
 
 <!-- NAV pública home (reemplaza el nav global mientras está en home) -->
@@ -2312,6 +2336,14 @@ document.addEventListener('keydown', function(e) {
     <!-- MAIN -->
     <div class="main-content">
 
+      <!-- BARRA ACCESO RÁPIDO — solo visible para admin/editor -->
+      <div id="user-quick-nav" style="display:none;align-items:center;gap:8px;margin-bottom:20px;flex-wrap:wrap">
+        <button class="btn-ghost" onclick="goTo('public')" style="font-size:12px;padding:7px 14px;border-radius:10px;border:1.5px solid #e4ddd3;background:white;color:#3d3730;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:6px">🏠 Inicio</button>
+        <button class="btn-ghost" onclick="goTo('student')" style="font-size:12px;padding:7px 14px;border-radius:10px;border:1.5px solid #e4ddd3;background:white;color:#3d3730;cursor:pointer;font-family:'DM Sans',sans-serif">Mi Dashboard</button>
+        <button id="uqn-admin" style="display:none;font-size:12px;padding:7px 14px;border-radius:10px;border:none;background:#b89558;color:white;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:700" onclick="goTo('admin')">⚙ Admin</button>
+        <button onclick="doLogout()" style="font-size:12px;padding:7px 14px;border-radius:10px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;cursor:pointer;font-family:'DM Sans',sans-serif">Salir</button>
+      </div>
+
       <!-- DASHBOARD VIEW -->
       <div id="view-dashboard">
         <h1 style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;margin-bottom:8px">Bienvenido, <span id="dash-name">Alumno</span> ✦</h1>
@@ -2910,6 +2942,13 @@ async function onLogin(u) {
   var edBtn = document.getElementById('edOpenBtn'); if(edBtn) edBtn.style.display = isAdmin ? '' : 'none';
   var dtabEd = document.getElementById('dtab-editor-btn'); if(dtabEd) dtabEd.style.display = isAdmin ? 'flex' : 'none';
   document.getElementById('btnHome').style.display = '';
+  // Barra acceso rápido dentro del área de usuario — solo admin/editor
+  var uqn = document.getElementById('user-quick-nav');
+  if (uqn) {
+    uqn.style.display = isAdmin ? 'flex' : 'none';
+    var uqnAdmin = document.getElementById('uqn-admin');
+    if (uqnAdmin) uqnAdmin.style.display = isAdmin ? '' : 'none';
+  }
 
 try {
     var pendingPlan = null;
