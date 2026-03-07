@@ -2536,22 +2536,8 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 // ── NAVIGATION ──
-function goTo(page) {
-  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
-  var newPage = document.getElementById('page-' + page);
-  newPage.classList.add('active');
-  // Maintain sidebar push if open
-  var sb = document.getElementById('wixSideBar');
-  if(sb && sb.style.display !== 'none') {
-    var p2 = document.getElementById('wixPanel2');
-    var isWide = p2 && p2.style.display !== 'none';
-    /* no push on page navigation */
-  }
-  // Show/hide mobile tab bar
-  var tb = document.getElementById('dash-tab-bar');
-  if (tb) tb.style.display = (page === 'student' && window.innerWidth <= 900) ? 'flex' : 'none';
-  window.scrollTo(0,0);
-  if (page === 'student') refreshDashboard();
+function _goToLegacy(page) {
+  // legacy — superseded by goTo below
 }
 
 function showView(view, el) {
@@ -3687,6 +3673,15 @@ var _originalGoTo = goTo;
 function goTo(page) {
   document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
   document.getElementById('page-' + page).classList.add('active');
+  // Show/hide mobile tab bar
+  var tb = document.getElementById('dash-tab-bar');
+  if (tb) tb.style.display = (page === 'student' && window.innerWidth <= 900) ? 'flex' : 'none';
+  // Show/hide admin editor button
+  var edBtn = document.getElementById('dtab-editor-btn');
+  if (edBtn && page === 'student') {
+    var isAdmin = window.user && (window.user._role === 'admin' || (typeof ADMIN_EMAILS !== 'undefined' && ADMIN_EMAILS.includes(window.user.email)));
+    edBtn.style.display = isAdmin ? 'flex' : 'none';
+  }
   window.scrollTo(0,0);
   if (page === 'student') refreshDashboard();
   if (page === 'admin') loadAdminData();
