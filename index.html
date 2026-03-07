@@ -5273,13 +5273,13 @@ function mobEdPanel(name) {
   var html = '';
   if (name==='texto') {
     html = b+'onclick="mobEdToggleText()">✍️ &nbsp;<b>Activar edición de texto</b></button>'+
-           b+'onclick="edFmt('bold')">𝐁 &nbsp;<b>Negrita</b></button>'+
-           b+'onclick="edFmt('italic')">𝐼 &nbsp;<b>Cursiva</b></button>'+
-           b+'onclick="edFmt('underline')">U̲ &nbsp;<b>Subrayado</b></button>'+
-           b+'onclick="edFmt('justifyLeft')">⬅ &nbsp;<b>Izquierda</b></button>'+
-           b+'onclick="edFmt('justifyCenter')">↔ &nbsp;<b>Centrar</b></button>'+
-           b+'onclick="edFmt('justifyRight')">➡ &nbsp;<b>Derecha</b></button>'+
-           b+'onclick="edFmt('insertUnorderedList')">• &nbsp;<b>Lista</b></button>'+
+           b+'onclick="edFmt(\'bold\')">𝐁 &nbsp;<b>Negrita</b></button>'+
+           b+'onclick="edFmt(\'italic\')">𝐼 &nbsp;<b>Cursiva</b></button>'+
+           b+'onclick="edFmt(\'underline\')">U̲ &nbsp;<b>Subrayado</b></button>'+
+           b+'onclick="edFmt(\'justifyLeft\')">⬅ &nbsp;<b>Izquierda</b></button>'+
+           b+'onclick="edFmt(\'justifyCenter\')">↔ &nbsp;<b>Centrar</b></button>'+
+           b+'onclick="edFmt(\'justifyRight\')">➡ &nbsp;<b>Derecha</b></button>'+
+           b+'onclick="edFmt(\'insertUnorderedList\')">• &nbsp;<b>Lista</b></button>'+
            b+'onclick="wix_addLink&&wix_addLink()">🔗 &nbsp;<b>Añadir enlace</b></button>';
   } else if (name==='elementos') {
     html = b+'onclick="mobEdToggleSel()">🎯 &nbsp;<b>Seleccionar elemento</b></button>'+
@@ -5294,13 +5294,13 @@ function mobEdPanel(name) {
            '<div style="padding:6px 0 2px;color:rgba(255,255,255,.5);font-size:11px">Color de fondo:</div>'+
            '<div style="display:flex;gap:6px;flex-wrap:wrap;padding-bottom:4px">'+
            ['#0E0C0A','#1c1814','#2b7d7a','#3d9e9b','#BC9640','#FAF8F5','#f0ece4','#bf4637','#2c5f9e','#7b4fa6','#ffffff'].map(function(c){
-             return '<button onclick="document.execCommand('hiliteColor',false,''+c+'')" title="'+c+'" style="width:30px;height:30px;background:'+c+';border:2px solid rgba(255,255,255,.2);border-radius:6px;cursor:pointer;flex-shrink:0"></button>';
+             return '<button onclick="document.execCommand(\'hiliteColor\',false,\''+c+'\')" title="'+c+'" style="width:30px;height:30px;background:'+c+';border:2px solid rgba(255,255,255,.2);border-radius:6px;cursor:pointer;flex-shrink:0"></button>';
            }).join('')+'</div>';
   } else if (name==='nav') {
-    html = b+'onclick="goTo('public');mobEdPanelClose()">🏠 &nbsp;<b>Página pública</b></button>'+
-           b+'onclick="goTo('auth');mobEdPanelClose()">🔑 &nbsp;<b>Login / Registro</b></button>'+
-           b+'onclick="goTo('student');mobEdPanelClose()">📚 &nbsp;<b>Dashboard alumno</b></button>'+
-           b+'onclick="goTo('admin');mobEdPanelClose()">⚙️ &nbsp;<b>Panel admin</b></button>'+
+    html = b+'onclick="goTo(\'public\');mobEdPanelClose()">🏠 &nbsp;<b>Página pública</b></button>'+
+           b+'onclick="goTo(\'auth\');mobEdPanelClose()">🔑 &nbsp;<b>Login / Registro</b></button>'+
+           b+'onclick="goTo(\'student\');mobEdPanelClose()">📚 &nbsp;<b>Dashboard alumno</b></button>'+
+           b+'onclick="goTo(\'admin\');mobEdPanelClose()">⚙️ &nbsp;<b>Panel admin</b></button>'+
            '<hr style="border-color:rgba(255,255,255,.1);margin:6px 0">'+
            b+'onclick="wix_navOpen&&wix_navOpen()">📑 &nbsp;<b>Editor de navegación</b></button>';
   } else if (name==='acciones') {
