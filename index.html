@@ -12,11 +12,11 @@ html,body{overflow-x:hidden;max-width:100%;margin:0;padding:0} #page-public{over
 body{font-family:'DM Sans',sans-serif;background:#f7f5f1;color:#1c1814}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,245,241,.95);backdrop-filter:blur(12px);border-bottom:1px solid #e4ddd3;height:66px;display:flex;align-items:center;padding:0 28px;justify-content:space-between}
-.nav-logo{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none}
-.nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:#1c1814}
-.nav-logo-text span{font-size:10px;display:block;color:#7a7168;letter-spacing:.12em;text-transform:uppercase;margin-top:1px}
-.nav-logo-svg{width:38px;height:38px;flex-shrink:0}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,245,241,.95);backdrop-filter:blur(12px);border-bottom:1px solid #e4ddd3;height:76px;display:flex;align-items:center;padding:0 28px;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:12px;cursor:pointer;text-decoration:none}
+.nav-logo-text{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:#1c1814}
+.nav-logo-text span{font-size:11px;display:block;color:#7a7168;letter-spacing:.12em;text-transform:uppercase;margin-top:2px}
+.nav-logo-svg{width:64px;height:64px;flex-shrink:0}
 .nav-logo-ring{animation:navLogoRotate 60s linear infinite;transform-origin:250px 250px}
 @keyframes navLogoRotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 .nav-links{display:flex;gap:28px}
@@ -385,8 +385,9 @@ html, body { overflow-x: hidden; }
 @media(max-width: 900px) {
   #dash-tab-bar { display: flex; }
   .sidebar { display: none !important; }
-  .student-wrap { padding-top: 56px !important; }
-  nav { height: 56px !important; }
+  .student-wrap { padding-top: 64px !important; }
+  nav { height: 64px !important; }
+  .nav-logo-svg { width: 48px !important; height: 48px !important; }
   .main-content {
     margin-left: 0 !important;
     padding: 24px 16px 130px !important;
@@ -1009,22 +1010,22 @@ button:focus-visible, input:focus-visible {
 </div>
 
 <!-- NAV -->
-<nav style="background: rgba(247, 245, 241, 0.95); border-bottom-color: rgb(228, 221, 211); height: 66px; position: fixed;">
+<nav style="background: rgba(247, 245, 241, 0.95); border-bottom-color: rgb(228, 221, 211); height: 76px; position: fixed;">
   <div class="nav-logo" onclick="goTo('public')">
     <svg class="nav-logo-svg" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g class="nav-logo-ring">
-        <circle cx="250" cy="250" r="210" stroke="#B8903A" stroke-width="2.5" stroke-dasharray="1295 30" stroke-linecap="round" opacity="0.6"/>
-        <circle cx="250" cy="250" r="210" stroke="#D4AA5A" stroke-width="1" stroke-dasharray="1290 35" stroke-dashoffset="20" stroke-linecap="round" opacity="0.35"/>
+        <circle cx="250" cy="250" r="210" stroke="#B8903A" stroke-width="7" stroke-dasharray="1295 30" stroke-linecap="round" opacity="0.7"/>
+        <circle cx="250" cy="250" r="210" stroke="#D4AA5A" stroke-width="3" stroke-dasharray="1290 35" stroke-dashoffset="20" stroke-linecap="round" opacity="0.4"/>
       </g>
-      <path d="M250 40 C250 130 130 250 40 250" stroke="#B8903A" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.85"/>
-      <path d="M250 40 C250 132 132 250 42 250" stroke="#D4AA5A" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.4"/>
-      <line x1="40" y1="250" x2="460" y2="250" stroke="#B8903A" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
-      <line x1="40" y1="250" x2="460" y2="250" stroke="#D4AA5A" stroke-width="0.8" stroke-linecap="round" opacity="0.4"/>
-      <path d="M460 250 C370 250 250 370 250 460" stroke="#B8903A" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.85"/>
-      <path d="M460 250 C372 250 250 372 250 460" stroke="#D4AA5A" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.4"/>
-      <circle cx="250" cy="250" r="22" stroke="#B8903A" stroke-width="1.5" stroke-dasharray="130 8" stroke-linecap="round" opacity="0.8"/>
-      <circle cx="250" cy="250" r="12" fill="#0E0C0A"/>
-      <circle cx="248" cy="248" r="2.5" fill="#FFFFFF" opacity="0.9"/>
+      <path d="M250 40 C250 130 130 250 40 250" stroke="#B8903A" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.95"/>
+      <path d="M250 40 C250 132 132 250 42 250" stroke="#D4AA5A" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.5"/>
+      <line x1="40" y1="250" x2="460" y2="250" stroke="#B8903A" stroke-width="8" stroke-linecap="round" opacity="0.95"/>
+      <line x1="40" y1="250" x2="460" y2="250" stroke="#D4AA5A" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+      <path d="M460 250 C370 250 250 370 250 460" stroke="#B8903A" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.95"/>
+      <path d="M460 250 C372 250 250 372 250 460" stroke="#D4AA5A" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.5"/>
+      <circle cx="250" cy="250" r="28" stroke="#B8903A" stroke-width="5" stroke-dasharray="130 8" stroke-linecap="round" opacity="0.9"/>
+      <circle cx="250" cy="250" r="14" fill="#0E0C0A"/>
+      <circle cx="247" cy="247" r="4" fill="#FFFFFF" opacity="0.95"/>
     </svg>
     <div class="nav-logo-text">Frecuencia Integral<span>Academy · Método TCT</span></div>
   </div>
@@ -1675,7 +1676,8 @@ button:focus-visible, input:focus-visible {
 @media(max-width:380px){
   .h-title { font-size: 1.7rem; }
   .h-section-title { font-size: 1.6rem; }
-  .nav-logo-text { display: none; }
+  .nav-logo-text { font-size: 13px !important; }
+  .nav-logo-text span { display: none !important; }
   .h-symbol-svg { width: 65vw; height: 65vw; }
 }
 
@@ -2155,33 +2157,72 @@ document.addEventListener('keydown', function(e) {
 @media(min-width: 901px) {
   #modal-arrow-left { display: none !important; }
   #modal-arrow-right { display: none !important; }
+
+  /* Modal: columna vertical con header arriba y zona inferior como fila */
+  .modal {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+  }
+
+  /* Zona inferior = fila: sidebar | contenido */
+  #modal-sidebar-wrap {
+    display: flex !important;
+    flex-direction: row !important;
+    flex: 1 !important;
+    overflow: hidden !important;
+    position: static !important;
+    height: 0 !important; /* flex:1 la estira */
+  }
+
+  /* Sidebar lateral izquierda — altura completa */
   .modal-sidebar {
     width: 200px !important;
+    min-width: 200px !important;
     flex-direction: column !important;
     flex-shrink: 0 !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
     border-top: none !important;
-    order: 0 !important;
+    background: #1c1814 !important;
+    height: 100% !important;
+    display: flex !important;
   }
-  .modal-layout { flex-direction: row !important; }
+
+  /* modal-layout ahora es hermano dentro del wrap */
+  .modal-layout {
+    flex: 1 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  .modal-body {
+    flex: 1 !important;
+    overflow-y: auto !important;
+  }
+
+  /* Botones sidebar verticales */
   .modal-nav-btn {
     flex-direction: row !important;
     font-size: 13px !important;
     padding: 12px 20px !important;
     border-bottom: none !important;
+    border-top: none !important;
     border-left: 3px solid transparent !important;
     white-space: normal !important;
     width: 100% !important;
     flex: none !important;
+    flex-shrink: 0 !important;
     color: rgba(255,255,255,.55) !important;
+    justify-content: flex-start !important;
   }
   .modal-nav-btn.active {
     border-bottom: none !important;
     border-left: 3px solid #3d9e9b !important;
     color: #3d9e9b !important;
+    background: rgba(43,125,122,.2) !important;
   }
-  .modal-nav-icon { font-size: 16px !important; }
+  .modal-nav-icon { font-size: 16px !important; margin-right: 8px !important; }
 }
 </style>
 
@@ -2321,11 +2362,14 @@ document.addEventListener('keydown', function(e) {
         <div id="form-login" data-protonpass-form="">
           <div class="form-group">
             <label>Email</label>
-            <input type="email" id="inp-email" value="test@frecuenciaintegral.com">
+            <input type="email" id="inp-email" placeholder="tu@email.com">
           </div>
           <div class="form-group">
             <label>Contraseña</label>
-            <input type="password" id="inp-pass" value="TestUser2026!">
+            <div style="position:relative">
+              <input type="password" id="inp-pass" placeholder="Tu contraseña" style="width:100%;box-sizing:border-box;padding-right:42px">
+              <button type="button" onclick="togglePassVis('inp-pass',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;color:#7a7168;padding:4px;line-height:1">👁</button>
+            </div>
           </div>
           <button class="btn-login" id="btn-login" onclick="doLogin()">Entrar al Área de Alumnos</button>
         </div>
@@ -2341,7 +2385,10 @@ document.addEventListener('keydown', function(e) {
           </div>
           <div class="form-group">
             <label>Contraseña</label>
-            <input type="password" id="inp-reg-pass" placeholder="Mínimo 8 caracteres">
+            <div style="position:relative">
+              <input type="password" id="inp-reg-pass" placeholder="Mínimo 8 caracteres" style="width:100%;box-sizing:border-box;padding-right:42px">
+              <button type="button" onclick="togglePassVis('inp-reg-pass',this)" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:18px;color:#7a7168;padding:4px;line-height:1">👁</button>
+            </div>
           </div>
           <button class="btn-login" id="btn-register" onclick="doRegister()">Crear Cuenta</button>
         </div>
@@ -2729,7 +2776,7 @@ document.addEventListener('keydown', function(e) {
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <!-- Carrusel tabs (abajo en mobile, lateral en desktop) -->
-    <div style="position:relative;flex-shrink:0">
+    <div style="position:relative;flex-shrink:0" id="modal-sidebar-wrap">
       <div class="modal-sidebar" id="modal-sidebar-scroll">
         <button class="modal-nav-btn active" onclick="switchModalTab(0,this)" data-tab="0">
           <span class="modal-nav-icon">📖</span>Descripción
@@ -2752,11 +2799,11 @@ document.addEventListener('keydown', function(e) {
       </div>
       <div id="modal-arrow-left" onclick="modalCarouselScroll(-1)" style="position:absolute;left:0;top:0;bottom:0;width:44px;background:linear-gradient(to left,transparent,#1c1814 60%);display:none;align-items:center;justify-content:flex-start;padding-left:8px;font-size:24px;color:#BC9640;pointer-events:auto;z-index:5;font-weight:bold;cursor:pointer">‹</div>
       <div id="modal-arrow-right" onclick="modalCarouselScroll(1)" style="position:absolute;right:0;top:0;bottom:0;width:44px;background:linear-gradient(to right,transparent,#1c1814 60%);display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:24px;color:#BC9640;pointer-events:auto;z-index:5;font-weight:bold;cursor:pointer">›</div>
-    </div>
-    <div class="modal-layout">
-      <!-- Contenido -->
-      <div class="modal-body">
-        <div id="modal-content"></div>
+      <div class="modal-layout">
+        <!-- Contenido -->
+        <div class="modal-body">
+          <div id="modal-content"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -3092,6 +3139,14 @@ function onLogout() {
   document.getElementById('btnLogout').style.display = 'none';
   document.getElementById('btnAdmin').style.display = 'none';
   document.getElementById('btnHome').style.display = 'none';
+}
+
+function togglePassVis(id, btn) {
+  var inp = document.getElementById(id);
+  if (!inp) return;
+  var show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  btn.textContent = show ? '🙈' : '👁';
 }
 
 async function doLogout() {
@@ -3586,6 +3641,22 @@ function openWeekModal(weekNum) {
         (at.r ? '<div style="margin-top:16px;background:#fff8ed;border-left:3px solid #BC9640;border-radius:0 8px 8px 0;padding:14px 16px">' +
         '<div style="font-size:11px;font-weight:700;color:#BC9640;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">✍️ Reflexión para el Diario</div>' +
         '<p style="font-size:13px;line-height:1.75;color:#3d3730;font-style:italic">' + at.r + '</p></div>' : '');
+    })(),
+
+    // Tab 6: Notas de la semana
+    (function() {
+      var noteKey = 'nota-semana-' + weekNum;
+      var savedNote = (typeof notasCache !== 'undefined' && notasCache[noteKey]) ? notasCache[noteKey] : '';
+      return '<div>' +
+        '<div style="font-size:11px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">📝 Mis notas — Semana ' + weekNum + '</div>' +
+        '<textarea id="modal-nota-' + weekNum + '" placeholder="Escribe aquí tus reflexiones, aprendizajes o notas sobre esta semana..." ' +
+        'oninput="autoSaveModalNota(' + weekNum + ')" ' +
+        'style="width:100%;box-sizing:border-box;min-height:220px;padding:16px;border:1.5px solid #e4ddd3;border-radius:12px;font-size:14px;font-family:'DM Sans',sans-serif;line-height:1.7;color:#1c1814;background:#faf8f5;resize:vertical;outline:none">' + savedNote.replace(/</g,'&lt;') + '</textarea>' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">' +
+          '<span id="modal-nota-status-' + weekNum + '" style="font-size:11px;color:#a89e93"></span>' +
+          '<button onclick="saveModalNota(' + weekNum + ')" style="padding:8px 20px;background:#2b7d7a;color:white;border:none;border-radius:8px;font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;font-weight:600">💾 Guardar</button>' +
+        '</div>' +
+      '</div>';
     })()
   ];
 
@@ -3601,6 +3672,9 @@ function openWeekModal(weekNum) {
   // Reset sidebar nav
   document.querySelectorAll('.modal-nav-btn').forEach(function(t,i){ t.classList.toggle('active', i===0); });
   document.getElementById('week-modal').classList.add('open');
+  // Cargar notas de esta semana
+  loadModalNotas(weekNum);
+
   // Flechas carrusel
   var scr = document.getElementById('modal-sidebar-scroll');
   var arL = document.getElementById('modal-arrow-left');
@@ -3632,6 +3706,53 @@ function closeModal() {
     var tb = document.getElementById('dash-tab-bar');
     if (tb) tb.style.display = 'flex';
   }
+}
+
+// Cache notas semana
+var notasCache = {};
+
+// Autoguardar con debounce
+var _notaTimer = {};
+function autoSaveModalNota(weekNum) {
+  clearTimeout(_notaTimer[weekNum]);
+  _notaTimer[weekNum] = setTimeout(function(){ saveModalNota(weekNum, true); }, 1500);
+  var st = document.getElementById('modal-nota-status-' + weekNum);
+  if (st) st.textContent = 'Escribiendo...';
+}
+
+async function saveModalNota(weekNum, auto) {
+  var ta = document.getElementById('modal-nota-' + weekNum);
+  var st = document.getElementById('modal-nota-status-' + weekNum);
+  if (!ta) return;
+  var val = ta.value;
+  notasCache['nota-semana-' + weekNum] = val;
+  if (st) st.textContent = 'Guardando...';
+  try {
+    if (sb && user && user.id !== 'demo') {
+      await sb.from('user_notes').upsert({
+        user_id: user.id,
+        week_number: weekNum,
+        content: val,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'user_id,week_number' });
+    }
+    if (st) { st.textContent = '✓ Guardado'; setTimeout(function(){ if(st) st.textContent=''; }, 2000); }
+  } catch(e) {
+    if (st) st.textContent = '⚠ Error al guardar';
+    console.log('Error saving nota:', e);
+  }
+}
+
+async function loadModalNotas(weekNum) {
+  if (!sb || !user || user.id === 'demo') return;
+  try {
+    var r = await sb.from('user_notes').select('content').eq('user_id', user.id).eq('week_number', weekNum).single();
+    if (r.data && r.data.content) {
+      notasCache['nota-semana-' + weekNum] = r.data.content;
+      var ta = document.getElementById('modal-nota-' + weekNum);
+      if (ta) ta.value = r.data.content;
+    }
+  } catch(e) {}
 }
 
 function switchModalTab(idx, btn) {
@@ -3993,6 +4114,17 @@ function goTo(page) {
   window.scrollTo(0,0);
   if (page === 'student') refreshDashboard();
   if (page === 'admin') loadAdminData();
+  if (page === 'auth') {
+    var f=['inp-email','inp-pass','inp-name','inp-reg-email','inp-reg-pass'];
+    f.forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
+    // Reset ojo a cerrado
+    document.querySelectorAll('#form-login input[type=text],#form-register input[type=text]').forEach(function(el){
+      el.type='password';
+    });
+    document.querySelectorAll('#form-login button[onclick*=togglePassVis],#form-register button[onclick*=togglePassVis]').forEach(function(btn){
+      btn.textContent='👁';
+    });
+  }
 }
 
 // Close modal on outside click
@@ -5057,7 +5189,7 @@ button:not(.efb):not([style*="font-size: 1"]):not([style*="font-size:1"]):not(.b
 /* ── Mobile general ── */
 @media(max-width:768px){
   /* Nav */
-  nav{padding:0 16px;height:60px}
+  nav{padding:0 16px;height:64px}
   .nav-links{display:none}
   .nav-btns .btn-ghost:not(#btnLogin):not(#btnLogout):not(#btnDash){display:none}
   .btn-primary{padding:7px 12px;font-size:12px}
@@ -5129,6 +5261,8 @@ button:not(.efb):not([style*="font-size: 1"]):not([style*="font-size:1"]):not(.b
 @media(max-width:480px){
   .hero h1{font-size:clamp(26px,7vw,36px)}
   nav .nav-logo{font-size:14px}
+  .nav-logo-text { display: none !important; }
+  .nav-logo-svg { width: 40px !important; height: 40px !important; }
   .tradiciones-grid{grid-template-columns:1fr !important}
   .dashboard-grid{grid-template-columns:1fr}
   div[style*="grid-template-columns:repeat(3,1fr)"]{grid-template-columns:1fr !important}
