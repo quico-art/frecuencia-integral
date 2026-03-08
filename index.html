@@ -2342,6 +2342,869 @@ document.addEventListener('keydown', function(e) {
 
 </div><!-- /page-public -->
 
+<!-- ═══════════════════════════════════════════════════════
+     PAGE: ACADEMY HOME (multi-curso)
+     Nueva home general de Frecuencia Integral Academy
+═══════════════════════════════════════════════════════ -->
+<div class="page" id="page-academy">
+
+<style>
+/* ── ACADEMY PAGE STYLES ── */
+#page-academy {
+  font-family: 'DM Sans', sans-serif;
+  color: #1c1814;
+  overflow-x: hidden;
+}
+
+/* NAV ACADEMY */
+.acad-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(28,24,20,0.97);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(188,150,64,.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  height: 68px;
+}
+.acad-nav-logo {
+  display: flex; align-items: center; gap: 12px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.acad-nav-logo-text { display: flex; flex-direction: column; }
+.acad-nav-logo-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px; font-weight: 600;
+  color: #D4AA5A; letter-spacing: .02em; line-height: 1;
+}
+.acad-nav-logo-sub {
+  font-size: 9px; color: rgba(255,255,255,.35);
+  letter-spacing: .12em; text-transform: uppercase; margin-top: 2px;
+}
+.acad-nav-links {
+  display: flex; align-items: center; gap: 32px;
+  list-style: none; margin: 0; padding: 0;
+}
+.acad-nav-links a {
+  font-size: 13px; color: rgba(255,255,255,.6);
+  text-decoration: none; letter-spacing: .04em;
+  transition: color .2s; cursor: pointer;
+}
+.acad-nav-links a:hover { color: #D4AA5A; }
+.acad-nav-cta {
+  background: linear-gradient(135deg, #BC9640, #D4AA5A);
+  color: #1c1814 !important;
+  font-weight: 700 !important;
+  padding: 9px 20px !important;
+  border-radius: 100px !important;
+  font-size: 12px !important;
+  letter-spacing: .06em !important;
+  transition: opacity .2s !important;
+}
+.acad-nav-cta:hover { opacity: .85; color: #1c1814 !important; }
+
+/* HERO */
+.acad-hero {
+  min-height: 100vh;
+  background: #1c1814;
+  display: flex; align-items: center;
+  position: relative; overflow: hidden;
+  padding: 100px 40px 60px;
+}
+.acad-hero-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(188,150,64,.08) 0%, transparent 70%),
+              radial-gradient(ellipse 40% 40% at 20% 80%, rgba(43,125,122,.06) 0%, transparent 60%);
+}
+.acad-hero-grid {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: center;
+  max-width: 1200px; margin: 0 auto; width: 100%;
+}
+.acad-hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(188,150,64,.12);
+  border: 1px solid rgba(188,150,64,.25);
+  border-radius: 100px; padding: 6px 16px;
+  font-size: 11px; color: #D4AA5A;
+  letter-spacing: .1em; text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.acad-hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(38px, 5vw, 64px);
+  font-weight: 400; line-height: 1.1;
+  color: white; margin: 0 0 8px;
+}
+.acad-hero-title em {
+  font-style: italic; color: #D4AA5A;
+}
+.acad-hero-sub {
+  font-size: 16px; color: rgba(255,255,255,.5);
+  line-height: 1.7; margin: 20px 0 36px;
+  max-width: 480px;
+}
+.acad-hero-btns {
+  display: flex; gap: 14px; flex-wrap: wrap;
+}
+.acad-btn-primary {
+  background: linear-gradient(135deg, #2b7d7a, #3d9e9b);
+  color: white; border: none;
+  padding: 14px 28px; border-radius: 100px;
+  font-size: 14px; font-weight: 700;
+  cursor: pointer; letter-spacing: .04em;
+  transition: transform .2s, box-shadow .2s;
+  font-family: 'DM Sans', sans-serif;
+}
+.acad-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(43,125,122,.35); }
+.acad-btn-ghost {
+  background: transparent;
+  color: rgba(255,255,255,.7);
+  border: 1.5px solid rgba(255,255,255,.2);
+  padding: 14px 28px; border-radius: 100px;
+  font-size: 14px; font-weight: 600;
+  cursor: pointer; letter-spacing: .04em;
+  transition: all .2s;
+  font-family: 'DM Sans', sans-serif;
+}
+.acad-btn-ghost:hover { border-color: #D4AA5A; color: #D4AA5A; }
+
+/* Hero mandala */
+.acad-hero-visual {
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.acad-hero-mandala {
+  width: 420px; height: 420px;
+  opacity: .85;
+  animation: acad-rotate 60s linear infinite;
+}
+@keyframes acad-rotate { to { transform: rotate(360deg); } }
+.acad-hero-mandala-inner {
+  position: absolute;
+  width: 200px; height: 200px;
+  animation: acad-rotate-rev 40s linear infinite;
+}
+@keyframes acad-rotate-rev { to { transform: rotate(-360deg); } }
+
+/* SECTION BASE */
+.acad-section {
+  padding: 100px 40px;
+  max-width: 1200px; margin: 0 auto;
+}
+.acad-section-full {
+  padding: 100px 40px;
+}
+.acad-section-label {
+  font-size: 11px; letter-spacing: .14em;
+  text-transform: uppercase; color: #BC9640;
+  margin-bottom: 16px; display: block;
+}
+.acad-section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 400; line-height: 1.15;
+  color: #1c1814; margin: 0 0 20px;
+}
+.acad-section-title.light { color: white; }
+.acad-section-sub {
+  font-size: 16px; color: #7a7168;
+  line-height: 1.75; max-width: 580px;
+}
+.acad-section-sub.light { color: rgba(255,255,255,.55); }
+
+/* QUÉ ES — 3 PILARES */
+.acad-pilares {
+  background: #FAF8F5;
+}
+.acad-pilares-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 32px; margin-top: 60px;
+}
+.acad-pilar-card {
+  background: white;
+  border: 1px solid #e4ddd3;
+  border-radius: 20px;
+  padding: 36px 28px;
+  transition: transform .25s, box-shadow .25s;
+}
+.acad-pilar-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(28,24,20,.08); }
+.acad-pilar-icon {
+  font-size: 32px; margin-bottom: 20px; display: block;
+}
+.acad-pilar-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px; font-weight: 600;
+  color: #1c1814; margin: 0 0 12px;
+}
+.acad-pilar-text {
+  font-size: 14px; color: #7a7168; line-height: 1.7;
+}
+
+/* CURSOS */
+.acad-cursos-bg { background: #f7f5f1; }
+.acad-cursos-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 28px; margin-top: 56px;
+}
+.acad-curso-card {
+  border-radius: 24px; overflow: hidden;
+  position: relative; min-height: 480px;
+  display: flex; flex-direction: column;
+  justify-content: flex-end;
+  cursor: pointer;
+  transition: transform .3s, box-shadow .3s;
+}
+.acad-curso-card:hover { transform: translateY(-6px); box-shadow: 0 24px 60px rgba(28,24,20,.2); }
+.acad-curso-bg-tct {
+  background: linear-gradient(160deg, #2a2218 0%, #1c1814 40%, #2b4a3a 100%);
+}
+.acad-curso-bg-edc {
+  background: linear-gradient(160deg, #1a2035 0%, #1c1814 40%, #1e3a5f 100%);
+}
+.acad-curso-deco {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  opacity: .07; font-size: 220px; line-height: 1;
+  pointer-events: none; user-select: none;
+}
+.acad-curso-body { position: relative; z-index: 1; padding: 36px; }
+.acad-curso-badge {
+  display: inline-block;
+  padding: 5px 14px; border-radius: 100px;
+  font-size: 10px; letter-spacing: .1em;
+  text-transform: uppercase; font-weight: 700;
+  margin-bottom: 20px;
+}
+.acad-curso-badge-green { background: rgba(43,125,122,.25); color: #3d9e9b; border: 1px solid rgba(43,125,122,.3); }
+.acad-curso-badge-blue  { background: rgba(44,95,158,.25); color: #6a9fd4; border: 1px solid rgba(44,95,158,.3); }
+.acad-curso-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px; font-weight: 400;
+  color: white; line-height: 1.15; margin: 0 0 8px;
+}
+.acad-curso-tagline {
+  font-size: 13px; color: rgba(255,255,255,.45);
+  font-style: italic; margin-bottom: 16px;
+}
+.acad-curso-meta {
+  display: flex; gap: 16px; margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+.acad-curso-meta span {
+  font-size: 12px; color: rgba(255,255,255,.4);
+  display: flex; align-items: center; gap: 5px;
+}
+.acad-curso-desc {
+  font-size: 14px; color: rgba(255,255,255,.6);
+  line-height: 1.7; margin-bottom: 32px;
+}
+.acad-curso-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 13px 26px; border-radius: 100px;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: .04em; border: none; cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all .2s;
+}
+.acad-curso-cta-green {
+  background: linear-gradient(135deg, #2b7d7a, #3d9e9b);
+  color: white;
+}
+.acad-curso-cta-green:hover { transform: translateX(4px); }
+.acad-curso-cta-outline {
+  background: transparent;
+  color: rgba(255,255,255,.6);
+  border: 1.5px solid rgba(255,255,255,.2) !important;
+}
+.acad-curso-cta-outline:hover { border-color: #6a9fd4 !important; color: #6a9fd4; }
+
+/* MÉTODO — timeline */
+.acad-metodo-bg { background: #1c1814; }
+.acad-metodo-steps {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 0; margin-top: 64px; position: relative;
+}
+.acad-metodo-steps::before {
+  content: '';
+  position: absolute;
+  top: 28px; left: calc(12.5%); right: calc(12.5%);
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(188,150,64,.3) 20%, rgba(188,150,64,.3) 80%, transparent);
+}
+.acad-metodo-step {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; padding: 0 20px;
+}
+.acad-metodo-dot {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: rgba(188,150,64,.1);
+  border: 1.5px solid rgba(188,150,64,.3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin-bottom: 24px;
+  position: relative; z-index: 1;
+  transition: all .3s;
+}
+.acad-metodo-step:hover .acad-metodo-dot {
+  background: rgba(188,150,64,.2); border-color: #BC9640;
+}
+.acad-metodo-step-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; color: white; margin-bottom: 10px; font-weight: 500;
+}
+.acad-metodo-step-text {
+  font-size: 13px; color: rgba(255,255,255,.4); line-height: 1.65;
+}
+
+/* QUIÉNES SOMOS */
+.acad-quienes-grid {
+  display: grid; grid-template-columns: 1fr 1.2fr;
+  gap: 80px; align-items: center;
+}
+.acad-quienes-visual {
+  position: relative;
+}
+.acad-quienes-img-wrap {
+  width: 100%; aspect-ratio: 3/4;
+  border-radius: 24px; overflow: hidden;
+  background: linear-gradient(160deg, #2a2218, #1c3a30);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 120px; opacity: .6;
+  position: relative;
+}
+.acad-quienes-img-wrap::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(28,24,20,.8) 0%, transparent 50%);
+}
+.acad-quienes-tags {
+  display: flex; flex-wrap: wrap; gap: 8px; margin: 20px 0 28px;
+}
+.acad-quienes-tag {
+  background: #f7f5f1; border: 1px solid #e4ddd3;
+  border-radius: 100px; padding: 5px 14px;
+  font-size: 12px; color: #7a7168;
+}
+.acad-quienes-quote {
+  border-left: 3px solid #BC9640;
+  padding: 16px 20px;
+  background: #faf8f5;
+  border-radius: 0 12px 12px 0;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; color: #3d3730;
+  font-style: italic; line-height: 1.5;
+  margin-top: 28px;
+}
+
+/* TESTIMONIOS */
+.acad-testi-bg { background: #FAF8F5; }
+.acad-testi-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 24px; margin-top: 56px;
+}
+.acad-testi-card {
+  background: white; border: 1px solid #e4ddd3;
+  border-radius: 20px; padding: 32px 28px;
+  transition: transform .25s, box-shadow .25s;
+}
+.acad-testi-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(28,24,20,.07); }
+.acad-testi-stars { color: #BC9640; font-size: 14px; margin-bottom: 16px; }
+.acad-testi-text {
+  font-size: 14px; color: #3d3730; line-height: 1.75;
+  font-style: italic; margin-bottom: 24px;
+}
+.acad-testi-author { display: flex; align-items: center; gap: 12px; }
+.acad-testi-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  background: linear-gradient(135deg, #BC9640, #D4AA5A);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.acad-testi-name { font-weight: 700; font-size: 13px; color: #1c1814; }
+.acad-testi-meta { font-size: 11px; color: #a89e93; }
+
+/* CONTACTO */
+.acad-contacto-bg { background: #f7f5f1; }
+.acad-contacto-grid {
+  display: grid; grid-template-columns: 1fr 1.2fr;
+  gap: 80px; align-items: start;
+}
+.acad-form { display: flex; flex-direction: column; gap: 14px; }
+.acad-input {
+  width: 100%; padding: 14px 18px;
+  background: white; border: 1.5px solid #e4ddd3;
+  border-radius: 12px; font-size: 14px;
+  color: #1c1814; font-family: 'DM Sans', sans-serif;
+  outline: none; transition: border-color .2s;
+  box-sizing: border-box;
+}
+.acad-input:focus { border-color: #BC9640; }
+.acad-input::placeholder { color: #a89e93; }
+.acad-textarea { min-height: 120px; resize: vertical; }
+.acad-select { cursor: pointer; }
+.acad-form-btn {
+  background: linear-gradient(135deg, #BC9640, #D4AA5A);
+  color: #1c1814; border: none;
+  padding: 15px 32px; border-radius: 100px;
+  font-size: 14px; font-weight: 700;
+  cursor: pointer; letter-spacing: .04em;
+  font-family: 'DM Sans', sans-serif;
+  align-self: flex-start;
+  transition: transform .2s, box-shadow .2s;
+}
+.acad-form-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(188,150,64,.35); }
+
+/* FOOTER */
+.acad-footer {
+  background: #0E0C0A;
+  padding: 60px 40px 32px;
+}
+.acad-footer-grid {
+  display: grid; grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 60px; max-width: 1200px; margin: 0 auto 48px;
+}
+.acad-footer-brand-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; color: #D4AA5A; margin-bottom: 8px;
+}
+.acad-footer-brand-sub {
+  font-size: 10px; color: rgba(255,255,255,.25);
+  letter-spacing: .12em; text-transform: uppercase; margin-bottom: 16px;
+}
+.acad-footer-brand-text {
+  font-size: 13px; color: rgba(255,255,255,.35); line-height: 1.7;
+}
+.acad-footer-col-title {
+  font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; color: rgba(255,255,255,.3);
+  margin-bottom: 20px;
+}
+.acad-footer-links { list-style: none; margin: 0; padding: 0; }
+.acad-footer-links li { margin-bottom: 10px; }
+.acad-footer-links a {
+  font-size: 13px; color: rgba(255,255,255,.45);
+  text-decoration: none; cursor: pointer;
+  transition: color .2s;
+}
+.acad-footer-links a:hover { color: #D4AA5A; }
+.acad-footer-bottom {
+  max-width: 1200px; margin: 0 auto;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.acad-footer-copy {
+  font-size: 12px; color: rgba(255,255,255,.2);
+}
+
+/* MOBILE */
+@media(max-width:900px) {
+  .acad-nav { padding: 0 20px; }
+  .acad-nav-links { display: none; }
+  .acad-nav-hamburger {
+    display: flex !important;
+    flex-direction: column; gap: 5px; cursor: pointer;
+    background: none; border: none; padding: 8px;
+  }
+  .acad-nav-hamburger span {
+    display: block; width: 22px; height: 2px;
+    background: rgba(255,255,255,.6); border-radius: 2px;
+  }
+  .acad-mobile-menu {
+    display: none;
+    position: fixed; inset: 0; z-index: 999;
+    background: rgba(14,12,10,.97);
+    flex-direction: column; align-items: center; justify-content: center;
+    gap: 32px;
+  }
+  .acad-mobile-menu.open { display: flex !important; }
+  .acad-mobile-menu a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px; color: rgba(255,255,255,.8);
+    text-decoration: none; cursor: pointer;
+  }
+  .acad-mobile-menu a:hover { color: #D4AA5A; }
+  .acad-mobile-menu-close {
+    position: absolute; top: 24px; right: 24px;
+    background: none; border: none;
+    color: rgba(255,255,255,.4); font-size: 28px; cursor: pointer;
+  }
+  .acad-hero { padding: 100px 24px 60px; min-height: auto; }
+  .acad-hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .acad-hero-visual { order: -1; }
+  .acad-hero-mandala { width: 240px; height: 240px; }
+  .acad-section { padding: 64px 24px; }
+  .acad-section-full { padding: 64px 24px; }
+  .acad-pilares-grid { grid-template-columns: 1fr; gap: 16px; }
+  .acad-cursos-grid { grid-template-columns: 1fr; gap: 20px; }
+  .acad-curso-card { min-height: 380px; }
+  .acad-metodo-steps { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .acad-metodo-steps::before { display: none; }
+  .acad-quienes-grid { grid-template-columns: 1fr; gap: 40px; }
+  .acad-quienes-img-wrap { aspect-ratio: 4/3; }
+  .acad-testi-grid { grid-template-columns: 1fr; gap: 16px; }
+  .acad-contacto-grid { grid-template-columns: 1fr; gap: 40px; }
+  .acad-footer-grid { grid-template-columns: 1fr; gap: 40px; }
+  .acad-footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+}
+@media(min-width:901px) {
+  .acad-nav-hamburger { display: none; }
+}
+</style>
+
+<!-- NAV -->
+<nav class="acad-nav">
+  <div class="acad-nav-logo" onclick="acadScrollTo('acad-hero')">
+    <svg width="36" height="36" viewBox="0 0 80 80" fill="none">
+      <circle cx="40" cy="40" r="38" stroke="#BC9640" stroke-width="1.5" opacity=".4"/>
+      <circle cx="40" cy="40" r="6" fill="#BC9640" opacity=".8"/>
+      <path d="M40 8 C55 20, 70 30, 68 48 C66 64, 50 72, 40 72 C30 72, 14 64, 12 48 C10 30, 25 20, 40 8Z" stroke="#BC9640" stroke-width="1.2" fill="none" opacity=".5"/>
+      <path d="M8 40 C20 25, 30 10, 48 12 C64 14, 72 30, 72 40 C72 50, 64 66, 48 68 C30 70, 20 55, 8 40Z" stroke="#D4AA5A" stroke-width="1" fill="none" opacity=".35"/>
+    </svg>
+    <div class="acad-nav-logo-text">
+      <span class="acad-nav-logo-name">Frecuencia Integral</span>
+      <span class="acad-nav-logo-sub">Academy</span>
+    </div>
+  </div>
+  <ul class="acad-nav-links">
+    <li><a onclick="acadScrollTo('acad-metodo')">El Método</a></li>
+    <li><a onclick="acadScrollTo('acad-cursos')">Cursos</a></li>
+    <li><a onclick="acadScrollTo('acad-quienes')">Quiénes Somos</a></li>
+    <li><a onclick="acadScrollTo('acad-testimonios')">Testimonios</a></li>
+    <li><a onclick="acadScrollTo('acad-contacto')">Contacto</a></li>
+    <li><a class="acad-nav-cta" onclick="goTo('auth')">Acceso Alumnos</a></li>
+  </ul>
+  <button class="acad-nav-hamburger" onclick="acadMenuOpen()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="acad-mobile-menu" id="acad-mobile-menu">
+  <button class="acad-mobile-menu-close" onclick="acadMenuClose()">✕</button>
+  <a onclick="acadScrollTo('acad-metodo');acadMenuClose()">El Método</a>
+  <a onclick="acadScrollTo('acad-cursos');acadMenuClose()">Cursos</a>
+  <a onclick="acadScrollTo('acad-quienes');acadMenuClose()">Quiénes Somos</a>
+  <a onclick="acadScrollTo('acad-testimonios');acadMenuClose()">Testimonios</a>
+  <a onclick="acadScrollTo('acad-contacto');acadMenuClose()">Contacto</a>
+  <a onclick="goTo('auth');acadMenuClose()" style="color:#D4AA5A!important">Acceso Alumnos →</a>
+</div>
+
+<!-- HERO -->
+<section class="acad-hero" id="acad-hero">
+  <div class="acad-hero-bg"></div>
+  <div class="acad-hero-grid">
+    <div>
+      <div class="acad-hero-badge">✦ Frecuencia Integral Academy</div>
+      <h1 class="acad-hero-title">
+        Vive desde tu<br><em>frecuencia</em><br>más alta
+      </h1>
+      <p class="acad-hero-sub">
+        Una academia de desarrollo consciente aplicado a la vida real. Presencia, transformación interior y acción desde el ser.
+      </p>
+      <div class="acad-hero-btns">
+        <button class="acad-btn-primary" onclick="acadScrollTo('acad-cursos')">Explorar cursos →</button>
+        <button class="acad-btn-ghost" onclick="acadScrollTo('acad-metodo')">El Método</button>
+      </div>
+    </div>
+    <div class="acad-hero-visual">
+      <svg class="acad-hero-mandala" viewBox="0 0 400 400" fill="none">
+        <circle cx="200" cy="200" r="196" stroke="#BC9640" stroke-width="1" opacity=".2"/>
+        <circle cx="200" cy="200" r="160" stroke="#BC9640" stroke-width=".8" opacity=".15"/>
+        <circle cx="200" cy="200" r="120" stroke="#D4AA5A" stroke-width=".8" opacity=".2"/>
+        <circle cx="200" cy="200" r="80" stroke="#BC9640" stroke-width="1" opacity=".25"/>
+        <circle cx="200" cy="200" r="12" fill="#BC9640" opacity=".6"/>
+        <g opacity=".3" stroke="#BC9640" stroke-width=".8">
+          <line x1="200" y1="4" x2="200" y2="396"/>
+          <line x1="4" y1="200" x2="396" y2="200"/>
+          <line x1="61" y1="61" x2="339" y2="339"/>
+          <line x1="339" y1="61" x2="61" y2="339"/>
+        </g>
+        <g opacity=".2" stroke="#D4AA5A" stroke-width=".6">
+          <line x1="200" y1="40" x2="200" y2="360"/>
+          <line x1="40" y1="200" x2="360" y2="200"/>
+          <line x1="88" y1="88" x2="312" y2="312"/>
+          <line x1="312" y1="88" x2="88" y2="312"/>
+        </g>
+        <path d="M200 40 C240 80 360 120 360 200 C360 280 240 320 200 360 C160 320 40 280 40 200 C40 120 160 80 200 40Z" stroke="#BC9640" stroke-width="1" fill="none" opacity=".3"/>
+        <path d="M40 200 C80 160 120 40 200 40 C280 40 320 160 360 200 C320 240 280 360 200 360 C120 360 80 240 40 200Z" stroke="#D4AA5A" stroke-width=".8" fill="none" opacity=".2"/>
+        <circle cx="200" cy="40" r="4" fill="#BC9640" opacity=".5"/>
+        <circle cx="200" cy="360" r="4" fill="#BC9640" opacity=".5"/>
+        <circle cx="40" cy="200" r="4" fill="#BC9640" opacity=".5"/>
+        <circle cx="360" cy="200" r="4" fill="#BC9640" opacity=".5"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- QUÉ ES FRECUENCIA INTEGRAL -->
+<div class="acad-pilares-bg acad-pilares">
+  <div class="acad-section">
+    <span class="acad-section-label">¿Qué es Frecuencia Integral?</span>
+    <h2 class="acad-section-title">Una escuela de vida<br>aplicada a la acción</h2>
+    <p class="acad-section-sub">Integramos tradiciones de sabiduría milenaria con herramientas prácticas para transformar cómo vives, compites y te relacionas contigo mismo.</p>
+    <div class="acad-pilares-grid">
+      <div class="acad-pilar-card">
+        <span class="acad-pilar-icon">🌿</span>
+        <h3 class="acad-pilar-title">Presencia</h3>
+        <p class="acad-pilar-text">El punto de partida de toda transformación real. No como concepto, sino como experiencia vivida que cambia la relación contigo mismo y con la vida.</p>
+      </div>
+      <div class="acad-pilar-card">
+        <span class="acad-pilar-icon">⚡</span>
+        <h3 class="acad-pilar-title">Transformación</h3>
+        <p class="acad-pilar-text">Un proceso interior progresivo. Cada puerta, cada semana, cada ejercicio te lleva a una comprensión más profunda de quién eres más allá de tus roles.</p>
+      </div>
+      <div class="acad-pilar-card">
+        <span class="acad-pilar-icon">🎯</span>
+        <h3 class="acad-pilar-title">Acción Consciente</h3>
+        <p class="acad-pilar-text">El conocimiento sin aplicación es inerte. Todo lo que enseñamos está diseñado para integrarse en tu vida diaria, tu deporte y tus relaciones.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CURSOS -->
+<div class="acad-cursos-bg acad-section-full" id="acad-cursos">
+  <div class="acad-section">
+    <span class="acad-section-label">Formaciones</span>
+    <h2 class="acad-section-title">Elige tu camino</h2>
+    <p class="acad-section-sub">Dos cursos, una misma filosofía. Cada uno diseñado para un contexto específico de vida.</p>
+    <div class="acad-cursos-grid">
+      <!-- TCT -->
+      <div class="acad-curso-card acad-curso-bg-tct" onclick="acadScrollTo('acad-contacto')">
+        <div class="acad-curso-deco">🌿</div>
+        <div class="acad-curso-body">
+          <span class="acad-curso-badge acad-curso-badge-green">✦ Disponible</span>
+          <h3 class="acad-curso-title">Método TCT</h3>
+          <p class="acad-curso-tagline">Tu Camino de Transformación</p>
+          <div class="acad-curso-meta">
+            <span>📅 48 semanas</span>
+            <span>🚪 4 Puertas</span>
+            <span>🧘 Online</span>
+          </div>
+          <p class="acad-curso-desc">Un viaje estructurado de 48 semanas a través de 4 puertas progresivas. Del despertar a la integración — presencia aplicada a cada área de tu vida.</p>
+          <button class="acad-curso-cta acad-curso-cta-green" onclick="event.stopPropagation();goTo('auth')">
+            Comenzar ahora →
+          </button>
+        </div>
+      </div>
+      <!-- DEPORTISTA CONSCIENTE -->
+      <div class="acad-curso-card acad-curso-bg-edc">
+        <div class="acad-curso-deco">🏆</div>
+        <div class="acad-curso-body">
+          <span class="acad-curso-badge acad-curso-badge-blue">⏳ Próximamente</span>
+          <h3 class="acad-curso-title">El Deportista Consciente</h3>
+          <p class="acad-curso-tagline">Más allá del resultado</p>
+          <div class="acad-curso-meta">
+            <span>🏅 Para deportistas</span>
+            <span>👨‍👩‍👧 Familias y clubes</span>
+          </div>
+          <p class="acad-curso-desc">Presencia aplicada al deporte de élite. Para deportistas, padres e instituciones que quieren ir más allá del resultado y construir una identidad sólida.</p>
+          <button class="acad-curso-cta acad-curso-cta-outline" onclick="event.stopPropagation();acadScrollTo('acad-contacto')">
+            Unirme a la lista →
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EL MÉTODO -->
+<div class="acad-metodo-bg acad-section-full" id="acad-metodo">
+  <div class="acad-section">
+    <span class="acad-section-label" style="color:#D4AA5A">El Método</span>
+    <h2 class="acad-section-title light">Un camino con estructura,<br>no un curso más</h2>
+    <p class="acad-section-sub light">Cuatro principios que guían todas nuestras formaciones, sea cual sea el contexto de aplicación.</p>
+    <div class="acad-metodo-steps">
+      <div class="acad-metodo-step">
+        <div class="acad-metodo-dot">👁</div>
+        <h4 class="acad-metodo-step-title">Despertar</h4>
+        <p class="acad-metodo-step-text">Reconocer el estado automático en el que vivimos. El primer paso es ver lo que no veíamos.</p>
+      </div>
+      <div class="acad-metodo-step">
+        <div class="acad-metodo-dot">🌱</div>
+        <h4 class="acad-metodo-step-title">Comprensión</h4>
+        <p class="acad-metodo-step-text">Entender los mecanismos internos que nos dirigen. Teoría y práctica integradas semana a semana.</p>
+      </div>
+      <div class="acad-metodo-step">
+        <div class="acad-metodo-dot">🔥</div>
+        <h4 class="acad-metodo-step-title">Integración</h4>
+        <p class="acad-metodo-step-text">Aplicar lo aprendido en la vida real. Los ejercicios están diseñados para el día a día, no para el retiro.</p>
+      </div>
+      <div class="acad-metodo-step">
+        <div class="acad-metodo-dot">✦</div>
+        <h4 class="acad-metodo-step-title">Presencia</h4>
+        <p class="acad-metodo-step-text">Vivir desde un estado de consciencia más elevado. No como logro, sino como modo natural de ser.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIÉNES SOMOS -->
+<div id="acad-quienes">
+  <div class="acad-section">
+    <div class="acad-quienes-grid">
+      <div class="acad-quienes-visual">
+        <div class="acad-quienes-img-wrap">🧘</div>
+      </div>
+      <div>
+        <span class="acad-section-label">Quiénes Somos</span>
+        <h2 class="acad-section-title">Una vida dedicada<br>a la consciencia</h2>
+        <div class="acad-quienes-tags">
+          <span class="acad-quienes-tag">Dzogchen</span>
+          <span class="acad-quienes-tag">Cuarto Camino · Gurdjieff</span>
+          <span class="acad-quienes-tag">Cuencos Tibetanos</span>
+          <span class="acad-quienes-tag">Chamanismo</span>
+          <span class="acad-quienes-tag">Cábala Mística</span>
+          <span class="acad-quienes-tag">UCDM</span>
+          <span class="acad-quienes-tag">Coach Deportivo</span>
+          <span class="acad-quienes-tag">Diseño</span>
+        </div>
+        <p class="acad-section-sub">Décadas de formación en las tradiciones de sabiduría más profundas del mundo, combinadas con una visión práctica y aplicada a la vida moderna. No enseñamos lo que hemos leído — enseñamos lo que hemos vivido.</p>
+        <div class="acad-quienes-quote">
+          "La presencia no es un estado que se alcanza. Es lo que queda cuando dejas de huir de lo que eres."
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIOS -->
+<div class="acad-testi-bg acad-section-full" id="acad-testimonios">
+  <div class="acad-section">
+    <span class="acad-section-label">Testimonios</span>
+    <h2 class="acad-section-title">Lo que dicen<br>quienes ya recorren el camino</h2>
+    <div class="acad-testi-grid">
+      <div class="acad-testi-card">
+        <div class="acad-testi-stars">★★★★★</div>
+        <p class="acad-testi-text">"El Método TCT ha cambiado completamente mi relación conmigo mismo. No es solo un curso — es una forma de ver la vida que ya no puedo deshacer."</p>
+        <div class="acad-testi-author">
+          <div class="acad-testi-avatar">M</div>
+          <div>
+            <div class="acad-testi-name">María G.</div>
+            <div class="acad-testi-meta">Puerta Blanca completada</div>
+          </div>
+        </div>
+      </div>
+      <div class="acad-testi-card">
+        <div class="acad-testi-stars">★★★★★</div>
+        <p class="acad-testi-text">"Por primera vez entiendo por qué hacía las cosas que hacía. La combinación de teoría y práctica semanal es exactamente lo que necesitaba."</p>
+        <div class="acad-testi-author">
+          <div class="acad-testi-avatar">J</div>
+          <div>
+            <div class="acad-testi-name">Javier R.</div>
+            <div class="acad-testi-meta">Puerta Roja en curso</div>
+          </div>
+        </div>
+      </div>
+      <div class="acad-testi-card">
+        <div class="acad-testi-stars">★★★★★</div>
+        <p class="acad-testi-text">"He probado muchas formaciones de desarrollo personal. Ninguna tiene la profundidad ni la honestidad de este método. Va directo a la raíz."</p>
+        <div class="acad-testi-author">
+          <div class="acad-testi-avatar">A</div>
+          <div>
+            <div class="acad-testi-name">Ana P.</div>
+            <div class="acad-testi-meta">Puerta Blanca completada</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACTO -->
+<div class="acad-contacto-bg acad-section-full" id="acad-contacto">
+  <div class="acad-section">
+    <div class="acad-contacto-grid">
+      <div>
+        <span class="acad-section-label">Contacto</span>
+        <h2 class="acad-section-title">¿Listo para<br>dar el paso?</h2>
+        <p class="acad-section-sub">Tanto si quieres empezar el Método TCT como si quieres apuntarte a la lista de espera del Deportista Consciente, escríbenos.</p>
+        <div style="margin-top:32px;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;align-items:center;gap:12px;color:#7a7168;font-size:14px">
+            <span style="font-size:20px">📧</span> hola@frecuenciaintegral.com
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;color:#7a7168;font-size:14px">
+            <span style="font-size:20px">⏱</span> Respondemos en menos de 48h
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="acad-form">
+          <input class="acad-input" type="text" placeholder="Tu nombre">
+          <input class="acad-input" type="email" placeholder="Tu email">
+          <select class="acad-input acad-select">
+            <option value="">¿Qué curso te interesa?</option>
+            <option>Método TCT</option>
+            <option>El Deportista Consciente (lista de espera)</option>
+            <option>Información general</option>
+          </select>
+          <textarea class="acad-input acad-textarea" placeholder="Tu mensaje..."></textarea>
+          <button class="acad-form-btn">Enviar mensaje ✦</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="acad-footer">
+  <div class="acad-footer-grid">
+    <div>
+      <div class="acad-footer-brand-name">Frecuencia Integral</div>
+      <div class="acad-footer-brand-sub">Academy</div>
+      <p class="acad-footer-brand-text">Desarrollo consciente aplicado a la vida real. Presencia, transformación y acción desde el ser.</p>
+    </div>
+    <div>
+      <div class="acad-footer-col-title">Formaciones</div>
+      <ul class="acad-footer-links">
+        <li><a onclick="acadScrollTo('acad-cursos')">Método TCT</a></li>
+        <li><a onclick="acadScrollTo('acad-cursos')">El Deportista Consciente</a></li>
+        <li><a onclick="goTo('auth')">Acceso Alumnos</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="acad-footer-col-title">Academia</div>
+      <ul class="acad-footer-links">
+        <li><a onclick="acadScrollTo('acad-metodo')">El Método</a></li>
+        <li><a onclick="acadScrollTo('acad-quienes')">Quiénes Somos</a></li>
+        <li><a onclick="acadScrollTo('acad-contacto')">Contacto</a></li>
+        <li><a>Aviso Legal</a></li>
+        <li><a>Política de Privacidad</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="acad-footer-bottom">
+    <span class="acad-footer-copy">© 2026 Frecuencia Integral Academy. Todos los derechos reservados.</span>
+    <span class="acad-footer-copy">Hecho con presencia ✦</span>
+  </div>
+</footer>
+
+<script>
+function acadScrollTo(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  var offset = 80;
+  var top = el.getBoundingClientRect().top + window.scrollY - offset;
+  window.scrollTo({ top: top, behavior: 'smooth' });
+}
+function acadMenuOpen() {
+  document.getElementById('acad-mobile-menu').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function acadMenuClose() {
+  document.getElementById('acad-mobile-menu').classList.remove('open');
+  document.body.style.overflow = '';
+}
+</script>
+
+</div><!-- /page-academy -->
+
 <!-- PAGE: AUTH -->
 <div class="page" id="page-auth">
   <div class="auth-wrap">
