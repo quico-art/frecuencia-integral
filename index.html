@@ -3621,15 +3621,7 @@ function openWeekModal(weekNum) {
         }).join('');
     })(),
 
-    // Tab 4: Completar
-    '<div>' +
-    ['He leído el material de estudio','He realizado el ejercicio práctico','He escuchado el audio de la semana','He anotado mis reflexiones'].map(function(t,i){
-      return '<div class="task-item" id="task-' + weekNum + '-' + i + '" onclick="toggleTask(' + weekNum + ',' + i + ')"><div class="task-cb"></div><div class="task-text">' + t + '</div></div>';
-    }).join('') +
-    '<button class="btn-complete" onclick="markComplete(' + weekNum + ')" ' + (done ? 'disabled style="background:#d1c8bc"' : '') + '>' +
-    (done ? '✅ Semana Completada' : '✦ Marcar como Completada') + '</button></div>',
-
-    // Tab 5: Arteterapia
+    // Tab 4: Arteterapia
     (function() {
       var at = (typeof AT !== 'undefined') ? AT[String(weekNum)] : null;
       if (!at) return '<p style="color:#7a7168;font-size:14px">No hay ejercicio de arteterapia para esta semana.</p>';
@@ -3654,7 +3646,7 @@ function openWeekModal(weekNum) {
         '<p style="font-size:13px;line-height:1.75;color:#3d3730;font-style:italic">' + at.r + '</p></div>' : '');
     })(),
 
-    // Tab 6: Notas de la semana
+    // Tab 5: Notas de la semana
     (function() {
       var noteKey = 'nota-semana-' + weekNum;
       var savedNote = (notasCache && notasCache[noteKey]) ? notasCache[noteKey] : '';
@@ -3686,7 +3678,16 @@ function openWeekModal(weekNum) {
         + '<span id="modal-nota-status-' + weekNum + '" style="font-size:11px;color:#a89e93"></span>'
         + '<button onclick="saveModalNota(' + weekNum + ')" style="padding:8px 20px;background:#2b7d7a;color:white;border:none;border-radius:8px;font-size:12px;cursor:pointer;font-weight:600">&#x1F4BE; Guardar</button>'
         + '</div></div>';
-    })()
+    })(),
+
+    // Tab 6: Completar
+    '<div>' +
+    ['He leído el material de estudio','He realizado el ejercicio práctico','He escuchado el audio de la semana','He anotado mis reflexiones'].map(function(t,i){
+      return '<div class="task-item" id="task-' + weekNum + '-' + i + '" onclick="toggleTask(' + weekNum + ',' + i + ')"><div class="task-cb"></div><div class="task-text">' + t + '</div></div>';
+    }).join('') +
+    '<button class="btn-complete" onclick="markComplete(' + weekNum + ')" ' + (done ? 'disabled style="background:#d1c8bc"' : '') + '>' +
+    (done ? '✅ Semana Completada' : '✦ Marcar como Completada') + '</button></div>'
+
   ];
 
   document.getElementById('modal-content').innerHTML =
