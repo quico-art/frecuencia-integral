@@ -130,7 +130,7 @@ html, body { overflow-x: hidden; }
 .week-status{font-size:11px;margin-top:8px}
 
 /* MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(28,24,20,.7);backdrop-filter:blur(6px);z-index:99998;padding-top:56px;align-items:center;justify-content:center;padding:0}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(28,24,20,.7);backdrop-filter:blur(6px);z-index:99998;align-items:center;justify-content:center}
 .modal-overlay.open{display:flex}
 .modal{background:white;width:100%;height:100%;max-width:100%;overflow:hidden;display:flex;flex-direction:column}
 .modal-header{padding:20px 40px;border-bottom:1px solid #e4ddd3;display:flex;align-items:center;justify-content:space-between;background:white;flex-shrink:0}
@@ -258,7 +258,7 @@ html, body { overflow-x: hidden; }
   .weeks-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
   /* Modal full screen on mobile */
   .modal { border-radius: 0 !important; flex-direction: column !important; }
-  .modal-header { padding: 12px 14px !important; padding-top: calc(env(safe-area-inset-top, 12px) + 12px) !important; border-bottom: 1px solid #e4ddd3; flex-shrink:0; }
+  .modal-header { padding: 12px 14px 12px !important; padding-top: calc(env(safe-area-inset-top, 0px) + 72px) !important; border-bottom: 1px solid #e4ddd3; flex-shrink:0; }
   .modal-week-badge { width: 30px !important; height: 30px !important; font-size: 13px !important; }
   .modal-title { font-size: 18px !important; line-height: 1.25 !important; }
   .modal-puerta-tag { font-size: 13px !important; margin-top: 2px !important; }
@@ -466,8 +466,8 @@ html, body { overflow-x: hidden; }
 #mob-ed-bar {
   position: fixed;
   top: auto;
-  bottom: 54px; left: 0; right: 0;
-  z-index: 99997;
+  bottom: calc(56px + env(safe-area-inset-bottom, 0px)); left: 0; right: 0;
+  z-index: 100001;
   background: #1c1814;
   border-top: 2px solid rgba(188,150,64,.4);
   box-shadow: 0 -4px 20px rgba(0,0,0,.6);
@@ -479,8 +479,8 @@ html, body { overflow-x: hidden; }
 #mob-ed-panel {
   display: none;
   position: fixed;
-  left: 0; right: 0; bottom: 116px;
-  z-index: 99996;
+  left: 0; right: 0; bottom: calc(120px + env(safe-area-inset-bottom, 0px));
+  z-index: 100000;
   background: #252118;
   border-top: 2px solid rgba(188,150,64,.3);
   max-height: 45vh;
@@ -510,7 +510,7 @@ html, body { overflow-x: hidden; }
 #mob-ed-inner {
   display: flex;
   align-items: center;
-  padding: 6px 8px;
+  padding: 6px 44px;
   min-width: max-content;
   height: 62px;
   box-sizing: border-box;
@@ -544,6 +544,7 @@ html, body { overflow-x: hidden; }
 .mob-ed-close { background:rgba(191,70,55,.15)!important; border-color:rgba(191,70,55,.3)!important; color:rgba(255,100,80,.8)!important; }
 /* mob-ed-bar at bottom — no nav offset */
 body.mob-ed-open .page.active { padding-bottom: 130px !important; }
+body.mob-ed-open .student-wrap { padding-bottom: 130px !important; }
 
 .wysi-nota h2{font-family:Cormorant Garamond,serif;font-size:1.4rem;font-weight:400;color:#1c1814;margin:14px 0 6px}
 .wysi-nota h3{font-size:1.1rem;font-weight:600;color:#1c1814;margin:12px 0 4px}
@@ -2432,7 +2433,7 @@ document.addEventListener('keydown', function(e) {
     <!-- TAB BAR MOBILE -->
     <nav id="dash-tab-bar">
       <!-- FILA 1: siempre visible -->
-      <div class="dtab-row dtab-row-1">
+      <div class="dtab-row dtab-row-1" id="dtab-row-1">
         <button class="dtab active" onclick="showView('dashboard');dtabActive(this,0)">
           <span class="dtab-icon">🏠</span><span class="dtab-label">Inicio</span>
         </button>
@@ -4172,6 +4173,30 @@ document.addEventListener('click', function(e) {
   if (modal && modal.style.display==='flex' && e.target === modal) closeMediaModal();
 });
 
+// ── CARRUSEL MOB-ED-BAR (mobile editor toolbar) ──
+function mobEdBarScroll(dir) {
+  var bar = document.getElementById('mob-ed-bar');
+  if (!bar) return;
+  bar.scrollBy({ left: dir * 120, behavior: 'smooth' });
+  setTimeout(mobEdBarArrows, 300);
+}
+function mobEdBarArrows() {
+  var bar = document.getElementById('mob-ed-bar');
+  var arL = document.getElementById('mob-ed-arrow-left');
+  var arR = document.getElementById('mob-ed-arrow-right');
+  if (!bar || !arL || !arR) return;
+  // Posicionar flechas fixed alineadas con la barra
+  var rect = bar.getBoundingClientRect();
+  arL.style.top    = rect.top + 'px';
+  arL.style.height = rect.height + 'px';
+  arR.style.top    = rect.top + 'px';
+  arR.style.height = rect.height + 'px';
+  var atStart = bar.scrollLeft <= 4;
+  var atEnd   = bar.scrollLeft >= bar.scrollWidth - bar.clientWidth - 4;
+  arL.style.display = atStart ? 'none' : 'flex';
+  arR.style.display = atEnd   ? 'none'  : 'flex';
+}
+
 // ── CARRUSEL MODAL (mobile) ──
 function modalCarouselScroll(dir) {
   var sb = document.querySelector('.modal-sidebar');
@@ -4397,7 +4422,7 @@ html, body { overflow-x: hidden; }
 .week-status{font-size:11px;margin-top:8px}
 
 /* MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(28,24,20,.7);backdrop-filter:blur(6px);z-index:99998;padding-top:56px;align-items:center;justify-content:center;padding:0}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(28,24,20,.7);backdrop-filter:blur(6px);z-index:99998;align-items:center;justify-content:center}
 .modal-overlay.open{display:flex}
 .modal{background:white;width:100%;height:100%;max-width:100%;overflow:hidden;display:flex;flex-direction:column}
 .modal-header{padding:20px 40px;border-bottom:1px solid #e4ddd3;display:flex;align-items:center;justify-content:space-between;background:white;flex-shrink:0}
@@ -4525,7 +4550,7 @@ html, body { overflow-x: hidden; }
   .weeks-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
   /* Modal full screen on mobile */
   .modal { border-radius: 0 !important; flex-direction: column !important; }
-  .modal-header { padding: 12px 14px !important; padding-top: calc(env(safe-area-inset-top, 12px) + 12px) !important; border-bottom: 1px solid #e4ddd3; flex-shrink:0; }
+  .modal-header { padding: 12px 14px 12px !important; padding-top: calc(env(safe-area-inset-top, 0px) + 72px) !important; border-bottom: 1px solid #e4ddd3; flex-shrink:0; }
   .modal-week-badge { width: 30px !important; height: 30px !important; font-size: 13px !important; }
   .modal-title { font-size: 18px !important; line-height: 1.25 !important; }
   .modal-puerta-tag { font-size: 13px !important; margin-top: 2px !important; }
@@ -4733,8 +4758,8 @@ html, body { overflow-x: hidden; }
 #mob-ed-bar {
   position: fixed;
   top: auto;
-  bottom: 54px; left: 0; right: 0;
-  z-index: 99997;
+  bottom: calc(56px + env(safe-area-inset-bottom, 0px)); left: 0; right: 0;
+  z-index: 100001;
   background: #1c1814;
   border-top: 2px solid rgba(188,150,64,.4);
   box-shadow: 0 -4px 20px rgba(0,0,0,.6);
@@ -4746,8 +4771,8 @@ html, body { overflow-x: hidden; }
 #mob-ed-panel {
   display: none;
   position: fixed;
-  left: 0; right: 0; bottom: 116px;
-  z-index: 99996;
+  left: 0; right: 0; bottom: calc(120px + env(safe-area-inset-bottom, 0px));
+  z-index: 100000;
   background: #252118;
   border-top: 2px solid rgba(188,150,64,.3);
   max-height: 45vh;
@@ -4777,7 +4802,7 @@ html, body { overflow-x: hidden; }
 #mob-ed-inner {
   display: flex;
   align-items: center;
-  padding: 6px 8px;
+  padding: 6px 44px;
   min-width: max-content;
   height: 62px;
   box-sizing: border-box;
@@ -4811,6 +4836,7 @@ html, body { overflow-x: hidden; }
 .mob-ed-close { background:rgba(191,70,55,.15)!important; border-color:rgba(191,70,55,.3)!important; color:rgba(255,100,80,.8)!important; }
 /* mob-ed-bar at bottom — no nav offset */
 body.mob-ed-open .page.active { padding-bottom: 130px !important; }
+body.mob-ed-open .student-wrap { padding-bottom: 130px !important; }
 
 .wysi-nota h2{font-family:Cormorant Garamond,serif;font-size:1.4rem;font-weight:400;color:#1c1814;margin:14px 0 6px}
 .wysi-nota h3{font-size:1.1rem;font-weight:600;color:#1c1814;margin:12px 0 4px}
@@ -6699,7 +6725,7 @@ document.addEventListener('keydown', function(e) {
     <!-- TAB BAR MOBILE -->
     <nav id="dash-tab-bar">
       <!-- FILA 1: siempre visible -->
-      <div class="dtab-row dtab-row-1">
+      <div class="dtab-row dtab-row-1" id="dtab-row-1">
         <button class="dtab active" onclick="showView('dashboard');dtabActive(this,0)">
           <span class="dtab-icon">🏠</span><span class="dtab-label">Inicio</span>
         </button>
@@ -8551,21 +8577,39 @@ function edPropCssRead(){
 
 // ── MOBILE EDITOR TOOLBAR ──
 function mobEdOpen() {
-  document.getElementById('mob-ed-bar').style.display = 'block';
+  var bar    = document.getElementById('mob-ed-bar');
   document.body.classList.add('mob-ed-open');
-  // Show editor tab bar row
-  var edRow = document.getElementById('dtab-row-editor');
-  if (edRow) edRow.style.display = 'flex';
-  if (!window._edOn) edToggleText();
+  // Ocultar filas normales, mostrar fila editor
+  document.querySelectorAll('.dtab-row-1').forEach(function(el){ el.style.display='none'; });
+  document.querySelectorAll('.dtab-row-2').forEach(function(el){ el.style.display='none'; });
+  document.querySelectorAll('.dtab-row-editor').forEach(function(el){ el.style.display='flex'; });
+  // La dtab-row-editor tiene ~56px. mob-ed-bar va justo encima: bottom=56px fijo
+  bar.style.bottom = '56px';
+  bar.style.top    = 'auto';
+  bar.style.display = 'block';
+  var panel = document.getElementById('mob-ed-panel');
+  if (panel) panel.style.bottom = '120px';
+  // Init flechas carrusel del editor bar
+  setTimeout(function() {
+    var bar = document.getElementById('mob-ed-bar');
+    if (bar) {
+      bar.scrollLeft = 0;
+      bar.removeEventListener('scroll', mobEdBarArrows);
+      bar.addEventListener('scroll', mobEdBarArrows);
+      mobEdBarArrows();
+    }
+  }, 80);
+  // NO activar edición automáticamente — el usuario elige con el botón Escribir
   if (!_edHistory.length) edSnapshot();
 }
 function mobEdClose() {
   document.getElementById('mob-ed-bar').style.display = 'none';
   mobEdPanelClose();
   document.body.classList.remove('mob-ed-open');
-  // Restore normal tab bar rows
-  var edRow = document.getElementById('dtab-row-editor');
-  if (edRow) edRow.style.display = 'none';
+  // Restaurar filas normales
+  document.querySelectorAll('.dtab-row-1').forEach(function(el){ el.style.display=''; });
+  document.querySelectorAll('.dtab-row-editor').forEach(function(el){ el.style.display='none'; });
+  // Desactivar edición si estaba activa
   if (window._edOn) edToggleText();
 }
 function mobEdPanel(name) {
@@ -11381,7 +11425,9 @@ function nmToast(msg){
 </div>
 
 <!-- Barra editor mobile — scrollable horizontal -->
-<div id="mob-ed-bar" style="display:none">
+<div id="mob-ed-bar" style="display:none;position:fixed;left:0;right:0">
+  <div id="mob-ed-arrow-left" onclick="mobEdBarScroll(-1)" style="position:fixed;left:0;width:36px;background:linear-gradient(to left,transparent,#1c1814 70%);display:none;align-items:center;justify-content:flex-start;padding-left:6px;font-size:22px;color:#BC9640;pointer-events:auto;z-index:100002;font-weight:bold;cursor:pointer">‹</div>
+  <div id="mob-ed-arrow-right" onclick="mobEdBarScroll(1)" style="position:fixed;right:0;width:36px;background:linear-gradient(to right,transparent,#1c1814 70%);display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:22px;color:#BC9640;pointer-events:auto;z-index:100002;font-weight:bold;cursor:pointer">›</div>
   <div id="mob-ed-inner">
     <!-- G1: Paneles -->
     <div class="mob-ed-group">
