@@ -282,27 +282,22 @@ html, body { overflow-x: hidden; }
     border-top: 2px solid rgba(188,150,64,.4) !important;
   }
   .modal-sidebar::-webkit-scrollbar { display: none; }
-  /* Contenedor relativo para el fade */
+  /* Contenedor principal mobile: columna */
   .modal-sidebar-wrap {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+  }
+  /* Rail del carrusel: contiene sidebar + flechas */
+  #modal-sidebar-rail {
     position: relative;
     background: #1c1814;
     border-top: 2px solid rgba(188,150,64,.4);
     flex-shrink: 0;
+    overflow: hidden;
   }
-  .modal-carousel-fade {
-    position: absolute;
-    right: 0; top: 0; bottom: 0;
-    width: 40px;
-    background: linear-gradient(to right, transparent, #1c1814 65%);
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding-right: 8px;
-    font-size: 20px;
-    color: rgba(188,150,64,.9);
-    pointer-events: none;
-    z-index: 3;
-  }
+  .modal-carousel-fade { display: none !important; }
   /* Quitar el borde del sidebar original (lo tiene el wrap) */
   .modal-sidebar { border-top: none !important; }
   .modal-nav-btn {
@@ -2179,7 +2174,11 @@ document.addEventListener('keydown', function(e) {
     flex: 1 !important;
     overflow: hidden !important;
     position: static !important;
-    height: 0 !important; /* flex:1 la estira */
+    height: 0 !important;
+  }
+  /* En desktop el rail no tiene borde ni fondo propio */
+  #modal-sidebar-rail {
+    display: contents !important;
   }
 
   /* Sidebar lateral izquierda — altura completa */
@@ -2793,32 +2792,34 @@ document.addEventListener('keydown', function(e) {
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <!-- Carrusel tabs (abajo en mobile, lateral en desktop) -->
-    <div style="position:relative;flex-shrink:0" id="modal-sidebar-wrap">
-      <div class="modal-sidebar" id="modal-sidebar-scroll">
-        <button class="modal-nav-btn active" onclick="switchModalTab(0,this)" data-tab="0">
-          <span class="modal-nav-icon">📖</span>Descripción
-        </button>
-        <button class="modal-nav-btn" onclick="switchModalTab(1,this)" data-tab="1">
-          <span class="modal-nav-icon">💡</span>Conceptos
-        </button>
-        <button class="modal-nav-btn" onclick="switchModalTab(2,this)" data-tab="2">
-          <span class="modal-nav-icon">🧘</span>Ejercicio
-        </button>
-        <button class="modal-nav-btn" onclick="switchModalTab(3,this)" data-tab="3">
-          <span class="modal-nav-icon">📄</span>Materiales
-        </button>
-        <button class="modal-nav-btn" onclick="switchModalTab(4,this)" data-tab="4">
-          <span class="modal-nav-icon">🎨</span>Arteterapia
-        </button>
-        <button class="modal-nav-btn" onclick="switchModalTab(5,this)" data-tab="5">
-          <span class="modal-nav-icon">📝</span>Notas
-        </button>
-        <button class="modal-nav-btn" onclick="switchModalTab(6,this)" data-tab="6">
-          <span class="modal-nav-icon">✅</span>Completar
-        </button>
+    <div id="modal-sidebar-wrap">
+      <div style="position:relative;flex-shrink:0" id="modal-sidebar-rail">
+        <div class="modal-sidebar" id="modal-sidebar-scroll">
+          <button class="modal-nav-btn active" onclick="switchModalTab(0,this)" data-tab="0">
+            <span class="modal-nav-icon">📖</span>Descripción
+          </button>
+          <button class="modal-nav-btn" onclick="switchModalTab(1,this)" data-tab="1">
+            <span class="modal-nav-icon">💡</span>Conceptos
+          </button>
+          <button class="modal-nav-btn" onclick="switchModalTab(2,this)" data-tab="2">
+            <span class="modal-nav-icon">🧘</span>Ejercicio
+          </button>
+          <button class="modal-nav-btn" onclick="switchModalTab(3,this)" data-tab="3">
+            <span class="modal-nav-icon">📄</span>Materiales
+          </button>
+          <button class="modal-nav-btn" onclick="switchModalTab(4,this)" data-tab="4">
+            <span class="modal-nav-icon">🎨</span>Arteterapia
+          </button>
+          <button class="modal-nav-btn" onclick="switchModalTab(5,this)" data-tab="5">
+            <span class="modal-nav-icon">📝</span>Notas
+          </button>
+          <button class="modal-nav-btn" onclick="switchModalTab(6,this)" data-tab="6">
+            <span class="modal-nav-icon">✅</span>Completar
+          </button>
+        </div>
+        <div id="modal-arrow-left" onclick="modalCarouselScroll(-1)" style="position:absolute;left:0;top:0;bottom:0;width:36px;background:linear-gradient(to left,transparent,#1c1814 70%);display:none;align-items:center;justify-content:flex-start;padding-left:6px;font-size:22px;color:#BC9640;pointer-events:auto;z-index:5;font-weight:bold;cursor:pointer">‹</div>
+        <div id="modal-arrow-right" onclick="modalCarouselScroll(1)" style="position:absolute;right:0;top:0;bottom:0;width:36px;background:linear-gradient(to right,transparent,#1c1814 70%);display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:22px;color:#BC9640;pointer-events:auto;z-index:5;font-weight:bold;cursor:pointer">›</div>
       </div>
-      <div id="modal-arrow-left" onclick="modalCarouselScroll(-1)" style="position:absolute;left:0;top:0;bottom:0;width:44px;background:linear-gradient(to left,transparent,#1c1814 60%);display:none;align-items:center;justify-content:flex-start;padding-left:8px;font-size:24px;color:#BC9640;pointer-events:auto;z-index:5;font-weight:bold;cursor:pointer">‹</div>
-      <div id="modal-arrow-right" onclick="modalCarouselScroll(1)" style="position:absolute;right:0;top:0;bottom:0;width:44px;background:linear-gradient(to right,transparent,#1c1814 60%);display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:24px;color:#BC9640;pointer-events:auto;z-index:5;font-weight:bold;cursor:pointer">›</div>
       <div class="modal-layout">
         <!-- Contenido -->
         <div class="modal-body">
@@ -3708,6 +3709,16 @@ function openWeekModal(weekNum) {
   // Reset sidebar nav
   document.querySelectorAll('.modal-nav-btn').forEach(function(t,i){ t.classList.toggle('active', i===0); });
   document.getElementById('week-modal').classList.add('open');
+  // Init carrusel mobile
+  setTimeout(function() {
+    var sb = document.querySelector('.modal-sidebar');
+    if (sb) {
+      sb.scrollLeft = 0;
+      sb.removeEventListener('scroll', updateCarouselArrows);
+      sb.addEventListener('scroll', updateCarouselArrows);
+      updateCarouselArrows();
+    }
+  }, 80);
 }
 
 function closeModal() {
@@ -4161,6 +4172,31 @@ document.addEventListener('click', function(e) {
   if (modal && modal.style.display==='flex' && e.target === modal) closeMediaModal();
 });
 
+// ── CARRUSEL MODAL (mobile) ──
+function modalCarouselScroll(dir) {
+  var sb = document.querySelector('.modal-sidebar');
+  if (!sb) return;
+  sb.scrollBy({ left: dir * 120, behavior: 'smooth' });
+  setTimeout(updateCarouselArrows, 300);
+}
+
+function updateCarouselArrows() {
+  var sb = document.querySelector('.modal-sidebar');
+  var arL = document.getElementById('modal-arrow-left');
+  var arR = document.getElementById('modal-arrow-right');
+  if (!sb || !arL || !arR) return;
+  // Solo activas en mobile (≤900px)
+  if (window.innerWidth > 900) {
+    arL.style.display = 'none';
+    arR.style.display = 'none';
+    return;
+  }
+  var atStart = sb.scrollLeft <= 4;
+  var atEnd   = sb.scrollLeft >= sb.scrollWidth - sb.clientWidth - 4;
+  arL.style.display = atStart ? 'none'  : 'flex';
+  arR.style.display = atEnd   ? 'none'  : 'flex';
+}
+
 // ── NOTAS SEMANA ──
 var notasCache = {};
 var _notaTimer = {};
@@ -4513,27 +4549,22 @@ html, body { overflow-x: hidden; }
     border-top: 2px solid rgba(188,150,64,.4) !important;
   }
   .modal-sidebar::-webkit-scrollbar { display: none; }
-  /* Contenedor relativo para el fade */
+  /* Contenedor principal mobile: columna */
   .modal-sidebar-wrap {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+  }
+  /* Rail del carrusel: contiene sidebar + flechas */
+  #modal-sidebar-rail {
     position: relative;
     background: #1c1814;
     border-top: 2px solid rgba(188,150,64,.4);
     flex-shrink: 0;
+    overflow: hidden;
   }
-  .modal-carousel-fade {
-    position: absolute;
-    right: 0; top: 0; bottom: 0;
-    width: 40px;
-    background: linear-gradient(to right, transparent, #1c1814 65%);
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding-right: 8px;
-    font-size: 20px;
-    color: rgba(188,150,64,.9);
-    pointer-events: none;
-    z-index: 3;
-  }
+  .modal-carousel-fade { display: none !important; }
   /* Quitar el borde del sidebar original (lo tiene el wrap) */
   .modal-sidebar { border-top: none !important; }
   .modal-nav-btn {
@@ -6410,7 +6441,11 @@ document.addEventListener('keydown', function(e) {
     flex: 1 !important;
     overflow: hidden !important;
     position: static !important;
-    height: 0 !important; /* flex:1 la estira */
+    height: 0 !important;
+  }
+  /* En desktop el rail no tiene borde ni fondo propio */
+  #modal-sidebar-rail {
+    display: contents !important;
   }
 
   /* Sidebar lateral izquierda — altura completa */
@@ -7024,32 +7059,34 @@ document.addEventListener('keydown', function(e) {
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <!-- Carrusel tabs (abajo en mobile, lateral en desktop) -->
-    <div style="position:relative;flex-shrink:0" id="modal-sidebar-wrap">
-      <div class="modal-sidebar" id="modal-sidebar-scroll">
-        <button class="modal-nav-btn active" onclick="switchModalTab(0,this)" data-tab="0">
-          <span class="modal-nav-icon">📖</span>Descripción
-        </button>
-        <button class="modal-nav-btn" onclick="switchModalTab(1,this)" data-tab="1">
-          <span class="modal-nav-icon">💡</span>Conceptos
-        </button>
-        <button class="modal-nav-btn" onclick="switchModalTab(2,this)" data-tab="2">
-          <span class="modal-nav-icon">🧘</span>Ejercicio
-        </button>
-        <button class="modal-nav-btn" onclick="switchModalTab(3,this)" data-tab="3">
-          <span class="modal-nav-icon">📄</span>Materiales
-        </button>
-        <button class="modal-nav-btn" onclick="switchModalTab(4,this)" data-tab="4">
-          <span class="modal-nav-icon">🎨</span>Arteterapia
-        </button>
-        <button class="modal-nav-btn" onclick="switchModalTab(5,this)" data-tab="5">
-          <span class="modal-nav-icon">📝</span>Notas
-        </button>
-        <button class="modal-nav-btn" onclick="switchModalTab(6,this)" data-tab="6">
-          <span class="modal-nav-icon">✅</span>Completar
-        </button>
+    <div id="modal-sidebar-wrap">
+      <div style="position:relative;flex-shrink:0" id="modal-sidebar-rail">
+        <div class="modal-sidebar" id="modal-sidebar-scroll">
+          <button class="modal-nav-btn active" onclick="switchModalTab(0,this)" data-tab="0">
+            <span class="modal-nav-icon">📖</span>Descripción
+          </button>
+          <button class="modal-nav-btn" onclick="switchModalTab(1,this)" data-tab="1">
+            <span class="modal-nav-icon">💡</span>Conceptos
+          </button>
+          <button class="modal-nav-btn" onclick="switchModalTab(2,this)" data-tab="2">
+            <span class="modal-nav-icon">🧘</span>Ejercicio
+          </button>
+          <button class="modal-nav-btn" onclick="switchModalTab(3,this)" data-tab="3">
+            <span class="modal-nav-icon">📄</span>Materiales
+          </button>
+          <button class="modal-nav-btn" onclick="switchModalTab(4,this)" data-tab="4">
+            <span class="modal-nav-icon">🎨</span>Arteterapia
+          </button>
+          <button class="modal-nav-btn" onclick="switchModalTab(5,this)" data-tab="5">
+            <span class="modal-nav-icon">📝</span>Notas
+          </button>
+          <button class="modal-nav-btn" onclick="switchModalTab(6,this)" data-tab="6">
+            <span class="modal-nav-icon">✅</span>Completar
+          </button>
+        </div>
+        <div id="modal-arrow-left" onclick="modalCarouselScroll(-1)" style="position:absolute;left:0;top:0;bottom:0;width:36px;background:linear-gradient(to left,transparent,#1c1814 70%);display:none;align-items:center;justify-content:flex-start;padding-left:6px;font-size:22px;color:#BC9640;pointer-events:auto;z-index:5;font-weight:bold;cursor:pointer">‹</div>
+        <div id="modal-arrow-right" onclick="modalCarouselScroll(1)" style="position:absolute;right:0;top:0;bottom:0;width:36px;background:linear-gradient(to right,transparent,#1c1814 70%);display:flex;align-items:center;justify-content:flex-end;padding-right:6px;font-size:22px;color:#BC9640;pointer-events:auto;z-index:5;font-weight:bold;cursor:pointer">›</div>
       </div>
-      <div id="modal-arrow-left" onclick="modalCarouselScroll(-1)" style="position:absolute;left:0;top:0;bottom:0;width:44px;background:linear-gradient(to left,transparent,#1c1814 60%);display:none;align-items:center;justify-content:flex-start;padding-left:8px;font-size:24px;color:#BC9640;pointer-events:auto;z-index:5;font-weight:bold;cursor:pointer">‹</div>
-      <div id="modal-arrow-right" onclick="modalCarouselScroll(1)" style="position:absolute;right:0;top:0;bottom:0;width:44px;background:linear-gradient(to right,transparent,#1c1814 60%);display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font-size:24px;color:#BC9640;pointer-events:auto;z-index:5;font-weight:bold;cursor:pointer">›</div>
       <div class="modal-layout">
         <!-- Contenido -->
         <div class="modal-body">
