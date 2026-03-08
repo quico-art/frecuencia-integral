@@ -1040,12 +1040,13 @@ button:focus-visible, input:focus-visible {
     <a onclick="document.getElementById('h-testimonios').scrollIntoView({behavior:'smooth'})" href="#">Testimonios</a>
   </div>
   <button id="nav-hamburger" onclick="toggleMobileMenu()" style="display:none;background:none;border:none;cursor:pointer;padding:8px;flex-direction:column;gap:5px;align-items:center;justify-content:center">
-    <span style="display:block;width:22px;height:2px;background:#3d3730;border-radius:2px"></span>
-    <span style="display:block;width:22px;height:2px;background:#3d3730;border-radius:2px"></span>
+    <span style="display:block;width:22px;height:2px;background:#BC9640;border-radius:2px"></span>
+    <span style="display:block;width:22px;height:2px;background:#BC9640;border-radius:2px"></span>
     <span style="display:block;width:22px;height:2px;background:#3d3730;border-radius:2px"></span>
   </button>
   <div class="nav-btns">
     <button class="btn-ghost" id="btnLogin" onclick="goTo('auth')">Acceso Alumnos</button>
+    <button onclick="goTo('academy')" style="background:linear-gradient(135deg,#BC9640,#D4AA5A);color:#1c1814;border:none;padding:9px 18px;border-radius:100px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.03em">✦ Nueva Home</button>
     <button class="btn-primary" id="btnInscribirse" onclick="var el=document.getElementById('h-puertas');if(el)el.scrollIntoView({behavior:'smooth'});">Iniciarse Ahora</button>
     <button class="btn-ghost" id="btnHome" style="display:none" onclick="goTo('public')">🏠 Inicio</button>
     <button class="btn-ghost" id="btnDash" style="display:none" onclick="goTo('student')">Mi Dashboard</button>
@@ -2356,19 +2357,25 @@ document.addEventListener('keydown', function(e) {
   overflow-x: hidden;
 }
 
-/* NAV ACADEMY */
+/* NAV ACADEMY — 3C: Transparente glass + borde dorado */
 .acad-nav {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 1000;
-  background: rgba(28,24,20,0.97);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(188,150,64,.15);
+  background: #E0D9CE;
+  border-bottom: 1px solid rgba(188,150,64,.25);
+  box-shadow: 0 2px 20px rgba(28,24,20,.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 40px;
   height: 68px;
+  transition: background .3s, box-shadow .3s;
+}
+.acad-nav.scrolled {
+  background: #E0D9CE;
+  border-bottom-color: rgba(188,150,64,.3);
+  box-shadow: 0 4px 28px rgba(28,24,20,.12);
 }
 .acad-nav-logo {
   display: flex; align-items: center; gap: 12px;
@@ -2379,10 +2386,10 @@ document.addEventListener('keydown', function(e) {
 .acad-nav-logo-name {
   font-family: 'Cormorant Garamond', serif;
   font-size: 18px; font-weight: 600;
-  color: #D4AA5A; letter-spacing: .02em; line-height: 1;
+  color: #BC9640; letter-spacing: .02em; line-height: 1;
 }
 .acad-nav-logo-sub {
-  font-size: 9px; color: rgba(255,255,255,.35);
+  font-size: 9px; color: rgba(28,24,20,.35);
   letter-spacing: .12em; text-transform: uppercase; margin-top: 2px;
 }
 .acad-nav-links {
@@ -2390,24 +2397,27 @@ document.addEventListener('keydown', function(e) {
   list-style: none; margin: 0; padding: 0;
 }
 .acad-nav-links a {
-  font-size: 13px; color: rgba(255,255,255,.6);
+  font-size: 13px; color: #3d3730;
   text-decoration: none; letter-spacing: .04em;
   transition: color .2s; cursor: pointer;
 }
-.acad-nav-links a:hover { color: #D4AA5A; }
+.acad-nav-links a:hover { color: #BC9640; }
 .acad-nav-cta {
   background: linear-gradient(135deg, #BC9640, #D4AA5A);
   color: #1c1814 !important;
   font-weight: 700 !important;
-  padding: 9px 20px !important;
+  padding: 9px 22px !important;
   border-radius: 100px !important;
   font-size: 12px !important;
   letter-spacing: .06em !important;
-  transition: opacity .2s !important;
+  transition: opacity .2s, transform .2s !important;
+  box-shadow: 0 4px 16px rgba(188,150,64,.25) !important;
+  border: none !important;
+  cursor: pointer !important;
 }
-.acad-nav-cta:hover { opacity: .85; color: #1c1814 !important; }
+.acad-nav-cta:hover { opacity: .88; transform: translateY(-1px); color: #1c1814 !important; }
 
-/* HERO */
+/* HERO — 3C: Dorado luminoso */
 .acad-hero {
   min-height: 100vh;
   background: #1c1814;
@@ -2417,8 +2427,18 @@ document.addEventListener('keydown', function(e) {
 }
 .acad-hero-bg {
   position: absolute; inset: 0;
-  background: radial-gradient(ellipse 80% 60% at 70% 50%, rgba(188,150,64,.08) 0%, transparent 70%),
-              radial-gradient(ellipse 40% 40% at 20% 80%, rgba(43,125,122,.06) 0%, transparent 60%);
+  background: 
+    radial-gradient(ellipse 55% 65% at 72% 52%, rgba(212,170,90,.22) 0%, rgba(188,150,64,.10) 40%, transparent 68%),
+    radial-gradient(ellipse 30% 40% at 72% 52%, rgba(255,210,100,.08) 0%, transparent 50%),
+    radial-gradient(ellipse 35% 45% at 15% 28%, rgba(43,125,122,.07) 0%, transparent 55%);
+}
+.acad-hero-bg::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 62%; transform: translate(-50%, -50%);
+  width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,170,90,.13) 0%, rgba(188,150,64,.05) 45%, transparent 68%);
+  pointer-events: none;
 }
 .acad-hero-grid {
   position: relative; z-index: 1;
@@ -2702,20 +2722,20 @@ document.addEventListener('keydown', function(e) {
 }
 
 /* TESTIMONIOS */
-.acad-testi-bg { background: #FAF8F5; }
+.acad-testi-bg { background: #1c1814; }
 .acad-testi-grid {
   display: grid; grid-template-columns: repeat(3,1fr);
   gap: 24px; margin-top: 56px;
 }
 .acad-testi-card {
-  background: white; border: 1px solid #e4ddd3;
+  background: rgba(255,255,255,.05); border: 1px solid rgba(188,150,64,.15);
   border-radius: 20px; padding: 32px 28px;
   transition: transform .25s, box-shadow .25s;
 }
-.acad-testi-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(28,24,20,.07); }
-.acad-testi-stars { color: #BC9640; font-size: 14px; margin-bottom: 16px; }
+.acad-testi-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.3); }
+.acad-testi-stars { color: #D4AA5A; font-size: 14px; margin-bottom: 16px; }
 .acad-testi-text {
-  font-size: 14px; color: #3d3730; line-height: 1.75;
+  font-size: 14px; color: rgba(255,255,255,.6); line-height: 1.75;
   font-style: italic; margin-bottom: 24px;
 }
 .acad-testi-author { display: flex; align-items: center; gap: 12px; }
@@ -2725,11 +2745,19 @@ document.addEventListener('keydown', function(e) {
   display: flex; align-items: center; justify-content: center;
   font-size: 16px; flex-shrink: 0;
 }
-.acad-testi-name { font-weight: 700; font-size: 13px; color: #1c1814; }
+.acad-testi-name { font-weight: 700; font-size: 13px; color: white; }
 .acad-testi-meta { font-size: 11px; color: #a89e93; }
 
 /* CONTACTO */
-.acad-contacto-bg { background: #f7f5f1; }
+.acad-contacto-bg { background: #EDE8E0; position: relative; overflow: hidden; }
+.acad-contacto-bg::before {
+  content: '';
+  position: absolute;
+  top: 50%; right: 5%; transform: translateY(-50%);
+  width: 500px; height: 500px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(188,150,64,.08) 0%, transparent 65%);
+  pointer-events: none;
+}
 .acad-contacto-grid {
   display: grid; grid-template-columns: 1fr 1.2fr;
   gap: 80px; align-items: start;
@@ -2813,44 +2841,75 @@ document.addEventListener('keydown', function(e) {
   }
   .acad-nav-hamburger span {
     display: block; width: 22px; height: 2px;
-    background: rgba(255,255,255,.6); border-radius: 2px;
+    background: #1c1814; border-radius: 2px;
   }
   .acad-mobile-menu {
     display: none;
     position: fixed; inset: 0; z-index: 999;
-    background: rgba(14,12,10,.97);
+    background: rgba(14,12,10,.98);
     flex-direction: column; align-items: center; justify-content: center;
-    gap: 32px;
+    gap: 28px;
+  }
+  .acad-mobile-menu::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% 40%, rgba(188,150,64,.07) 0%, transparent 70%);
+    pointer-events: none;
   }
   .acad-mobile-menu.open { display: flex !important; }
   .acad-mobile-menu a {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 32px; color: rgba(255,255,255,.8);
+    font-size: 30px; color: rgba(255,255,255,.75);
     text-decoration: none; cursor: pointer;
+    position: relative; z-index: 1;
+    transition: color .2s;
   }
   .acad-mobile-menu a:hover { color: #D4AA5A; }
   .acad-mobile-menu-close {
     position: absolute; top: 24px; right: 24px;
-    background: none; border: none;
-    color: rgba(255,255,255,.4); font-size: 28px; cursor: pointer;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+    color: rgba(255,255,255,.5); font-size: 20px; cursor: pointer;
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
   }
-  .acad-hero { padding: 100px 24px 60px; min-height: auto; }
-  .acad-hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .acad-mobile-menu-divider {
+    width: 40px; height: 1px;
+    background: rgba(188,150,64,.2);
+  }
+  .acad-hero { padding: 90px 20px 48px; min-height: auto; }
+  .acad-hero-grid { grid-template-columns: 1fr; gap: 32px; }
   .acad-hero-visual { order: -1; }
-  .acad-hero-mandala { width: 240px; height: 240px; }
-  .acad-section { padding: 64px 24px; }
-  .acad-section-full { padding: 64px 24px; }
-  .acad-pilares-grid { grid-template-columns: 1fr; gap: 16px; }
+  .acad-hero-mandala { width: 220px; height: 220px; }
+  .acad-hero-title { font-size: 36px; }
+  .acad-hero-sub { font-size: 15px; }
+  .acad-hero-badge { font-size: 10px; padding: 5px 12px; }
+  .acad-hero-btns { flex-direction: column; gap: 10px; }
+  .acad-hero-btns button { width: 100%; text-align: center; }
+  .acad-section { padding: 56px 20px; }
+  .acad-section-full { padding: 56px 20px; }
+  .acad-section-title { font-size: 28px !important; }
+  .acad-pilares-grid { grid-template-columns: 1fr; gap: 14px; }
+  .acad-pilar-card { padding: 24px 20px; }
   .acad-cursos-grid { grid-template-columns: 1fr; gap: 20px; }
-  .acad-curso-card { min-height: 380px; }
-  .acad-metodo-steps { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .acad-curso-card { min-height: 340px; }
+  .acad-curso-cta { width: 100%; text-align: center; }
+  .acad-metodo-steps { grid-template-columns: 1fr; gap: 28px; }
   .acad-metodo-steps::before { display: none; }
   .acad-quienes-grid { grid-template-columns: 1fr; gap: 40px; }
   .acad-quienes-img-wrap { aspect-ratio: 4/3; }
-  .acad-testi-grid { grid-template-columns: 1fr; gap: 16px; }
-  .acad-contacto-grid { grid-template-columns: 1fr; gap: 40px; }
-  .acad-footer-grid { grid-template-columns: 1fr; gap: 40px; }
+  .acad-testi-grid { grid-template-columns: 1fr; gap: 14px; }
+  .acad-contacto-grid { grid-template-columns: 1fr; gap: 32px; }
+  .acad-footer-grid { grid-template-columns: 1fr; gap: 32px; text-align: center; }
   .acad-footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  .acad-footer-links { justify-content: center; }
+}
+
+@media(max-width:480px) {
+  .acad-hero-title { font-size: 30px; }
+  .acad-hero-mandala { width: 180px; height: 180px; }
+  .acad-section-title { font-size: 24px !important; }
+  .acad-cursos-grid { gap: 14px; }
+  .acad-testi-card { padding: 24px 18px; }
 }
 @media(min-width:901px) {
   .acad-nav-hamburger { display: none; }
@@ -2860,11 +2919,47 @@ document.addEventListener('keydown', function(e) {
 <!-- NAV -->
 <nav class="acad-nav">
   <div class="acad-nav-logo" onclick="acadScrollTo('acad-hero')">
-    <svg width="36" height="36" viewBox="0 0 80 80" fill="none">
-      <circle cx="40" cy="40" r="38" stroke="#BC9640" stroke-width="1.5" opacity=".4"/>
-      <circle cx="40" cy="40" r="6" fill="#BC9640" opacity=".8"/>
-      <path d="M40 8 C55 20, 70 30, 68 48 C66 64, 50 72, 40 72 C30 72, 14 64, 12 48 C10 30, 25 20, 40 8Z" stroke="#BC9640" stroke-width="1.2" fill="none" opacity=".5"/>
-      <path d="M8 40 C20 25, 30 10, 48 12 C64 14, 72 30, 72 40 C72 50, 64 66, 48 68 C30 70, 20 55, 8 40Z" stroke="#D4AA5A" stroke-width="1" fill="none" opacity=".35"/>
+    <svg width="44" height="44" viewBox="0 0 80 80" fill="none">
+      <!-- Anillo exterior -->
+      <circle cx="40" cy="40" r="37" stroke="#BC9640" stroke-width="1.8" opacity=".45"/>
+      <!-- Anillos φ: r=12, r=19.4, r=31.4 -->
+      <circle cx="40" cy="40" r="31.4" stroke="#BC9640" stroke-width="1.2" opacity=".28"/>
+      <circle cx="40" cy="40" r="19.4" stroke="#D4AA5A" stroke-width="1" opacity=".25"/>
+      <circle cx="40" cy="40" r="12" stroke="#BC9640" stroke-width=".9" opacity=".22"/>
+      <!-- Radiales a puntos exteriores -->
+      <line x1="40" y1="40" x2="69.86" y2="49.7" stroke="#BC9640" stroke-width=".8" opacity=".2"/>
+      <line x1="40" y1="40" x2="40.0" y2="71.4" stroke="#BC9640" stroke-width=".8" opacity=".2"/>
+      <line x1="40" y1="40" x2="10.14" y2="49.7" stroke="#BC9640" stroke-width=".8" opacity=".2"/>
+      <line x1="40" y1="40" x2="21.54" y2="14.6" stroke="#BC9640" stroke-width=".8" opacity=".2"/>
+      <line x1="40" y1="40" x2="58.46" y2="14.6" stroke="#BC9640" stroke-width=".8" opacity=".2"/>
+      <!-- Líneas centro → 8 esferas (anillos 1 y 2) -->
+      <line x1="40" y1="40" x2="52.0" y2="40.0" stroke="#D4AA5A" stroke-width="1.2" opacity=".4"/>
+      <line x1="40" y1="40" x2="34.0" y2="50.39" stroke="#D4AA5A" stroke-width="1.2" opacity=".4"/>
+      <line x1="40" y1="40" x2="34.0" y2="29.61" stroke="#D4AA5A" stroke-width="1.2" opacity=".4"/>
+      <line x1="40" y1="40" x2="53.72" y2="53.72" stroke="#BC9640" stroke-width="1" opacity=".32"/>
+      <line x1="40" y1="40" x2="26.28" y2="53.72" stroke="#BC9640" stroke-width="1" opacity=".32"/>
+      <line x1="40" y1="40" x2="26.28" y2="26.28" stroke="#BC9640" stroke-width="1" opacity=".32"/>
+      <line x1="40" y1="40" x2="53.72" y2="26.28" stroke="#BC9640" stroke-width="1" opacity=".32"/>
+      <!-- Centro -->
+      <circle cx="40" cy="40" r="3.5" fill="#D4AA5A" opacity=".95"/>
+      <!-- 3 puntos anillo interior -->
+      <circle cx="52.0" cy="40.0" r="2" fill="#D4AA5A" opacity=".95"/>
+      <circle cx="34.0" cy="50.39" r="2" fill="#D4AA5A" opacity=".95"/>
+      <circle cx="34.0" cy="29.61" r="2" fill="#D4AA5A" opacity=".95"/>
+      <!-- 4 puntos anillo medio -->
+      <circle cx="53.72" cy="53.72" r="2.3" fill="#BC9640" opacity=".8"/>
+      <circle cx="26.28" cy="53.72" r="2.3" fill="#BC9640" opacity=".8"/>
+      <circle cx="26.28" cy="26.28" r="2.3" fill="#BC9640" opacity=".8"/>
+      <circle cx="53.72" cy="26.28" r="2.3" fill="#BC9640" opacity=".8"/>
+      <!-- 5 puntos anillo exterior -->
+      <circle cx="69.86" cy="49.7" r="2.6" fill="#BC9640" opacity=".65"/>
+      <circle cx="40.0" cy="71.4" r="2.6" fill="#BC9640" opacity=".65"/>
+      <circle cx="10.14" cy="49.7" r="2.6" fill="#BC9640" opacity=".65"/>
+      <circle cx="21.54" cy="14.6" r="2.6" fill="#BC9640" opacity=".65"/>
+      <circle cx="58.46" cy="14.6" r="2.6" fill="#BC9640" opacity=".65"/>
+      <!-- Vesica piscis -->
+      <path d="M40 9 C50 18 71 26 71 40 C71 54 50 62 40 71 C30 62 9 54 9 40 C9 26 30 18 40 9Z" stroke="#BC9640" stroke-width="1.2" fill="none" opacity=".3"/>
+      <path d="M9 40 C18 30 26 9 40 9 C54 9 62 30 71 40 C62 50 54 71 40 71 C26 71 18 50 9 40Z" stroke="#D4AA5A" stroke-width="1" fill="none" opacity=".22"/>
     </svg>
     <div class="acad-nav-logo-text">
       <span class="acad-nav-logo-name">Frecuencia Integral</span>
@@ -2892,6 +2987,8 @@ document.addEventListener('keydown', function(e) {
   <a onclick="acadScrollTo('acad-quienes');acadMenuClose()">Quiénes Somos</a>
   <a onclick="acadScrollTo('acad-testimonios');acadMenuClose()">Testimonios</a>
   <a onclick="acadScrollTo('acad-contacto');acadMenuClose()">Contacto</a>
+  <div class="acad-mobile-menu-divider"></div>
+  <button onclick="acadMenuClose();goTo('auth')" style="background:linear-gradient(135deg,#BC9640,#D4AA5A);color:#1c1814;border:none;padding:14px 36px;border-radius:100px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.04em;position:relative;z-index:1">Acceso Alumnos</button>
   <a onclick="goTo('auth');acadMenuClose()" style="color:#D4AA5A!important">Acceso Alumnos →</a>
 </div>
 
@@ -2914,29 +3011,45 @@ document.addEventListener('keydown', function(e) {
     </div>
     <div class="acad-hero-visual">
       <svg class="acad-hero-mandala" viewBox="0 0 400 400" fill="none">
-        <circle cx="200" cy="200" r="196" stroke="#BC9640" stroke-width="1" opacity=".2"/>
-        <circle cx="200" cy="200" r="160" stroke="#BC9640" stroke-width=".8" opacity=".15"/>
-        <circle cx="200" cy="200" r="120" stroke="#D4AA5A" stroke-width=".8" opacity=".2"/>
-        <circle cx="200" cy="200" r="80" stroke="#BC9640" stroke-width="1" opacity=".25"/>
-        <circle cx="200" cy="200" r="12" fill="#BC9640" opacity=".6"/>
-        <g opacity=".3" stroke="#BC9640" stroke-width=".8">
-          <line x1="200" y1="4" x2="200" y2="396"/>
-          <line x1="4" y1="200" x2="396" y2="200"/>
-          <line x1="61" y1="61" x2="339" y2="339"/>
-          <line x1="339" y1="61" x2="61" y2="339"/>
-        </g>
-        <g opacity=".2" stroke="#D4AA5A" stroke-width=".6">
-          <line x1="200" y1="40" x2="200" y2="360"/>
-          <line x1="40" y1="200" x2="360" y2="200"/>
-          <line x1="88" y1="88" x2="312" y2="312"/>
-          <line x1="312" y1="88" x2="88" y2="312"/>
-        </g>
-        <path d="M200 40 C240 80 360 120 360 200 C360 280 240 320 200 360 C160 320 40 280 40 200 C40 120 160 80 200 40Z" stroke="#BC9640" stroke-width="1" fill="none" opacity=".3"/>
-        <path d="M40 200 C80 160 120 40 200 40 C280 40 320 160 360 200 C320 240 280 360 200 360 C120 360 80 240 40 200Z" stroke="#D4AA5A" stroke-width=".8" fill="none" opacity=".2"/>
-        <circle cx="200" cy="40" r="4" fill="#BC9640" opacity=".5"/>
-        <circle cx="200" cy="360" r="4" fill="#BC9640" opacity=".5"/>
-        <circle cx="40" cy="200" r="4" fill="#BC9640" opacity=".5"/>
-        <circle cx="360" cy="200" r="4" fill="#BC9640" opacity=".5"/>
+        <!-- Anillos concéntricos proporción áurea φ: r=50, r=80.9, r=130.9 -->
+        <circle cx="200" cy="200" r="196" stroke="#BC9640" stroke-width="1.2" opacity=".2"/>
+        <circle cx="200" cy="200" r="130.9" stroke="#BC9640" stroke-width="1" opacity=".3"/>
+        <circle cx="200" cy="200" r="80.9" stroke="#D4AA5A" stroke-width=".8" opacity=".25"/>
+        <circle cx="200" cy="200" r="50" stroke="#BC9640" stroke-width=".8" opacity=".22"/>
+        <!-- Líneas radiales sutiles hacia los 5 puntos exteriores -->
+        <line x1="200" y1="200" x2="324.5" y2="240.5" stroke="#BC9640" stroke-width=".6" opacity=".15"/>
+<line x1="200" y1="200" x2="200.0" y2="330.9" stroke="#BC9640" stroke-width=".6" opacity=".15"/>
+<line x1="200" y1="200" x2="75.5" y2="240.5" stroke="#BC9640" stroke-width=".6" opacity=".15"/>
+<line x1="200" y1="200" x2="123.1" y2="94.1" stroke="#BC9640" stroke-width=".6" opacity=".15"/>
+<line x1="200" y1="200" x2="276.9" y2="94.1" stroke="#BC9640" stroke-width=".6" opacity=".15"/>
+        <!-- Líneas centro → 8 esferas (anillos 1 y 2) -->
+        <line x1="200" y1="200" x2="250.0" y2="200.0" stroke="#D4AA5A" stroke-width="1" opacity=".35"/>
+        <line x1="200" y1="200" x2="175.0" y2="243.3" stroke="#D4AA5A" stroke-width="1" opacity=".35"/>
+        <line x1="200" y1="200" x2="175.0" y2="156.7" stroke="#D4AA5A" stroke-width="1" opacity=".35"/>
+        <line x1="200" y1="200" x2="257.2" y2="257.2" stroke="#BC9640" stroke-width="1" opacity=".28"/>
+        <line x1="200" y1="200" x2="142.8" y2="257.2" stroke="#BC9640" stroke-width="1" opacity=".28"/>
+        <line x1="200" y1="200" x2="142.8" y2="142.8" stroke="#BC9640" stroke-width="1" opacity=".28"/>
+        <line x1="200" y1="200" x2="257.2" y2="142.8" stroke="#BC9640" stroke-width="1" opacity=".28"/>
+        <!-- Centro -->
+        <circle cx="200" cy="200" r="10" fill="#D4AA5A" opacity=".85"/>
+        <!-- Anillo 1 — 3 puntos r=50 cada 120° -->
+        <circle cx="250.0" cy="200.0" r="5" fill="#D4AA5A" opacity=".9"/>
+<circle cx="175.0" cy="243.3" r="5" fill="#D4AA5A" opacity=".9"/>
+<circle cx="175.0" cy="156.7" r="5" fill="#D4AA5A" opacity=".9"/>
+        <!-- Anillo 2 — 4 puntos r=80.9 cada 90° -->
+        <circle cx="257.2" cy="257.2" r="6" fill="#BC9640" opacity=".7"/>
+<circle cx="142.8" cy="257.2" r="6" fill="#BC9640" opacity=".7"/>
+<circle cx="142.8" cy="142.8" r="6" fill="#BC9640" opacity=".7"/>
+<circle cx="257.2" cy="142.8" r="6" fill="#BC9640" opacity=".7"/>
+        <!-- Anillo 3 — 5 puntos r=130.9 cada 72° -->
+        <circle cx="324.5" cy="240.5" r="7" fill="#BC9640" opacity=".55"/>
+<circle cx="200.0" cy="330.9" r="7" fill="#BC9640" opacity=".55"/>
+<circle cx="75.5" cy="240.5" r="7" fill="#BC9640" opacity=".55"/>
+<circle cx="123.1" cy="94.1" r="7" fill="#BC9640" opacity=".55"/>
+<circle cx="276.9" cy="94.1" r="7" fill="#BC9640" opacity=".55"/>
+        <!-- Curvas vesica piscis evocando geometría sagrada -->
+        <path d="M200 70 C240 110 330 150 330 200 C330 250 240 290 200 330 C160 290 70 250 70 200 C70 150 160 110 200 70Z" stroke="#BC9640" stroke-width="1.2" fill="none" opacity=".25"/>
+        <path d="M70 200 C110 160 150 70 200 70 C250 70 290 160 330 200 C290 240 250 330 200 330 C150 330 110 240 70 200Z" stroke="#D4AA5A" stroke-width="1" fill="none" opacity=".18"/>
       </svg>
     </div>
   </div>
@@ -2976,7 +3089,7 @@ document.addEventListener('keydown', function(e) {
     <p class="acad-section-sub">Dos cursos, una misma filosofía. Cada uno diseñado para un contexto específico de vida.</p>
     <div class="acad-cursos-grid">
       <!-- TCT -->
-      <div class="acad-curso-card acad-curso-bg-tct" onclick="acadScrollTo('acad-contacto')">
+      <div class="acad-curso-card acad-curso-bg-tct" onclick="goTo('public')" style="cursor:pointer">
         <div class="acad-curso-deco">🌿</div>
         <div class="acad-curso-body">
           <span class="acad-curso-badge acad-curso-badge-green">✦ Disponible</span>
@@ -2988,13 +3101,13 @@ document.addEventListener('keydown', function(e) {
             <span>🧘 Online</span>
           </div>
           <p class="acad-curso-desc">Un viaje estructurado de 48 semanas a través de 4 puertas progresivas. Del despertar a la integración — presencia aplicada a cada área de tu vida.</p>
-          <button class="acad-curso-cta acad-curso-cta-green" onclick="event.stopPropagation();goTo('auth')">
-            Comenzar ahora →
+          <button class="acad-curso-cta acad-curso-cta-green" onclick="event.stopPropagation();goTo('public')">
+            Ver el programa →
           </button>
         </div>
       </div>
       <!-- DEPORTISTA CONSCIENTE -->
-      <div class="acad-curso-card acad-curso-bg-edc">
+      <div class="acad-curso-card acad-curso-bg-edc" onclick="goTo('deportista')" style="cursor:pointer">
         <div class="acad-curso-deco">🏆</div>
         <div class="acad-curso-body">
           <span class="acad-curso-badge acad-curso-badge-blue">⏳ Próximamente</span>
@@ -3005,8 +3118,8 @@ document.addEventListener('keydown', function(e) {
             <span>👨‍👩‍👧 Familias y clubes</span>
           </div>
           <p class="acad-curso-desc">Presencia aplicada al deporte de élite. Para deportistas, padres e instituciones que quieren ir más allá del resultado y construir una identidad sólida.</p>
-          <button class="acad-curso-cta acad-curso-cta-outline" onclick="event.stopPropagation();acadScrollTo('acad-contacto')">
-            Unirme a la lista →
+          <button class="acad-curso-cta acad-curso-cta-outline" onclick="event.stopPropagation();goTo('deportista')">
+            Ver más →
           </button>
         </div>
       </div>
@@ -3046,39 +3159,294 @@ document.addEventListener('keydown', function(e) {
 </div>
 
 <!-- QUIÉNES SOMOS -->
-<div id="acad-quienes">
-  <div class="acad-section">
-    <div class="acad-quienes-grid">
-      <div class="acad-quienes-visual">
-        <div class="acad-quienes-img-wrap">🧘</div>
+<div id="acad-quienes" style="background:#FAF8F5">
+
+<style>
+/* ── QUIÉNES SOMOS — EDITORIAL ── */
+.qs-wrap { max-width:1200px; margin:0 auto; padding:100px 40px; }
+.qs-intro { text-align:center; max-width:720px; margin:0 auto 80px; }
+.qs-disciplines {
+  display:flex; flex-wrap:wrap; gap:10px;
+  justify-content:center; margin:28px 0 0;
+}
+.qs-disc-tag {
+  background:white; border:1px solid rgba(188,150,64,.25);
+  color:#3d3730; padding:7px 16px; border-radius:100px;
+  font-size:12px; letter-spacing:.04em;
+}
+
+/* Persona — estilo editorial alternado */
+.qs-persona {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:80px; align-items:center;
+  padding:72px 0; border-top:1px solid #e4ddd3;
+}
+.qs-persona:first-of-type { border-top:none; }
+.qs-persona.reverse { direction:rtl; }
+.qs-persona.reverse > * { direction:ltr; }
+
+/* Foto */
+.qs-photo-wrap {
+  position:relative; border-radius:24px; overflow:hidden;
+  aspect-ratio:4/5; background:#e4ddd3;
+  display:flex; align-items:center; justify-content:center;
+}
+.qs-photo-wrap img {
+  width:100%; height:100%; object-fit:cover;
+  display:block;
+}
+.qs-photo-placeholder {
+  width:100%; height:100%; min-height:380px;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:16px;
+  background:linear-gradient(145deg, #ede8e0, #e0d9ce);
+}
+.qs-photo-initial {
+  font-family:'Cormorant Garamond',serif;
+  font-size:96px; font-weight:400;
+  color:rgba(188,150,64,.4); line-height:1;
+}
+.qs-photo-pending {
+  font-size:12px; color:rgba(28,24,20,.3);
+  letter-spacing:.1em; text-transform:uppercase;
+}
+.qs-photo-corner {
+  position:absolute; bottom:20px; left:20px;
+  background:rgba(28,24,20,.7); backdrop-filter:blur(8px);
+  border-radius:100px; padding:6px 14px;
+  font-size:11px; color:rgba(255,255,255,.8);
+  letter-spacing:.06em; text-transform:uppercase;
+}
+
+/* Texto */
+.qs-persona-text { }
+.qs-persona-name {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(32px,4vw,48px); font-weight:400;
+  color:#1c1814; line-height:1.1; margin-bottom:6px;
+}
+.qs-persona-role {
+  font-size:13px; color:#BC9640;
+  letter-spacing:.1em; text-transform:uppercase;
+  margin-bottom:24px; display:block;
+}
+.qs-persona-tags {
+  display:flex; flex-wrap:wrap; gap:8px; margin-bottom:24px;
+}
+.qs-persona-tag {
+  background:rgba(188,150,64,.08);
+  border:1px solid rgba(188,150,64,.2);
+  color:#3d3730; padding:5px 13px;
+  border-radius:100px; font-size:12px;
+}
+.qs-persona-bio {
+  font-size:15px; color:#5a5248; line-height:1.8;
+  margin-bottom:24px;
+}
+.qs-persona-quote {
+  font-family:'Cormorant Garamond',serif;
+  font-size:19px; font-style:italic; color:#BC9640;
+  line-height:1.5; padding-left:20px;
+  border-left:2px solid rgba(188,150,64,.3);
+}
+.qs-persona-logros {
+  margin-top:20px; display:flex; flex-direction:column; gap:8px;
+}
+.qs-persona-logro {
+  display:flex; align-items:flex-start; gap:10px;
+  font-size:13px; color:#7a7168; line-height:1.5;
+}
+.qs-persona-logro-icon { color:#BC9640; flex-shrink:0; margin-top:1px; }
+
+/* Marga placeholder */
+.qs-marga-pending {
+  background:linear-gradient(135deg, #f7f5f1, #FAF8F5);
+  border:1.5px dashed rgba(188,150,64,.25);
+  border-radius:24px; padding:48px 36px;
+  text-align:center;
+}
+.qs-marga-icon { font-size:48px; margin-bottom:20px; display:block; }
+.qs-marga-name {
+  font-family:'Cormorant Garamond',serif;
+  font-size:36px; color:#1c1814; margin-bottom:8px;
+}
+.qs-marga-sub { font-size:14px; color:#7a7168; line-height:1.7; }
+.qs-marga-badge {
+  display:inline-block; margin-top:20px;
+  background:rgba(188,150,64,.1); border:1px solid rgba(188,150,64,.2);
+  color:#BC9640; padding:6px 18px; border-radius:100px;
+  font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+}
+
+/* Mobile */
+@media(max-width:900px) {
+  .qs-wrap { padding:48px 20px; }
+  .qs-intro { margin-bottom:48px; }
+  .qs-persona { grid-template-columns:1fr; gap:28px; direction:ltr !important; padding:48px 0; }
+  .qs-persona > * { direction:ltr !important; }
+  .qs-photo-placeholder { min-height:260px; }
+  .qs-photo-initial { font-size:64px; }
+  .qs-persona-name { font-size:32px; }
+  .qs-persona-tags { gap:6px; }
+  .qs-persona-tag { font-size:11px; padding:4px 11px; }
+  .qs-persona-bio { font-size:14px; }
+  .qs-persona-quote { font-size:17px; }
+  .qs-marga-pending { padding:36px 24px; }
+  .qs-disciplines { gap:8px; }
+  .qs-disc-tag { font-size:11px; padding:6px 12px; }
+}
+</style>
+
+<div class="qs-wrap">
+
+  <!-- INTRO -->
+  <div class="qs-intro">
+    <span class="acad-section-label">Quiénes Somos</span>
+    <h2 class="acad-section-title">Las personas detrás<br>de <em>Frecuencia Integral</em></h2>
+    <p class="acad-section-sub" style="text-align:center;margin:0 auto">No enseñamos lo que hemos leído. Enseñamos lo que hemos vivido — desde el arte, la vibración, la alta competición y la búsqueda interior más honesta.</p>
+    <div class="qs-disciplines">
+      <span class="qs-disc-tag">Dzogchen</span>
+      <span class="qs-disc-tag">Cuarto Camino · Gurdjieff</span>
+      <span class="qs-disc-tag">Cuencos Tibetanos</span>
+      <span class="qs-disc-tag">Chamanismo</span>
+      <span class="qs-disc-tag">Cábala Mística</span>
+      <span class="qs-disc-tag">UCDM</span>
+      <span class="qs-disc-tag">Arte & Diseño</span>
+      <span class="qs-disc-tag">Joyería de Autor</span>
+      <span class="qs-disc-tag">Deporte de Élite</span>
+    </div>
+  </div>
+
+  <!-- ── QUICO TENT ── -->
+  <div class="qs-persona">
+    <div class="qs-photo-wrap">
+      <div class="qs-photo-placeholder">
+        <span class="qs-photo-initial">Q</span>
+        <span class="qs-photo-pending">Añadir foto</span>
       </div>
-      <div>
-        <span class="acad-section-label">Quiénes Somos</span>
-        <h2 class="acad-section-title">Una vida dedicada<br>a la consciencia</h2>
-        <div class="acad-quienes-tags">
-          <span class="acad-quienes-tag">Dzogchen</span>
-          <span class="acad-quienes-tag">Cuarto Camino · Gurdjieff</span>
-          <span class="acad-quienes-tag">Cuencos Tibetanos</span>
-          <span class="acad-quienes-tag">Chamanismo</span>
-          <span class="acad-quienes-tag">Cábala Mística</span>
-          <span class="acad-quienes-tag">UCDM</span>
-          <span class="acad-quienes-tag">Coach Deportivo</span>
-          <span class="acad-quienes-tag">Diseño</span>
+      <span class="qs-photo-corner">Co-fundador</span>
+    </div>
+    <div class="qs-persona-text">
+      <h3 class="qs-persona-name">Quico Tent</h3>
+      <span class="qs-persona-role">Maestro Artesano · Terapeuta Vibracional · Diseñador</span>
+      <div class="qs-persona-tags">
+        <span class="qs-persona-tag">Cuencos Tibetanos</span>
+        <span class="qs-persona-tag">Reiki Usui</span>
+        <span class="qs-persona-tag">Cábala</span>
+        <span class="qs-persona-tag">Bioneuroemoción</span>
+        <span class="qs-persona-tag">Registros Akáshicos</span>
+        <span class="qs-persona-tag">Joyería de Autor</span>
+        <span class="qs-persona-tag">Diseño Web & Gráfico</span>
+      </div>
+      <p class="qs-persona-bio">
+        El mundo del Arte, el Diseño, la Joyería y la Espiritualidad se fusionan en Quico en un espacio humanista único. Maestro Artesano en Joyería con formación en Massana, Le Arti Orafe de Florencia y la Escola Superior de Disseny, ha recorrido un camino que une la creación artística con el acompañamiento vibracional y la exploración espiritual desde hace más de dos décadas.
+      </p>
+      <p class="qs-persona-bio">
+        A través del sonido y la vibración con cuencos tibetanos inicia procesos de re-descubrimiento interior, creando espacios para observar, transformar y equilibrar cuerpo, energía y mente. Su filosofía: crear una fusión armónica entre la visión individual y la visión universal.
+      </p>
+      <div class="qs-persona-logros">
+        <div class="qs-persona-logro">
+          <span class="qs-persona-logro-icon">✦</span>
+          <span>Exposiciones internacionales de joyería contemporánea — Barcelona, Florencia, Zaragoza, Mallorca</span>
         </div>
-        <p class="acad-section-sub">Décadas de formación en las tradiciones de sabiduría más profundas del mundo, combinadas con una visión práctica y aplicada a la vida moderna. No enseñamos lo que hemos leído — enseñamos lo que hemos vivido.</p>
-        <div class="acad-quienes-quote">
-          "La presencia no es un estado que se alcanza. Es lo que queda cuando dejas de huir de lo que eres."
+        <div class="qs-persona-logro">
+          <span class="qs-persona-logro-icon">✦</span>
+          <span>Conferencias "Arte y espiritualidad: una alquimia para el crecimiento personal" — Madrid, Menorca, Mallorca</span>
         </div>
+        <div class="qs-persona-logro">
+          <span class="qs-persona-logro-icon">✦</span>
+          <span>Carta de Maestro Artesano en Joyería · Govern de les Illes Balears</span>
+        </div>
+      </div>
+      <div class="qs-persona-quote" style="margin-top:28px">
+        "A través del vehículo del sonido y la vibración tomamos consciencia de nuestra realidad y experimentamos la sabiduría esencial que habita en cada uno de nosotros."
       </div>
     </div>
   </div>
+
+  <!-- ── MARGA BARCELÓ ── -->
+  <div class="qs-persona reverse">
+    <div>
+      <div class="qs-marga-pending">
+        <span class="qs-marga-icon">🌸</span>
+        <h3 class="qs-marga-name">Marga Barceló</h3>
+        <p class="qs-marga-sub">Co-fundadora de Frecuencia Integral Academy.<br>Información y presentación completa próximamente.</p>
+        <span class="qs-marga-badge">✦ Próximamente</span>
+      </div>
+    </div>
+    <div class="qs-persona-text">
+      <h3 class="qs-persona-name">Marga Barceló</h3>
+      <span class="qs-persona-role">Co-fundadora · Frecuencia Integral</span>
+      <div class="qs-persona-tags">
+        <span class="qs-persona-tag">Próximamente</span>
+      </div>
+      <p class="qs-persona-bio">
+        Presentación completa en breve. Marga forma parte esencial del alma de Frecuencia Integral Academy desde sus inicios.
+      </p>
+      <div class="qs-persona-quote">
+        "Su historia y visión se presentarán muy pronto."
+      </div>
+    </div>
+  </div>
+
+  <!-- ── NIL TENT ── -->
+  <div class="qs-persona">
+    <div class="qs-photo-wrap">
+      <div class="qs-photo-placeholder">
+        <span class="qs-photo-initial">N</span>
+        <span class="qs-photo-pending">Añadir foto</span>
+      </div>
+      <span class="qs-photo-corner">Deportista · Voz joven</span>
+    </div>
+    <div class="qs-persona-text">
+      <h3 class="qs-persona-name">Nil Tent</h3>
+      <span class="qs-persona-role">Futbolista de Élite · Selección Española · Deportista Consciente</span>
+      <div class="qs-persona-tags">
+        <span class="qs-persona-tag">LNFS 1ª División</span>
+        <span class="qs-persona-tag">Selección España</span>
+        <span class="qs-persona-tag">UEFA Futsal Champions League</span>
+        <span class="qs-persona-tag">Copa Intercontinental</span>
+        <span class="qs-persona-tag">Alta Competición</span>
+        <span class="qs-persona-tag">Consciencia & Deporte</span>
+      </div>
+      <p class="qs-persona-bio">
+        Pívot de fútbol sala profesional con apenas 20 años, Nil Tent es la voz más joven y más directa de lo que significa competir desde la consciencia. Desde los 3 años en la cantera del Palma Futsal hasta debutar en la LNFS 1ª División con 17, su trayectoria es un mapa de exigencia, talento y aprendizaje interior.
+      </p>
+      <p class="qs-persona-bio">
+        Internacional con la Selección Española en Sub-17, Sub-18, Sub-19 y Sub-21. Campeón de la UEFA Futsal Champions League y de la Copa Intercontinental. Su experiencia real con la presión del alto rendimiento — los momentos buenos y los duros, las lesiones, el bachillerato mientras competía a nivel élite — es el núcleo vivo de El Deportista Consciente.
+      </p>
+      <div class="qs-persona-logros">
+        <div class="qs-persona-logro">
+          <span class="qs-persona-logro-icon">🏅</span>
+          <span>Mejor Jugador Sub-16 · Minicopa de España Valencia 2019</span>
+        </div>
+        <div class="qs-persona-logro">
+          <span class="qs-persona-logro-icon">🏅</span>
+          <span>Campeón de España Selecciones Autonómicas Sub-16 · Las Rozas 2020</span>
+        </div>
+        <div class="qs-persona-logro">
+          <span class="qs-persona-logro-icon">🏆</span>
+          <span>Campeón de la UEFA Futsal Champions League y de la Copa Intercontinental</span>
+        </div>
+        <div class="qs-persona-logro">
+          <span class="qs-persona-logro-icon">✦</span>
+          <span>4º jugador en la historia del Palma Futsal en ascender directamente desde la cantera</span>
+        </div>
+      </div>
+      <div class="qs-persona-quote" style="margin-top:28px">
+        "La alta competición me enseñó que el rendimiento real nace cuando dejas de necesitar ganar para sentirte válido."
+      </div>
+    </div>
+  </div>
+
+</div>
 </div>
 
 <!-- TESTIMONIOS -->
 <div class="acad-testi-bg acad-section-full" id="acad-testimonios">
   <div class="acad-section">
     <span class="acad-section-label">Testimonios</span>
-    <h2 class="acad-section-title">Lo que dicen<br>quienes ya recorren el camino</h2>
+    <h2 class="acad-section-title light">Lo que dicen<br>quienes ya recorren el camino</h2>
     <div class="acad-testi-grid">
       <div class="acad-testi-card">
         <div class="acad-testi-stars">★★★★★</div>
@@ -3126,7 +3494,7 @@ document.addEventListener('keydown', function(e) {
         <h2 class="acad-section-title">¿Listo para<br>dar el paso?</h2>
         <p class="acad-section-sub">Tanto si quieres empezar el Método TCT como si quieres apuntarte a la lista de espera del Deportista Consciente, escríbenos.</p>
         <div style="margin-top:32px;display:flex;flex-direction:column;gap:16px">
-          <div style="display:flex;align-items:center;gap:12px;color:#7a7168;font-size:14px">
+          <div style="display:flex;align-items:center;gap:12px;color:#5a5248;font-size:14px">
             <span style="font-size:20px">📧</span> hola@frecuenciaintegral.com
           </div>
           <div style="display:flex;align-items:center;gap:12px;color:#7a7168;font-size:14px">
@@ -3186,6 +3554,31 @@ document.addEventListener('keydown', function(e) {
 </footer>
 
 <script>
+// Nav scroll effect — se oscurece al bajar
+(function() {
+  var acadNavReady = setInterval(function() {
+    var pg = document.getElementById('page-academy');
+    var nav = pg ? pg.querySelector('.acad-nav') : null;
+    if (!nav) return;
+    clearInterval(acadNavReady);
+    pg.addEventListener('scroll', function() {
+      if (pg.scrollTop > 40) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+    }, {passive:true});
+  }, 400);
+})();
+
+// Nav scroll effect academy
+(function(){
+  var nav = document.querySelector('#page-academy .acad-nav');
+  if(!nav) return;
+  function onScroll(){
+    if(window.pageYOffset > 40) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+})();
+
 function acadScrollTo(id) {
   var el = document.getElementById(id);
   if (!el) return;
@@ -3204,6 +3597,387 @@ function acadMenuClose() {
 </script>
 
 </div><!-- /page-academy -->
+
+
+<!-- ═══════════════════════════════════════════════════════
+     PAGE: EL DEPORTISTA CONSCIENTE
+     Landing específica — placeholder v1
+═══════════════════════════════════════════════════════ -->
+<div class="page" id="page-deportista">
+
+<style>
+#page-deportista { font-family: 'DM Sans', sans-serif; color: #1c1814; overflow-x: hidden; }
+
+/* NAV igual que academy */
+.depo-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(14,12,10,0.97); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(44,95,158,.2);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 68px;
+}
+.depo-nav-logo { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+.depo-nav-logo-name { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; color: #6a9fd4; letter-spacing:.02em; line-height:1; }
+.depo-nav-logo-sub { font-size: 9px; color: rgba(255,255,255,.3); letter-spacing:.12em; text-transform:uppercase; margin-top:2px; }
+.depo-nav-back { display:flex; align-items:center; gap:8px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); color:rgba(255,255,255,.6); padding:8px 18px; border-radius:100px; font-size:13px; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all .2s; }
+.depo-nav-back:hover { border-color:#6a9fd4; color:#6a9fd4; }
+.depo-nav-cta { background:linear-gradient(135deg,#2c5f9e,#4a7fc1); color:white; border:none; padding:9px 20px; border-radius:100px; font-size:12px; font-weight:700; cursor:pointer; letter-spacing:.06em; font-family:'DM Sans',sans-serif; transition:opacity .2s; }
+.depo-nav-cta:hover { opacity:.85; }
+
+/* HERO */
+.depo-hero {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #0a0e1a 0%, #1c1814 50%, #0d1a2e 100%);
+  display: flex; align-items: center;
+  position: relative; overflow: hidden;
+  padding: 100px 40px 60px;
+}
+.depo-hero-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 50% at 65% 50%, rgba(44,95,158,.12) 0%, transparent 70%),
+              radial-gradient(ellipse 40% 60% at 20% 30%, rgba(43,125,122,.06) 0%, transparent 60%);
+}
+.depo-hero-grid {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: center;
+  max-width: 1200px; margin: 0 auto; width: 100%;
+}
+.depo-hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(44,95,158,.15); border: 1px solid rgba(44,95,158,.3);
+  border-radius: 100px; padding: 6px 16px;
+  font-size: 11px; color: #6a9fd4;
+  letter-spacing: .1em; text-transform: uppercase; margin-bottom: 24px;
+}
+.depo-hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 5vw, 62px);
+  font-weight: 400; line-height: 1.1;
+  color: white; margin: 0 0 8px;
+}
+.depo-hero-title em { font-style: italic; color: #6a9fd4; }
+.depo-hero-tagline {
+  font-size: 18px; color: rgba(255,255,255,.35);
+  font-style: italic; letter-spacing: .02em; margin-bottom: 20px;
+  font-family: 'Cormorant Garamond', serif;
+}
+.depo-hero-sub {
+  font-size: 16px; color: rgba(255,255,255,.5);
+  line-height: 1.7; margin: 0 0 36px; max-width: 480px;
+}
+.depo-hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+.depo-btn-primary {
+  background: linear-gradient(135deg, #2c5f9e, #4a7fc1);
+  color: white; border: none; padding: 14px 28px; border-radius: 100px;
+  font-size: 14px; font-weight: 700; cursor: pointer; letter-spacing: .04em;
+  transition: transform .2s, box-shadow .2s; font-family: 'DM Sans', sans-serif;
+}
+.depo-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(44,95,158,.4); }
+.depo-btn-ghost {
+  background: transparent; color: rgba(255,255,255,.6);
+  border: 1.5px solid rgba(255,255,255,.2); padding: 14px 28px; border-radius: 100px;
+  font-size: 14px; font-weight: 600; cursor: pointer; letter-spacing: .04em;
+  transition: all .2s; font-family: 'DM Sans', sans-serif;
+}
+.depo-btn-ghost:hover { border-color: #6a9fd4; color: #6a9fd4; }
+
+/* Visual hero */
+.depo-hero-visual {
+  display: flex; align-items: center; justify-content: center; position: relative;
+}
+.depo-hero-circle {
+  width: 400px; height: 400px; border-radius: 50%;
+  background: radial-gradient(circle at 40% 40%, rgba(44,95,158,.2), rgba(14,12,10,.8));
+  border: 1px solid rgba(44,95,158,.2);
+  display: flex; align-items: center; justify-content: center;
+  position: relative; animation: depo-pulse 4s ease-in-out infinite;
+}
+@keyframes depo-pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(44,95,158,.1), 0 0 60px rgba(44,95,158,.05); }
+  50% { box-shadow: 0 0 0 30px rgba(44,95,158,.0), 0 0 80px rgba(44,95,158,.12); }
+}
+.depo-hero-icon { font-size: 120px; opacity: .5; }
+.depo-hero-ring {
+  position: absolute; inset: -20px; border-radius: 50%;
+  border: 1px solid rgba(44,95,158,.15);
+  animation: depo-rotate 20s linear infinite;
+}
+.depo-hero-ring-2 {
+  position: absolute; inset: -50px; border-radius: 50%;
+  border: 1px dashed rgba(44,95,158,.08);
+  animation: depo-rotate 35s linear infinite reverse;
+}
+@keyframes depo-rotate { to { transform: rotate(360deg); } }
+
+/* PARA QUIÉN */
+.depo-para-bg { background: #f7f5f1; }
+.depo-para-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 24px; margin-top: 56px;
+}
+.depo-para-card {
+  background: white; border: 1px solid #e4ddd3;
+  border-radius: 20px; padding: 32px 24px;
+  text-align: center;
+  transition: transform .25s, box-shadow .25s;
+}
+.depo-para-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(28,24,20,.08); }
+.depo-para-icon { font-size: 40px; margin-bottom: 16px; display: block; }
+.depo-para-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; color: #1c1814; margin-bottom: 10px; }
+.depo-para-text { font-size: 14px; color: #7a7168; line-height: 1.7; }
+
+/* QUÉ ES */
+.depo-que-bg { background: #0d1a2e; }
+.depo-que-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 80px; align-items: center;
+}
+.depo-que-text { }
+.depo-que-items { display: flex; flex-direction: column; gap: 28px; margin-top: 40px; }
+.depo-que-item { display: flex; gap: 20px; align-items: flex-start; }
+.depo-que-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px; color: rgba(44,95,158,.3); line-height: 1;
+  flex-shrink: 0; width: 50px;
+}
+.depo-que-item-title { font-size: 16px; font-weight: 700; color: white; margin-bottom: 6px; }
+.depo-que-item-text { font-size: 14px; color: rgba(255,255,255,.4); line-height: 1.7; }
+.depo-que-visual {
+  background: rgba(44,95,158,.08); border: 1px solid rgba(44,95,158,.15);
+  border-radius: 24px; padding: 48px; text-align: center;
+}
+.depo-que-visual-icon { font-size: 80px; opacity: .6; margin-bottom: 24px; display: block; }
+.depo-que-visual-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px; color: rgba(255,255,255,.6);
+  font-style: italic; line-height: 1.5;
+}
+
+/* PRÓXIMAMENTE */
+.depo-pronto-bg { background: #FAF8F5; }
+.depo-pronto-box {
+  background: linear-gradient(135deg, #0d1a2e, #1a2a4a);
+  border: 1px solid rgba(44,95,158,.2);
+  border-radius: 32px; padding: 80px 60px;
+  text-align: center; max-width: 680px; margin: 56px auto 0;
+}
+.depo-pronto-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(44,95,158,.2); border: 1px solid rgba(44,95,158,.3);
+  border-radius: 100px; padding: 6px 18px;
+  font-size: 11px; color: #6a9fd4;
+  letter-spacing: .1em; text-transform: uppercase; margin-bottom: 28px;
+}
+.depo-pronto-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px; color: white; margin-bottom: 16px; font-weight: 400;
+}
+.depo-pronto-text {
+  font-size: 15px; color: rgba(255,255,255,.45); line-height: 1.75; margin-bottom: 36px;
+}
+.depo-form {
+  display: flex; gap: 12px; max-width: 420px; margin: 0 auto;
+}
+.depo-input {
+  flex: 1; padding: 13px 18px;
+  background: rgba(255,255,255,.06); border: 1.5px solid rgba(255,255,255,.12);
+  border-radius: 100px; font-size: 14px; color: white;
+  font-family: 'DM Sans', sans-serif; outline: none;
+  transition: border-color .2s;
+}
+.depo-input:focus { border-color: #4a7fc1; }
+.depo-input::placeholder { color: rgba(255,255,255,.3); }
+.depo-form-btn {
+  background: linear-gradient(135deg, #2c5f9e, #4a7fc1);
+  color: white; border: none; padding: 13px 24px; border-radius: 100px;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; white-space: nowrap;
+  transition: transform .2s;
+}
+.depo-form-btn:hover { transform: translateY(-2px); }
+
+/* FOOTER MINI */
+.depo-footer {
+  background: #0E0C0A; padding: 32px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 16px;
+}
+.depo-footer-text { font-size: 13px; color: rgba(255,255,255,.25); }
+.depo-footer-link { font-size: 13px; color: rgba(255,255,255,.3); cursor: pointer; transition: color .2s; }
+.depo-footer-link:hover { color: #6a9fd4; }
+
+/* MOBILE */
+@media(max-width:900px) {
+  .depo-nav { padding: 0 16px; height: 60px; }
+  .depo-nav-logo-name { font-size: 14px; }
+  .depo-nav-back { padding: 6px 12px; font-size: 12px; }
+  .depo-nav-cta { padding: 7px 14px; font-size: 11px; }
+  .depo-hero { padding: 90px 20px 48px; min-height: auto; }
+  .depo-hero-grid { grid-template-columns: 1fr; gap: 32px; }
+  .depo-hero-visual { order: -1; }
+  .depo-hero-circle { width: 200px; height: 200px; }
+  .depo-hero-icon { font-size: 60px; }
+  .depo-hero-title { font-size: 36px; }
+  .depo-hero-btns { flex-direction: column; gap: 10px; }
+  .depo-btn-primary, .depo-btn-ghost { width: 100%; text-align: center; }
+  .depo-para-grid { grid-template-columns: 1fr; gap: 14px; }
+  .depo-para-card { padding: 24px 20px; }
+  .depo-que-grid { grid-template-columns: 1fr; gap: 32px; }
+  .depo-que-visual { padding: 32px 24px; }
+  .depo-pronto-box { padding: 40px 24px; }
+  .depo-form { flex-direction: column; }
+  .depo-footer { flex-direction: column; text-align: center; gap: 12px; }
+}
+@media(max-width:480px) {
+  .depo-hero-title { font-size: 30px; }
+  .depo-pronto-title { font-size: 26px; }
+}
+</style>
+
+<!-- NAV -->
+<nav class="depo-nav">
+  <div class="depo-nav-logo" onclick="goTo('academy')">
+    <svg width="32" height="32" viewBox="0 0 80 80" fill="none">
+      <circle cx="40" cy="40" r="38" stroke="#2c5f9e" stroke-width="1.5" opacity=".5"/>
+      <circle cx="40" cy="40" r="6" fill="#4a7fc1" opacity=".8"/>
+      <path d="M40 8 C55 20, 70 30, 68 48 C66 64, 50 72, 40 72 C30 72, 14 64, 12 48 C10 30, 25 20, 40 8Z" stroke="#4a7fc1" stroke-width="1.2" fill="none" opacity=".5"/>
+    </svg>
+    <div>
+      <div class="depo-nav-logo-name">El Deportista Consciente</div>
+      <div class="depo-nav-logo-sub">Frecuencia Integral Academy</div>
+    </div>
+  </div>
+  <div style="display:flex;gap:12px;align-items:center">
+    <button class="depo-nav-back" onclick="goTo('academy')">← Academia</button>
+    <button class="depo-nav-cta" onclick="document.getElementById('depo-lista').scrollIntoView({behavior:'smooth'})">Lista de espera</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="depo-hero">
+  <div class="depo-hero-bg"></div>
+  <div class="depo-hero-grid">
+    <div>
+      <div class="depo-hero-badge">🏅 Próximamente · Frecuencia Integral</div>
+      <h1 class="depo-hero-title">
+        El Deportista<br><em>Consciente</em>
+      </h1>
+      <p class="depo-hero-tagline">Más allá del resultado</p>
+      <p class="depo-hero-sub">
+        Presencia aplicada al deporte de élite. Para deportistas, padres e instituciones que quieren construir una identidad sólida más allá del marcador.
+      </p>
+      <div class="depo-hero-btns">
+        <button class="depo-btn-primary" onclick="document.getElementById('depo-lista').scrollIntoView({behavior:'smooth'})">Unirme a la lista de espera →</button>
+        <button class="depo-btn-ghost" onclick="document.getElementById('depo-para').scrollIntoView({behavior:'smooth'})">¿Para quién es?</button>
+      </div>
+    </div>
+    <div class="depo-hero-visual">
+      <div class="depo-hero-ring-2"></div>
+      <div class="depo-hero-ring"></div>
+      <div class="depo-hero-circle">
+        <span class="depo-hero-icon">🏆</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARA QUIÉN -->
+<div class="depo-para-bg" id="depo-para">
+  <div class="acad-section" style="max-width:1200px;margin:0 auto;padding:100px 40px">
+    <span class="acad-section-label">¿Para quién es?</span>
+    <h2 class="acad-section-title">Diseñado para tres perfiles</h2>
+    <p class="acad-section-sub">Un mismo método, aplicado al contexto único de cada uno.</p>
+    <div class="depo-para-grid">
+      <div class="depo-para-card">
+        <span class="depo-para-icon">🏃</span>
+        <h3 class="depo-para-title">Deportistas de élite</h3>
+        <p class="depo-para-text">Aprende a competir desde la presencia, no desde el miedo al resultado. Gestiona la presión, el fracaso y la identidad deportiva con herramientas reales.</p>
+      </div>
+      <div class="depo-para-card">
+        <span class="depo-para-icon">👨‍👩‍👧</span>
+        <h3 class="depo-para-title">Padres e hijos deportistas</h3>
+        <p class="depo-para-text">Comprende el mundo interior de tu hijo deportista. Aprende a acompañar sin presionar, a celebrar sin condicionar y a estar presente de verdad.</p>
+      </div>
+      <div class="depo-para-card">
+        <span class="depo-para-icon">🏟</span>
+        <h3 class="depo-para-title">Clubes e instituciones</h3>
+        <p class="depo-para-text">Integra la consciencia en la cultura de tu club o federación. Programas para equipos, cuerpos técnicos y categorías juveniles de cualquier disciplina.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QUÉ ES -->
+<div class="depo-que-bg">
+  <div class="acad-section" style="max-width:1200px;margin:0 auto;padding:100px 40px">
+    <div class="depo-que-grid">
+      <div class="depo-que-text">
+        <span class="acad-section-label" style="color:#6a9fd4">El programa</span>
+        <h2 class="acad-section-title light">Más allá del<br>resultado</h2>
+        <p class="acad-section-sub light">Un proceso estructurado que integra presencia, gestión emocional e identidad en el contexto específico del deporte de alto rendimiento.</p>
+        <div class="depo-que-items">
+          <div class="depo-que-item">
+            <div class="depo-que-num">01</div>
+            <div>
+              <div class="depo-que-item-title">Identidad más allá del rol</div>
+              <div class="depo-que-item-text">¿Quién soy cuando no compito? Construir una identidad sólida que no dependa del resultado.</div>
+            </div>
+          </div>
+          <div class="depo-que-item">
+            <div class="depo-que-num">02</div>
+            <div>
+              <div class="depo-que-item-title">Presencia bajo presión</div>
+              <div class="depo-que-item-text">Herramientas prácticas para competir desde la consciencia, no desde la reactividad o el miedo.</div>
+            </div>
+          </div>
+          <div class="depo-que-item">
+            <div class="depo-que-num">03</div>
+            <div>
+              <div class="depo-que-item-title">El fracaso como maestro</div>
+              <div class="depo-que-item-text">Transformar la derrota, la lesión y el error en combustible de crecimiento real.</div>
+            </div>
+          </div>
+          <div class="depo-que-item">
+            <div class="depo-que-num">04</div>
+            <div>
+              <div class="depo-que-item-title">Integración familia-deporte</div>
+              <div class="depo-que-item-text">Cómo el entorno familiar puede ser un aliado de consciencia en lugar de una fuente de presión.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="depo-que-visual">
+        <span class="depo-que-visual-icon">🧘</span>
+        <p class="depo-que-visual-quote">"El verdadero rendimiento nace cuando el deportista deja de necesitar ganar para sentirse válido."</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRÓXIMAMENTE / LISTA ESPERA -->
+<div class="depo-pronto-bg" id="depo-lista">
+  <div class="acad-section" style="max-width:1200px;margin:0 auto;padding:100px 40px">
+    <div class="depo-pronto-box">
+      <div class="depo-pronto-badge">⏳ En desarrollo · Lanzamiento 2026</div>
+      <h3 class="depo-pronto-title">Sé el primero en saberlo</h3>
+      <p class="depo-pronto-text">El programa está en desarrollo. Apúntate a la lista de espera y recibirás acceso anticipado, precio especial de lanzamiento y actualizaciones exclusivas.</p>
+      <div class="depo-form">
+        <input class="depo-input" type="email" placeholder="Tu email">
+        <button class="depo-form-btn">Apuntarme →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER MINI -->
+<footer class="depo-footer">
+  <span class="depo-footer-text">© 2026 Frecuencia Integral Academy</span>
+  <span class="depo-footer-link" onclick="goTo('academy')">← Volver a la Academia</span>
+  <span class="depo-footer-link" onclick="goTo('public')">Ver Método TCT</span>
+</footer>
+
+</div><!-- /page-deportista -->
 
 <!-- PAGE: AUTH -->
 <div class="page" id="page-auth">
@@ -3263,7 +4037,7 @@ function acadMenuClose() {
           <button class="btn-login" id="btn-register" onclick="doRegister()">Crear Cuenta</button>
         </div>
 
-        <a class="back-link" onclick="goTo('public')">← Volver a la web</a>
+        <a class="back-link" onclick="goTo('academy')">← Academia</a>
       </div>
     </div>
   </div>
@@ -6195,12 +6969,13 @@ button:focus-visible, input:focus-visible {
     <a onclick="document.getElementById('h-testimonios').scrollIntoView({behavior:'smooth'})" href="#">Testimonios</a>
   </div>
   <button id="nav-hamburger" onclick="toggleMobileMenu()" style="display:none;background:none;border:none;cursor:pointer;padding:8px;flex-direction:column;gap:5px;align-items:center;justify-content:center">
-    <span style="display:block;width:22px;height:2px;background:#3d3730;border-radius:2px"></span>
-    <span style="display:block;width:22px;height:2px;background:#3d3730;border-radius:2px"></span>
+    <span style="display:block;width:22px;height:2px;background:#BC9640;border-radius:2px"></span>
+    <span style="display:block;width:22px;height:2px;background:#BC9640;border-radius:2px"></span>
     <span style="display:block;width:22px;height:2px;background:#3d3730;border-radius:2px"></span>
   </button>
   <div class="nav-btns">
     <button class="btn-ghost" id="btnLogin" onclick="goTo('auth')">Acceso Alumnos</button>
+    <button onclick="goTo('academy')" style="background:linear-gradient(135deg,#BC9640,#D4AA5A);color:#1c1814;border:none;padding:9px 18px;border-radius:100px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.03em">✦ Nueva Home</button>
     <button class="btn-primary" id="btnInscribirse" onclick="var el=document.getElementById('h-puertas');if(el)el.scrollIntoView({behavior:'smooth'});">Iniciarse Ahora</button>
     <button class="btn-ghost" id="btnHome" style="display:none" onclick="goTo('public')">🏠 Inicio</button>
     <button class="btn-ghost" id="btnDash" style="display:none" onclick="goTo('student')">Mi Dashboard</button>
@@ -7555,7 +8330,7 @@ document.addEventListener('keydown', function(e) {
           <button class="btn-login" id="btn-register" onclick="doRegister()">Crear Cuenta</button>
         </div>
 
-        <a class="back-link" onclick="goTo('public')">← Volver a la web</a>
+        <a class="back-link" onclick="goTo('academy')">← Academia</a>
       </div>
     </div>
   </div>
