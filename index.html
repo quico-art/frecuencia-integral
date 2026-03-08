@@ -2421,10 +2421,10 @@ document.addEventListener('keydown', function(e) {
         <button class="nav-item active" onclick="showView('dashboard')"><span class="nav-item-icon">🏠</span>Dashboard</button>
         <button class="nav-item" onclick="showView('formaciones')"><span class="nav-item-icon">📚</span>Formaciones</button>
         <button class="nav-item" onclick="showView('multimedia')"><span class="nav-item-icon">🎵</span>Multimedia</button>
+        <button class="nav-item" onclick="showView('arteterapia')"><span class="nav-item-icon">🎨</span>Arteterapia</button>
         <button class="nav-item" onclick="showView('materiales')"><span class="nav-item-icon">📄</span>Materiales PDF</button>
         <button class="nav-item" onclick="showView('progreso')"><span class="nav-item-icon">📊</span>Mi Progreso</button>
         <button class="nav-item" onclick="showView('notas')"><span class="nav-item-icon">📝</span>Notas</button>
-        <button class="nav-item" onclick="showView('arteterapia')"><span class="nav-item-icon">🎨</span>Arteterapia</button>
         <button class="nav-item" style="margin-top:auto;color:rgba(255,255,255,.4)" onclick="doLogout()"><span class="nav-item-icon">🚪</span>Cerrar Sesión</button>
       </div>
     </div>
@@ -2455,14 +2455,14 @@ document.addEventListener('keydown', function(e) {
       </div>
       <!-- FILA 2: visible solo al pulsar Más -->
       <div class="dtab-row dtab-row-2" id="dtab-row-2" style="display:none">
-        <button class="dtab" onclick="showView('materiales');dtabActive(this,4);dtabCloseMas()">
+        <button class="dtab" onclick="showView('arteterapia');dtabActive(this,4);dtabCloseMas()">
+          <span class="dtab-icon">🎨</span><span class="dtab-label">Arteterapia</span>
+        </button>
+        <button class="dtab" onclick="showView('materiales');dtabActive(this,5);dtabCloseMas()">
           <span class="dtab-icon">📄</span><span class="dtab-label">Materiales</span>
         </button>
-        <button class="dtab" onclick="showView('notas');dtabActive(this,5);dtabCloseMas()">
+        <button class="dtab" onclick="showView('notas');dtabActive(this,6);dtabCloseMas()">
           <span class="dtab-icon">📝</span><span class="dtab-label">Notas</span>
-        </button>
-        <button class="dtab" onclick="showView('arteterapia');dtabActive(this,6);dtabCloseMas()">
-          <span class="dtab-icon">🎨</span><span class="dtab-label">Arteterapia</span>
         </button>
         <button class="dtab dtab-logout" onclick="doLogout()">
           <span class="dtab-icon">🚪</span><span class="dtab-label">Salir</span>
@@ -2663,17 +2663,27 @@ document.addEventListener('keydown', function(e) {
               <button onclick="notasSave()" style="padding:8px 20px;background:#2b7d7a;color:white;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">💾 Guardar</button>
             </div>
           </div>
-          <!-- Toolbar markdown -->
-          <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap">
-            <button onclick="notasMd('**','**')" title="Negrita" style="padding:4px 10px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:13px;cursor:pointer;font-weight:700">B</button>
-            <button onclick="notasMd('*','*')" title="Cursiva" style="padding:4px 10px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:13px;cursor:pointer;font-style:italic">I</button>
-            <button onclick="notasMd('### ','')" title="Título" style="padding:4px 10px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:13px;cursor:pointer">H</button>
-            <button onclick="notasMd('- ','')" title="Lista" style="padding:4px 10px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:13px;cursor:pointer">—</button>
-            <button onclick="notasMd('> ','')" title="Cita" style="padding:4px 10px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:13px;cursor:pointer">❝</button>
-            <button onclick="notasTogglePreview()" id="notas-preview-btn" style="padding:4px 12px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:12px;cursor:pointer;margin-left:auto;font-family:DM Sans,sans-serif">👁 Vista previa</button>
+          <!-- Toolbar WYSIWYG -->
+          <div style="display:flex;flex-wrap:wrap;gap:4px;padding:8px;background:#2a2520;border-radius:10px 10px 0 0;border:1.5px solid #3d3530;border-bottom:none">
+            <button type="button" onmousedown="event.preventDefault();document.execCommand('bold')" style="background:#3d3530;border:none;color:#D4AA5A;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:13px;font-weight:700" title="Negrita">B</button>
+            <button type="button" onmousedown="event.preventDefault();document.execCommand('italic')" style="background:#3d3530;border:none;color:#D4AA5A;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:13px;font-style:italic" title="Cursiva">I</button>
+            <button type="button" onmousedown="event.preventDefault();document.execCommand('underline')" style="background:#3d3530;border:none;color:#D4AA5A;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:13px;text-decoration:underline" title="Subrayado">U</button>
+            <div style="width:1px;background:rgba(255,255,255,.2);margin:2px 4px"></div>
+            <button type="button" onmousedown="event.preventDefault();notasDiarioFmt('h1')" style="background:#3d3530;border:none;color:#D4AA5A;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:11px;font-weight:700" title="Título">H1</button>
+            <button type="button" onmousedown="event.preventDefault();notasDiarioFmt('h2')" style="background:#3d3530;border:none;color:#D4AA5A;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:11px;font-weight:600" title="Subtítulo">H2</button>
+            <div style="width:1px;background:rgba(255,255,255,.2);margin:2px 4px"></div>
+            <button type="button" onmousedown="event.preventDefault();document.execCommand('insertUnorderedList')" style="background:#3d3530;border:none;color:#D4AA5A;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:14px" title="Lista">&#x2022;</button>
+            <button type="button" onmousedown="event.preventDefault();document.execCommand('insertOrderedList')" style="background:#3d3530;border:none;color:#D4AA5A;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:11px;font-weight:600" title="Numerada">1.</button>
+            <button type="button" onmousedown="event.preventDefault();notasDiarioFmt('quote')" style="background:#3d3530;border:none;color:#D4AA5A;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:14px" title="Cita">&#x275D;</button>
+            <div style="width:1px;background:rgba(255,255,255,.2);margin:2px 4px"></div>
+            <button type="button" onmousedown="event.preventDefault();notasDiarioFmt('hr')" style="background:#3d3530;border:none;color:#D4AA5A;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:13px" title="Separador">&#x2015;</button>
+            <div style="flex:1"></div>
+            <button type="button" onmousedown="event.preventDefault();notasDiarioFmt('clear')" style="background:#5a2a2a;border:none;color:#e8a0a0;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:11px;font-weight:600" title="Borrar todo">&#x1F5D1; Borrar</button>
           </div>
-          <textarea id="notas-editor" placeholder="Escribe aquí tu reflexión del día... Puedes usar **negrita**, *cursiva*, ### títulos, - listas, > citas" style="width:100%;min-height:340px;padding:16px;border:1.5px solid #e4ddd3;border-radius:12px;font-size:14px;font-family:DM Sans,sans-serif;line-height:1.75;resize:vertical;box-sizing:border-box;color:#3d3730;background:white;outline:none"></textarea>
-          <div id="notas-preview" style="display:none;min-height:340px;padding:16px;border:1.5px solid #e4ddd3;border-radius:12px;background:#faf8f5;font-size:14px;line-height:1.75;color:#3d3730;overflow-y:auto"></div>
+          <div id="notas-editor" contenteditable="true" class="wysi-nota"
+            oninput="notasDiarioAutoSave()"
+            style="width:100%;box-sizing:border-box;min-height:340px;padding:16px;border:1.5px solid #e4ddd3;border-radius:0 0 12px 12px;font-size:14px;font-family:DM Sans,sans-serif;line-height:1.8;color:#3d3730;background:white;outline:none;overflow-y:auto"
+            data-placeholder="Escribe aquí tu reflexión del día..."></div>
           <div id="notas-save-msg" style="margin-top:10px;font-size:12px;color:#2b7d7a;display:none">✓ Nota guardada</div>
         </div>
 
@@ -2798,13 +2808,13 @@ document.addEventListener('keydown', function(e) {
           <span class="modal-nav-icon">📄</span>Materiales
         </button>
         <button class="modal-nav-btn" onclick="switchModalTab(4,this)" data-tab="4">
-          <span class="modal-nav-icon">✅</span>Completar
-        </button>
-        <button class="modal-nav-btn" onclick="switchModalTab(5,this)" data-tab="5">
           <span class="modal-nav-icon">🎨</span>Arteterapia
         </button>
-        <button class="modal-nav-btn" onclick="switchModalTab(6,this)" data-tab="6">
+        <button class="modal-nav-btn" onclick="switchModalTab(5,this)" data-tab="5">
           <span class="modal-nav-icon">📝</span>Notas
+        </button>
+        <button class="modal-nav-btn" onclick="switchModalTab(6,this)" data-tab="6">
+          <span class="modal-nav-icon">✅</span>Completar
         </button>
       </div>
       <div id="modal-arrow-left" onclick="modalCarouselScroll(-1)" style="position:absolute;left:0;top:0;bottom:0;width:44px;background:linear-gradient(to left,transparent,#1c1814 60%);display:none;align-items:center;justify-content:flex-start;padding-left:8px;font-size:24px;color:#BC9640;pointer-events:auto;z-index:5;font-weight:bold;cursor:pointer">‹</div>
@@ -3237,29 +3247,27 @@ function notasSetView(v) {
   if (v==='calendario') notasCalRender();
 }
 
-function notasMd(pre, post) {
-  var ta = document.getElementById('notas-editor');
-  var start = ta.selectionStart, end = ta.selectionEnd;
-  var sel = ta.value.substring(start, end);
-  ta.value = ta.value.substring(0,start) + pre + sel + post + ta.value.substring(end);
-  ta.focus();
-  ta.selectionStart = start + pre.length;
-  ta.selectionEnd   = end   + pre.length;
+// Toolbar WYSIWYG diario
+function notasDiarioFmt(type) {
+  var ed = document.getElementById('notas-editor');
+  if (!ed) return; ed.focus();
+  if (type === 'h1') document.execCommand('formatBlock', false, 'H2');
+  else if (type === 'h2') document.execCommand('formatBlock', false, 'H3');
+  else if (type === 'quote') {
+    var sel = window.getSelection();
+    var node = sel && sel.focusNode;
+    var inQ = false;
+    while (node && node !== ed) { if (node.tagName==='BLOCKQUOTE'){inQ=true;break;} node=node.parentNode; }
+    document.execCommand('formatBlock', false, inQ ? 'P' : 'BLOCKQUOTE');
+  }
+  else if (type === 'hr') document.execCommand('insertHTML', false, '<hr style="border:none;border-top:1px solid #e4ddd3;margin:10px 0"><p><br></p>');
+  else if (type === 'clear') { if (confirm('¿Borrar todo el contenido?')) { ed.innerHTML=''; } }
 }
 
-function notasTogglePreview() {
-  var ta   = document.getElementById('notas-editor');
-  var prev = document.getElementById('notas-preview');
-  var btn  = document.getElementById('notas-preview-btn');
-  var showing = prev.style.display !== 'none';
-  if (showing) {
-    prev.style.display = 'none'; ta.style.display = 'block';
-    btn.textContent = '👁 Vista previa';
-  } else {
-    prev.innerHTML = notasMdToHtml(ta.value);
-    prev.style.display = 'block'; ta.style.display = 'none';
-    btn.textContent = '✏️ Editar';
-  }
+var _notasDiarioTimer = null;
+function notasDiarioAutoSave() {
+  clearTimeout(_notasDiarioTimer);
+  _notasDiarioTimer = setTimeout(function(){ notasSave(true); }, 2000);
 }
 
 function notasMdToHtml(md) {
@@ -3283,19 +3291,16 @@ function notasLoadEntry() {
   var key = fecha + (sem ? '_s'+sem : '');
   var entry = notasDB[key];
   var ta = document.getElementById('notas-editor');
-  ta.value = entry ? entry.texto : '';
-  // Reset preview
-  document.getElementById('notas-preview').style.display = 'none';
-  ta.style.display = 'block';
-  document.getElementById('notas-preview-btn').textContent = '👁 Vista previa';
+  ta.innerHTML = entry ? entry.texto : '';
 }
 
-function notasSave() {
+function notasSave(auto) {
   var sem   = document.getElementById('notas-semana').value;
   var fecha = document.getElementById('notas-fecha').value;
-  var texto = document.getElementById('notas-editor').value.trim();
+  var ed = document.getElementById('notas-editor');
+  var texto = ed ? (ed.innerHTML || '').trim() : '';
   if (!fecha) { alert('Selecciona una fecha'); return; }
-  if (!texto) { alert('Escribe algo antes de guardar'); return; }
+  if (!texto || texto === '<br>') { alert('Escribe algo antes de guardar'); return; }
   var key = fecha + (sem ? '_s'+sem : '');
   notasDB[key] = { semana: parseInt(sem)||0, fecha: fecha, texto: texto, updated: new Date().toISOString() };
   notasSaveToStorage();
@@ -3393,7 +3398,7 @@ function notasCalClick(dateStr) {
   var sem = entry.semana;
   var w = sem ? WEEKS_DATA[sem-1] : null;
   document.getElementById('notas-read-semana').textContent = sem ? 'Semana '+sem+' · '+(w?w.t:'') : '';
-  document.getElementById('notas-read-content').innerHTML = notasMdToHtml(entry.texto);
+  document.getElementById('notas-read-content').innerHTML = entry.texto || '';
   modal.style.display = 'flex';
 }
 
@@ -3404,7 +3409,8 @@ function notasEditFromModal() {
   notasSetView('editor');
   document.getElementById('notas-fecha').value = entry.fecha;
   document.getElementById('notas-semana').value = entry.semana || '';
-  document.getElementById('notas-editor').value = entry.texto;
+  var edM = document.getElementById('notas-editor');
+  if (edM) edM.innerHTML = entry.texto || '';
 }
 
 function notasDeleteEntry() {
@@ -6646,10 +6652,10 @@ document.addEventListener('keydown', function(e) {
         <button class="nav-item active" onclick="showView('dashboard')"><span class="nav-item-icon">🏠</span>Dashboard</button>
         <button class="nav-item" onclick="showView('formaciones')"><span class="nav-item-icon">📚</span>Formaciones</button>
         <button class="nav-item" onclick="showView('multimedia')"><span class="nav-item-icon">🎵</span>Multimedia</button>
+        <button class="nav-item" onclick="showView('arteterapia')"><span class="nav-item-icon">🎨</span>Arteterapia</button>
         <button class="nav-item" onclick="showView('materiales')"><span class="nav-item-icon">📄</span>Materiales PDF</button>
         <button class="nav-item" onclick="showView('progreso')"><span class="nav-item-icon">📊</span>Mi Progreso</button>
         <button class="nav-item" onclick="showView('notas')"><span class="nav-item-icon">📝</span>Notas</button>
-        <button class="nav-item" onclick="showView('arteterapia')"><span class="nav-item-icon">🎨</span>Arteterapia</button>
         <button class="nav-item" style="margin-top:auto;color:rgba(255,255,255,.4)" onclick="doLogout()"><span class="nav-item-icon">🚪</span>Cerrar Sesión</button>
       </div>
     </div>
@@ -6680,14 +6686,14 @@ document.addEventListener('keydown', function(e) {
       </div>
       <!-- FILA 2: visible solo al pulsar Más -->
       <div class="dtab-row dtab-row-2" id="dtab-row-2" style="display:none">
-        <button class="dtab" onclick="showView('materiales');dtabActive(this,4);dtabCloseMas()">
+        <button class="dtab" onclick="showView('arteterapia');dtabActive(this,4);dtabCloseMas()">
+          <span class="dtab-icon">🎨</span><span class="dtab-label">Arteterapia</span>
+        </button>
+        <button class="dtab" onclick="showView('materiales');dtabActive(this,5);dtabCloseMas()">
           <span class="dtab-icon">📄</span><span class="dtab-label">Materiales</span>
         </button>
-        <button class="dtab" onclick="showView('notas');dtabActive(this,5);dtabCloseMas()">
+        <button class="dtab" onclick="showView('notas');dtabActive(this,6);dtabCloseMas()">
           <span class="dtab-icon">📝</span><span class="dtab-label">Notas</span>
-        </button>
-        <button class="dtab" onclick="showView('arteterapia');dtabActive(this,6);dtabCloseMas()">
-          <span class="dtab-icon">🎨</span><span class="dtab-label">Arteterapia</span>
         </button>
         <button class="dtab dtab-logout" onclick="doLogout()">
           <span class="dtab-icon">🚪</span><span class="dtab-label">Salir</span>
@@ -6888,17 +6894,27 @@ document.addEventListener('keydown', function(e) {
               <button onclick="notasSave()" style="padding:8px 20px;background:#2b7d7a;color:white;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">💾 Guardar</button>
             </div>
           </div>
-          <!-- Toolbar markdown -->
-          <div style="display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap">
-            <button onclick="notasMd('**','**')" title="Negrita" style="padding:4px 10px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:13px;cursor:pointer;font-weight:700">B</button>
-            <button onclick="notasMd('*','*')" title="Cursiva" style="padding:4px 10px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:13px;cursor:pointer;font-style:italic">I</button>
-            <button onclick="notasMd('### ','')" title="Título" style="padding:4px 10px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:13px;cursor:pointer">H</button>
-            <button onclick="notasMd('- ','')" title="Lista" style="padding:4px 10px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:13px;cursor:pointer">—</button>
-            <button onclick="notasMd('> ','')" title="Cita" style="padding:4px 10px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:13px;cursor:pointer">❝</button>
-            <button onclick="notasTogglePreview()" id="notas-preview-btn" style="padding:4px 12px;border:1px solid #e4ddd3;border-radius:6px;background:white;font-size:12px;cursor:pointer;margin-left:auto;font-family:DM Sans,sans-serif">👁 Vista previa</button>
+          <!-- Toolbar WYSIWYG -->
+          <div style="display:flex;flex-wrap:wrap;gap:4px;padding:8px;background:#2a2520;border-radius:10px 10px 0 0;border:1.5px solid #3d3530;border-bottom:none">
+            <button type="button" onmousedown="event.preventDefault();document.execCommand('bold')" style="background:#3d3530;border:none;color:#D4AA5A;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:13px;font-weight:700" title="Negrita">B</button>
+            <button type="button" onmousedown="event.preventDefault();document.execCommand('italic')" style="background:#3d3530;border:none;color:#D4AA5A;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:13px;font-style:italic" title="Cursiva">I</button>
+            <button type="button" onmousedown="event.preventDefault();document.execCommand('underline')" style="background:#3d3530;border:none;color:#D4AA5A;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:13px;text-decoration:underline" title="Subrayado">U</button>
+            <div style="width:1px;background:rgba(255,255,255,.2);margin:2px 4px"></div>
+            <button type="button" onmousedown="event.preventDefault();notasDiarioFmt('h1')" style="background:#3d3530;border:none;color:#D4AA5A;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:11px;font-weight:700" title="Título">H1</button>
+            <button type="button" onmousedown="event.preventDefault();notasDiarioFmt('h2')" style="background:#3d3530;border:none;color:#D4AA5A;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:11px;font-weight:600" title="Subtítulo">H2</button>
+            <div style="width:1px;background:rgba(255,255,255,.2);margin:2px 4px"></div>
+            <button type="button" onmousedown="event.preventDefault();document.execCommand('insertUnorderedList')" style="background:#3d3530;border:none;color:#D4AA5A;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:14px" title="Lista">&#x2022;</button>
+            <button type="button" onmousedown="event.preventDefault();document.execCommand('insertOrderedList')" style="background:#3d3530;border:none;color:#D4AA5A;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:11px;font-weight:600" title="Numerada">1.</button>
+            <button type="button" onmousedown="event.preventDefault();notasDiarioFmt('quote')" style="background:#3d3530;border:none;color:#D4AA5A;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:14px" title="Cita">&#x275D;</button>
+            <div style="width:1px;background:rgba(255,255,255,.2);margin:2px 4px"></div>
+            <button type="button" onmousedown="event.preventDefault();notasDiarioFmt('hr')" style="background:#3d3530;border:none;color:#D4AA5A;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:13px" title="Separador">&#x2015;</button>
+            <div style="flex:1"></div>
+            <button type="button" onmousedown="event.preventDefault();notasDiarioFmt('clear')" style="background:#5a2a2a;border:none;color:#e8a0a0;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:11px;font-weight:600" title="Borrar todo">&#x1F5D1; Borrar</button>
           </div>
-          <textarea id="notas-editor" placeholder="Escribe aquí tu reflexión del día... Puedes usar **negrita**, *cursiva*, ### títulos, - listas, > citas" style="width:100%;min-height:340px;padding:16px;border:1.5px solid #e4ddd3;border-radius:12px;font-size:14px;font-family:DM Sans,sans-serif;line-height:1.75;resize:vertical;box-sizing:border-box;color:#3d3730;background:white;outline:none"></textarea>
-          <div id="notas-preview" style="display:none;min-height:340px;padding:16px;border:1.5px solid #e4ddd3;border-radius:12px;background:#faf8f5;font-size:14px;line-height:1.75;color:#3d3730;overflow-y:auto"></div>
+          <div id="notas-editor" contenteditable="true" class="wysi-nota"
+            oninput="notasDiarioAutoSave()"
+            style="width:100%;box-sizing:border-box;min-height:340px;padding:16px;border:1.5px solid #e4ddd3;border-radius:0 0 12px 12px;font-size:14px;font-family:DM Sans,sans-serif;line-height:1.8;color:#3d3730;background:white;outline:none;overflow-y:auto"
+            data-placeholder="Escribe aquí tu reflexión del día..."></div>
           <div id="notas-save-msg" style="margin-top:10px;font-size:12px;color:#2b7d7a;display:none">✓ Nota guardada</div>
         </div>
 
@@ -7023,13 +7039,13 @@ document.addEventListener('keydown', function(e) {
           <span class="modal-nav-icon">📄</span>Materiales
         </button>
         <button class="modal-nav-btn" onclick="switchModalTab(4,this)" data-tab="4">
-          <span class="modal-nav-icon">✅</span>Completar
-        </button>
-        <button class="modal-nav-btn" onclick="switchModalTab(5,this)" data-tab="5">
           <span class="modal-nav-icon">🎨</span>Arteterapia
         </button>
-        <button class="modal-nav-btn" onclick="switchModalTab(6,this)" data-tab="6">
+        <button class="modal-nav-btn" onclick="switchModalTab(5,this)" data-tab="5">
           <span class="modal-nav-icon">📝</span>Notas
+        </button>
+        <button class="modal-nav-btn" onclick="switchModalTab(6,this)" data-tab="6">
+          <span class="modal-nav-icon">✅</span>Completar
         </button>
       </div>
       <div id="modal-arrow-left" onclick="modalCarouselScroll(-1)" style="position:absolute;left:0;top:0;bottom:0;width:44px;background:linear-gradient(to left,transparent,#1c1814 60%);display:none;align-items:center;justify-content:flex-start;padding-left:8px;font-size:24px;color:#BC9640;pointer-events:auto;z-index:5;font-weight:bold;cursor:pointer">‹</div>
