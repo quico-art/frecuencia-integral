@@ -2377,7 +2377,7 @@ document.addEventListener('keydown', function(e) {
         <div id="form-register" style="display:none">
           <div class="form-group">
             <label>Nombre</label>
-            <input type="text" id="inp-name" placeholder="Tu nombre completo">
+            <input type="text" id="inp-name" placeholder="Tu nombre completo" autocomplete="name" autocorrect="off" autocapitalize="words" spellcheck="false">
           </div>
           <div class="form-group">
             <label>Email</label>
@@ -4117,10 +4117,13 @@ function goTo(page) {
   if (page === 'auth') {
     var f=['inp-email','inp-pass','inp-name','inp-reg-email','inp-reg-pass'];
     f.forEach(function(id){ var el=document.getElementById(id); if(el) el.value=''; });
-    // Reset ojo a cerrado
-    document.querySelectorAll('#form-login input[type=text],#form-register input[type=text]').forEach(function(el){
-      el.type='password';
+    // Reset contraseñas a oculto
+    ['inp-pass','inp-reg-pass'].forEach(function(id){
+      var el=document.getElementById(id); if(el) el.type='password';
     });
+    // inp-name siempre visible
+    var nm=document.getElementById('inp-name'); if(nm) nm.type='text';
+    // Reset iconos ojo
     document.querySelectorAll('#form-login button[onclick*=togglePassVis],#form-register button[onclick*=togglePassVis]').forEach(function(btn){
       btn.textContent='👁';
     });
