@@ -11,6 +11,94 @@
 html,body{overflow-x:hidden;max-width:100%;margin:0;padding:0} #page-public{overflow-x:hidden;width:100%;}
 body{font-family:DM Sans,sans-serif;background:#f7f5f1;color:#1c1814}
 
+/* ── TOPBAR GLOBAL (student + admin) ── */
+#fi-topbar {
+  display: none;
+  position: fixed; top:0; left:0; right:0; z-index:999;
+  height: 56px;
+  background: #E0D9CE;
+  border-bottom: 1px solid rgba(188,150,64,.2);
+  box-shadow: 0 2px 12px rgba(28,24,20,.06);
+  align-items: center;
+  padding: 0 28px;
+  gap: 10px;
+}
+body.loggedin #fi-topbar { display: flex; }
+#fi-topbar-logo { display:flex; align-items:center; gap:10px; cursor:pointer; flex:1; }
+#fi-topbar-logo-text { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:600; color:#1c1814; line-height:1; }
+#fi-topbar-logo-sub { font-size:9px; color:rgba(28,24,20,.4); letter-spacing:.12em; text-transform:uppercase; display:block; margin-top:2px; }
+#fi-topbar-right { display:flex; align-items:center; gap:8px; }
+#fi-topbar-academy { background:transparent; border:1.5px solid rgba(188,150,64,.4); color:#BC9640; padding:6px 14px; border-radius:100px; font-size:11px; font-weight:700; cursor:pointer; font-family:'DM Sans',sans-serif; letter-spacing:.04em; transition:background .2s; }
+#fi-topbar-academy:hover { background:rgba(188,150,64,.08); }
+body.loggedin .student-wrap { padding-top: 56px; }
+body.loggedin .admin-wrap   { padding-top: 56px; }
+body.loggedin .auth-wrap    { padding-top: 56px; }
+@media(max-width:900px){
+  #fi-topbar { padding:0 16px; height:52px; }
+  #fi-topbar-logo-text { font-size:15px; }
+  body.loggedin .student-wrap { padding-top: 52px !important; }
+  body.loggedin .admin-wrap   { padding-top: 52px !important; }
+}
+
+
+
+/* ── UPGRADE BANNER (plan Prueba) ── */
+#upgrade-banner {
+  display: none;
+  position: fixed; inset:0; z-index:9999;
+  background: rgba(14,12,10,.72);
+  backdrop-filter: blur(6px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+#upgrade-banner.open { display: flex; }
+.upgrade-card {
+  background: #FAF8F5;
+  border-radius: 20px;
+  padding: 44px 40px 36px;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 24px 60px rgba(14,12,10,.28);
+  position: relative;
+}
+.upgrade-card-close {
+  position: absolute; top:16px; right:18px;
+  background:none; border:none; font-size:20px; cursor:pointer; color:#7a7168; line-height:1;
+}
+.upgrade-card-icon { font-size: 36px; margin-bottom: 12px; }
+.upgrade-card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px; font-weight: 600; color: #1c1814;
+  margin-bottom: 8px; line-height: 1.2;
+}
+.upgrade-card-sub { font-size: 14px; color: #7a7168; margin-bottom: 28px; line-height: 1.6; }
+.upgrade-card-weeks {
+  display: flex; gap: 8px; justify-content: center; margin-bottom: 28px;
+}
+.upgrade-week-pill {
+  background: #f0ece4; border: 1.5px solid rgba(188,150,64,.3);
+  border-radius: 100px; padding: 6px 14px;
+  font-size: 12px; font-weight: 700; color: #BC9640; letter-spacing:.04em;
+}
+.upgrade-card-cta {
+  width: 100%; padding: 14px 24px;
+  background: linear-gradient(135deg, #BC9640 0%, #D4AA5A 100%);
+  color: #1c1814; border: none; border-radius: 100px;
+  font-size: 15px; font-weight: 700; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; letter-spacing: .04em;
+  box-shadow: 0 4px 16px rgba(188,150,64,.35);
+  transition: opacity .2s, transform .15s;
+  margin-bottom: 12px;
+}
+.upgrade-card-cta:hover { opacity: .9; transform: translateY(-1px); }
+.upgrade-card-note { font-size: 11px; color: #b0a898; }
+@media(max-width:600px){
+  .upgrade-card { padding: 36px 24px 28px; }
+  .upgrade-card-title { font-size: 22px; }
+}
+
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,245,241,.95);backdrop-filter:blur(12px);border-bottom:1px solid #e4ddd3;height:76px;display:flex;align-items:center;padding:0 28px;justify-content:space-between}
 .nav-logo{display:flex;align-items:center;gap:12px;cursor:pointer;text-decoration:none}
@@ -215,8 +303,30 @@ html, body { overflow-x: hidden; }
 .admin-refresh{background:#e8f4f3;color:#2b7d7a;border:none;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:DM Sans,sans-serif}
 .admin-refresh:hover{background:#d0eae9}
 
+
+/* PRUEBA PLAN — sidebar badges */
+body.prueba-plan .nav-item[data-view="multimedia"]::after {
+  content: ' ·  Libre';
+  font-size: 9px;
+  color: #2b7d7a;
+  font-weight: 700;
+  vertical-align: middle;
+}
+body.prueba-plan .nav-item[data-view="materiales"]::after {
+  content: ' ·  Solo lectura';
+  font-size: 9px;
+  color: #2b7d7a;
+  font-weight: 700;
+  vertical-align: middle;
+}
+/* MEDIA FILTER ACTIVE STATE */
+.media-filter-btn.active {
+  background: #2b7d7a !important;
+  color: white !important;
+  border-color: #2b7d7a !important;
+}
 /* PDF FULLSCREEN MODAL */
-.pdf-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9000;flex-direction:column}
+.pdf-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:999999;flex-direction:column}
 .pdf-modal-overlay.open{display:flex}
 .pdf-modal-topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:#1c1814;flex-shrink:0}
 .pdf-modal-topbar-name{font-size:13px;font-weight:600;color:white;max-width:70%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -553,6 +663,16 @@ body.mob-ed-open .student-wrap { padding-bottom: 130px !important; }
 .wysi-nota ol{padding-left:20px;margin:6px 0}
 .wysi-nota li{margin:3px 0}
 [data-placeholder]:empty:not(:focus)::before{content:attr(data-placeholder);color:#a89e93;pointer-events:none;font-style:italic}
+
+/* ── ACAD-NAV SESSION STATE (global) ── */
+#acad-li-dash    { display: none; }
+#acad-li-cta     { display: list-item; }
+#acad-mob-dash   { display: none !important; }
+#acad-mob-acceso { display: block; }
+body.loggedin #acad-li-dash    { display: list-item !important; }
+body.loggedin #acad-li-cta     { display: none !important; }
+body.loggedin #acad-mob-dash   { display: block !important; }
+body.loggedin #acad-mob-acceso { display: none !important; }
 </style>
 <style id="nmDynStyle">.nav-links a{color:#3d3730!important}.nav-links a:hover{color:#2b7d7a!important}</style>
 
@@ -997,1350 +1117,7 @@ button:focus-visible, input:focus-visible {
   .modal-body { padding: 24px 20px !important; }
 }
 </style>
-<!-- ═══ END ENHANCED DESIGN ═══ -->
-<body class="" data-nm-state="{&quot;nav&quot;:[{&quot;id&quot;:&quot;nav17716996591321&quot;,&quot;label&quot;:&quot;El Viaje&quot;,&quot;linkType&quot;:&quot;anchor&quot;,&quot;anchor&quot;:&quot;&quot;,&quot;color&quot;:&quot;&quot;,&quot;style&quot;:&quot;normal&quot;,&quot;emoji&quot;:&quot;&quot;,&quot;newTab&quot;:false,&quot;children&quot;:[]},{&quot;id&quot;:&quot;nav17716996591322&quot;,&quot;label&quot;:&quot;Precios&quot;,&quot;linkType&quot;:&quot;anchor&quot;,&quot;anchor&quot;:&quot;#Estructura del Sistema TCT Las Cinco Puertas&quot;,&quot;color&quot;:&quot;&quot;,&quot;style&quot;:&quot;normal&quot;,&quot;emoji&quot;:&quot;&quot;,&quot;newTab&quot;:false,&quot;children&quot;:[],&quot;url&quot;:&quot;&quot;,&quot;pageSlug&quot;:&quot;&quot;}],&quot;pages&quot;:[],&quot;cats&quot;:[]}">
 
-
-<!-- MOBILE MENU -->
-<div id="mobile-menu">
-  <button id="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
-  <a onclick="document.getElementById('h-que-es').scrollIntoView({behavior:'smooth'});toggleMobileMenu()" href="#">El Método</a>
-  <a onclick="document.getElementById('h-pilares').scrollIntoView({behavior:'smooth'});toggleMobileMenu()" href="#">Los Pilares</a>
-  <a onclick="document.getElementById('h-puertas').scrollIntoView({behavior:'smooth'});toggleMobileMenu()" href="#">Las Puertas</a>
-  <a onclick="document.getElementById('h-quienes').scrollIntoView({behavior:'smooth'});toggleMobileMenu()" href="#">Quiénes somos</a>
-  <a onclick="document.getElementById('h-testimonios').scrollIntoView({behavior:'smooth'});toggleMobileMenu()" href="#">Testimonios</a>
-  <button onclick="goTo('auth');toggleMobileMenu()" style="font-family:'Jost',sans-serif;font-size:0.85rem;letter-spacing:0.18em;text-transform:uppercase;background:#BC9640;color:white;border:none;padding:1rem 2.5rem;cursor:pointer;margin-top:1rem">Acceso Alumnos</button>
-</div>
-
-<!-- NAV -->
-<nav style="background: rgba(247, 245, 241, 0.95); border-bottom-color: rgb(228, 221, 211); height: 76px; position: fixed;">
-  <div class="nav-logo" onclick="goTo('public')">
-    <svg class="nav-logo-svg" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g class="nav-logo-ring">
-        <circle cx="250" cy="250" r="210" stroke="#B8903A" stroke-width="7" stroke-dasharray="1295 30" stroke-linecap="round" opacity="0.7"/>
-        <circle cx="250" cy="250" r="210" stroke="#D4AA5A" stroke-width="3" stroke-dasharray="1290 35" stroke-dashoffset="20" stroke-linecap="round" opacity="0.4"/>
-      </g>
-      <path d="M250 40 C250 130 130 250 40 250" stroke="#B8903A" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.95"/>
-      <path d="M250 40 C250 132 132 250 42 250" stroke="#D4AA5A" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.5"/>
-      <line x1="40" y1="250" x2="460" y2="250" stroke="#B8903A" stroke-width="8" stroke-linecap="round" opacity="0.95"/>
-      <line x1="40" y1="250" x2="460" y2="250" stroke="#D4AA5A" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
-      <path d="M460 250 C370 250 250 370 250 460" stroke="#B8903A" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.95"/>
-      <path d="M460 250 C372 250 250 372 250 460" stroke="#D4AA5A" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.5"/>
-      <circle cx="250" cy="250" r="28" stroke="#B8903A" stroke-width="5" stroke-dasharray="130 8" stroke-linecap="round" opacity="0.9"/>
-      <circle cx="250" cy="250" r="14" fill="#0E0C0A"/>
-      <circle cx="247" cy="247" r="4" fill="#FFFFFF" opacity="0.95"/>
-    </svg>
-    <div class="nav-logo-text">Frecuencia Integral<span>Academy · Método TCT</span></div>
-  </div>
-  <div class="nav-links">
-    <a onclick="document.getElementById('h-que-es').scrollIntoView({behavior:'smooth'})" href="#">El Método</a>
-    <a onclick="document.getElementById('h-pilares').scrollIntoView({behavior:'smooth'})" href="#">Los Pilares</a>
-    <a onclick="document.getElementById('h-puertas').scrollIntoView({behavior:'smooth'})" href="#">Las Puertas</a>
-    <a onclick="document.getElementById('h-quienes').scrollIntoView({behavior:'smooth'})" href="#">Quiénes somos</a>
-    <a onclick="document.getElementById('h-testimonios').scrollIntoView({behavior:'smooth'})" href="#">Testimonios</a>
-  </div>
-  <button id="nav-hamburger" onclick="toggleMobileMenu()" style="display:none;background:none;border:none;cursor:pointer;padding:8px;flex-direction:column;gap:5px;align-items:center;justify-content:center">
-    <span style="display:block;width:22px;height:2px;background:#BC9640;border-radius:2px"></span>
-    <span style="display:block;width:22px;height:2px;background:#BC9640;border-radius:2px"></span>
-    <span style="display:block;width:22px;height:2px;background:#3d3730;border-radius:2px"></span>
-  </button>
-  <div class="nav-btns">
-    <button class="btn-ghost" id="btnLogin" onclick="goTo('auth')">Acceso Alumnos</button>
-    <button class="btn-primary" id="btnInscribirse" onclick="var el=document.getElementById('h-puertas');if(el)el.scrollIntoView({behavior:'smooth'});">Iniciarse Ahora</button>
-    <button class="btn-ghost" id="btnHome" style="display:none" onclick="goTo('public')">🏠 Inicio</button>
-    <button class="btn-ghost" id="btnDash" style="display:none" onclick="goTo('student')">Mi Dashboard</button>
-    <button class="btn-admin-nav" id="btnAdmin" style="display:none" onclick="goTo('admin')">⚙ Admin</button>
-    <button class="btn-ghost" id="btnLogout" style="display:none" onclick="doLogout()">Salir</button>
-  </div>
-</nav>
-
-<!-- PAGE: PUBLIC -->
-<div class="page" id="page-public">
-
-<!-- ── Estilos exclusivos de la Home Premium ── -->
-<style>
-/* Variables home */
-.home-section { padding: 7rem 4rem; }
-@media(max-width:900px){ .home-section { padding: 4rem 1.5rem; } }
-
-/* HERO HOME */
-#h-hero {
-  min-height: 100vh;
-  display: grid; grid-template-columns: 1fr 1fr;
-  align-items: center;
-  gap: 2rem;
-  padding: 6rem 3rem 3rem;
-  position: relative; overflow: hidden;
-  background: #FAF8F5;
-}
-#h-hero .h-bg {
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 70% 50%, rgba(188,150,64,0.06) 0%, transparent 65%);
-  pointer-events: none;
-}
-.h-pretitle {
-  font-family: 'Jost', sans-serif;
-  font-size: 0.78rem; letter-spacing: 0.28em; text-transform: uppercase;
-  color: #BC9640; margin-bottom: 1.2rem;
-  display: flex; align-items: center; gap: 1rem;
-}
-.h-pretitle::before {
-  content: ''; display: block; width: 40px; height: 1px; background: #BC9640;
-}
-.h-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2.4rem, 4vw, 4.2rem);
-  font-weight: 300; line-height: 1.1;
-  letter-spacing: -0.01em;
-  color: #0E0C0A;
-  margin-bottom: 1.4rem;
-}
-.h-title em { font-style: italic; color: #BC9640; }
-.h-sub {
-  font-family: 'Jost', sans-serif;
-  font-size: 1.1rem; font-weight: 300; line-height: 1.8;
-  color: #6B6358; max-width: 460px; margin-bottom: 2rem;
-}
-.h-actions { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
-.btn-h-primary {
-  font-family: 'Jost', sans-serif;
-  font-size: 0.82rem; letter-spacing: 0.18em; text-transform: uppercase;
-  padding: 1rem 2.5rem;
-  background: #BC9640; color: #FAF8F5; border: none;
-  cursor: pointer; transition: all 0.35s;
-}
-.btn-h-primary:hover { background: #8A6E2A; }
-.btn-h-ghost {
-  font-family: 'Jost', sans-serif;
-  font-size: 0.82rem; letter-spacing: 0.18em; text-transform: uppercase;
-  color: #6B6358; background: none; border: none;
-  cursor: pointer; display: flex; align-items: center; gap: 0.6rem;
-  transition: color 0.3s;
-}
-.btn-h-ghost:hover { color: #0E0C0A; }
-.btn-h-ghost::after { content: '→'; font-size: 1rem; }
-
-/* Symbol */
-.h-symbol { display: flex; justify-content: center; align-items: center; z-index: 1; }
-.h-symbol-svg { width: min(38vw, 420px); height: min(38vw, 420px); overflow: visible; }
-
-@keyframes h-symbol-fadein {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-@keyframes h-ring-rotate {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-.h-symbol-svg {
-  width: min(44vw, 500px);
-  height: min(44vw, 500px);
-  opacity: 0;
-  animation: h-symbol-fadein 2s ease 0.3s forwards;
-  overflow: visible;
-}
-.h-symbol-ring {
-  animation: h-ring-rotate 60s linear infinite;
-  transform-origin: 250px 250px;
-}
-
-/* QUÉ ES */
-#h-que-es {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 5rem; align-items: center;
-  background: #F2EFE9;
-  padding: 7rem 4rem;
-}
-.h-qe-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
-  background: #C8C0B0;
-}
-.h-qe-card {
-  background: #FAF8F5; padding: 2.5rem;
-  display: flex; flex-direction: column; gap: 0.8rem;
-}
-.h-qe-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 3rem; font-weight: 300;
-  color: rgba(188,150,64,0.25); line-height: 1;
-}
-.h-qe-title {
-  font-family: 'Jost', sans-serif;
-  font-size: 1rem; letter-spacing: 0.1em; text-transform: uppercase;
-  color: #0E0C0A; font-weight: 500;
-}
-.h-qe-desc {
-  font-family: 'Jost', sans-serif;
-  font-size: 1.1rem; line-height: 1.8; color: #6B6358; font-weight: 300;
-}
-
-/* PILARES */
-#h-pilares {
-  background: #FAF8F5;
-  padding: 7rem 4rem;
-}
-.h-pilares-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
-  margin-top: 4rem;
-  border: 1px solid rgba(188,150,64,0.2);
-}
-.h-pilar {
-  padding: 3rem 2.5rem;
-  border-right: 1px solid rgba(188,150,64,0.2);
-  position: relative; overflow: hidden;
-  transition: background 0.4s;
-}
-.h-pilar:nth-child(3), .h-pilar:nth-child(6) { border-right: none; }
-.h-pilar:hover { background: rgba(188,150,64,0.04); }
-.h-pilar-icon { font-size: 1.8rem; margin-bottom: 1.5rem; display: block; }
-.h-pilar-num {
-  font-family: 'Cormorant Garamond', serif;
-  position: absolute; top: 1.5rem; right: 2rem;
-  font-size: 5rem; font-weight: 300;
-  color: rgba(188,150,64,0.08); line-height: 1;
-}
-.h-pilar-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.85rem; font-weight: 400; margin-bottom: 1rem;
-  color: #0E0C0A;
-}
-.h-pilar-desc {
-  font-family: 'Jost', sans-serif;
-  font-size: 1.1rem; line-height: 1.85; color: #6B6358; font-weight: 300;
-}
-
-/* PUERTAS PREMIUM */
-#h-puertas {
-  background: #0E0C0A;
-  padding: 7rem 4rem;
-}
-#h-puertas .h-section-label { color: #D4AF60; }
-#h-puertas .h-section-label::before { background: #D4AF60; }
-#h-puertas .h-section-title { color: #FAF8F5; }
-#h-puertas .h-section-body { color: rgba(250,248,245,0.6); }
-.h-puertas-grid {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
-  margin-top: 4rem; background: rgba(255,255,255,0.06);
-}
-.h-puerta {
-  padding: 3.5rem 2.5rem;
-  display: flex; flex-direction: column; gap: 1.2rem;
-  position: relative; overflow: hidden;
-  cursor: pointer; transition: all 0.4s;
-  background: #0E0C0A;
-}
-.h-puerta::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-  transition: height 0.4s;
-}
-.h-puerta-blanca::before { background: rgba(255,255,255,0.5); }
-.h-puerta-roja::before   { background: #8B2E2E; }
-.h-puerta-azul::before   { background: #1E3A5F; }
-.h-puerta-arcoiris::before { background: linear-gradient(135deg, #BC9640, #8B2E2E, #1E3A5F, #4A7C59); }
-.h-puerta:hover { background: rgba(255,255,255,0.04); }
-.h-puerta:hover::before { height: 100%; opacity: 0.08; }
-.h-puerta-badge {
-  font-family: 'Jost', sans-serif;
-  display: inline-block;
-  font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase;
-  padding: 0.35rem 0.9rem; border: 1px solid;
-  width: fit-content;
-}
-.h-puerta-blanca .h-puerta-badge   { border-color: rgba(255,255,255,0.35); color: rgba(255,255,255,0.6); }
-.h-puerta-roja .h-puerta-badge     { border-color: #8B2E2E; color: #C85A5A; }
-.h-puerta-azul .h-puerta-badge     { border-color: #1E3A5F; color: #4A7AB5; }
-.h-puerta-arcoiris .h-puerta-badge { border-color: #BC9640; color: #D4AF60; }
-.h-puerta-oro::before { background: linear-gradient(135deg, #BC9640, #D4AF60, #f0d080, #BC9640); }
-.h-puerta-oro .h-puerta-badge { border-color: #D4AF60; color: #D4AF60; }
-.h-puerta-num {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 4.5rem; font-weight: 300; line-height: 1;
-  color: rgba(255,255,255,0.07);
-  position: absolute; bottom: 2rem; right: 2rem;
-}
-.h-puerta-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.8rem; font-weight: 300;
-  color: #FAF8F5;
-}
-.h-puerta-semanas {
-  font-family: 'Jost', sans-serif;
-  font-size: 0.92rem; letter-spacing: 0.1em; text-transform: uppercase;
-  color: #D4AF60; font-weight: 400;
-}
-.h-puerta-desc {
-  font-family: 'Jost', sans-serif;
-  font-size: 1.1rem; line-height: 1.85;
-  color: rgba(250,248,245,0.5); font-weight: 300;
-}
-.h-puerta-action {
-  margin-top: auto;
-  font-family: 'Jost', sans-serif;
-  font-size: 0.9rem; letter-spacing: 0.12em; text-transform: uppercase;
-  color: #BC9640; border: 1px solid rgba(188,150,64,0.3);
-  background: none; padding: 0.6rem 1.2rem; cursor: pointer;
-  transition: all 0.3s; width: fit-content;
-}
-.h-puerta-action:hover { background: #BC9640; color: #0E0C0A; }
-.h-puerta.locked { opacity: 0.5; cursor: default; }
-.h-puerta.locked .h-puerta-action { cursor: not-allowed; }
-
-/* QUIÉNES SOMOS */
-#h-quienes {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 6rem; align-items: center;
-  background: #F2EFE9;
-  padding: 7rem 4rem;
-}
-.h-quienes-visual { position: relative; height: 520px; }
-.h-q-block {
-  position: absolute;
-  background: #FAF8F5; padding: 2rem 2.5rem;
-}
-.h-q-block-1 { top: 0; left: 0; width: 75%; }
-.h-q-block-2 { bottom: 0; right: 0; width: 65%; border-top: 2px solid #BC9640; }
-.h-q-block-quote {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.55rem; font-style: italic; font-weight: 300;
-  line-height: 1.6; color: #0E0C0A; margin-bottom: 1rem;
-}
-.h-q-block-name {
-  font-family: 'Jost', sans-serif;
-  font-size: 0.94rem; letter-spacing: 0.1em; text-transform: uppercase;
-  color: #BC9640;
-}
-.h-q-line {
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-  width: 1px; height: 60%;
-  background: linear-gradient(to bottom, transparent, #BC9640, transparent);
-}
-.h-q-credentials { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 0.8rem; }
-.h-q-cred {
-  font-family: 'Jost', sans-serif;
-  display: flex; align-items: flex-start; gap: 1rem;
-  font-size: 1.08rem; line-height: 1.7; color: #6B6358;
-}
-.h-q-cred::before { content: '—'; color: #BC9640; font-size: 0.9rem; margin-top: 0.05rem; flex-shrink: 0; }
-
-/* TESTIMONIOS */
-#h-testimonios { background: #FAF8F5; padding: 7rem 4rem; }
-.h-testi-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
-  margin-top: 4rem; background: #C8C0B0;
-}
-.h-testi { background: #FAF8F5; padding: 3rem 2.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
-.h-testi-stars { color: #BC9640; font-size: 0.8rem; letter-spacing: 0.2em; }
-.h-testi-quote {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.45rem; font-style: italic; font-weight: 300;
-  line-height: 1.65; color: #0E0C0A;
-}
-.h-testi-name {
-  font-family: 'Jost', sans-serif;
-  font-size: 0.96rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
-  color: #0E0C0A;
-}
-.h-testi-puerta { font-family: 'Jost', sans-serif; font-size: 0.9rem; color: #BC9640; letter-spacing: 0.06em; margin-top: 0.3rem; }
-
-/* CTA */
-#h-cta {
-  background: #BC9640; padding: 8rem 4rem;
-  text-align: center; position: relative; overflow: hidden;
-}
-#h-cta::before {
-  content: 'TCT';
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 30vw; font-weight: 300;
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-  color: rgba(255,255,255,0.07); pointer-events: none;
-  letter-spacing: -0.05em; white-space: nowrap;
-}
-.h-cta-label {
-  font-family: 'Jost', sans-serif;
-  font-size: 0.9rem; letter-spacing: 0.18em; text-transform: uppercase;
-  color: rgba(255,255,255,0.7); margin-bottom: 1.5rem;
-}
-.h-cta-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2.8rem, 5vw, 5rem); font-weight: 300;
-  color: #FAF8F5; line-height: 1.1; margin-bottom: 1.5rem;
-}
-.h-cta-sub {
-  font-family: 'Jost', sans-serif;
-  font-size: 1.22rem; font-weight: 300; color: rgba(255,255,255,0.75);
-  max-width: 480px; margin: 0 auto 3rem; line-height: 1.8;
-}
-.btn-h-cta {
-  font-family: 'Jost', sans-serif;
-  font-size: 0.84rem; letter-spacing: 0.18em; text-transform: uppercase;
-  padding: 1.1rem 3rem;
-  background: #FAF8F5; color: #8A6E2A;
-  border: none; cursor: pointer; transition: all 0.35s;
-  display: inline-block;
-}
-.btn-h-cta:hover { background: #0E0C0A; color: #FAF8F5; }
-.h-cta-nota {
-  margin-top: 1.5rem;
-  font-family: 'Jost', sans-serif;
-  font-size: 1rem; color: rgba(255,255,255,0.5); font-weight: 300;
-}
-
-/* HOME FOOTER */
-#h-footer {
-  background: #0E0C0A; color: rgba(250,248,245,0.5);
-  padding: 4rem 4rem 3rem;
-  display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 4rem;
-}
-.h-footer-brand {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.4rem; font-weight: 300; letter-spacing: 0.15em;
-  color: #FAF8F5; margin-bottom: 1rem;
-}
-.h-footer-desc {
-  font-family: 'Jost', sans-serif;
-  font-size: 1rem; line-height: 1.9; color: rgba(250,248,245,0.45); font-weight: 300;
-}
-.h-footer-col-title {
-  font-family: 'Jost', sans-serif;
-  font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
-  color: #BC9640; margin-bottom: 1.5rem;
-}
-.h-footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
-.h-footer-links a {
-  font-family: 'Jost', sans-serif;
-  font-size: 0.8rem; color: rgba(250,248,245,0.45); text-decoration: none; transition: color 0.3s;
-}
-.h-footer-links a:hover { color: #D4AF60; }
-#h-footer-bottom {
-  background: #0E0C0A; text-align: center;
-  padding: 1.5rem 4rem; border-top: 1px solid rgba(255,255,255,0.06);
-  font-family: 'Jost', sans-serif;
-  font-size: 0.68rem; color: rgba(250,248,245,0.25); letter-spacing: 0.08em;
-}
-
-/* Helpers */
-.h-section-label {
-  font-family: 'Jost', sans-serif;
-  font-size: 0.65rem; letter-spacing: 0.38em; text-transform: uppercase;
-  color: #BC9640; margin-bottom: 1.2rem;
-  display: flex; align-items: center; gap: 1rem;
-}
-.h-section-label::before { content: ''; display: block; width: 30px; height: 1px; background: #BC9640; }
-.h-section-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(2.2rem, 3.5vw, 3.8rem);
-  font-weight: 300; line-height: 1.15; margin-bottom: 1.5rem;
-  color: #0E0C0A;
-}
-.h-section-title em { font-style: italic; color: #BC9640; }
-.h-section-body {
-  font-family: 'Jost', sans-serif;
-  font-size: 1.18rem; font-weight: 300; line-height: 1.9;
-  color: #6B6358; max-width: 580px;
-}
-.h-gold-divider { width: 60px; height: 1px; background: #BC9640; margin: 2rem 0; }
-
-/* Reveal animations */
-.hrev { opacity: 0; transform: translateY(28px); transition: opacity 0.8s ease, transform 0.8s ease; }
-.hrev.visible { opacity: 1; transform: translateY(0); }
-.hrev-d1 { transition-delay: 0.1s; }
-.hrev-d2 { transition-delay: 0.2s; }
-.hrev-d3 { transition-delay: 0.3s; }
-.hrev-d4 { transition-delay: 0.4s; }
-
-/* Responsive */
-
-/* ── HAMBURGER & MOBILE MENU ── */
-@media(max-width:900px){
-  #nav-hamburger { display:flex !important; }
-}
-#mobile-menu {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(250,248,245,0.98);
-  z-index: 1000;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
-  backdrop-filter: blur(8px);
-}
-#mobile-menu.open { display: flex; }
-#mobile-menu a {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2rem;
-  font-weight: 300;
-  color: #1c1814;
-  text-decoration: none;
-  letter-spacing: 0.05em;
-}
-#mobile-menu a:hover { color: #BC9640; }
-#mobile-menu-close {
-  position: absolute;
-  top: 20px; right: 24px;
-  background: none; border: none;
-  font-size: 28px; cursor: pointer; color: #3d3730;
-}
-
-/* ── TABLET (≤900px) ── */
-@media(max-width:900px){
-  /* Nav */
-  .nav-links { display: none; }
-  .nav-logo-text span { display: none; }
-
-  /* Hero */
-  #h-hero {
-    grid-template-columns: 1fr;
-    padding: 5rem 1.5rem 3rem;
-    text-align: center;
-    min-height: auto;
-  }
-  .h-symbol { display: flex; justify-content: center; margin: 0 auto 2rem; }
-  .h-symbol-svg { width: min(60vw, 280px); height: min(60vw, 280px); }
-  .h-pretitle { justify-content: center; }
-  .h-title { font-size: clamp(2rem, 7vw, 3.2rem); }
-  .h-sub { max-width: 100%; font-size: 1rem; }
-  .h-actions { justify-content: center; }
-
-  /* Secciones */
-  #h-que-es, #h-pilares, #h-puertas, #h-quienes,
-  #h-testimonios, #h-cta { padding: 4rem 1.5rem; }
-  #h-footer { padding: 3rem 1.5rem; }
-
-  /* Qué es */
-  #h-que-es { grid-template-columns: 1fr; gap: 2.5rem; }
-  .h-qe-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
-
-  /* Pilares */
-  .h-pilares-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
-  .h-pilar-num { font-size: 3rem; }
-  .h-pilar-title { font-size: 1.4rem; }
-
-  /* Puertas */
-  .h-puertas-grid { grid-template-columns: 1fr 1fr; }
-
-  /* Oro — tablet */
-  .h-puerta-oro-wrap {
-    display: flex !important;
-    flex-direction: column !important;
-    padding: 3rem 2rem !important;
-    gap: 2rem !important;
-  }
-  .h-oro-wm { display: none !important; }
-  .h-puerta-oro-wrap::before { display: none !important; }
-  .h-oro-right {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    gap: 2rem !important;
-    flex-wrap: wrap !important;
-    width: 100% !important;
-    border-top: 1px solid rgba(188,150,64,0.25) !important;
-    padding-top: 1.5rem !important;
-    flex-shrink: unset !important;
-  }
-  .h-oro-btn { flex-shrink: 0 !important; }
-
-  /* Quiénes */
-  #h-quienes { grid-template-columns: 1fr; gap: 2.5rem; }
-  .h-quienes-visual { height: auto; position: static; display: flex; flex-direction: column; gap: 1.5rem; }
-  .h-q-block { position: static; width: 100%; }
-  .h-q-line { display: none; }
-
-  /* Testimonios */
-  .h-testi-grid { grid-template-columns: 1fr; }
-
-  /* Footer */
-  #h-footer { grid-template-columns: 1fr; gap: 2rem; }
-}
-
-/* ── MOBILE (≤600px) ── */
-@media(max-width:600px){
-  /* Nav */
-  .nav-btns .btn-ghost:not(#btnLogin):not(#btnDash):not(#btnLogout) { display: none; }
-  #btnInscribirse { display: none; }
-
-  /* Hero */
-  #h-hero { padding: 4.5rem 1.2rem 2.5rem; }
-  .h-symbol-svg { width: min(70vw, 240px); height: min(70vw, 240px); }
-  .h-title { font-size: clamp(1.8rem, 8vw, 2.8rem); line-height: 1.12; }
-  .h-sub { font-size: 0.95rem; }
-  .btn-h-primary { padding: 0.85rem 1.8rem; font-size: 0.78rem; }
-  .h-actions { flex-direction: column; align-items: center; gap: 1rem; }
-
-  /* Secciones */
-  #h-que-es, #h-pilares, #h-puertas, #h-quienes,
-  #h-testimonios, #h-cta { padding: 3rem 1.2rem; }
-
-  /* Qué es */
-  .h-qe-grid { grid-template-columns: 1fr; }
-  .h-section-title { font-size: clamp(1.8rem, 7vw, 2.8rem); }
-
-  /* Pilares */
-  .h-pilares-grid { grid-template-columns: 1fr; }
-  .h-pilar-card { padding: 2rem 1.5rem; }
-
-  /* Puertas */
-  .h-puertas-grid { grid-template-columns: 1fr; }
-  .h-puerta-title { font-size: 2.2rem; }
-  .h-puerta-price { font-size: 1.6rem; }
-
-  /* Oro mobile — columna única, igual que las otras puertas */
-  .h-puerta-oro-wrap {
-    display: flex !important;
-    flex-direction: column !important;
-    padding: 2.5rem 1.4rem !important;
-    gap: 0 !important;
-    overflow: hidden !important;
-  }
-  .h-puerta-oro-wrap::before,
-  .h-puerta-oro-wrap::after { display: none !important; }
-  .h-oro-wm { display: none !important; }
-  .h-oro-left {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-  .h-oro-badge {
-    font-size: 0.58rem;
-    margin-bottom: 0.8rem;
-  }
-  .h-oro-title {
-    font-size: clamp(2.5rem, 10vw, 3.5rem) !important;
-    margin-bottom: 0.5rem;
-    line-height: 1.05;
-  }
-  .h-oro-sub {
-    font-size: 0.6rem;
-    letter-spacing: 0.2em;
-    margin-bottom: 0.8rem;
-  }
-  .h-oro-desc {
-    font-size: 0.95rem;
-    line-height: 1.7;
-    max-width: 100%;
-    color: rgba(250,248,245,0.55);
-  }
-  .h-oro-right {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    text-align: left !important;
-    width: 100% !important;
-    flex-shrink: 0 !important;
-    border-top: 1px solid rgba(188,150,64,0.3) !important;
-    margin-top: 1.8rem !important;
-    padding-top: 1.5rem !important;
-    gap: 0.4rem !important;
-    box-sizing: border-box !important;
-  }
-  .h-oro-price {
-    font-size: clamp(2.8rem, 10vw, 3.2rem) !important;
-    line-height: 1 !important;
-  }
-  .h-oro-price-sub {
-    font-size: 0.75rem !important;
-    margin-bottom: 1rem !important;
-  }
-  .h-oro-btn {
-    display: block !important;
-    width: 100% !important;
-    text-align: center !important;
-    padding: 0.9rem 1.2rem !important;
-    font-size: 0.72rem !important;
-    box-sizing: border-box !important;
-    white-space: normal !important;
-  }
-
-  /* Mandala */
-  #h-mandala-wrap { padding: 2.5rem 0; overflow: hidden; }
-  #h-mandala-wrap > div { padding: 0 12px; }
-  #mandala-wrap { width: min(94vw, 420px) !important; margin-left: auto !important; margin-right: auto !important; left: auto !important; right: auto !important; transform: none !important; float: none !important; }
-
-  /* Quiénes */
-  .h-q-block-quote { font-size: 1.2rem; }
-  .h-q-title { font-size: clamp(1.6rem, 6vw, 2.4rem); }
-  .h-q-cred { font-size: 0.95rem; }
-
-  /* Testimonios */
-  .h-testi-card { padding: 1.5rem; }
-  .h-testi-text { font-size: 1.1rem; }
-
-  /* CTA */
-  .h-cta-title { font-size: clamp(2rem, 8vw, 3.5rem); }
-
-  /* Footer */
-  #h-footer { grid-template-columns: 1fr; gap: 1.5rem; padding: 2.5rem 1.2rem; }
-  .h-footer-brand { font-size: 1.2rem; }
-}
-
-/* ── MOBILE XS (≤380px) ── */
-@media(max-width:380px){
-  .h-title { font-size: 1.7rem; }
-  .h-section-title { font-size: 1.6rem; }
-  .nav-logo-text { font-size: 13px !important; }
-  .nav-logo-text span { display: none !important; }
-  .h-symbol-svg { width: 65vw; height: 65vw; }
-}
-
-</style>
-
-<!-- NAV pública home (reemplaza el nav global mientras está en home) -->
-
-<!-- HERO -->
-<section id="h-hero">
-  <div class="h-bg"></div>
-  <div class="hero-text" style="z-index:1">
-    <div class="h-pretitle">Presencia aplicada a la vida real</div>
-    <h1 class="h-title">La Frecuencia que<br><em>Transforma</em> tu Realidad</h1>
-    <p class="h-sub">El Método TCT es un camino progresivo de cuatro puertas que integra algunas de las tradiciones más profundas de la consciencia con las herramientas de la vida cotidiana. No es teoría. Es presencia real.</p>
-    <div class="h-actions">
-      <button class="btn-h-primary" onclick="document.getElementById('h-puertas').scrollIntoView({behavior:'smooth'})">Explorar las Puertas</button>
-      <button class="btn-h-ghost" onclick="document.getElementById('h-que-es').scrollIntoView({behavior:'smooth'})">Conoce el método</button>
-    </div>
-  </div>
-  <div class="h-symbol">
-    <svg class="h-symbol-svg" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Círculo exterior rotante -->
-      <g class="h-symbol-ring">
-        <circle cx="250" cy="250" r="210" stroke="#B8903A" stroke-width="2.5"
-                stroke-dasharray="1295 30" stroke-linecap="round" opacity="0.6"/>
-        <circle cx="250" cy="250" r="210" stroke="#D4AA5A" stroke-width="1"
-                stroke-dasharray="1290 35" stroke-dashoffset="20"
-                stroke-linecap="round" opacity="0.35"/>
-      </g>
-      <!-- Curva ~1h → 9h (arco cuadrante superior-izquierdo) -->
-      <path d="M250 40 C250 130 130 250 40 250"
-            stroke="#B8903A" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.85"/>
-      <path d="M250 40 C250 132 132 250 42 250"
-            stroke="#D4AA5A" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.4"/>
-      <!-- Línea recta 9h → 3h -->
-      <line x1="40" y1="250" x2="460" y2="250"
-            stroke="#B8903A" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
-      <line x1="40" y1="250" x2="460" y2="250"
-            stroke="#D4AA5A" stroke-width="0.8" stroke-linecap="round" opacity="0.4"/>
-      <!-- Curva 3h → ~7h (arco cuadrante inferior-derecho) -->
-      <path d="M460 250 C370 250 250 370 250 460"
-            stroke="#B8903A" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.85"/>
-      <path d="M460 250 C372 250 250 372 250 460"
-            stroke="#D4AA5A" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.4"/>
-      <!-- Centro -->
-      <circle cx="250" cy="250" r="22"
-              stroke="#B8903A" stroke-width="1.5"
-              stroke-dasharray="130 8" stroke-linecap="round" opacity="0.8"/>
-      <circle cx="250" cy="250" r="12" fill="#1A1610"/>
-      <circle cx="246" cy="246" r="2.5" fill="#D4AA5A" opacity="0.5"/>
-    </svg>
-  </div>
-</section>
-
-<!-- QUÉ ES -->
-<section id="h-que-es">
-  <div>
-    <div class="h-section-label hrev">El Método</div>
-    <h2 class="h-section-title hrev hrev-d1">¿Qué es el<br><em>Método TCT?</em></h2>
-    <div class="h-gold-divider hrev hrev-d2"></div>
-    <p class="h-section-body hrev hrev-d2">TCT es un sistema de desarrollo interior que combina el sonido vibracional de los cuencos tibetanos y las frecuencias sagradas, con la sabiduría esencial del Dzogchen tibetano, del Cuarto Camino de Gurdjieff, de la Cábala Mística con la visión de los libros «El ser consciente. Más allá del resultado» y «El ser consciente. Más allá de la acción: vivir con presencia en la vida cotidiana», integrados en una metodología práctica y progresiva para la vida contemporánea.</p>
-    <p class="h-section-body hrev hrev-d3" style="margin-top:1.2rem">No es espiritualidad de retiro. Es presencia que funciona en el trabajo, las relaciones, el cuerpo y la mente.</p>
-  </div>
-  <div class="h-qe-grid hrev hrev-d2">
-    <div class="h-qe-card">
-      <div class="h-qe-num">01</div>
-      <div class="h-qe-title">Progresivo</div>
-      <div class="h-qe-desc">Cuatro puertas de 12 semanas cada una. Cada etapa construye sobre la anterior con intención y estructura.</div>
-    </div>
-    <div class="h-qe-card">
-      <div class="h-qe-num">02</div>
-      <div class="h-qe-title">Integrado</div>
-      <div class="h-qe-desc">Tradiciones milenarias + herramientas contemporáneas. Cuerpo, mente, emoción y espíritu en un solo camino.</div>
-    </div>
-    <div class="h-qe-card">
-      <div class="h-qe-num">03</div>
-      <div class="h-qe-title">Aplicado</div>
-      <div class="h-qe-desc">Cada práctica está diseñada para transformar situaciones reales de tu vida cotidiana.</div>
-    </div>
-    <div class="h-qe-card">
-      <div class="h-qe-num">04</div>
-      <div class="h-qe-title">Individual</div>
-      <div class="h-qe-desc">Tu ritmo, tu momento. El inicio es personal. La joya de cada puerta se recibe al completarla.</div>
-    </div>
-  </div>
-</section>
-
-<!-- PILARES -->
-<section id="h-pilares">
-  <div class="h-section-label hrev">Fundamentos</div>
-  <h2 class="h-section-title hrev hrev-d1">Los <em>pilares</em> del método</h2>
-  <div class="h-pilares-grid">
-    <div class="h-pilar hrev">
-      <span class="h-pilar-num">I</span>
-      <span class="h-pilar-icon">◎</span>
-      <div class="h-pilar-title">Presencia</div>
-      <div class="h-pilar-desc">La capacidad de estar aquí, ahora, con plena conciencia. No como concepto sino como estado real y sostenible en cada momento de la vida.</div>
-    </div>
-    <div class="h-pilar hrev hrev-d1">
-      <span class="h-pilar-num">II</span>
-      <span class="h-pilar-icon">◈</span>
-      <div class="h-pilar-title">Integración</div>
-      <div class="h-pilar-desc">Unir lo que la mente ha separado. Cuerpo, emoción, pensamiento y espíritu como un sistema coherente que actúa en armonía.</div>
-    </div>
-    <div class="h-pilar hrev hrev-d2">
-      <span class="h-pilar-num">III</span>
-      <span class="h-pilar-icon">◇</span>
-      <div class="h-pilar-title">Transformación</div>
-      <div class="h-pilar-desc">El cambio real no viene de la fuerza de voluntad sino de la comprensión profunda. Cuando ves con claridad, la transformación ocurre sola.</div>
-    </div>
-    <div class="h-pilar hrev hrev-d1">
-      <span class="h-pilar-num">IV</span>
-      <span class="h-pilar-icon">○</span>
-      <div class="h-pilar-title">Vibración</div>
-      <div class="h-pilar-desc">El sonido como puerta directa al sistema nervioso y a la conciencia. Los cuencos tibetanos como herramienta de reequilibrio profundo.</div>
-    </div>
-    <div class="h-pilar hrev hrev-d2">
-      <span class="h-pilar-num">V</span>
-      <span class="h-pilar-icon">✦</span>
-      <div class="h-pilar-title">Tradición Viva</div>
-      <div class="h-pilar-desc">Dzogchen, Cuarto Camino, Cábala, Chamanismo y UCDM. Sabiduría milenaria no como museo sino como herramienta viva y aplicable.</div>
-    </div>
-    <div class="h-pilar hrev hrev-d3">
-      <span class="h-pilar-num">VI</span>
-      <span class="h-pilar-icon">◐</span>
-      <div class="h-pilar-title">Cuerpo Consciente</div>
-      <div class="h-pilar-desc">El cuerpo como maestro principal. La sabiduría corporal, el movimiento consciente y el atletismo como vías de conocimiento interior.</div>
-    </div>
-  </div>
-</section>
-
-<!-- ── MANDALA 12 HERRAMIENTAS ── -->
-<div id="h-mandala-wrap" style="background:#2e2820;padding:80px 0 80px;overflow:hidden;">
-  <div style="max-width:1100px;margin:0 auto;text-align:center;padding:0 16px;">
-    <div class="h-section-label hrev" style="justify-content:center">La Integración Total</div>
-    <h2 class="h-section-title hrev hrev-d1" style="color:white;text-align:center">12 Herramientas · <em style="color:#BC9640">Un Solo Ser</em></h2>
-    <p class="hrev hrev-d2" style="font-family:'Jost',sans-serif;font-size:0.9rem;color:rgba(255,255,255,.45);max-width:560px;margin:0 auto 3.5rem;line-height:1.8;font-weight:300">Cada tradición y herramienta ilumina el mismo centro. No hay jerarquía — hay convergencia. Todas las sendas apuntan al mismo punto: tú.</p>
-
-    <div id="mandala-wrap" onclick="openMandalaModal()" style="position:relative;width:min(680px,88vw);aspect-ratio:1;margin:0 auto;cursor:zoom-in;display:block;left:0;right:0;">
-      <svg id="mandala-svg" viewBox="50 50 700 700" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%;display:block;">
-        <defs>
-          <radialGradient id="mbg" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#b89558" stop-opacity=".12"/>
-            <stop offset="100%" stop-color="#b89558" stop-opacity="0"/>
-          </radialGradient>
-          <radialGradient id="mcenter" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#b89558" stop-opacity=".35"/>
-            <stop offset="100%" stop-color="#b89558" stop-opacity="0"/>
-          </radialGradient>
-          <filter id="mglow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <filter id="mglows"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        </defs>
-
-        <circle cx="400" cy="400" r="380" fill="url(#mbg)"/>
-        <circle cx="400" cy="400" r="350" fill="none" stroke="rgba(184,149,88,.08)" stroke-width="1"/>
-        <circle cx="400" cy="400" r="300" fill="none" stroke="rgba(184,149,88,.18)" stroke-width="1.5"/>
-        <circle cx="400" cy="400" r="210" fill="none" stroke="rgba(184,149,88,.07)" stroke-width="1" stroke-dasharray="4,12"/>
-        <circle cx="400" cy="400" r="120" fill="none" stroke="rgba(184,149,88,.1)" stroke-width="1"/>
-
-        <g stroke="rgba(184,149,88,.28)" stroke-width="1.2">
-          <line x1="400" y1="400" x2="400.0" y2="100.0"/>
-          <line x1="400" y1="400" x2="550.0" y2="140.2"/>
-          <line x1="400" y1="400" x2="659.8" y2="250.0"/>
-          <line x1="400" y1="400" x2="700.0" y2="400.0"/>
-          <line x1="400" y1="400" x2="659.8" y2="550.0"/>
-          <line x1="400" y1="400" x2="550.0" y2="659.8"/>
-          <line x1="400" y1="400" x2="400.0" y2="700.0"/>
-          <line x1="400" y1="400" x2="250.0" y2="659.8"/>
-          <line x1="400" y1="400" x2="140.2" y2="550.0"/>
-          <line x1="400" y1="400" x2="100.0" y2="400.0"/>
-          <line x1="400" y1="400" x2="140.2" y2="250.0"/>
-          <line x1="400" y1="400" x2="250.0" y2="140.2"/>
-        </g>
-
-        <g filter="url(#mglows)">
-          <circle cx="400.0" cy="100.0" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
-          <text x="400.0" y="90" text-anchor="middle" font-size="26">🏔️</text>
-          <text x="400.0" y="108" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="Jost, sans-serif" font-weight="500">Dzogchen</text>
-        </g>
-        <g filter="url(#mglows)">
-          <circle cx="550.0" cy="140.2" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
-          <text x="550.0" y="130" text-anchor="middle" font-size="26">⚙️</text>
-          <text x="550.0" y="148" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="Jost, sans-serif" font-weight="500">IV Camino</text>
-        </g>
-        <g filter="url(#mglows)">
-          <circle cx="659.8" cy="250.0" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
-          <text x="659.8" y="240" text-anchor="middle" font-size="26">💛</text>
-          <text x="659.8" y="258" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="Jost, sans-serif" font-weight="500">UCDM</text>
-        </g>
-        <g filter="url(#mglows)">
-          <circle cx="700.0" cy="400.0" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
-          <text x="700.0" y="390" text-anchor="middle" font-size="26">🌿</text>
-          <text x="700.0" y="408" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="Jost, sans-serif" font-weight="500">Cuencos I</text>
-        </g>
-        <g filter="url(#mglows)">
-          <circle cx="659.8" cy="550.0" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
-          <text x="659.8" y="540" text-anchor="middle" font-size="26">🔥</text>
-          <text x="659.8" y="558" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="Jost, sans-serif" font-weight="500">Cuencos II</text>
-        </g>
-        <g filter="url(#mglows)">
-          <circle cx="550.0" cy="659.8" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
-          <text x="550.0" y="650" text-anchor="middle" font-size="26">🔵</text>
-          <text x="550.0" y="668" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="Jost, sans-serif" font-weight="500">Cuencos III</text>
-        </g>
-        <g filter="url(#mglows)">
-          <circle cx="400.0" cy="700.0" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
-          <text x="400.0" y="690" text-anchor="middle" font-size="26">🌈</text>
-          <text x="400.0" y="708" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="Jost, sans-serif" font-weight="500">Cuencos IV</text>
-        </g>
-        <g filter="url(#mglows)">
-          <circle cx="250.0" cy="659.8" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
-          <text x="250.0" y="650" text-anchor="middle" font-size="26">🏃</text>
-          <text x="250.0" y="668" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.7)" font-family="Jost, sans-serif" font-weight="500">Deportista</text>
-          <text x="250.0" y="680" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.7)" font-family="Jost, sans-serif" font-weight="500">Consciente</text>
-        </g>
-        <g filter="url(#mglows)">
-          <circle cx="140.2" cy="550.0" r="44" fill="#2e2820" stroke="#b89558" stroke-width="2"/>
-          <text x="140.2" y="540" text-anchor="middle" font-size="26">🧘</text>
-          <text x="140.2" y="558" text-anchor="middle" font-size="11" fill="rgba(255,255,255,.7)" font-family="Jost, sans-serif" font-weight="500">Ser Consciente</text>
-        </g>
-        <g filter="url(#mglows)">
-          <circle cx="100.0" cy="400.0" r="44" fill="#2e2820" stroke="#3d9e9b" stroke-width="2"/>
-          <text x="100.0" y="390" text-anchor="middle" font-size="26">🌀</text>
-          <text x="100.0" y="406" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.7)" font-family="Jost, sans-serif" font-weight="500">Armonización</text>
-          <text x="100.0" y="418" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.7)" font-family="Jost, sans-serif" font-weight="500">Energética</text>
-        </g>
-        <g filter="url(#mglows)">
-          <circle cx="140.2" cy="250.0" r="44" fill="#2e2820" stroke="#3d9e9b" stroke-width="2"/>
-          <text x="140.2" y="240" text-anchor="middle" font-size="26">💎</text>
-          <text x="140.2" y="256" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.7)" font-family="Jost, sans-serif" font-weight="500">Joyería</text>
-          <text x="140.2" y="268" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.7)" font-family="Jost, sans-serif" font-weight="500">Sagrada</text>
-        </g>
-        <g filter="url(#mglows)">
-          <circle cx="250.0" cy="140.2" r="44" fill="#2e2820" stroke="#3d9e9b" stroke-width="2"/>
-          <text x="250.0" y="130" text-anchor="middle" font-size="26">🎨</text>
-          <text x="250.0" y="146" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.7)" font-family="Jost, sans-serif" font-weight="500">Arte &amp;</text>
-          <text x="250.0" y="158" text-anchor="middle" font-size="10" fill="rgba(255,255,255,.7)" font-family="Jost, sans-serif" font-weight="500">Arteterapia</text>
-        </g>
-
-        <!-- Centro -->
-        <circle cx="400" cy="400" r="80" fill="url(#mcenter)" filter="url(#mglow)"/>
-        <circle cx="400" cy="400" r="62" fill="#2e2820" stroke="rgba(184,149,88,.5)" stroke-width="2"/>
-        <circle cx="400" cy="400" r="50" fill="rgba(184,149,88,.06)" stroke="rgba(184,149,88,.2)" stroke-width="1"/>
-        <text x="400" y="374" text-anchor="middle" font-size="13" fill="#d4a85a" font-family="Cormorant Garamond, serif" font-style="italic" font-weight="600">El Ser</text>
-        <polygon points="400,381 402.6,390.3 409.5,383.5 407.1,392.9 416.5,390.5 409.7,397.4 419,400 409.7,402.6 416.5,409.5 407.1,407.1 409.5,416.5 402.6,409.7 400,419 397.4,409.7 390.5,416.5 392.9,407.1 383.5,409.5 390.3,402.6 381,400 390.3,397.4 383.5,390.5 392.9,392.9 390.5,383.5 397.4,390.3" fill="#b89558" opacity=".95" filter="url(#mglow)"/>
-        <text x="400" y="432" text-anchor="middle" font-size="13" fill="#d4a85a" font-family="Cormorant Garamond, serif" font-style="italic" font-weight="600">Humano</text>
-      </svg>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL MANDALA FULLSCREEN -->
-<div id="mandala-modal" onclick="closeMandalaModal()" style="display:none;position:fixed;inset:0;z-index:9000;background:rgba(20,16,12,.96);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:24px">
-  <div onclick="event.stopPropagation()" style="position:relative;width:min(90vw,90vh);aspect-ratio:1;max-width:960px">
-    <button onclick="event.stopPropagation();closeMandalaModal()" style="position:absolute;top:8px;right:8px;background:none;border:none;color:rgba(184,149,88,.45);width:18px;height:18px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;z-index:10;padding:0">✕</button>
-    
-    <svg id="mandala-modal-svg" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%"></svg>
-  </div>
-</div>
-<script>
-function openMandalaModal() {
-  var modal = document.getElementById('mandala-modal');
-  var src   = document.getElementById('mandala-svg');
-  var dest  = document.getElementById('mandala-modal-svg');
-  if (!modal || !src || !dest) return;
-  dest.innerHTML = src.innerHTML;
-  modal.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-}
-function closeMandalaModal() {
-  var modal = document.getElementById('mandala-modal');
-  if (!modal) return;
-  modal.style.display = 'none';
-  document.body.style.overflow = '';
-}
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeMandalaModal();
-});
-</script>
-
-
-<!-- LAS PUERTAS PREMIUM -->
-<section id="h-puertas" style="padding-bottom:0">
-  <div class="h-section-label hrev">El Camino</div>
-  <h2 class="h-section-title hrev hrev-d1">Las cuatro <em>puertas</em></h2>
-  <p class="h-section-body hrev hrev-d2">Cada puerta es un ciclo de 12 semanas. Se abre en tu momento. Al completarla, recibes tu joya. Solo los alumnos que han cruzado una puerta acceden a la siguiente.</p>
-
-  <!-- 4 PUERTAS EN GRID -->
-  <div class="h-puertas-grid" style="margin-top:4rem">
-    <div class="h-puerta h-puerta-blanca hrev" onclick="handlePurchase('puerta_blanca')">
-      <div class="h-puerta-badge">Puerta I</div>
-      <div class="h-puerta-title">Blanca</div>
-      <div class="h-puerta-semanas">12 semanas · Cimentación</div>
-      <div class="h-puerta-desc">El despertar de la presencia. Aprendes a observar sin identificarte. El primer contacto real contigo mismo.</div>
-      <div class="h-puerta-price">€95<span>/mes</span></div>
-      <div class="h-puerta-billing">Acceso inmediato</div>
-      <button class="h-puerta-action h-puerta-action-open">Acceder</button>
-      <div class="h-puerta-num">01</div>
-    </div>
-    <div class="h-puerta h-puerta-roja locked hrev hrev-d1">
-      <div class="h-puerta-badge">Puerta II</div>
-      <div class="h-puerta-title">Roja</div>
-      <div class="h-puerta-semanas">12 semanas · Purificación</div>
-      <div class="h-puerta-desc">La alquimia emocional. Transformar el sufrimiento en comprensión. El fuego que purifica sin destruir.</div>
-      <div class="h-puerta-price">€95<span>/mes</span></div>
-      <div class="h-puerta-billing">Requiere Puerta Blanca</div>
-      <button class="h-puerta-action" onclick="event.stopPropagation();toast('🔒 Completa la Puerta Blanca para desbloquear')">Bloqueada</button>
-      <div class="h-puerta-num">02</div>
-    </div>
-    <div class="h-puerta h-puerta-azul locked hrev hrev-d2">
-      <div class="h-puerta-badge">Puerta III</div>
-      <div class="h-puerta-title">Azul</div>
-      <div class="h-puerta-semanas">12 semanas · Mente</div>
-      <div class="h-puerta-desc">La mente como instrumento, no como amo. Silencio, claridad y la capacidad de ver sin filtros condicionados.</div>
-      <div class="h-puerta-price">€95<span>/mes</span></div>
-      <div class="h-puerta-billing">Requiere Puerta Roja</div>
-      <button class="h-puerta-action" onclick="event.stopPropagation();toast('🔒 Completa la Puerta Roja para desbloquear')">Bloqueada</button>
-      <div class="h-puerta-num">03</div>
-    </div>
-    <div class="h-puerta h-puerta-arcoiris locked hrev hrev-d3">
-      <div class="h-puerta-badge">Puerta IV</div>
-      <div class="h-puerta-title">Arcoíris</div>
-      <div class="h-puerta-semanas">12 semanas · Integración</div>
-      <div class="h-puerta-desc">La totalidad. Cuando presencia, emoción y mente se unifican. La vida cotidiana como práctica completa.</div>
-      <div class="h-puerta-price">€95<span>/mes</span></div>
-      <div class="h-puerta-billing">Requiere las 3 puertas anteriores</div>
-      <button class="h-puerta-action" onclick="event.stopPropagation();toast('🔒 Completa la Puerta Azul para desbloquear')">Bloqueada</button>
-      <div class="h-puerta-num">04</div>
-    </div>
-  </div>
-
-  <!-- PUERTA ORO — bloque especial debajo -->
-  <div class="h-puerta-oro-wrap hrev">
-    <div class="h-oro-left">
-      <div class="h-oro-badge">+ Puerta Especial</div>
-      <div class="h-oro-title">Oro</div>
-      <div class="h-oro-sub">Acceso completo · Las cuatro puertas · Todo el camino</div>
-      <p class="h-oro-desc">Acceso simultáneo a todas las puertas del Método TCT. Un solo pago que incluye las 48 semanas completas, todos los materiales y la joya de Oro al finalizar el viaje. El camino sin interrupciones.</p>
-    </div>
-    <div class="h-oro-right">
-      <div class="h-oro-price">€890</div>
-      <div class="h-oro-price-sub">Pago único · Acceso total</div>
-      <button class="h-oro-btn" onclick="handlePurchase('puerta_oro')">+ Acceso Completo</button>
-    </div>
-    <!-- Watermark decorativo -->
-    <div class="h-oro-wm">Oro</div>
-  </div>
-
-</section>
-
-<style>
-/* Precio en puertas */
-.h-puerta-price {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2rem; font-weight: 300; color: #FAF8F5;
-  margin-top: auto;
-}
-.h-puerta-price span { font-size: 1rem; color: rgba(250,248,245,0.5); }
-.h-puerta-billing {
-  font-family: 'Jost', sans-serif;
-  font-size: 0.94rem; color: rgba(250,248,245,0.4); margin-bottom: 1rem;
-}
-.h-puerta-action-open {
-  background: #BC9640 !important;
-  color: #0E0C0A !important;
-  border-color: #BC9640 !important;
-  font-weight: 600;
-  letter-spacing: 0.25em;
-}
-.h-puerta-action-open:hover { background: #D4AF60 !important; }
-
-/* PUERTA ORO BLOQUE */
-.h-puerta-oro-wrap {
-  position: relative;
-  background: linear-gradient(135deg, #1a1508 0%, #221c0a 40%, #1a1508 100%);
-  border-top: 1px solid rgba(188,150,64,0.3);
-  padding: 5rem 4rem;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 4rem;
-  align-items: center;
-  overflow: hidden;
-  margin-top: 1px;
-  cursor: pointer;
-  transition: all 0.4s;
-}
-.h-puerta-oro-wrap::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(135deg, #BC9640, #D4AF60, #f0d080, #BC9640);
-  transition: height 0.4s, opacity 0.4s;
-  opacity: 1;
-  pointer-events: none;
-  z-index: 0;
-}
-.h-puerta-oro-wrap:hover {
-  background: linear-gradient(135deg, #1f1a08 0%, #2a2210 40%, #1f1a08 100%);
-}
-.h-puerta-oro-wrap:hover::after {
-  height: 100%;
-  opacity: 0.08;
-}
-.h-puerta-oro-wrap > * {
-  position: relative;
-  z-index: 1;
-}
-.h-oro-wm {
-  position: absolute;
-  right: -2rem; top: 50%; transform: translateY(-50%);
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 18rem; font-weight: 300;
-  color: rgba(188,150,64,0.06);
-  line-height: 1; pointer-events: none;
-  letter-spacing: -0.05em;
-}
-/* Decorative compass lines */
-.h-puerta-oro-wrap::before {
-  content: '';
-  position: absolute;
-  left: 2rem; top: 50%; transform: translateY(-50%);
-  width: 120px; height: 120px;
-  border: 1px solid rgba(188,150,64,0.12);
-  border-radius: 50%;
-  box-shadow: 0 0 0 30px rgba(188,150,64,0.04), 0 0 0 60px rgba(188,150,64,0.02);
-}
-.h-oro-badge {
-  font-family: 'Jost', sans-serif;
-  display: inline-block;
-  font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
-  padding: 0.4rem 1rem; border: 1px solid rgba(188,150,64,0.5);
-  color: #D4AF60; margin-bottom: 2rem;
-}
-.h-oro-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(3rem, 6vw, 6rem); font-weight: 300;
-  color: #FAF8F5; line-height: 1; margin-bottom: 1rem;
-}
-.h-oro-sub {
-  font-family: 'Jost', sans-serif;
-  font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
-  color: #BC9640; margin-bottom: 1.5rem;
-}
-.h-oro-desc {
-  font-family: 'Jost', sans-serif;
-  font-size: 1.18rem; line-height: 1.9;
-  color: rgba(250,248,245,0.55); max-width: 520px;
-}
-.h-oro-right {
-  text-align: center; flex-shrink: 0;
-  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-}
-.h-oro-price {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 4.5rem; font-weight: 300; color: #FAF8F5; line-height: 1;
-}
-.h-oro-price-sub {
-  font-family: 'Jost', sans-serif;
-  font-size: 0.8rem; color: rgba(250,248,245,0.45); letter-spacing: 0.08em;
-  margin-bottom: 1.5rem;
-}
-.h-oro-btn {
-  font-family: 'Jost', sans-serif;
-  font-size: 0.72rem; letter-spacing: 0.25em; text-transform: uppercase;
-  padding: 1rem 2.5rem;
-  background: #BC9640; color: #0E0C0A;
-  border: none; cursor: pointer; transition: all 0.35s;
-  font-weight: 600; white-space: nowrap;
-}
-.h-oro-btn:hover { background: #D4AF60; }
-
-/* Responsive oro */
-/* oro responsive handled in main media queries above */
-/* Grid 4 columnas (sin oro) */
-
-@media(min-width: 901px) {
-  #modal-arrow-left { display: none !important; }
-  #modal-arrow-right { display: none !important; }
-
-  /* Modal: columna vertical con header arriba y zona inferior como fila */
-  .modal {
-    display: flex !important;
-    flex-direction: column !important;
-    height: 100% !important;
-  }
-
-  /* Zona inferior = fila: sidebar | contenido */
-  #modal-sidebar-wrap {
-    display: flex !important;
-    flex-direction: row !important;
-    flex: 1 !important;
-    overflow: hidden !important;
-    position: static !important;
-    height: 0 !important;
-  }
-  /* En desktop el rail no tiene borde ni fondo propio */
-  #modal-sidebar-rail {
-    display: contents !important;
-  }
-
-  /* Sidebar lateral izquierda — altura completa */
-  .modal-sidebar {
-    width: 200px !important;
-    min-width: 200px !important;
-    flex-direction: column !important;
-    flex-shrink: 0 !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    border-top: none !important;
-    background: #1c1814 !important;
-    height: 100% !important;
-    display: flex !important;
-  }
-
-  /* modal-layout ahora es hermano dentro del wrap */
-  .modal-layout {
-    flex: 1 !important;
-    overflow: hidden !important;
-    display: flex !important;
-    flex-direction: column !important;
-  }
-  .modal-body {
-    flex: 1 !important;
-    overflow-y: auto !important;
-  }
-
-  /* Botones sidebar verticales */
-  .modal-nav-btn {
-    flex-direction: row !important;
-    font-size: 13px !important;
-    padding: 12px 20px !important;
-    border-bottom: none !important;
-    border-top: none !important;
-    border-left: 3px solid transparent !important;
-    white-space: normal !important;
-    width: 100% !important;
-    flex: none !important;
-    flex-shrink: 0 !important;
-    color: rgba(255,255,255,.55) !important;
-    justify-content: flex-start !important;
-  }
-  .modal-nav-btn.active {
-    border-bottom: none !important;
-    border-left: 3px solid #3d9e9b !important;
-    color: #3d9e9b !important;
-    background: rgba(43,125,122,.2) !important;
-  }
-  .modal-nav-icon { font-size: 16px !important; margin-right: 8px !important; }
-}
-</style>
-
-<!-- QUIÉNES SOMOS -->
-<section id="h-quienes">
-  <div class="h-quienes-visual hrev">
-    <div class="h-q-block h-q-block-1">
-      <div class="h-q-block-quote">"El camino más directo hacia la libertad interior es aprender a estar presente en lo que ya es."</div>
-      <div class="h-q-block-name">Fundador · Método TCT</div>
-    </div>
-    <div class="h-q-line"></div>
-    <div class="h-q-block h-q-block-2">
-      <div class="h-q-block-quote">"No enseñamos espiritualidad. Construimos un mundo despierto."</div>
-      <div class="h-q-block-name">Principio fundacional · TCT</div>
-    </div>
-  </div>
-  <div>
-    <div class="h-section-label hrev">Quiénes somos</div>
-    <h2 class="h-section-title hrev hrev-d1">Una <em>tradición viva</em><br>para el mundo actual</h2>
-    <div class="h-gold-divider hrev hrev-d2"></div>
-    <p class="h-section-body hrev hrev-d2">El Método TCT nace de décadas de práctica, formación y transmisión en las tradiciones más rigurosas del desarrollo interior, integradas con la experiencia del coaching deportivo de alto rendimiento y la terapia vibracional.</p>
-    <div class="h-q-credentials hrev hrev-d3">
-      <div class="h-q-cred">Practicante de Dzogchen y Cuarto Camino (Gurdjieff)</div>
-      <div class="h-q-cred">Terapeuta con cuencos tibetanos y sonido vibracional</div>
-      <div class="h-q-cred">Coach deportivo de alto rendimiento y consciencia corporal</div>
-      <div class="h-q-cred">Practicante de Cábala Mística, de UCDM y otras terapias energéticas</div>
-      <div class="h-q-cred">Escritor de los libros «El ser consciente. Más allá del resultado» y «El ser consciente. Más allá de la acción: vivir con presencia en la vida cotidiana»</div>
-      <div class="h-q-cred">Diseñador y creador del sistema LMS Frecuencia Integral</div>
-    </div>
-  </div>
-</section>
-
-<!-- TESTIMONIOS -->
-<section id="h-testimonios">
-  <div class="h-section-label hrev">Experiencias</div>
-  <h2 class="h-section-title hrev hrev-d1">Lo que dicen quienes<br>han <em>cruzado las puertas</em></h2>
-  <div class="h-testi-grid">
-    <div class="h-testi hrev">
-      <div class="h-testi-stars">★ ★ ★ ★ ★</div>
-      <div class="h-testi-quote">"Después de la Puerta Blanca entendí que llevaba años buscando afuera lo que siempre había estado aquí. Es el cambio más real que he experimentado."</div>
-      <div><div class="h-testi-name">María C.</div><div class="h-testi-puerta">Puerta Blanca completada</div></div>
-    </div>
-    <div class="h-testi hrev hrev-d1">
-      <div class="h-testi-stars">★ ★ ★ ★ ★</div>
-      <div class="h-testi-quote">"La Puerta Roja me enseñó que mis emociones no eran el problema. Eran la puerta. Ahora las uso como brújula en lugar de huir de ellas."</div>
-      <div><div class="h-testi-name">Jordi M.</div><div class="h-testi-puerta">Puerta Roja completada</div></div>
-    </div>
-    <div class="h-testi hrev hrev-d2">
-      <div class="h-testi-stars">★ ★ ★ ★ ★</div>
-      <div class="h-testi-quote">"Lo que más me sorprendió es que no es un método espiritual en el sentido clásico. Es profundamente humano. Y precisamente por eso funciona."</div>
-      <div><div class="h-testi-name">Laura V.</div><div class="h-testi-puerta">Puerta Azul completada</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section id="h-cta">
-  <div class="h-cta-label">Tu momento es ahora</div>
-  <h2 class="h-cta-title">Abre tu primera<br>puerta</h2>
-  <p class="h-cta-sub">El inicio es tuyo. No hay esperas, no hay urgencia. El Método TCT comienza cuando tú decides que es el momento.</p>
-  <button class="btn-h-cta" onclick="handlePurchase('puerta_blanca')">Comenzar la Puerta Blanca</button>
-  <div class="h-cta-nota">Sin descuentos · Sin presión · A tu ritmo</div>
-</section>
-
-<!-- FOOTER HOME -->
-<footer id="h-footer">
-  <div>
-    <div class="h-footer-brand">Método TCT</div>
-    <div class="h-footer-desc">Presencia aplicada a la vida real.<br>Sistema Frecuencia Integral · Plataforma LMS</div>
-  </div>
-  <div>
-    <div class="h-footer-col-title">Navegación</div>
-    <ul class="h-footer-links">
-      <li><a onclick="document.getElementById('h-que-es').scrollIntoView({behavior:'smooth'})" href="#">El Método</a></li>
-      <li><a onclick="document.getElementById('h-pilares').scrollIntoView({behavior:'smooth'})" href="#">Los Pilares</a></li>
-      <li><a onclick="document.getElementById('h-puertas').scrollIntoView({behavior:'smooth'})" href="#">Las Puertas</a></li>
-      <li><a onclick="document.getElementById('h-quienes').scrollIntoView({behavior:'smooth'})" href="#">Quiénes somos</a></li>
-      <li><a onclick="document.getElementById('h-testimonios').scrollIntoView({behavior:'smooth'})" href="#">Testimonios</a></li>
-    </ul>
-  </div>
-  <div>
-    <div class="h-footer-col-title">Las Puertas</div>
-    <ul class="h-footer-links">
-      <li><a onclick="document.getElementById('h-puertas').scrollIntoView({behavior:'smooth'})" href="#">Puerta Blanca</a></li>
-      <li><a onclick="document.getElementById('h-puertas').scrollIntoView({behavior:'smooth'})" href="#">Puerta Roja</a></li>
-      <li><a onclick="document.getElementById('h-puertas').scrollIntoView({behavior:'smooth'})" href="#">Puerta Azul</a></li>
-      <li><a onclick="document.getElementById('h-puertas').scrollIntoView({behavior:'smooth'})" href="#">Puerta Arcoíris</a></li>
-      <li><a onclick="document.getElementById('h-puertas').scrollIntoView({behavior:'smooth'})" href="#">Puerta Oro ✦</a></li>
-    </ul>
-  </div>
-</footer>
-<div id="h-footer-bottom">© 2026 Método TCT · Frecuencia Integral · Todos los derechos reservados</div>
-
-<script>
-// Scroll reveal para la home
-(function(){
-  var obs = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if(e.isIntersecting){ e.target.classList.add('visible'); obs.unobserve(e.target); }
-    });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.hrev').forEach(function(el){ obs.observe(el); });
-  // Nav shadow on scroll
-  window.addEventListener('scroll', function(){
-    var nav = document.querySelector('nav');
-    if(nav) nav.style.boxShadow = window.scrollY > 40 ? '0 2px 30px rgba(0,0,0,0.08)' : '';
-  });
-})();
-</script>
-
-</div><!-- /page-public -->
 
 <!-- ═══════════════════════════════════════════════════════
      PAGE: ACADEMY HOME (multi-curso)
@@ -2415,6 +1192,23 @@ document.addEventListener('keydown', function(e) {
   cursor: pointer !important;
 }
 .acad-nav-cta:hover { opacity: .88; transform: translateY(-1px); color: #1c1814 !important; }
+/* Botón Mi Dashboard — controlado por body.loggedin */
+.acad-nav-dash {
+  background: transparent;
+  border: 1.5px solid rgba(188,150,64,.45);
+  color: #BC9640 !important;
+  font-weight: 600 !important;
+  padding: 8px 18px !important;
+  border-radius: 100px !important;
+  font-size: 12px !important;
+  letter-spacing: .04em !important;
+  cursor: pointer !important;
+  font-family: 'DM Sans', sans-serif;
+  transition: background .2s, border-color .2s !important;
+}
+.acad-nav-dash:hover { background: rgba(188,150,64,.08); border-color: #BC9640; }
+
+/* ← session state CSS moved to <head> */
 
 /* HERO — 3C: Dorado luminoso */
 .acad-hero {
@@ -2513,11 +1307,11 @@ document.addEventListener('keydown', function(e) {
 
 /* SECTION BASE */
 .acad-section {
-  padding: 100px 40px;
+  padding: 64px 40px;
   max-width: 1200px; margin: 0 auto;
 }
 .acad-section-full {
-  padding: 100px 40px;
+  padding: 64px 40px;
 }
 .acad-section-label {
   font-size: 11px; letter-spacing: .14em;
@@ -2829,6 +1623,12 @@ document.addEventListener('keydown', function(e) {
   font-size: 12px; color: rgba(255,255,255,.2);
 }
 
+/* Mobile menu: hidden by default at ALL sizes; shown only when .open is added */
+.acad-mobile-menu { display: none !important; }
+.acad-mobile-menu.open { display: flex !important; }
+/* Hamburger: hidden on desktop by default */
+.acad-nav-hamburger { display: none; }
+
 /* MOBILE */
 @media(max-width:900px) {
   .acad-nav { padding: 0 20px; }
@@ -2884,8 +1684,8 @@ document.addEventListener('keydown', function(e) {
   .acad-hero-badge { font-size: 10px; padding: 5px 12px; }
   .acad-hero-btns { flex-direction: column; gap: 10px; }
   .acad-hero-btns button { width: 100%; text-align: center; }
-  .acad-section { padding: 56px 20px; }
-  .acad-section-full { padding: 56px 20px; }
+  .acad-section { padding: 40px 20px; }
+  .acad-section-full { padding: 40px 20px; }
   .acad-section-title { font-size: 28px !important; }
   .acad-pilares-grid { grid-template-columns: 1fr; gap: 14px; }
   .acad-pilar-card { padding: 24px 20px; }
@@ -2971,7 +1771,8 @@ document.addEventListener('keydown', function(e) {
     <li><a onclick="acadScrollTo('acad-quienes')">Quiénes Somos</a></li>
     <li><a onclick="acadScrollTo('acad-testimonios')">Testimonios</a></li>
     <li><a onclick="acadScrollTo('acad-contacto')">Contacto</a></li>
-    <li><a class="acad-nav-cta" onclick="goTo('auth')">Acceso Alumnos</a></li>
+    <li id="acad-li-dash" style="display:none"><button class="acad-nav-dash" id="acad-btn-dash" onclick="goTo('student')">↩ Mi Dashboard</button></li>
+    <li id="acad-li-cta"><a class="acad-nav-cta" id="acad-btn-acceso" onclick="user ? goTo('student') : goTo('auth')">Acceso Alumnos</a></li>
   </ul>
   <button class="acad-nav-hamburger" onclick="acadMenuOpen()">
     <span></span><span></span><span></span>
@@ -2987,8 +1788,8 @@ document.addEventListener('keydown', function(e) {
   <a onclick="acadScrollTo('acad-testimonios');acadMenuClose()">Testimonios</a>
   <a onclick="acadScrollTo('acad-contacto');acadMenuClose()">Contacto</a>
   <div class="acad-mobile-menu-divider"></div>
-  <button onclick="acadMenuClose();goTo('auth')" style="background:linear-gradient(135deg,#BC9640,#D4AA5A);color:#1c1814;border:none;padding:14px 36px;border-radius:100px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.04em;position:relative;z-index:1">Acceso Alumnos</button>
-  <a onclick="goTo('auth');acadMenuClose()" style="color:#D4AA5A!important">Acceso Alumnos →</a>
+  <button id="acad-mob-dash" onclick="acadMenuClose();goTo('student')" style="display:none;background:rgba(188,150,64,.12);color:#D4AA5A;border:1.5px solid rgba(188,150,64,.35);padding:14px 36px;border-radius:100px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.04em;position:relative;z-index:1">↩ Mi Dashboard</button>
+  <button id="acad-mob-acceso" onclick="acadMenuClose();(user ? goTo('student') : goTo('auth'))" style="background:linear-gradient(135deg,#BC9640,#D4AA5A);color:#1c1814;border:none;padding:14px 36px;border-radius:100px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.04em;position:relative;z-index:1">Acceso Alumnos</button>
 </div>
 
 <!-- HERO -->
@@ -3162,7 +1963,7 @@ document.addEventListener('keydown', function(e) {
 
 <style>
 /* ── QUIÉNES SOMOS — EDITORIAL ── */
-.qs-wrap { max-width:1200px; margin:0 auto; padding:100px 40px; }
+.qs-wrap { max-width:1200px; margin:0 auto; padding:64px 40px; }
 .qs-intro { text-align:center; max-width:720px; margin:0 auto 80px; }
 .qs-disciplines {
   display:flex; flex-wrap:wrap; gap:10px;
@@ -3494,7 +2295,7 @@ document.addEventListener('keydown', function(e) {
         <p class="acad-section-sub">Tanto si quieres empezar el Método TCT como si quieres apuntarte a la lista de espera del Deportista Consciente, escríbenos.</p>
         <div style="margin-top:32px;display:flex;flex-direction:column;gap:16px">
           <div style="display:flex;align-items:center;gap:12px;color:#5a5248;font-size:14px">
-            <span style="font-size:20px">📧</span> hola@frecuenciaintegral.com
+            <span style="font-size:20px">📧</span> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7911161518391f0b1c1a0c1c171a101810170d1c1e0b1815571a1614">[email&#160;protected]</a>
           </div>
           <div style="display:flex;align-items:center;gap:12px;color:#7a7168;font-size:14px">
             <span style="font-size:20px">⏱</span> Respondemos en menos de 48h
@@ -3552,7 +2353,7 @@ document.addEventListener('keydown', function(e) {
   </div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // Nav scroll effect — se oscurece al bajar
 (function() {
   var acadNavReady = setInterval(function() {
@@ -3581,7 +2382,10 @@ document.addEventListener('keydown', function(e) {
 function acadScrollTo(id) {
   var el = document.getElementById(id);
   if (!el) return;
-  var offset = 80;
+  // nav=68px, section padding-top=64px → offset=24 places label at 24+64=88px (just below nav)
+  var navEl = document.querySelector('.acad-nav');
+  var navH = navEl ? navEl.offsetHeight : 68;
+  var offset = navH - 44;
   var top = el.getBoundingClientRect().top + window.scrollY - offset;
   window.scrollTo({ top: top, behavior: 'smooth' });
 }
@@ -3834,22 +2638,54 @@ function acadMenuClose() {
 }
 </style>
 
-<!-- NAV -->
-<nav class="depo-nav">
-  <div class="depo-nav-logo" onclick="goTo('academy')">
-    <svg width="32" height="32" viewBox="0 0 80 80" fill="none">
-      <circle cx="40" cy="40" r="38" stroke="#2c5f9e" stroke-width="1.5" opacity=".5"/>
-      <circle cx="40" cy="40" r="6" fill="#4a7fc1" opacity=".8"/>
-      <path d="M40 8 C55 20, 70 30, 68 48 C66 64, 50 72, 40 72 C30 72, 14 64, 12 48 C10 30, 25 20, 40 8Z" stroke="#4a7fc1" stroke-width="1.2" fill="none" opacity=".5"/>
+<!-- NAV UNIFICADO — DEPORTISTA -->
+<nav class="landing-nav">
+  <div class="landing-nav-left">
+    <div class="landing-nav-logo" onclick="goTo('academy')">
+      <svg width="40" height="40" viewBox="0 0 80 80" fill="none">
+      <circle cx="40" cy="40" r="37" stroke="#BC9640" stroke-width="1.8" opacity=".45"/>
+      <circle cx="40" cy="40" r="31.4" stroke="#BC9640" stroke-width="1.2" opacity=".28"/>
+      <circle cx="40" cy="40" r="19.4" stroke="#D4AA5A" stroke-width="1" opacity=".25"/>
+      <circle cx="40" cy="40" r="12" stroke="#BC9640" stroke-width=".9" opacity=".22"/>
+      <line x1="40" y1="40" x2="69.88" y2="49.71" stroke="#BC9640" stroke-width=".8" opacity=".2"/>
+      <line x1="40" y1="40" x2="40.0" y2="71.42" stroke="#BC9640" stroke-width=".8" opacity=".2"/>
+      <line x1="40" y1="40" x2="10.12" y2="49.71" stroke="#BC9640" stroke-width=".8" opacity=".2"/>
+      <line x1="40" y1="40" x2="21.53" y2="14.58" stroke="#BC9640" stroke-width=".8" opacity=".2"/>
+      <line x1="40" y1="40" x2="58.47" y2="14.58" stroke="#BC9640" stroke-width=".8" opacity=".2"/>
+      <line x1="40" y1="40" x2="52.0" y2="40.0" stroke="#D4AA5A" stroke-width="1.2" opacity=".4"/>
+      <line x1="40" y1="40" x2="34.0" y2="50.39" stroke="#D4AA5A" stroke-width="1.2" opacity=".4"/>
+      <line x1="40" y1="40" x2="34.0" y2="29.61" stroke="#D4AA5A" stroke-width="1.2" opacity=".4"/>
+      <line x1="40" y1="40" x2="53.73" y2="53.73" stroke="#BC9640" stroke-width="1" opacity=".32"/>
+      <line x1="40" y1="40" x2="26.27" y2="53.73" stroke="#BC9640" stroke-width="1" opacity=".32"/>
+      <line x1="40" y1="40" x2="26.27" y2="26.27" stroke="#BC9640" stroke-width="1" opacity=".32"/>
+      <line x1="40" y1="40" x2="53.73" y2="26.27" stroke="#BC9640" stroke-width="1" opacity=".32"/>
+      <circle cx="40" cy="40" r="3.5" fill="#D4AA5A" opacity=".95"/>
+      <circle cx="52.0" cy="40.0" r="2" fill="#D4AA5A" opacity=".95"/>
+      <circle cx="34.0" cy="50.39" r="2" fill="#D4AA5A" opacity=".95"/>
+      <circle cx="34.0" cy="29.61" r="2" fill="#D4AA5A" opacity=".95"/>
+      <circle cx="53.73" cy="53.73" r="2.3" fill="#BC9640" opacity=".8"/>
+      <circle cx="26.27" cy="53.73" r="2.3" fill="#BC9640" opacity=".8"/>
+      <circle cx="26.27" cy="26.27" r="2.3" fill="#BC9640" opacity=".8"/>
+      <circle cx="53.73" cy="26.27" r="2.3" fill="#BC9640" opacity=".8"/>
+      <circle cx="69.88" cy="49.71" r="2.6" fill="#BC9640" opacity=".65"/>
+      <circle cx="40.0" cy="71.42" r="2.6" fill="#BC9640" opacity=".65"/>
+      <circle cx="10.12" cy="49.71" r="2.6" fill="#BC9640" opacity=".65"/>
+      <circle cx="21.53" cy="14.58" r="2.6" fill="#BC9640" opacity=".65"/>
+      <circle cx="58.47" cy="14.58" r="2.6" fill="#BC9640" opacity=".65"/>
+      <path d="M40 9 C50 18 71 26 71 40 C71 54 50 62 40 71 C30 62 9 54 9 40 C9 26 30 18 40 9Z" stroke="#BC9640" stroke-width="1.2" fill="none" opacity=".3"/>
+      <path d="M9 40 C18 30 26 9 40 9 C54 9 62 30 71 40 C62 50 54 71 40 71 C26 71 18 50 9 40Z" stroke="#D4AA5A" stroke-width="1" fill="none" opacity=".22"/>
     </svg>
-    <div>
-      <div class="depo-nav-logo-name">El Deportista Consciente</div>
-      <div class="depo-nav-logo-sub">Frecuencia Integral Academy</div>
+      <div>
+        <div class="landing-nav-logo-name">Frecuencia Integral</div>
+        <span class="landing-nav-logo-sub">Academy</span>
+      </div>
     </div>
+    <div class="landing-nav-sep"></div>
+    <span class="landing-nav-badge-tct" style="background:rgba(44,95,158,.1);border-color:rgba(44,95,158,.25);color:#2c5f9e">✦ El Deportista Consciente</span>
   </div>
-  <div style="display:flex;gap:12px;align-items:center">
-    <button class="depo-nav-back" onclick="goTo('academy')">← Academia</button>
-    <button class="depo-nav-cta" onclick="document.getElementById('depo-lista').scrollIntoView({behavior:'smooth'})">Lista de espera</button>
+  <div class="landing-nav-right">
+    <button class="landing-nav-back" onclick="goTo('academy')">← Academia</button>
+    <button class="landing-nav-cta" onclick="document.getElementById('depo-lista').scrollIntoView({behavior:'smooth'})">Lista de espera</button>
   </div>
 </nav>
 
@@ -3883,7 +2719,7 @@ function acadMenuClose() {
 
 <!-- PARA QUIÉN -->
 <div class="depo-para-bg" id="depo-para">
-  <div class="acad-section" style="max-width:1200px;margin:0 auto;padding:100px 40px">
+  <div class="acad-section" style="max-width:1200px;margin:0 auto;padding:64px 40px">
     <span class="acad-section-label">¿Para quién es?</span>
     <h2 class="acad-section-title">Diseñado para tres perfiles</h2>
     <p class="acad-section-sub">Un mismo método, aplicado al contexto único de cada uno.</p>
@@ -3909,7 +2745,7 @@ function acadMenuClose() {
 
 <!-- QUÉ ES -->
 <div class="depo-que-bg">
-  <div class="acad-section" style="max-width:1200px;margin:0 auto;padding:100px 40px">
+  <div class="acad-section" style="max-width:1200px;margin:0 auto;padding:64px 40px">
     <div class="depo-que-grid">
       <div class="depo-que-text">
         <span class="acad-section-label" style="color:#6a9fd4">El programa</span>
@@ -3956,7 +2792,7 @@ function acadMenuClose() {
 
 <!-- PRÓXIMAMENTE / LISTA ESPERA -->
 <div class="depo-pronto-bg" id="depo-lista">
-  <div class="acad-section" style="max-width:1200px;margin:0 auto;padding:100px 40px">
+  <div class="acad-section" style="max-width:1200px;margin:0 auto;padding:64px 40px">
     <div class="depo-pronto-box">
       <div class="depo-pronto-badge">⏳ En desarrollo · Lanzamiento 2026</div>
       <h3 class="depo-pronto-title">Sé el primero en saberlo</h3>
@@ -4056,11 +2892,11 @@ function acadMenuClose() {
       <div class="sidebar-nav">
         <button class="nav-item active" onclick="showView('dashboard')"><span class="nav-item-icon">🏠</span>Dashboard</button>
         <button class="nav-item" onclick="showView('formaciones')"><span class="nav-item-icon">📚</span>Formaciones</button>
-        <button class="nav-item" onclick="showView('multimedia')"><span class="nav-item-icon">🎵</span>Multimedia</button>
+        <button class="nav-item" data-view="multimedia" onclick="showView('multimedia')"><span class="nav-item-icon">🎵</span>Multimedia</button>
         <button class="nav-item" onclick="showView('arteterapia')"><span class="nav-item-icon">🎨</span>Arteterapia</button>
-        <button class="nav-item" onclick="showView('materiales')"><span class="nav-item-icon">📄</span>Materiales PDF</button>
+        <button class="nav-item" data-view="materiales" onclick="showView('materiales')"><span class="nav-item-icon">📄</span>Materiales PDF</button>
         <button class="nav-item" onclick="showView('progreso')"><span class="nav-item-icon">📊</span>Mi Progreso</button>
-        <button class="nav-item" onclick="showView('notas')"><span class="nav-item-icon">📝</span>Notas</button>
+        <button class="nav-item" onclick="showView('notas')"><span class="nav-item-icon">📝</span>Diario</button>
         <button class="nav-item" style="margin-top:auto;color:rgba(255,255,255,.4)" onclick="doLogout()"><span class="nav-item-icon">🚪</span>Cerrar Sesión</button>
       </div>
     </div>
@@ -4098,7 +2934,7 @@ function acadMenuClose() {
           <span class="dtab-icon">📄</span><span class="dtab-label">Materiales</span>
         </button>
         <button class="dtab" onclick="showView('notas');dtabActive(this,6);dtabCloseMas()">
-          <span class="dtab-icon">📝</span><span class="dtab-label">Notas</span>
+          <span class="dtab-icon">📝</span><span class="dtab-label">Diario</span>
         </button>
         <button class="dtab dtab-logout" onclick="doLogout()">
           <span class="dtab-icon">🚪</span><span class="dtab-label">Salir</span>
@@ -4132,7 +2968,7 @@ function acadMenuClose() {
 
       <!-- BARRA ACCESO RÁPIDO — solo visible para admin/editor -->
       <div id="user-quick-nav" style="display:none;align-items:center;gap:8px;margin-bottom:20px;flex-wrap:wrap">
-        <button class="btn-ghost" onclick="goTo('public')" style="font-size:12px;padding:7px 14px;border-radius:10px;border:1.5px solid #e4ddd3;background:white;color:#3d3730;cursor:pointer;font-family:DM Sans,sans-serif;display:flex;align-items:center;gap:6px">🏠 Inicio</button>
+        <button class="btn-ghost" onclick="goTo('academy')" style="font-size:12px;padding:7px 14px;border-radius:10px;border:1.5px solid #e4ddd3;background:white;color:#3d3730;cursor:pointer;font-family:DM Sans,sans-serif;display:flex;align-items:center;gap:6px">🏠 Academia</button>
         <button class="btn-ghost" onclick="goTo('student')" style="font-size:12px;padding:7px 14px;border-radius:10px;border:1.5px solid #e4ddd3;background:white;color:#3d3730;cursor:pointer;font-family:DM Sans,sans-serif">Mi Dashboard</button>
         <button id="uqn-admin" style="display:none;font-size:12px;padding:7px 14px;border-radius:10px;border:none;background:#b89558;color:white;cursor:pointer;font-family:DM Sans,sans-serif;font-weight:700" onclick="goTo('admin')">⚙ Admin</button>
         <button onclick="doLogout()" style="font-size:12px;padding:7px 14px;border-radius:10px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;cursor:pointer;font-family:DM Sans,sans-serif">Salir</button>
@@ -4184,58 +3020,61 @@ function acadMenuClose() {
 
         <!-- TABS DE FILTRO -->
         <div id="media-tabs" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px">
-          <button onclick="filterMedia('todos')" id="mtab-todos" style="padding:7px 16px;border-radius:100px;border:1.5px solid #2b7d7a;background:#2b7d7a;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">Todos</button>
-          <button onclick="filterMedia('cuencos')" id="mtab-cuencos" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🎵 Cuencos</button>
-          <button onclick="filterMedia('meditacion')" id="mtab-meditacion" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🧘 Meditación</button>
-          <button onclick="filterMedia('frecuencia')" id="mtab-frecuencia" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🌿 Frecuencia</button>
-          <button onclick="filterMedia('teoria')" id="mtab-teoria" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">💫 Teoría</button>
-          <button onclick="filterMedia('canalizacion')" id="mtab-canalizacion" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🌸 Canalización</button>
+          <button onclick="filterMediaCat('Todos',this)" class="media-filter-btn active" style="padding:7px 16px;border-radius:100px;border:1.5px solid #2b7d7a;background:#2b7d7a;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">Todos</button>
+          <button onclick="filterMediaCat('Cuencos',this)" class="media-filter-btn" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🎵 Cuencos</button>
+          <button onclick="filterMediaCat('Meditación',this)" class="media-filter-btn" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🧘 Meditación</button>
+          <button onclick="filterMediaCat('Frecuencia',this)" class="media-filter-btn" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🌿 Frecuencia</button>
+          <button onclick="filterMediaCat('Teoría',this)" class="media-filter-btn" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">💫 Teoría</button>
+          <button onclick="filterMediaCat('Canalización',this)" class="media-filter-btn" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🌸 Canalización</button>
         </div>
 
         <!-- GRID DE TARJETAS -->
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px" id="media-grid">
 
-          <div data-cat="cuencos" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Cuencos Tibetanos — Fundamentos" data-dur="32 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
+          <div data-cat="Cuencos" data-prueba="true" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Cuencos Tibetanos — Fundamentos" data-dur="32 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
             <div style="background:#f5f2ec;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🎵</div>
             <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Cuencos · 32 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Cuencos Tibetanos — Fundamentos</div></div>
           </div>
 
-          <div data-cat="canalizacion" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Canalización Marga — Puerta Blanca" data-dur="18 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
+          <div data-cat="Canalización" data-prueba="false" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Canalización Marga — Puerta Blanca" data-dur="18 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
             <div style="background:#fdf0ee;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🌸</div>
             <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Canalización · 18 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Canalización Marga — Puerta Blanca</div></div>
           </div>
 
-          <div data-cat="meditacion" data-src="REEMPLAZA_CON_URL_VIDEO.mp4" data-type="video" data-title="Meditación de Presencia Corporal" data-dur="15 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
+          <div data-cat="Meditación" data-prueba="true" data-src="REEMPLAZA_CON_URL_VIDEO.mp4" data-type="video" data-title="Meditación de Presencia Corporal" data-dur="15 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
             <div style="background:#eef3fb;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🧘</div>
             <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Meditación · 15 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Meditación de Presencia Corporal</div></div>
           </div>
 
-          <div data-cat="frecuencia" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Frecuencia 432Hz — Armonía Natural" data-dur="40 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
+          <div data-cat="Frecuencia" data-prueba="true" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Frecuencia 432Hz — Armonía Natural" data-dur="40 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
             <div style="background:#f5f2ec;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🌿</div>
             <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Frecuencia · 40 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Frecuencia 432Hz — Armonía Natural</div></div>
           </div>
 
-          <div data-cat="cuencos" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Cuencos — Nivel Terapéutico" data-dur="45 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
+          <div data-cat="Cuencos" data-prueba="false" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Cuencos — Nivel Terapéutico" data-dur="45 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
             <div style="background:#fdf0ee;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🔥</div>
             <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Cuencos · 45 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Cuencos — Nivel Terapéutico</div></div>
           </div>
 
-          <div data-cat="teoria" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="UCDM — Introducción al Perdón" data-dur="28 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
+          <div data-cat="Teoría" data-prueba="false" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="UCDM — Introducción al Perdón" data-dur="28 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
             <div style="background:#fdf6ec;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">💫</div>
             <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Teoría · 28 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">UCDM — Introducción al Perdón</div></div>
           </div>
 
-          <div data-cat="teoria" data-src="REEMPLAZA_CON_URL_VIDEO.mp4" data-type="video" data-title="Dzogchen — Introducción a Rigpa" data-dur="35 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
+          <div data-cat="Teoría" data-prueba="false" data-src="REEMPLAZA_CON_URL_VIDEO.mp4" data-type="video" data-title="Dzogchen — Introducción a Rigpa" data-dur="35 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
             <div style="background:#eef3fb;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🔵</div>
             <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Teoría · 35 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Dzogchen — Introducción a Rigpa</div></div>
           </div>
 
-          <div data-cat="frecuencia" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Frecuencia 963Hz — La Luz" data-dur="48 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
+          <div data-cat="Frecuencia" data-prueba="false" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Frecuencia 963Hz — La Luz" data-dur="48 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
             <div style="background:#eef3fb;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">✨</div>
             <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Frecuencia · 48 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Frecuencia 963Hz — La Luz</div></div>
           </div>
 
         </div>
+
+        <!-- INFO PLAN PRUEBA (visible cuando filtro no tiene contenido) -->
+        <div id="media-prueba-info" style="display:none;margin-top:8px"></div>
 
         <!-- MODAL REPRODUCTOR -->
         <div id="media-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px">
@@ -4448,7 +3287,7 @@ function acadMenuClose() {
             <span class="modal-nav-icon">🎨</span>Arteterapia
           </button>
           <button class="modal-nav-btn" onclick="switchModalTab(5,this)" data-tab="5">
-            <span class="modal-nav-icon">📝</span>Notas
+            <span class="modal-nav-icon">📝</span>Diario
           </button>
           <button class="modal-nav-btn" onclick="switchModalTab(6,this)" data-tab="6">
             <span class="modal-nav-icon">✅</span>Completar
@@ -4491,7 +3330,7 @@ window.addEventListener('DOMContentLoaded', function() {
     if (window.supabase) {
       sb = window.supabase.createClient(SB_URL, SB_ANON);
       sb.auth.onAuthStateChange(function(event, session) {
-        if (event === 'SIGNED_IN' && session) onLogin(session.user);
+        if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'USER_UPDATED') && session) onLogin(session.user);
         if (event === 'SIGNED_OUT') onLogout();
       });
       sb.auth.getSession().then(function(r) {
@@ -4549,21 +3388,40 @@ function showView(view, el) {
   if (view === 'formaciones') filterWeeksByPlan();
   if (view === 'notas') notasInit();
    if (view === 'multimedia') {
+    var isPrueba = user && user._plan === 'Prueba';
     var grid = document.getElementById('media-grid');
     if (!grid) return;
-    var catWords = {'cuencos':'cuencos','canaliz':'canalizacion','meditaci':'meditacion','frecuencia':'frecuencia','teor':'teoria','dzogchen':'teoria','ucdm':'teoria'};
+    // Filtrar tarjetas según plan
     Array.from(grid.children).forEach(function(card) {
-      card.style.display = 'block';
-      if (!card.getAttribute('data-cat')) {
-        var text = card.textContent.toLowerCase();
-        Object.keys(catWords).forEach(function(w){ if(text.indexOf(w)!==-1) card.setAttribute('data-cat',catWords[w]); });
+      var esPrueba = card.getAttribute('data-prueba') === 'true';
+      if (isPrueba) {
+        card.style.display = esPrueba ? '' : 'none';
+      } else {
+        card.style.display = '';
       }
     });
+    // Resetear tab activo a "Todos"
+    document.querySelectorAll('.media-filter-btn').forEach(function(b,i){ b.classList.toggle('active', i===0); });
+    var styleActive = 'padding:7px 16px;border-radius:100px;border:1.5px solid #2b7d7a;background:#2b7d7a;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em';
+    var styleInactive = 'padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em';
+    document.querySelectorAll('.media-filter-btn').forEach(function(b,i){ b.style.cssText = i===0 ? styleActive : styleInactive; });
+    var info = document.getElementById('media-prueba-info');
+    if (info) info.style.display = 'none';
   }
 }
+
+function showUpgradeBanner() {
+  document.getElementById('upgrade-banner').classList.add('open');
+}
+function closeUpgradeBanner() {
+  document.getElementById('upgrade-banner').classList.remove('open');
+}
 function filterWeeksByPlan() {
-  const plan = user ? (user._plan || 'Blanca') : 'Blanca';
+  if (!user) return; // Esperar a que onLogin cargue el usuario y su plan
+  const plan = user._plan || 'Blanca';
+  const isPrueba = plan === 'Prueba';
   const planRanges = {
+    'Prueba':   { min: 1,  max: 3  },
     'Blanca':   { min: 1,  max: 12 },
     'Roja':     { min: 13, max: 24 },
     'Azul':     { min: 25, max: 36 },
@@ -4579,21 +3437,37 @@ function filterWeeksByPlan() {
 
     // Fuera del rango del plan — candado con mensaje
     if (w < range.min || w > range.max) {
-      const puertaNecesaria = w <= 12 ? 'Blanca' : w <= 24 ? 'Roja' : w <= 36 ? 'Azul' : 'Arcoiris';
       card.style.opacity = '0.4';
       card.style.position = 'relative';
       card.style.cursor = 'pointer';
       card.style.pointerEvents = '';
-      card.onclick = (function(pn) { return function(e) {
-        e.stopPropagation();
-        toast('🔒 Para acceder a la Puerta ' + pn + ' primero debes completar todas las semanas de tu puerta actual y adquirirla.');
-      }; })(puertaNecesaria);
-      if (!card.querySelector('.lock-overlay')) {
-        const lock = document.createElement('div');
-        lock.className = 'lock-overlay';
-        lock.style.cssText = 'position:absolute;top:8px;right:8px;font-size:14px;';
-        lock.textContent = '🔒';
-        card.appendChild(lock);
+
+      if (isPrueba) {
+        // Plan Prueba: CTA especial de upgrade
+        card.onclick = function(e) {
+          e.stopPropagation();
+          showUpgradeBanner();
+        };
+        if (!card.querySelector('.lock-overlay')) {
+          const lock = document.createElement('div');
+          lock.className = 'lock-overlay';
+          lock.style.cssText = 'position:absolute;top:8px;right:8px;font-size:14px;';
+          lock.textContent = '✦';
+          card.appendChild(lock);
+        }
+      } else {
+        const puertaNecesaria = w <= 12 ? 'Blanca' : w <= 24 ? 'Roja' : w <= 36 ? 'Azul' : 'Arcoiris';
+        card.onclick = (function(pn) { return function(e) {
+          e.stopPropagation();
+          toast('🔒 Para acceder a la Puerta ' + pn + ' primero debes completar todas las semanas de tu puerta actual y adquirirla.');
+        }; })(puertaNecesaria);
+        if (!card.querySelector('.lock-overlay')) {
+          const lock = document.createElement('div');
+          lock.className = 'lock-overlay';
+          lock.style.cssText = 'position:absolute;top:8px;right:8px;font-size:14px;';
+          lock.textContent = '🔒';
+          card.appendChild(lock);
+        }
       }
       return;
     }
@@ -4667,6 +3541,16 @@ async function doLogin() {
   }
 }
 
+function startFreeTrial() {
+  try { localStorage.setItem('freeTrialPending', 'true'); } catch(e) {}
+  goTo('auth');
+  // Activar tab de registro
+  setTimeout(function() {
+    var tabReg = document.getElementById('tab-register');
+    if (tabReg) tabReg.click();
+  }, 200);
+}
+
 async function doRegister() {
   const name  = document.getElementById('inp-name').value.trim();
   const email = document.getElementById('inp-reg-email').value.trim();
@@ -4681,8 +3565,20 @@ async function doRegister() {
   try {
     if (sb) {
       var pendingPlanReg = null; try { pendingPlanReg = localStorage.getItem('pendingPlan'); } catch(e) {}
-      const { data: signUpData, error } = await sb.auth.signUp({ email, password: pass, options: { data: { full_name: name } } });
+      var isFreeTrial = false; try { isFreeTrial = localStorage.getItem('freeTrialPending') === 'true'; } catch(e) {}
+
+      const signUpMeta = { full_name: name };
+      if (isFreeTrial) signUpMeta.plan = 'Prueba';
+      const { data: signUpData, error } = await sb.auth.signUp({ email, password: pass, options: { data: signUpMeta } });
       if (error) throw error;
+
+      // Si es registro de prueba gratuita → upsert profile con plan='Prueba'
+      if (isFreeTrial && signUpData?.user) {
+        try { localStorage.removeItem('freeTrialPending'); } catch(e) {}
+        // El plan ya viaja en user_metadata — onLogin lo leerá automáticamente
+        // cuando Supabase dispare SIGNED_IN tras la confirmación de email
+      }
+
       if (pendingPlanReg && signUpData?.user) {
         setTimeout(function(){ handlePurchase(pendingPlanReg); }, 3000);
       }
@@ -4736,12 +3632,14 @@ async function onLogin(u) {
   // Actualizar sidebar
   document.getElementById('sb-name').textContent = name;
   document.getElementById('sb-email').textContent = u.email;
-  document.getElementById('sb-plan').textContent = '✨ Puerta ' + userPlan;
+  document.getElementById('sb-plan').textContent = 
+    userPlan === 'Prueba' ? '🌿 Acceso Libre · Sem. 1-3' : '✨ Puerta ' + userPlan;
   document.getElementById('sb-plan').style.background = 
     userPlan === 'Oro' ? '#b89558' :
     userPlan === 'Arcoiris' ? '#7b4fa6' :
     userPlan === 'Azul' ? '#2c5f9e' :
-    userPlan === 'Roja' ? '#bf4637' : '#8a8078';
+    userPlan === 'Roja' ? '#bf4637' :
+    userPlan === 'Prueba' ? '#2b7d7a' : '#8a8078';
 
   document.getElementById('btnLogin').style.display = 'none';
   document.getElementById('btnInscribirse').style.display = 'none';
@@ -4757,6 +3655,13 @@ async function onLogin(u) {
   var edBtn = document.getElementById('edOpenBtn'); if(edBtn) edBtn.style.display = isAdmin ? '' : 'none';
   var dtabEd = document.getElementById('dtab-editor-btn'); if(dtabEd) dtabEd.style.display = isAdmin ? 'flex' : 'none';
   document.getElementById('btnHome').style.display = '';
+  // ── Acad-nav: clase CSS loggedin en body ──
+  document.body.classList.add('loggedin');
+  if (userPlan === 'Prueba') {
+    document.body.classList.add('prueba-plan');
+  } else {
+    document.body.classList.remove('prueba-plan');
+  }
   // Barra acceso rápido dentro del área de usuario — solo admin/editor
   var uqn = document.getElementById('user-quick-nav');
   if (uqn) {
@@ -4765,7 +3670,10 @@ async function onLogin(u) {
     if (uqnAdmin) uqnAdmin.style.display = isAdmin ? '' : 'none';
   }
 
-try {
+// ── Aplicar bloqueo de semanas según plan ──
+  filterWeeksByPlan();
+
+  try {
     var pendingPlan = null;
     try { pendingPlan = localStorage.getItem('pendingPlan'); } catch(e) {}
     if (pendingPlan) {
@@ -4798,6 +3706,9 @@ function onLogout() {
   document.getElementById('btnLogout').style.display = 'none';
   document.getElementById('btnAdmin').style.display = 'none';
   document.getElementById('btnHome').style.display = 'none';
+  // ── Acad-nav: restaurar estado sin sesión ──
+  document.body.classList.remove('loggedin');
+  document.body.classList.remove('prueba-plan');
 }
 
 function togglePassVis(id, btn) {
@@ -4811,7 +3722,7 @@ function togglePassVis(id, btn) {
 async function doLogout() {
   if (sb) await sb.auth.signOut();
   onLogout();
-  goTo('public');
+  goTo('academy');
   toast('Sesión cerrada');
 }
 
@@ -5242,9 +4153,64 @@ function openWeekModal(weekNum) {
 
     // Tab 3: Materiales PDF
     (function() {
+      var isPrueba = user && user._plan === 'Prueba';
+      var BASE = 'https://jtwbbyjspanirbsuoipa.supabase.co/storage/v1/object/public/materiales/PRUEBA/';
+      var tctBlancaUrl  = BASE + 'TCT-I-PUERTA-BLANCA.pdf#toolbar=0&navpanes=0';
+      var tctBlancaName = 'TCT I · Puerta Blanca — Libro completo de la 1ª Puerta';
+
+      // Mapa de PDFs por semana (plan Prueba)
+      var PRUEBA_WEEK = {
+        1: { name:'El Deportista Consciente — Cap. 1: El precio oculto del alto rendimiento', meta:'Semana 1 · 9 páginas · Solo lectura', url: BASE + 'prueba_deportista_sem1_cap1.pdf' },
+        2: { name:'El Deportista Consciente — Cap. 2: Cuando ganar ya no es suficiente',      meta:'Semana 2 · 14 páginas · Solo lectura', url: BASE + 'prueba_deportista_sem2_cap2.pdf' },
+        3: { name:'El Ser Consciente — Cap. 3: Cuerpo, mente y consciencia: una sola unidad', meta:'Semana 3 · 7 páginas · Solo lectura',  url: BASE + 'prueba_ser_sem3_cap3.pdf' }
+      };
+
+      if (isPrueba && weekNum <= 3) {
+        var wp = PRUEBA_WEEK[weekNum];
+
+        // Card del capítulo de la semana
+        var weekCard =
+          '<div class="pdf-card" style="margin-bottom:14px">' +
+            '<div class="pdf-card-header" onclick="openPdfFullscreen(\'' + wp.url + '\',\'' + wp.name.replace(/'/g,"\\'") + '\')" style="cursor:pointer">' +
+              '<div class="pdf-icon">📄</div>' +
+              '<div class="pdf-info">' +
+                '<div class="pdf-name">' + wp.name + '</div>' +
+                '<div class="pdf-meta">' + wp.meta + '</div>' +
+              '</div>' +
+              '<div class="pdf-actions">' +
+                '<button class="btn-pdf-view" onclick="event.stopPropagation();openPdfFullscreen(\'' + wp.url + '\',\'' + wp.name.replace(/'/g,"\\'") + '\')">👁 Ver</button>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+
+        // Card TCT-I limitada (pág. 1-48)
+        var tctCard =
+          '<div style="margin-bottom:14px;background:#fffdf7;border:1px solid rgba(188,150,64,.35);border-radius:14px;overflow:hidden">' +
+            '<div class="pdf-card-header" onclick="openPdfFullscreen(\'' + tctBlancaUrl + '\',\'' + tctBlancaName + '\')" style="cursor:pointer">' +
+              '<div class="pdf-icon" style="background:linear-gradient(135deg,#fdf6ec,#f5e9cc)">📖</div>' +
+              '<div class="pdf-info">' +
+                '<div class="pdf-name">' + tctBlancaName + '</div>' +
+                '<div class="pdf-meta">Portada · Págs. 1–48 · Solo lectura · Sin descarga</div>' +
+              '</div>' +
+              '<div class="pdf-actions">' +
+                '<button class="btn-pdf-view" style="background:#fdf6ec;color:#BC9640;border:1px solid rgba(188,150,64,.3)" ' +
+                  'onclick="event.stopPropagation();openPdfFullscreen(\'' + tctBlancaUrl + '\',\'' + tctBlancaName + '\')">👁 Ver</button>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+
+        return weekCard + tctCard +
+          '<div style="background:#faf8f5;border:1px solid #e4ddd3;border-radius:12px;padding:18px;text-align:center;margin-top:4px">' +
+            '<div style="font-size:20px;margin-bottom:6px">📚</div>' +
+            '<div style="font-family:\'Cormorant Garamond\',serif;font-size:16px;color:#1c1814;margin-bottom:4px">Libros completos en el curso</div>' +
+            '<div style="font-size:11px;color:#7a7168;margin-bottom:12px">El Deportista Consciente · El Ser Consciente · TCT I–IV · Cuencos Tibetanos I</div>' +
+            '<button onclick="showUpgradeBanner()" style="background:linear-gradient(135deg,#BC9640,#D4AA5A);color:#1c1814;border:none;padding:8px 22px;border-radius:100px;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.05em">Desbloquear todo →</button>' +
+          '</div>';
+      }
+
+      // Plan normal (no Prueba)
       var pdfs = MATERIALES[w.p] ? MATERIALES[w.p].pdfs : [];
       if (pdfs.length === 0) return '<p style="color:#7a7168;font-size:14px">No hay materiales para esta puerta.</p>';
-      var mcolor = MATERIALES[w.p] ? MATERIALES[w.p].color : '#2b7d7a';
       return '<div style="margin-bottom:12px;font-size:12px;color:#7a7168">Materiales de la <strong>Puerta ' + w.p + '</strong></div>' +
         pdfs.map(function(pdf, i) {
           var mid = 'modal-pdf-' + weekNum + '-' + i;
@@ -5454,6 +4420,86 @@ const MATERIALES = {
 var _pdfViewerOpen = {};
 
 function renderMateriales() {
+  var isPrueba = user && user._plan === 'Prueba';
+  var el = document.getElementById('materiales-content');
+  if (!el) return;
+
+  // Plan Prueba: solo puede VER el PDF de introducción de Blanca, sin descargar
+  if (isPrueba) {
+    var m = MATERIALES['Blanca'];
+    // PDFs parciales específicos por semana — solo lectura
+    var PDFS_PRUEBA = [
+      {
+        id: 'prueba-pdf-0',
+        name: 'El Deportista Consciente — Cap. 1: El precio oculto del alto rendimiento',
+        meta: 'Semana 1 · 9 páginas · Solo lectura',
+        url: 'https://jtwbbyjspanirbsuoipa.supabase.co/storage/v1/object/public/materiales/PRUEBA/prueba_deportista_sem1_cap1.pdf',
+        limited: false
+      },
+      {
+        id: 'prueba-pdf-1',
+        name: 'El Deportista Consciente — Cap. 2: Cuando ganar ya no es suficiente',
+        meta: 'Semana 2 · 14 páginas · Solo lectura',
+        url: 'https://jtwbbyjspanirbsuoipa.supabase.co/storage/v1/object/public/materiales/PRUEBA/prueba_deportista_sem2_cap2.pdf',
+        limited: false
+      },
+      {
+        id: 'prueba-pdf-2',
+        name: 'El Ser Consciente — Cap. 3: Cuerpo, mente y consciencia: una sola unidad',
+        meta: 'Semana 3 · 7 páginas · Solo lectura',
+        url: 'https://jtwbbyjspanirbsuoipa.supabase.co/storage/v1/object/public/materiales/PRUEBA/prueba_ser_sem3_cap3.pdf',
+        limited: false
+      },
+      {
+        id: 'prueba-pdf-3',
+        name: 'TCT I · Puerta Blanca — Libro completo de la 1ª Puerta',
+        meta: 'Portada · Págs. 1–48 · Solo lectura · Sin descarga',
+        url: 'https://jtwbbyjspanirbsuoipa.supabase.co/storage/v1/object/public/materiales/PRUEBA/TCT-I-PUERTA-BLANCA.pdf#toolbar=0&navpanes=0',
+        limited: false,
+        icon: '📖',
+        iconBg: 'linear-gradient(135deg,#fdf6ec,#f5e9cc)'
+      }
+    ];
+
+    var pdfsHtml = PDFS_PRUEBA.map(function(pdf) {
+      var icon    = pdf.icon    || '📄';
+      var iconBg  = pdf.iconBg  || 'linear-gradient(135deg,#e8f4f3,#d0eae9)';
+      var openFn  = pdf.limited
+        ? 'openPdfLimited(\'' + pdf.url + '\',\'' + pdf.name.replace(/'/g,"\'\'") + '\',' + (pdf.maxPage||48) + ')'
+        : 'openPdfFullscreen(\'' + pdf.url + '\',\'' + pdf.name.replace(/'/g,"\'\'") + '\')';
+      var border  = pdf.limited ? '1px solid rgba(188,150,64,.35)' : '1px solid #e4ddd3';
+      return '<div class="pdf-card" style="border:' + border + '">' +
+        '<div class="pdf-card-header" onclick="' + openFn + '">'+
+          '<div class="pdf-icon" style="background:' + iconBg + '">' + icon + '</div>' +
+          '<div class="pdf-info"><div class="pdf-name">' + pdf.name + '</div><div class="pdf-meta">' + pdf.meta + '</div></div>' +
+          '<div class="pdf-actions">' +
+            '<button class="btn-pdf-view" onclick="event.stopPropagation();' + openFn + '">👁 Ver</button>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    el.innerHTML =
+      '<div style="background:#f0f7f6;border:1.5px solid rgba(43,125,122,.2);border-radius:14px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:center;gap:14px">' +
+        '<span style="font-size:24px">🌿</span>' +
+        '<div><div style="font-size:13px;font-weight:700;color:#2b7d7a;margin-bottom:2px">Acceso Libre · Sem. 1–3</div>' +
+        '<div style="font-size:12px;color:#7a7168">Capítulos introductorios + TCT I pág. 1–48 · Solo lectura · Sin descarga</div></div>' +
+        '<button onclick="showView(\'formaciones\')" style="margin-left:auto;flex-shrink:0;background:#2b7d7a;color:white;border:none;padding:8px 18px;border-radius:100px;font-size:11px;font-weight:700;cursor:pointer;letter-spacing:.05em">Acceso semanas →</button>' +
+      '</div>' +
+      '<div class="materiales-puerta">' +
+        '<div class="materiales-puerta-title" style="color:#b8ad9e"><span style="font-size:22px">🌿</span> Capítulos introductorios · Acceso libre</div>' +
+        pdfsHtml +
+      '</div>' +
+      '<div style="background:#faf8f5;border:1px solid #e4ddd3;border-radius:14px;padding:28px;text-align:center;margin-top:20px">' +
+        '<div style="font-size:28px;margin-bottom:10px">📚</div>' +
+        '<div style="font-family:\'Cormorant Garamond\',serif;font-size:20px;color:#1c1814;margin-bottom:6px">Libros completos en el curso</div>' +
+        '<div style="font-size:13px;color:#7a7168;margin-bottom:18px">El Deportista Consciente · El Ser Consciente · TCT I–IV · Cuencos Tibetanos I</div>' +
+        '<button onclick="showUpgradeBanner()" style="background:linear-gradient(135deg,#BC9640,#D4AA5A);color:#1c1814;border:none;padding:10px 26px;border-radius:100px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.05em">Desbloquear todo →</button>' +
+      '</div>';
+    return;
+  }
+
+  // Plan normal
   var puertaActual = currentWeek <= 12 ? 'Blanca' : currentWeek <= 24 ? 'Roja' : currentWeek <= 36 ? 'Azul' : 'Arcoiris';
   var puertas = ['Blanca','Roja','Azul','Arcoiris','Oro'];
   var html = '';
@@ -5484,7 +4530,7 @@ function renderMateriales() {
       pdfsHtml +
     '</div>';
   });
-  document.getElementById('materiales-content').innerHTML = html;
+  el.innerHTML = html;
 }
 
 function togglePdfViewer(id) {
@@ -5499,9 +4545,17 @@ function togglePdfViewer(id) {
 }
 
 function openPdfFullscreen(url, name) {
+  var isPrueba = user && user._plan === 'Prueba';
   document.getElementById('pdf-fullscreen-name').textContent = name;
   document.getElementById('pdf-fullscreen-frame').src = url;
-  document.getElementById('pdf-fullscreen-dl').href = url;
+  var dlBtn = document.getElementById('pdf-fullscreen-dl');
+  if (dlBtn) {
+    dlBtn.href = url;
+    dlBtn.style.display = isPrueba ? 'none' : '';
+  }
+  // Sin selección de texto en modo Prueba
+  var frame = document.getElementById('pdf-fullscreen-frame');
+  if (frame) frame.style.userSelect = isPrueba ? 'none' : '';
   document.getElementById('pdf-fullscreen-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -5509,6 +4563,15 @@ function openPdfFullscreen(url, name) {
 function closePdfFullscreen() {
   document.getElementById('pdf-fullscreen-modal').classList.remove('open');
   document.getElementById('pdf-fullscreen-frame').src = '';
+  document.getElementById('pdf-fullscreen-frame').style.display = '';
+  // Reset visor limitado
+  var viewer = document.getElementById('pdf-js-viewer');
+  if (viewer) viewer.style.display = 'none';
+  var badge = document.getElementById('pdf-limited-badge');
+  if (badge) badge.style.display = 'none';
+  var dlBtn = document.getElementById('pdf-fullscreen-dl');
+  if (dlBtn) dlBtn.style.display = '';
+  _pdfDoc = null; _pdfPage = 1; _pdfRendering = false;
   document.body.style.overflow = '';
 }
 
@@ -5519,26 +4582,70 @@ document.addEventListener('keydown', function(e) {
 
 // ── MULTIMEDIA ──
 function renderMedia() {
+  const isPrueba = user && user._plan === 'Prueba';
+  // Cada item tiene 'prueba:true' si está disponible en plan Prueba (sem 1-3)
   const items = [
-    {icon:'🎵',title:'Cuencos Tibetanos — Fundamentos',cat:'Cuencos',dur:'32 min',bg:'#f5f2ec'},
-    {icon:'🌸',title:'Canalización Marga — Puerta Blanca',cat:'Canalización',dur:'18 min',bg:'#fdf0ee'},
-    {icon:'🧘',title:'Meditación de Presencia Corporal',cat:'Meditación',dur:'15 min',bg:'#eef3fb'},
-    {icon:'🌿',title:'Frecuencia 432Hz — Armonía Natural',cat:'Frecuencia',dur:'40 min',bg:'#f5f2ec'},
-    {icon:'🔥',title:'Cuencos — Nivel Terapéutico',cat:'Cuencos',dur:'45 min',bg:'#fdf0ee'},
-    {icon:'💫',title:'UCDM — Introducción al Perdón',cat:'Teoría',dur:'28 min',bg:'#fdf6ec'},
-    {icon:'🔵',title:'Dzogchen — Introducción a Rigpa',cat:'Teoría',dur:'35 min',bg:'#eef3fb'},
-    {icon:'✨',title:'Frecuencia 963Hz — La Luz',cat:'Frecuencia',dur:'48 min',bg:'#eef3fb'},
+    {icon:'🎵',title:'Cuencos Tibetanos — Fundamentos',cat:'Cuencos',dur:'32 min',bg:'#f5f2ec', prueba:true},
+    {icon:'🧘',title:'Meditación de Presencia Corporal',cat:'Meditación',dur:'15 min',bg:'#eef3fb', prueba:true},
+    {icon:'🌿',title:'Frecuencia 432Hz — Armonía Natural',cat:'Frecuencia',dur:'40 min',bg:'#f5f2ec', prueba:true},
+    {icon:'🌸',title:'Canalización Marga — Puerta Blanca',cat:'Canalización',dur:'18 min',bg:'#fdf0ee', prueba:false},
+    {icon:'🔥',title:'Cuencos — Nivel Terapéutico',cat:'Cuencos',dur:'45 min',bg:'#fdf0ee', prueba:false},
+    {icon:'💫',title:'UCDM — Introducción al Perdón',cat:'Teoría',dur:'28 min',bg:'#fdf6ec', prueba:false},
+    {icon:'🔵',title:'Dzogchen — Introducción a Rigpa',cat:'Teoría',dur:'35 min',bg:'#eef3fb', prueba:false},
+    {icon:'✨',title:'Frecuencia 963Hz — La Luz',cat:'Frecuencia',dur:'48 min',bg:'#eef3fb', prueba:false},
   ];
   const grid = document.getElementById('media-grid');
   if (!grid) return;
-  grid.innerHTML = items.map(function(m){
-    return '<div style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'0 8px 24px rgba(0,0,0,.08)\'" onmouseout="this.style.transform=\'\';this.style.boxShadow=\'\'" onclick="toast(\'Reproduciendo: ' + m.title + ' 🎵\')">' +
+  const visibles = isPrueba ? items.filter(function(m){ return m.prueba; }) : items;
+  grid.innerHTML = visibles.map(function(m){
+    return '<div data-cat="' + m.cat + '" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'0 8px 24px rgba(0,0,0,.08)\'" onmouseout="this.style.transform=\'\';this.style.boxShadow=\'\'" onclick="toast(\'Reproduciendo: ' + m.title + ' 🎵\')">' +
       '<div style="background:' + m.bg + ';height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">' + m.icon + '</div>' +
       '<div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">' + m.cat + ' · ' + m.dur + '</div>' +
       '<div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">' + m.title + '</div></div></div>';
   }).join('');
 }
 
+// Filtrar multimedia por categoría — muestra "Próximamente" si no hay contenido para plan Prueba
+function filterMediaCat(cat, btn) {
+  const isPrueba = user && user._plan === 'Prueba';
+  const grid = document.getElementById('media-grid');
+  const info = document.getElementById('media-prueba-info');
+  document.querySelectorAll('.media-filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  if (btn) btn.classList.add('active');
+  var visible = 0;
+  if (!grid) return;
+  Array.from(grid.children).forEach(function(card) {
+    var cardCat = card.getAttribute('data-cat') || '';
+    var show = cat === 'Todos' || cardCat === cat;
+    card.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+  if (info) {
+    if (isPrueba && visible === 0) {
+      info.style.display = 'block';
+      info.innerHTML = '<div style="text-align:center;padding:40px 20px;background:#faf8f5;border-radius:14px;border:1px solid #e4ddd3">' +
+        '<div style="font-size:32px;margin-bottom:12px">✦</div>' +
+        '<div style="font-family:\'Cormorant Garamond\',serif;font-size:20px;color:#1c1814;margin-bottom:8px">Disponible en el curso completo</div>' +
+        '<div style="font-size:13px;color:#7a7168;margin-bottom:20px">Este contenido forma parte del Método TCT · 48 semanas.</div>' +
+        '<button onclick="showUpgradeBanner()" style="background:#BC9640;color:white;border:none;padding:10px 24px;border-radius:100px;font-size:12px;font-weight:700;letter-spacing:.06em;cursor:pointer">Ver el curso completo →</button>' +
+        '</div>';
+    } else {
+      info.style.display = 'none';
+    }
+  }
+}
+
+
+// ── PRUEBA: interceptar vistas bloqueadas ──
+function goViewPrueba(view) {
+  var isPrueba = user && user._plan === 'Prueba';
+  if (isPrueba && (view === 'multimedia' || view === 'materiales')) {
+    // Multimedia: permitir acceso filtrado, Materiales: renderMateriales maneja Prueba
+    showView(view);
+    return;
+  }
+  showView(view);
+}
 // ── PROGRESO ──
 function renderProgreso() {
   const puertas = [
@@ -6144,7 +5251,7 @@ html, body { overflow-x: hidden; }
 .admin-refresh:hover{background:#d0eae9}
 
 /* PDF FULLSCREEN MODAL */
-.pdf-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9000;flex-direction:column}
+.pdf-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:999999;flex-direction:column}
 .pdf-modal-overlay.open{display:flex}
 .pdf-modal-topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:#1c1814;flex-shrink:0}
 .pdf-modal-topbar-name{font-size:13px;font-weight:600;color:white;max-width:70%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -6929,6 +6036,71 @@ button:focus-visible, input:focus-visible {
 <body class="" data-nm-state="{&quot;nav&quot;:[{&quot;id&quot;:&quot;nav17716996591321&quot;,&quot;label&quot;:&quot;El Viaje&quot;,&quot;linkType&quot;:&quot;anchor&quot;,&quot;anchor&quot;:&quot;&quot;,&quot;color&quot;:&quot;&quot;,&quot;style&quot;:&quot;normal&quot;,&quot;emoji&quot;:&quot;&quot;,&quot;newTab&quot;:false,&quot;children&quot;:[]},{&quot;id&quot;:&quot;nav17716996591322&quot;,&quot;label&quot;:&quot;Precios&quot;,&quot;linkType&quot;:&quot;anchor&quot;,&quot;anchor&quot;:&quot;#Estructura del Sistema TCT Las Cinco Puertas&quot;,&quot;color&quot;:&quot;&quot;,&quot;style&quot;:&quot;normal&quot;,&quot;emoji&quot;:&quot;&quot;,&quot;newTab&quot;:false,&quot;children&quot;:[],&quot;url&quot;:&quot;&quot;,&quot;pageSlug&quot;:&quot;&quot;}],&quot;pages&quot;:[],&quot;cats&quot;:[]}">
 
 
+<!-- ── UPGRADE BANNER (plan Prueba) ── -->
+<div id="upgrade-banner">
+  <div class="upgrade-card">
+    <button class="upgrade-card-close" onclick="closeUpgradeBanner()">✕</button>
+    <div class="upgrade-card-icon">✦</div>
+    <div class="upgrade-card-title">Continúa tu camino</div>
+    <div class="upgrade-card-sub">Has completado tu acceso gratuito de las 3 primeras semanas.<br>El Método TCT completo te espera — 48 semanas de transformación.</div>
+    <div class="upgrade-card-weeks">
+      <span class="upgrade-week-pill">🌿 Puerta Blanca · 12 sem.</span>
+      <span class="upgrade-week-pill">🔥 Puerta Roja · 12 sem.</span>
+    </div>
+    <div class="upgrade-card-weeks">
+      <span class="upgrade-week-pill">🔵 Puerta Azul · 12 sem.</span>
+      <span class="upgrade-week-pill">🌈 Arcoíris · 12 sem.</span>
+    </div>
+    <button class="upgrade-card-cta" onclick="closeUpgradeBanner();goTo('public');setTimeout(function(){var el=document.getElementById('precios');if(el)el.scrollIntoView({behavior:'smooth'});},400)">
+      Ver el curso completo →
+    </button>
+    <div class="upgrade-card-note">Acceso de por vida · Sin suscripción</div>
+  </div>
+</div>
+
+<!-- ── TOPBAR GLOBAL: logo FI visible en dashboard y admin ── -->
+<div id="fi-topbar">
+  <div id="fi-topbar-logo" onclick="goTo('academy')">
+    <svg width="36" height="36" viewBox="0 0 80 80" fill="none">
+      <circle cx="40" cy="40" r="37" stroke="#BC9640" stroke-width="1.8" opacity=".45"/>
+      <circle cx="40" cy="40" r="31.4" stroke="#BC9640" stroke-width="1.2" opacity=".28"/>
+      <circle cx="40" cy="40" r="19.4" stroke="#D4AA5A" stroke-width="1" opacity=".25"/>
+      <circle cx="40" cy="40" r="12" stroke="#BC9640" stroke-width=".9" opacity=".22"/>
+      <line x1="40" y1="40" x2="52.0" y2="40.0" stroke="#D4AA5A" stroke-width="1.2" opacity=".4"/>
+      <line x1="40" y1="40" x2="34.0" y2="50.39" stroke="#D4AA5A" stroke-width="1.2" opacity=".4"/>
+      <line x1="40" y1="40" x2="34.0" y2="29.61" stroke="#D4AA5A" stroke-width="1.2" opacity=".4"/>
+      <line x1="40" y1="40" x2="53.72" y2="53.72" stroke="#BC9640" stroke-width="1" opacity=".32"/>
+      <line x1="40" y1="40" x2="26.28" y2="53.72" stroke="#BC9640" stroke-width="1" opacity=".32"/>
+      <line x1="40" y1="40" x2="26.28" y2="26.28" stroke="#BC9640" stroke-width="1" opacity=".32"/>
+      <line x1="40" y1="40" x2="53.72" y2="26.28" stroke="#BC9640" stroke-width="1" opacity=".32"/>
+      <circle cx="40" cy="40" r="3.5" fill="#D4AA5A" opacity=".95"/>
+      <circle cx="52.0" cy="40.0" r="2" fill="#D4AA5A" opacity=".95"/>
+      <circle cx="34.0" cy="50.39" r="2" fill="#D4AA5A" opacity=".95"/>
+      <circle cx="34.0" cy="29.61" r="2" fill="#D4AA5A" opacity=".95"/>
+      <circle cx="53.72" cy="53.72" r="2.3" fill="#BC9640" opacity=".8"/>
+      <circle cx="26.28" cy="53.72" r="2.3" fill="#BC9640" opacity=".8"/>
+      <circle cx="26.28" cy="26.28" r="2.3" fill="#BC9640" opacity=".8"/>
+      <circle cx="53.72" cy="26.28" r="2.3" fill="#BC9640" opacity=".8"/>
+      <circle cx="69.86" cy="49.7" r="2.6" fill="#BC9640" opacity=".65"/>
+      <circle cx="40.0" cy="71.4" r="2.6" fill="#BC9640" opacity=".65"/>
+      <circle cx="10.14" cy="49.7" r="2.6" fill="#BC9640" opacity=".65"/>
+      <circle cx="21.54" cy="14.6" r="2.6" fill="#BC9640" opacity=".65"/>
+      <circle cx="58.46" cy="14.6" r="2.6" fill="#BC9640" opacity=".65"/>
+      <path d="M40 9 C50 18 71 26 71 40 C71 54 50 62 40 71 C30 62 9 54 9 40 C9 26 30 18 40 9Z" stroke="#BC9640" stroke-width="1.2" fill="none" opacity=".3"/>
+    </svg>
+    <div>
+      <span id="fi-topbar-logo-text">Frecuencia Integral</span>
+      <span id="fi-topbar-logo-sub">Academy</span>
+    </div>
+  </div>
+  <div id="fi-topbar-right">
+    <button id="fi-topbar-academy" onclick="goTo('academy')">← Academia</button>
+  </div>
+</div>
+
+
+
+
 <!-- MOBILE MENU -->
 <div id="mobile-menu">
   <button id="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
@@ -6940,10 +6112,104 @@ button:focus-visible, input:focus-visible {
   <button onclick="goTo('auth');toggleMobileMenu()" style="font-family:'Jost',sans-serif;font-size:0.85rem;letter-spacing:0.18em;text-transform:uppercase;background:#BC9640;color:white;border:none;padding:1rem 2.5rem;cursor:pointer;margin-top:1rem">Acceso Alumnos</button>
 </div>
 
-<!-- NAV -->
-<nav style="background: rgba(247, 245, 241, 0.95); border-bottom-color: rgb(228, 221, 211); height: 76px; position: fixed;">
-  <div class="nav-logo" onclick="goTo('public')">
-    <svg class="nav-logo-svg" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+<!-- PAGE: PUBLIC -->
+<div class="page" id="page-public">
+<!-- NAV UNIFICADO LANDINGS -->
+<style>
+.landing-nav {
+  position: fixed; top:0; left:0; right:0; z-index:1000;
+  background: #E0D9CE;
+  border-bottom: 1px solid rgba(188,150,64,.2);
+  box-shadow: 0 2px 20px rgba(28,24,20,.06);
+  height: 68px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px;
+}
+.landing-nav-left { display:flex; align-items:center; gap:14px; }
+.landing-nav-logo { display:flex; align-items:center; gap:10px; cursor:pointer; text-decoration:none; }
+.landing-nav-logo-name { font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:600; color:#BC9640; line-height:1; }
+.landing-nav-logo-sub { font-size:9px; color:rgba(28,24,20,.35); letter-spacing:.12em; text-transform:uppercase; margin-top:2px; display:block; }
+.landing-nav-sep { width:1px; height:28px; background:rgba(188,150,64,.2); }
+.landing-nav-badge-tct {
+  display:inline-flex; align-items:center; gap:6px;
+  background:rgba(188,150,64,.1); border:1px solid rgba(188,150,64,.25);
+  color:#BC9640; padding:5px 13px; border-radius:100px;
+  font-size:11px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; white-space:nowrap;
+}
+.landing-nav-right { display:flex; align-items:center; gap:10px; }
+.landing-nav-back {
+  background:transparent; border:1.5px solid rgba(28,24,20,.2);
+  color:#3d3730; padding:7px 16px; border-radius:100px;
+  font-size:12px; font-weight:600; cursor:pointer;
+  font-family:'DM Sans',sans-serif; transition:all .2s;
+}
+.landing-nav-back:hover { border-color:#BC9640; color:#BC9640; }
+.landing-nav-cta {
+  background:linear-gradient(135deg,#BC9640,#D4AA5A);
+  color:#1c1814; border:none; padding:9px 20px; border-radius:100px;
+  font-size:12px; font-weight:700; cursor:pointer;
+  font-family:'DM Sans',sans-serif; letter-spacing:.04em; transition:opacity .2s;
+}
+.landing-nav-cta:hover { opacity:.88; }
+@media(max-width:900px) {
+  .landing-nav { padding:0 16px; }
+  .landing-nav-sep { display:none; }
+  .landing-nav-badge-tct { display:none; }
+  .landing-nav-logo-name { font-size:15px; }
+}
+</style>
+<nav class="landing-nav">
+  <div class="landing-nav-left">
+    <div class="landing-nav-logo" onclick="goTo('academy')">
+      <svg width="40" height="40" viewBox="0 0 80 80" fill="none">
+      <circle cx="40" cy="40" r="37" stroke="#BC9640" stroke-width="1.8" opacity=".45"/>
+      <circle cx="40" cy="40" r="31.4" stroke="#BC9640" stroke-width="1.2" opacity=".28"/>
+      <circle cx="40" cy="40" r="19.4" stroke="#D4AA5A" stroke-width="1" opacity=".25"/>
+      <circle cx="40" cy="40" r="12" stroke="#BC9640" stroke-width=".9" opacity=".22"/>
+      <line x1="40" y1="40" x2="69.88" y2="49.71" stroke="#BC9640" stroke-width=".8" opacity=".2"/>
+      <line x1="40" y1="40" x2="40.0" y2="71.42" stroke="#BC9640" stroke-width=".8" opacity=".2"/>
+      <line x1="40" y1="40" x2="10.12" y2="49.71" stroke="#BC9640" stroke-width=".8" opacity=".2"/>
+      <line x1="40" y1="40" x2="21.53" y2="14.58" stroke="#BC9640" stroke-width=".8" opacity=".2"/>
+      <line x1="40" y1="40" x2="58.47" y2="14.58" stroke="#BC9640" stroke-width=".8" opacity=".2"/>
+      <line x1="40" y1="40" x2="52.0" y2="40.0" stroke="#D4AA5A" stroke-width="1.2" opacity=".4"/>
+      <line x1="40" y1="40" x2="34.0" y2="50.39" stroke="#D4AA5A" stroke-width="1.2" opacity=".4"/>
+      <line x1="40" y1="40" x2="34.0" y2="29.61" stroke="#D4AA5A" stroke-width="1.2" opacity=".4"/>
+      <line x1="40" y1="40" x2="53.73" y2="53.73" stroke="#BC9640" stroke-width="1" opacity=".32"/>
+      <line x1="40" y1="40" x2="26.27" y2="53.73" stroke="#BC9640" stroke-width="1" opacity=".32"/>
+      <line x1="40" y1="40" x2="26.27" y2="26.27" stroke="#BC9640" stroke-width="1" opacity=".32"/>
+      <line x1="40" y1="40" x2="53.73" y2="26.27" stroke="#BC9640" stroke-width="1" opacity=".32"/>
+      <circle cx="40" cy="40" r="3.5" fill="#D4AA5A" opacity=".95"/>
+      <circle cx="52.0" cy="40.0" r="2" fill="#D4AA5A" opacity=".95"/>
+      <circle cx="34.0" cy="50.39" r="2" fill="#D4AA5A" opacity=".95"/>
+      <circle cx="34.0" cy="29.61" r="2" fill="#D4AA5A" opacity=".95"/>
+      <circle cx="53.73" cy="53.73" r="2.3" fill="#BC9640" opacity=".8"/>
+      <circle cx="26.27" cy="53.73" r="2.3" fill="#BC9640" opacity=".8"/>
+      <circle cx="26.27" cy="26.27" r="2.3" fill="#BC9640" opacity=".8"/>
+      <circle cx="53.73" cy="26.27" r="2.3" fill="#BC9640" opacity=".8"/>
+      <circle cx="69.88" cy="49.71" r="2.6" fill="#BC9640" opacity=".65"/>
+      <circle cx="40.0" cy="71.42" r="2.6" fill="#BC9640" opacity=".65"/>
+      <circle cx="10.12" cy="49.71" r="2.6" fill="#BC9640" opacity=".65"/>
+      <circle cx="21.53" cy="14.58" r="2.6" fill="#BC9640" opacity=".65"/>
+      <circle cx="58.47" cy="14.58" r="2.6" fill="#BC9640" opacity=".65"/>
+      <path d="M40 9 C50 18 71 26 71 40 C71 54 50 62 40 71 C30 62 9 54 9 40 C9 26 30 18 40 9Z" stroke="#BC9640" stroke-width="1.2" fill="none" opacity=".3"/>
+      <path d="M9 40 C18 30 26 9 40 9 C54 9 62 30 71 40 C62 50 54 71 40 71 C26 71 18 50 9 40Z" stroke="#D4AA5A" stroke-width="1" fill="none" opacity=".22"/>
+    </svg>
+      <div>
+        <div class="landing-nav-logo-name">Frecuencia Integral</div>
+        <span class="landing-nav-logo-sub">Academy</span>
+      </div>
+    </div>
+    <div class="landing-nav-sep"></div>
+    <span class="landing-nav-badge-tct">✦ Método TCT · 48 semanas</span>
+  </div>
+  <div class="landing-nav-right">
+    <button class="landing-nav-back" onclick="goTo('academy')">← Academia</button>
+    <button class="landing-nav-cta" id="btnLogin2" onclick="goTo('auth')">Acceso Alumnos</button>
+  </div>
+</nav>
+<!-- CONTENIDO TCT (nav legacy oculto) -->
+<div style="display:none">
+  <div class="nav-logo" onclick="goTo('public')" style="display:none">    <svg class="nav-logo-svg" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g class="nav-logo-ring">
         <circle cx="250" cy="250" r="210" stroke="#B8903A" stroke-width="7" stroke-dasharray="1295 30" stroke-linecap="round" opacity="0.7"/>
         <circle cx="250" cy="250" r="210" stroke="#D4AA5A" stroke-width="3" stroke-dasharray="1290 35" stroke-dashoffset="20" stroke-linecap="round" opacity="0.4"/>
@@ -6975,21 +6241,19 @@ button:focus-visible, input:focus-visible {
   <div class="nav-btns">
     <button class="btn-ghost" id="btnLogin" onclick="goTo('auth')">Acceso Alumnos</button>
     <button class="btn-primary" id="btnInscribirse" onclick="var el=document.getElementById('h-puertas');if(el)el.scrollIntoView({behavior:'smooth'});">Iniciarse Ahora</button>
-    <button class="btn-ghost" id="btnHome" style="display:none" onclick="goTo('public')">🏠 Inicio</button>
+    <button class="btn-ghost" id="btnHome" style="display:none" onclick="goTo('academy')">🏠 Academia</button>
     <button class="btn-ghost" id="btnDash" style="display:none" onclick="goTo('student')">Mi Dashboard</button>
     <button class="btn-admin-nav" id="btnAdmin" style="display:none" onclick="goTo('admin')">⚙ Admin</button>
     <button class="btn-ghost" id="btnLogout" style="display:none" onclick="doLogout()">Salir</button>
   </div>
-</nav>
+</div><!-- /nav-legacy-oculto -->
 
-<!-- PAGE: PUBLIC -->
-<div class="page" id="page-public">
 
 <!-- ── Estilos exclusivos de la Home Premium ── -->
 <style>
 /* Variables home */
-.home-section { padding: 7rem 4rem; }
-@media(max-width:900px){ .home-section { padding: 4rem 1.5rem; } }
+.home-section { padding: 4.5rem 4rem; }
+@media(max-width:900px){ .home-section { padding: 2.5rem 1.5rem; } }
 
 /* HERO HOME */
 #h-hero {
@@ -7077,7 +6341,7 @@ button:focus-visible, input:focus-visible {
   display: grid; grid-template-columns: 1fr 1fr;
   gap: 5rem; align-items: center;
   background: #F2EFE9;
-  padding: 7rem 4rem;
+  padding: 4.5rem 4rem;
 }
 .h-qe-grid {
   display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
@@ -7105,7 +6369,7 @@ button:focus-visible, input:focus-visible {
 /* PILARES */
 #h-pilares {
   background: #FAF8F5;
-  padding: 7rem 4rem;
+  padding: 4.5rem 4rem;
 }
 .h-pilares-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
@@ -7140,7 +6404,7 @@ button:focus-visible, input:focus-visible {
 /* PUERTAS PREMIUM */
 #h-puertas {
   background: #0E0C0A;
-  padding: 7rem 4rem;
+  padding: 4.5rem 4rem;
 }
 #h-puertas .h-section-label { color: #D4AF60; }
 #h-puertas .h-section-label::before { background: #D4AF60; }
@@ -7210,15 +6474,8 @@ button:focus-visible, input:focus-visible {
   transition: all 0.3s; width: fit-content;
 }
 .h-puerta-action:hover { background: #BC9640; color: #0E0C0A; }
-.h-puerta.locked { opacity: 0.5; cursor: default; }
-.h-puerta.locked .h-puerta-action { cursor: not-allowed; }
-
-/* QUIÉNES SOMOS */
-#h-quienes {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 6rem; align-items: center;
-  background: #F2EFE9;
-  padding: 7rem 4rem;
+#h-quienes { background: #F2EFE9;
+  padding: 4.5rem 4rem;
 }
 .h-quienes-visual { position: relative; height: 520px; }
 .h-q-block {
@@ -7251,7 +6508,7 @@ button:focus-visible, input:focus-visible {
 .h-q-cred::before { content: '—'; color: #BC9640; font-size: 0.9rem; margin-top: 0.05rem; flex-shrink: 0; }
 
 /* TESTIMONIOS */
-#h-testimonios { background: #FAF8F5; padding: 7rem 4rem; }
+#h-testimonios { background: #FAF8F5; padding: 4.5rem 4rem; }
 .h-testi-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
   margin-top: 4rem; background: #C8C0B0;
@@ -7272,7 +6529,7 @@ button:focus-visible, input:focus-visible {
 
 /* CTA */
 #h-cta {
-  background: #BC9640; padding: 8rem 4rem;
+  background: #BC9640; padding: 5rem 4rem;
   text-align: center; position: relative; overflow: hidden;
 }
 #h-cta::before {
@@ -7433,7 +6690,7 @@ button:focus-visible, input:focus-visible {
 
   /* Secciones */
   #h-que-es, #h-pilares, #h-puertas, #h-quienes,
-  #h-testimonios, #h-cta { padding: 4rem 1.5rem; }
+  #h-testimonios, #h-cta { padding: 2.5rem 1.5rem; }
   #h-footer { padding: 3rem 1.5rem; }
 
   /* Qué es */
@@ -7959,6 +7216,51 @@ document.addEventListener('keydown', function(e) {
 
 </section>
 
+<!-- SECCIÓN ACCESO LIBRE -->
+<section id="h-prueba">
+  <div class="h-prueba-inner">
+
+    <!-- Lado izquierdo: texto -->
+    <div class="h-prueba-left">
+      <div class="h-prueba-label">Sin compromiso · Gratis</div>
+      <h2 class="h-prueba-title">¿No estás seguro?<br><em>Empieza sin riesgo.</em></h2>
+      <p class="h-prueba-desc">Accede gratis a las tres primeras semanas del Método TCT. Sin tarjeta. Sin presión. Si el camino resuena contigo, el resto estará esperándote.</p>
+      <div class="h-prueba-weeks">
+        <div class="h-prueba-week">
+          <span class="h-prueba-week-num">01</span>
+          <span class="h-prueba-week-txt">El Precio Oculto de Vivir Acelerados</span>
+        </div>
+        <div class="h-prueba-week">
+          <span class="h-prueba-week-num">02</span>
+          <span class="h-prueba-week-txt">Cuando Ganar Ya No Es Suficiente</span>
+        </div>
+        <div class="h-prueba-week">
+          <span class="h-prueba-week-num">03</span>
+          <span class="h-prueba-week-txt">Cuerpo, Mente y Consciencia: Una Sola Unidad</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lado derecho: CTA card -->
+    <div class="h-prueba-right">
+      <div class="h-prueba-card">
+        <div class="h-prueba-card-eyebrow">Acceso libre</div>
+        <div class="h-prueba-card-price">0€</div>
+        <div class="h-prueba-card-per">para siempre</div>
+        <ul class="h-prueba-card-list">
+          <li>✦ &nbsp;3 semanas completas</li>
+          <li>✦ &nbsp;Ejercicios y materiales</li>
+          <li>✦ &nbsp;Arteterapia y Diario</li>
+          <li>✦ &nbsp;Sin tarjeta de crédito</li>
+        </ul>
+        <button class="h-prueba-card-btn" onclick="startFreeTrial()">Crear cuenta gratis</button>
+        <p class="h-prueba-card-note">Cuando quieras continuar, el curso completo te espera.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <style>
 /* Precio en puertas */
 .h-puerta-price {
@@ -8082,6 +7384,98 @@ document.addEventListener('keydown', function(e) {
 .h-oro-btn:hover { background: #D4AF60; }
 
 /* Responsive oro */
+
+/* BLOQUE ACCESO LIBRE / PRUEBA */
+/* ── SECCIÓN ACCESO LIBRE (Prueba) ── */
+#h-prueba {
+  background: #F2EFE9;
+  padding: 6rem 4rem;
+  border-top: 1px solid rgba(43,125,122,.12);
+}
+.h-prueba-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 380px; gap: 6rem; align-items: start;
+}
+.h-prueba-label {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: #2b7d7a; margin-bottom: 1.6rem;
+}
+.h-prueba-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 3.6rem; font-weight: 300; color: #1c1814; line-height: 1.15;
+  margin-bottom: 1.4rem;
+}
+.h-prueba-title em { color: #2b7d7a; font-style: italic; }
+.h-prueba-desc {
+  font-family: 'Jost', sans-serif;
+  font-size: 1.05rem; line-height: 1.85; color: #7a7168; font-weight: 300;
+  margin-bottom: 2.5rem; max-width: 480px;
+}
+.h-prueba-weeks { display: flex; flex-direction: column; gap: 1rem; }
+.h-prueba-week {
+  display: flex; align-items: flex-start; gap: 1.2rem;
+  padding-bottom: 1rem; border-bottom: 1px solid rgba(43,125,122,.12);
+}
+.h-prueba-week:last-child { border-bottom: none; }
+.h-prueba-week-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem; font-weight: 300; color: #2b7d7a;
+  line-height: 1; min-width: 28px; padding-top: 2px;
+}
+.h-prueba-week-txt {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.95rem; color: #3d3730; line-height: 1.5; font-weight: 400;
+}
+/* Card derecha */
+.h-prueba-card {
+  background: #fff;
+  border: 1px solid rgba(43,125,122,.2);
+  border-top: 3px solid #2b7d7a;
+  padding: 2.8rem 2.4rem;
+  position: sticky; top: 80px;
+}
+.h-prueba-card-eyebrow {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: #2b7d7a; margin-bottom: 1rem;
+}
+.h-prueba-card-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 4.5rem; font-weight: 300; color: #1c1814; line-height: 1;
+}
+.h-prueba-card-per {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.75rem; letter-spacing: 0.1em; color: #b0a898;
+  text-transform: uppercase; margin-bottom: 2rem; margin-top: 4px;
+}
+.h-prueba-card-list {
+  list-style: none; margin-bottom: 2rem;
+  display: flex; flex-direction: column; gap: 0.75rem;
+}
+.h-prueba-card-list li {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.9rem; color: #3d3730; line-height: 1.4;
+}
+.h-prueba-card-btn {
+  width: 100%; padding: 1rem 1.5rem;
+  background: #2b7d7a; color: #FAF8F5; border: none;
+  font-family: 'Jost', sans-serif;
+  font-size: 0.85rem; letter-spacing: 0.2em; text-transform: uppercase;
+  cursor: pointer; transition: background .3s; margin-bottom: 1rem;
+}
+.h-prueba-card-btn:hover { background: #236663; }
+.h-prueba-card-note {
+  font-family: 'Jost', sans-serif;
+  font-size: 0.75rem; color: #b0a898; line-height: 1.5; text-align: center;
+}
+@media(max-width:900px) {
+  #h-prueba { padding: 4rem 1.5rem; }
+  .h-prueba-inner { grid-template-columns: 1fr; gap: 3rem; }
+  .h-prueba-title { font-size: 2.6rem; }
+  .h-prueba-card { position: static; }
+}
+
 /* oro responsive handled in main media queries above */
 /* Grid 4 columnas (sin oro) */
 
@@ -8348,11 +7742,11 @@ document.addEventListener('keydown', function(e) {
       <div class="sidebar-nav">
         <button class="nav-item active" onclick="showView('dashboard')"><span class="nav-item-icon">🏠</span>Dashboard</button>
         <button class="nav-item" onclick="showView('formaciones')"><span class="nav-item-icon">📚</span>Formaciones</button>
-        <button class="nav-item" onclick="showView('multimedia')"><span class="nav-item-icon">🎵</span>Multimedia</button>
+        <button class="nav-item" data-view="multimedia" onclick="showView('multimedia')"><span class="nav-item-icon">🎵</span>Multimedia</button>
         <button class="nav-item" onclick="showView('arteterapia')"><span class="nav-item-icon">🎨</span>Arteterapia</button>
-        <button class="nav-item" onclick="showView('materiales')"><span class="nav-item-icon">📄</span>Materiales PDF</button>
+        <button class="nav-item" data-view="materiales" onclick="showView('materiales')"><span class="nav-item-icon">📄</span>Materiales PDF</button>
         <button class="nav-item" onclick="showView('progreso')"><span class="nav-item-icon">📊</span>Mi Progreso</button>
-        <button class="nav-item" onclick="showView('notas')"><span class="nav-item-icon">📝</span>Notas</button>
+        <button class="nav-item" onclick="showView('notas')"><span class="nav-item-icon">📝</span>Diario</button>
         <button class="nav-item" style="margin-top:auto;color:rgba(255,255,255,.4)" onclick="doLogout()"><span class="nav-item-icon">🚪</span>Cerrar Sesión</button>
       </div>
     </div>
@@ -8390,7 +7784,7 @@ document.addEventListener('keydown', function(e) {
           <span class="dtab-icon">📄</span><span class="dtab-label">Materiales</span>
         </button>
         <button class="dtab" onclick="showView('notas');dtabActive(this,6);dtabCloseMas()">
-          <span class="dtab-icon">📝</span><span class="dtab-label">Notas</span>
+          <span class="dtab-icon">📝</span><span class="dtab-label">Diario</span>
         </button>
         <button class="dtab dtab-logout" onclick="doLogout()">
           <span class="dtab-icon">🚪</span><span class="dtab-label">Salir</span>
@@ -8424,7 +7818,7 @@ document.addEventListener('keydown', function(e) {
 
       <!-- BARRA ACCESO RÁPIDO — solo visible para admin/editor -->
       <div id="user-quick-nav" style="display:none;align-items:center;gap:8px;margin-bottom:20px;flex-wrap:wrap">
-        <button class="btn-ghost" onclick="goTo('public')" style="font-size:12px;padding:7px 14px;border-radius:10px;border:1.5px solid #e4ddd3;background:white;color:#3d3730;cursor:pointer;font-family:DM Sans,sans-serif;display:flex;align-items:center;gap:6px">🏠 Inicio</button>
+        <button class="btn-ghost" onclick="goTo('academy')" style="font-size:12px;padding:7px 14px;border-radius:10px;border:1.5px solid #e4ddd3;background:white;color:#3d3730;cursor:pointer;font-family:DM Sans,sans-serif;display:flex;align-items:center;gap:6px">🏠 Academia</button>
         <button class="btn-ghost" onclick="goTo('student')" style="font-size:12px;padding:7px 14px;border-radius:10px;border:1.5px solid #e4ddd3;background:white;color:#3d3730;cursor:pointer;font-family:DM Sans,sans-serif">Mi Dashboard</button>
         <button id="uqn-admin" style="display:none;font-size:12px;padding:7px 14px;border-radius:10px;border:none;background:#b89558;color:white;cursor:pointer;font-family:DM Sans,sans-serif;font-weight:700" onclick="goTo('admin')">⚙ Admin</button>
         <button onclick="doLogout()" style="font-size:12px;padding:7px 14px;border-radius:10px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;cursor:pointer;font-family:DM Sans,sans-serif">Salir</button>
@@ -8476,58 +7870,61 @@ document.addEventListener('keydown', function(e) {
 
         <!-- TABS DE FILTRO -->
         <div id="media-tabs" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px">
-          <button onclick="filterMedia('todos')" id="mtab-todos" style="padding:7px 16px;border-radius:100px;border:1.5px solid #2b7d7a;background:#2b7d7a;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">Todos</button>
-          <button onclick="filterMedia('cuencos')" id="mtab-cuencos" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🎵 Cuencos</button>
-          <button onclick="filterMedia('meditacion')" id="mtab-meditacion" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🧘 Meditación</button>
-          <button onclick="filterMedia('frecuencia')" id="mtab-frecuencia" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🌿 Frecuencia</button>
-          <button onclick="filterMedia('teoria')" id="mtab-teoria" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">💫 Teoría</button>
-          <button onclick="filterMedia('canalizacion')" id="mtab-canalizacion" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🌸 Canalización</button>
+          <button onclick="filterMediaCat('Todos',this)" class="media-filter-btn active" style="padding:7px 16px;border-radius:100px;border:1.5px solid #2b7d7a;background:#2b7d7a;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">Todos</button>
+          <button onclick="filterMediaCat('Cuencos',this)" class="media-filter-btn" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🎵 Cuencos</button>
+          <button onclick="filterMediaCat('Meditación',this)" class="media-filter-btn" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🧘 Meditación</button>
+          <button onclick="filterMediaCat('Frecuencia',this)" class="media-filter-btn" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🌿 Frecuencia</button>
+          <button onclick="filterMediaCat('Teoría',this)" class="media-filter-btn" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">💫 Teoría</button>
+          <button onclick="filterMediaCat('Canalización',this)" class="media-filter-btn" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🌸 Canalización</button>
         </div>
 
         <!-- GRID DE TARJETAS -->
         <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px" id="media-grid">
 
-          <div data-cat="cuencos" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Cuencos Tibetanos — Fundamentos" data-dur="32 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
+          <div data-cat="Cuencos" data-prueba="true" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Cuencos Tibetanos — Fundamentos" data-dur="32 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
             <div style="background:#f5f2ec;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🎵</div>
             <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Cuencos · 32 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Cuencos Tibetanos — Fundamentos</div></div>
           </div>
 
-          <div data-cat="canalizacion" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Canalización Marga — Puerta Blanca" data-dur="18 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
+          <div data-cat="Canalización" data-prueba="false" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Canalización Marga — Puerta Blanca" data-dur="18 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
             <div style="background:#fdf0ee;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🌸</div>
             <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Canalización · 18 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Canalización Marga — Puerta Blanca</div></div>
           </div>
 
-          <div data-cat="meditacion" data-src="REEMPLAZA_CON_URL_VIDEO.mp4" data-type="video" data-title="Meditación de Presencia Corporal" data-dur="15 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
+          <div data-cat="Meditación" data-prueba="true" data-src="REEMPLAZA_CON_URL_VIDEO.mp4" data-type="video" data-title="Meditación de Presencia Corporal" data-dur="15 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
             <div style="background:#eef3fb;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🧘</div>
             <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Meditación · 15 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Meditación de Presencia Corporal</div></div>
           </div>
 
-          <div data-cat="frecuencia" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Frecuencia 432Hz — Armonía Natural" data-dur="40 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
+          <div data-cat="Frecuencia" data-prueba="true" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Frecuencia 432Hz — Armonía Natural" data-dur="40 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
             <div style="background:#f5f2ec;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🌿</div>
             <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Frecuencia · 40 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Frecuencia 432Hz — Armonía Natural</div></div>
           </div>
 
-          <div data-cat="cuencos" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Cuencos — Nivel Terapéutico" data-dur="45 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
+          <div data-cat="Cuencos" data-prueba="false" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Cuencos — Nivel Terapéutico" data-dur="45 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
             <div style="background:#fdf0ee;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🔥</div>
             <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Cuencos · 45 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Cuencos — Nivel Terapéutico</div></div>
           </div>
 
-          <div data-cat="teoria" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="UCDM — Introducción al Perdón" data-dur="28 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
+          <div data-cat="Teoría" data-prueba="false" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="UCDM — Introducción al Perdón" data-dur="28 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
             <div style="background:#fdf6ec;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">💫</div>
             <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Teoría · 28 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">UCDM — Introducción al Perdón</div></div>
           </div>
 
-          <div data-cat="teoria" data-src="REEMPLAZA_CON_URL_VIDEO.mp4" data-type="video" data-title="Dzogchen — Introducción a Rigpa" data-dur="35 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
+          <div data-cat="Teoría" data-prueba="false" data-src="REEMPLAZA_CON_URL_VIDEO.mp4" data-type="video" data-title="Dzogchen — Introducción a Rigpa" data-dur="35 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
             <div style="background:#eef3fb;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🔵</div>
             <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Teoría · 35 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Dzogchen — Introducción a Rigpa</div></div>
           </div>
 
-          <div data-cat="frecuencia" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Frecuencia 963Hz — La Luz" data-dur="48 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
+          <div data-cat="Frecuencia" data-prueba="false" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Frecuencia 963Hz — La Luz" data-dur="48 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
             <div style="background:#eef3fb;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">✨</div>
             <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Frecuencia · 48 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Frecuencia 963Hz — La Luz</div></div>
           </div>
 
         </div>
+
+        <!-- INFO PLAN PRUEBA (visible cuando filtro no tiene contenido) -->
+        <div id="media-prueba-info" style="display:none;margin-top:8px"></div>
 
         <!-- MODAL REPRODUCTOR -->
         <div id="media-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px">
@@ -8740,7 +8137,7 @@ document.addEventListener('keydown', function(e) {
             <span class="modal-nav-icon">🎨</span>Arteterapia
           </button>
           <button class="modal-nav-btn" onclick="switchModalTab(5,this)" data-tab="5">
-            <span class="modal-nav-icon">📝</span>Notas
+            <span class="modal-nav-icon">📝</span>Diario
           </button>
           <button class="modal-nav-btn" onclick="switchModalTab(6,this)" data-tab="6">
             <span class="modal-nav-icon">✅</span>Completar
@@ -8838,11 +8235,27 @@ document.addEventListener('keydown', function(e) {
   <div class="pdf-modal-topbar">
     <div class="pdf-modal-topbar-name" id="pdf-fullscreen-name"></div>
     <div class="pdf-modal-topbar-actions">
+      <span id="pdf-limited-badge" style="display:none;background:rgba(188,150,64,.18);color:#D4AA5A;border:1px solid rgba(188,150,64,.35);padding:5px 12px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:.04em">✦ Pág. 1–48 · Vista previa</span>
       <a class="btn-pdf-fullscreen-dl" id="pdf-fullscreen-dl" href="#" download="" target="_blank">⬇ Descargar</a>
       <button class="btn-pdf-fullscreen-close" onclick="closePdfFullscreen()">✕ Cerrar</button>
     </div>
   </div>
+  <!-- Modo normal: iframe -->
   <iframe class="pdf-modal-frame" id="pdf-fullscreen-frame" src=""></iframe>
+  <!-- Modo limitado: PDF.js canvas viewer -->
+  <div id="pdf-js-viewer" style="display:none;flex:1;flex-direction:column;overflow:hidden;background:#525659">
+    <!-- zona scroll del canvas -->
+    <div id="pdf-js-scroll" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:16px 12px 12px">
+      <div id="pdf-js-loading" style="color:rgba(255,255,255,.6);font-size:14px;padding:40px;font-family:DM Sans,sans-serif">Cargando documento…</div>
+      <canvas id="pdf-js-canvas" style="display:none;max-width:100%;box-shadow:0 4px 28px rgba(0,0,0,.6)"></canvas>
+    </div>
+    <!-- barra de navegación fija abajo, NO superpuesta -->
+    <div id="pdf-js-nav" style="display:none;flex-shrink:0;background:#111009;border-top:1px solid rgba(255,255,255,.07);padding:8px 20px;align-items:center;justify-content:center;gap:12px">
+      <button onclick="pdfJsChangePage(-1)" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);border:none;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:DM Sans,sans-serif;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.16)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">‹</button>
+      <span id="pdf-js-pageinfo" style="font-size:12px;color:rgba(255,255,255,.55);font-family:DM Sans,sans-serif;min-width:90px;text-align:center;letter-spacing:.02em"></span>
+      <button onclick="pdfJsChangePage(1)" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);border:none;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:DM Sans,sans-serif;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.16)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">›</button>
+    </div>
+  </div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════════ -->
@@ -10288,7 +9701,7 @@ function mobEdPanel(name) {
              return '<button onclick="document.execCommand(\'hiliteColor\',false,\''+c+'\')" title="'+c+'" style="width:30px;height:30px;background:'+c+';border:2px solid rgba(255,255,255,.2);border-radius:6px;cursor:pointer;flex-shrink:0"></button>';
            }).join('')+'</div>';
   } else if (name==='nav') {
-    html = b+'onclick="goTo(\'public\');mobEdPanelClose()">🏠 &nbsp;<b>Página pública</b></button>'+
+    html = b+'onclick="goTo(\'academy\');mobEdPanelClose()">🏠 &nbsp;<b>Home Academy</b></button>'+
            b+'onclick="goTo(\'auth\');mobEdPanelClose()">🔑 &nbsp;<b>Login / Registro</b></button>'+
            b+'onclick="goTo(\'student\');mobEdPanelClose()">📚 &nbsp;<b>Dashboard alumno</b></button>'+
            b+'onclick="goTo(\'admin\');mobEdPanelClose()">⚙️ &nbsp;<b>Panel admin</b></button>'+
@@ -13163,5 +12576,99 @@ function nmToast(msg){
   </div>
 </div>
 
+<!-- PDF.js para visor limitado de páginas -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+// ── PDF.JS VIEWER — VISOR LIMITADO (plan Prueba) ──────────────────
+if (typeof pdfjsLib !== 'undefined') {
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
+
+var _pdfDoc       = null;
+var _pdfPage      = 1;
+var _pdfMaxPage   = 48;
+var _pdfRendering = false;
+
+function openPdfLimited(url, name, maxPage) {
+  maxPage = maxPage || 48;
+  _pdfPage    = 1;
+  _pdfMaxPage = maxPage;
+  _pdfDoc     = null;
+
+  document.getElementById('pdf-fullscreen-name').textContent = name;
+  var dlBtn = document.getElementById('pdf-fullscreen-dl');
+  if (dlBtn) dlBtn.style.display = 'none';
+  var badge = document.getElementById('pdf-limited-badge');
+  if (badge) badge.style.display = '';
+
+  document.getElementById('pdf-fullscreen-frame').style.display = 'none';
+  var viewer = document.getElementById('pdf-js-viewer');
+  viewer.style.display = 'flex';
+
+  document.getElementById('pdf-js-loading').style.display = 'block';
+  document.getElementById('pdf-js-canvas').style.display  = 'none';
+  document.getElementById('pdf-js-nav').style.display     = 'none';
+
+  document.getElementById('pdf-fullscreen-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  pdfjsLib.getDocument(url).promise.then(function(doc) {
+    _pdfDoc = doc;
+    _pdfMaxPage = Math.min(maxPage, doc.numPages);
+    document.getElementById('pdf-js-loading').style.display = 'none';
+    document.getElementById('pdf-js-canvas').style.display  = 'block';
+    document.getElementById('pdf-js-nav').style.display     = 'flex';
+    pdfJsRenderPage(_pdfPage);
+  }).catch(function(err) {
+    document.getElementById('pdf-js-loading').textContent =
+      'No se pudo cargar el documento. Inténtalo de nuevo.';
+    console.error('PDF.js error:', err);
+  });
+}
+
+function pdfJsRenderPage(num) {
+  if (!_pdfDoc || _pdfRendering) return;
+  _pdfRendering = true;
+  _pdfDoc.getPage(num).then(function(page) {
+    var canvas   = document.getElementById('pdf-js-canvas');
+    var ctx      = canvas.getContext('2d');
+    var scroll   = document.getElementById('pdf-js-scroll');
+    var nav      = document.getElementById('pdf-js-nav');
+    // Área disponible: viewport menos topbar(~48px) menos nav(~47px) menos padding(32px)
+    var navH     = nav ? nav.offsetHeight : 47;
+    var availH   = window.innerHeight - 48 - navH - 32;
+    var availW   = (scroll ? scroll.clientWidth : window.innerWidth) - 24;
+    var vp       = page.getViewport({ scale: 1 });
+    // Escala para encajar la página completa (fit-page)
+    var scaleW   = availW / vp.width;
+    var scaleH   = availH / vp.height;
+    var scale    = Math.min(scaleW, scaleH);
+    var scaled   = page.getViewport({ scale: scale });
+    canvas.width  = Math.floor(scaled.width);
+    canvas.height = Math.floor(scaled.height);
+    page.render({ canvasContext: ctx, viewport: scaled }).promise.then(function() {
+      _pdfRendering = false;
+      document.getElementById('pdf-js-pageinfo').textContent =
+        'Pág. ' + _pdfPage + ' / ' + _pdfMaxPage;
+      if (scroll) scroll.scrollTop = 0;
+    });
+  });
+}
+
+function pdfJsChangePage(delta) {
+  var next = _pdfPage + delta;
+  if (next < 1 || next > _pdfMaxPage) return;
+  _pdfPage = next;
+  pdfJsRenderPage(_pdfPage);
+}
+
+document.addEventListener('keydown', function(e) {
+  var viewer = document.getElementById('pdf-js-viewer');
+  if (!viewer || viewer.style.display === 'none') return;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') pdfJsChangePage(1);
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   pdfJsChangePage(-1);
+});
+</script>
 </body>
 </html>
