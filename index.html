@@ -4155,7 +4155,8 @@ function openWeekModal(weekNum) {
     (function() {
       var isPrueba = user && user._plan === 'Prueba';
       var BASE = 'https://jtwbbyjspanirbsuoipa.supabase.co/storage/v1/object/public/materiales/PRUEBA/';
-      var tctBlancaUrl  = BASE + 'TCT-I-PUERTA-BLANCA.pdf#toolbar=0&navpanes=0';
+      var tctBlancaUrl  = BASE + 'TCT-I-PUERTA-BLANCA.pdf';
+      var tctMaxPage    = 48;
       var tctBlancaName = 'TCT I · Puerta Blanca — Libro completo de la 1ª Puerta';
 
       // Mapa de PDFs por semana (plan Prueba)
@@ -4186,7 +4187,7 @@ function openWeekModal(weekNum) {
         // Card TCT-I limitada (pág. 1-48)
         var tctCard =
           '<div style="margin-bottom:14px;background:#fffdf7;border:1px solid rgba(188,150,64,.35);border-radius:14px;overflow:hidden">' +
-            '<div class="pdf-card-header" onclick="openPdfFullscreen(\'' + tctBlancaUrl + '\',\'' + tctBlancaName + '\')" style="cursor:pointer">' +
+            '<div class="pdf-card-header" onclick="openPdfLimited(\'' + tctBlancaUrl + '\',\'' + tctBlancaName + '\',' + tctMaxPage + ')" style="cursor:pointer">' +
               '<div class="pdf-icon" style="background:linear-gradient(135deg,#fdf6ec,#f5e9cc)">📖</div>' +
               '<div class="pdf-info">' +
                 '<div class="pdf-name">' + tctBlancaName + '</div>' +
@@ -4194,7 +4195,7 @@ function openWeekModal(weekNum) {
               '</div>' +
               '<div class="pdf-actions">' +
                 '<button class="btn-pdf-view" style="background:#fdf6ec;color:#BC9640;border:1px solid rgba(188,150,64,.3)" ' +
-                  'onclick="event.stopPropagation();openPdfFullscreen(\'' + tctBlancaUrl + '\',\'' + tctBlancaName + '\')">👁 Ver</button>' +
+                  'onclick="event.stopPropagation();openPdfLimited(\'' + tctBlancaUrl + '\',\'' + tctBlancaName + '\',' + tctMaxPage + ')">👁 Ver</button>' +
               '</div>' +
             '</div>' +
           '</div>';
@@ -4454,8 +4455,9 @@ function renderMateriales() {
         id: 'prueba-pdf-3',
         name: 'TCT I · Puerta Blanca — Libro completo de la 1ª Puerta',
         meta: 'Portada · Págs. 1–48 · Solo lectura · Sin descarga',
-        url: 'https://jtwbbyjspanirbsuoipa.supabase.co/storage/v1/object/public/materiales/PRUEBA/TCT-I-PUERTA-BLANCA.pdf#toolbar=0&navpanes=0',
-        limited: false,
+        url: 'https://jtwbbyjspanirbsuoipa.supabase.co/storage/v1/object/public/materiales/PRUEBA/TCT-I-PUERTA-BLANCA.pdf',
+        limited: true,
+        maxPage: 48,
         icon: '📖',
         iconBg: 'linear-gradient(135deg,#fdf6ec,#f5e9cc)'
       }
@@ -8254,6 +8256,10 @@ document.addEventListener('keydown', function(e) {
       <button onclick="pdfJsChangePage(-1)" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);border:none;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:DM Sans,sans-serif;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.16)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">‹</button>
       <span id="pdf-js-pageinfo" style="font-size:12px;color:rgba(255,255,255,.55);font-family:DM Sans,sans-serif;min-width:90px;text-align:center;letter-spacing:.02em"></span>
       <button onclick="pdfJsChangePage(1)" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);border:none;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:DM Sans,sans-serif;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.16)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">›</button>
+      <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+        <button onclick="if(_pdfDoc){window.open(document.getElementById('pdf-js-canvas').toDataURL())}" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);border:none;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-family:DM Sans,sans-serif" title="Imprimir">🖨 Imprimir</button>
+        <a id="pdf-js-dl-btn" href="#" download target="_blank" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);text-decoration:none;padding:5px 12px;border-radius:6px;font-size:12px;font-family:DM Sans,sans-serif" title="Descargar">⬇ Descargar</a>
+      </div>
     </div>
   </div>
 </div>
@@ -12598,7 +12604,7 @@ function openPdfLimited(url, name, maxPage) {
 
   document.getElementById('pdf-fullscreen-name').textContent = name;
   var dlBtn = document.getElementById('pdf-fullscreen-dl');
-  if (dlBtn) dlBtn.style.display = 'none';
+  if (dlBtn) { dlBtn.href = url; dlBtn.style.display = ''; }
   var badge = document.getElementById('pdf-limited-badge');
   if (badge) badge.style.display = '';
 
@@ -12613,6 +12619,8 @@ function openPdfLimited(url, name, maxPage) {
   document.getElementById('pdf-fullscreen-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
 
+  var jsDownload = document.getElementById('pdf-js-dl-btn');
+  if (jsDownload) jsDownload.href = url;
   pdfjsLib.getDocument(url).promise.then(function(doc) {
     _pdfDoc = doc;
     _pdfMaxPage = Math.min(maxPage, doc.numPages);
