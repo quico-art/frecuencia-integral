@@ -435,6 +435,91 @@ body.prueba-plan .nav-item[data-view="materiales"]::after {
 }
 
 /* ── DASHBOARD TAB BAR MOBILE — 2 filas ── */
+/* ══════════════════════════════════════════
+   MOBILE DASHBOARD — Header + Tab bar arriba
+   Fila 1: logo + Academia  (52px)
+   Fila 2: menú principal   (56px)
+   Fila 3: "Más" expandible
+   ══════════════════════════════════════════ */
+#dash-mob-header {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100000;
+  height: 52px;
+  background: #E0D9CE;
+  border-bottom: 1px solid rgba(188,150,64,.3);
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+#dash-mob-header .dmh-logo {
+  display: flex; align-items: center; gap: 9px; cursor: pointer;
+}
+#dash-mob-header .dmh-logo svg { width: 32px; height: 32px; flex-shrink: 0; }
+#dash-mob-header .dmh-logo-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px; font-weight: 600; color: #1c1814; line-height: 1.1;
+}
+#dash-mob-header .dmh-logo-text span {
+  display: block; font-size: 8px; color: #7a7168;
+  text-transform: uppercase; letter-spacing: .1em;
+}
+#dash-mob-header .dmh-acad-btn {
+  background: rgba(188,150,64,.18);
+  border: 1.5px solid #BC9640;
+  color: #7a5a1a;
+  font-size: 11px; font-weight: 700;
+  padding: 6px 14px; border-radius: 100px;
+  cursor: pointer; font-family: 'DM Sans', sans-serif;
+  white-space: nowrap;
+}
+@media(max-width: 900px) {
+  /* Mostrar header y mover tab-bar arriba */
+  #dash-mob-header { display: flex; }
+  /* Tab bar: justo debajo del header (top: 52px) */
+  #dash-tab-bar {
+    top: 52px !important;
+    bottom: auto !important;
+    border-top: none !important;
+    border-bottom: 1px solid rgba(255,255,255,.08) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,.3) !important;
+    overflow: visible !important;
+    width: 100% !important;
+    left: 0 !important; right: 0 !important;
+  }
+  .dtab-row-qnav {
+    max-width: 100% !important;
+    overflow: hidden !important;
+  }
+  .dtab-row-1 {
+    overflow: hidden !important;
+  }
+  /* Row-2 "Más": aparece debajo del tab-bar, no debajo del contenido */
+  #dash-tab-bar .dtab-row-2 {
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important; right: 0 !important;
+    width: 100% !important;
+    border-top: 1px solid rgba(255,255,255,.1) !important;
+  }
+  /* Contenido: padding-top = header(52) + tab-bar(56) = 108px */
+  .student-wrap { padding-top: 108px !important; }
+  /* Con row qnav visible (admin/editor): +52px más */
+  body.mob-has-qnav .student-wrap { padding-top: 160px !important; }
+  .sidebar { display: none !important; }
+  .main-content {
+    margin-left: 0 !important;
+    padding: 20px 14px 40px !important;
+    overflow-x: hidden !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  /* user-quick-nav: NUNCA visible en mobile */
+  #user-quick-nav { display: none !important; }
+}
+
 #dash-tab-bar {
   display: none;
   position: fixed;
@@ -459,7 +544,49 @@ body.prueba-plan .nav-item[data-view="materiales"]::after {
 .dtab-row-2 {
   background: #111009;
   border-top: 1px solid rgba(255,255,255,.08);
+  width: 100vw !important; max-width: 100vw !important;
+  min-width: 0; position: relative; left: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+/* Fila editor/admin quick-nav — solo mobile */
+.dtab-row-qnav {
+  display: none;
+  background: transparent;
+  border: none;
   width: 100%;
+  box-sizing: border-box;
+  padding: 5px 14px;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  height: 38px;
+}
+.dtab-row-qnav .dtab {
+  flex: 0 0 auto !important;
+  flex-direction: row !important;
+  gap: 4px !important;
+  padding: 5px 13px !important;
+  border-radius: 100px !important;
+  background: #BC9640 !important;
+  border: none !important;
+  color: #FAF8F5 !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  min-width: 0; white-space: nowrap;
+}
+.dtab-row-qnav .dtab .dtab-icon { font-size: 12px; }
+.dtab-row-qnav .dtab .dtab-label { font-size: 11px !important; white-space: nowrap; }
+.dtab-row-qnav .dtab-logout {
+  background: #8B3530 !important;
+  color: #FAF8F5 !important;
+}
+/* En mobile: mostrar qnav si tiene clase visible, ocultar user-quick-nav y Academia del row-2 */
+@media(max-width: 900px) {
+  .dtab-row-qnav.qnav-visible { display: flex; }
+  #user-quick-nav { display: none !important; }
+  .dtab-row-2 .dtab-acad-mob { display: none !important; }
 }
 .dtab-row-2 .dtab {
   color: rgba(255,255,255,.7);
@@ -470,7 +597,7 @@ body.prueba-plan .nav-item[data-view="materiales"]::after {
 .dtab {
   flex: 1 1 0;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 3px; padding: 8px 4px;
+  gap: 2px; padding: 5px 4px;
   background: none; border: none; cursor: pointer;
   color: rgba(255,255,255,.45);
   font-family: 'DM Sans', sans-serif;
@@ -489,23 +616,11 @@ body.prueba-plan .nav-item[data-view="materiales"]::after {
 
 @media(max-width: 900px) {
   #dash-tab-bar { display: flex; }
-  .sidebar { display: none !important; }
-  .student-wrap { padding-top: 64px !important; }
+  .dtab { padding: 4px 4px !important; gap: 1px !important; }
   nav { height: 64px !important; }
   .nav-logo-svg { width: 48px !important; height: 48px !important; }
-  .main-content {
-    margin-left: 0 !important;
-    padding: 24px 16px 130px !important;
-    overflow-x: hidden !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-  #page-student {
-    overflow-x: hidden !important;
-  }
-  /* Hide floating editor button — it's in tab bar */
+  #page-student { overflow-x: hidden !important; }
   #edOpenBtn { display: none !important; }
-  /* Dashboard grid */
   .dashboard-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
   .stat-card { padding: 16px !important; }
   .stat-value { font-size: 28px !important; }
@@ -566,7 +681,7 @@ body.prueba-plan .nav-item[data-view="materiales"]::after {
 
 @media(max-width: 400px) {
   .dtab-label { font-size: 8px !important; }
-  .dtab-icon { font-size: 17px !important; }
+  .dtab-icon { font-size: 15px !important; }
   .main-content { padding: 12px 10px 130px !important; }
   .stat-value { font-size: 20px !important; }
 }
@@ -2938,6 +3053,38 @@ function acadMenuClose() {
 <div class="page" id="page-student">
   <div class="student-wrap">
 
+    <!-- HEADER MOBILE DASHBOARD -->
+    <div id="dash-mob-header">
+      <div class="dmh-logo" onclick="goTo('academy')">
+        <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="250" cy="250" r="240" fill="#0E0C0A"/>
+          <g stroke="#B8903A" stroke-width="1.6" stroke-linecap="round" opacity="0.85">
+            <line x1="250" y1="250" x2="250" y2="116"/><line x1="250" y1="250" x2="316" y2="134"/>
+            <line x1="250" y1="250" x2="366" y2="184"/><line x1="250" y1="250" x2="384" y2="250"/>
+            <line x1="250" y1="250" x2="366" y2="316"/><line x1="250" y1="250" x2="316" y2="366"/>
+            <line x1="250" y1="250" x2="250" y2="384"/><line x1="250" y1="250" x2="184" y2="366"/>
+            <line x1="250" y1="250" x2="134" y2="316"/><line x1="250" y1="250" x2="116" y2="250"/>
+            <line x1="250" y1="250" x2="134" y2="184"/><line x1="250" y1="250" x2="184" y2="134"/>
+          </g>
+          <circle cx="250" cy="116" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="316" cy="134" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="366" cy="184" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="384" cy="250" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="366" cy="316" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="316" cy="366" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="250" cy="384" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="184" cy="366" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="134" cy="316" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="116" cy="250" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="134" cy="184" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="184" cy="134" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="250" cy="250" r="10" fill="#B8903A" opacity="0.95"/>
+        </svg>
+        <div class="dmh-logo-text">Frecuencia Integral<span>Academy</span></div>
+      </div>
+      <button class="dmh-acad-btn" onclick="goTo('academy')">&#8592; Academia</button>
+    </div>
+
     <!-- SIDEBAR -->
     <div class="sidebar">
       <div class="sidebar-user">
@@ -2983,6 +3130,9 @@ function acadMenuClose() {
       </div>
       <!-- FILA 2: visible solo al pulsar Más -->
       <div class="dtab-row dtab-row-2" id="dtab-row-2" style="display:none">
+        <button class="dtab dtab-acad-mob" onclick="goTo('academy');dtabCloseMas()">
+          <span class="dtab-icon">🏛️</span><span class="dtab-label">Academia</span>
+        </button>
         <button class="dtab" onclick="showView('arteterapia');dtabActive(this,4);dtabCloseMas()">
           <span class="dtab-icon">🎨</span><span class="dtab-label">Arteterapia</span>
         </button>
@@ -3015,6 +3165,18 @@ function acadMenuClose() {
         </button>
         <button class="dtab dtab-logout" onclick="mobEdClose()" style="flex:0.8 1 0">
           <span class="dtab-icon">✕</span><span class="dtab-label">Cerrar</span>
+        </button>
+      </div>
+      <!-- FILA ADMIN/EDITOR: visible solo en mobile para usuarios con acceso -->
+      <div class="dtab-row dtab-row-qnav" id="dtab-row-qnav">
+        <button class="dtab" onclick="goTo('student')">
+          <span class="dtab-icon">📋</span><span class="dtab-label">Mi Dashboard</span>
+        </button>
+        <button class="dtab" id="dtab-qnav-admin" style="display:none" onclick="goTo('admin')">
+          <span class="dtab-icon">⚙️</span><span class="dtab-label">Admin</span>
+        </button>
+        <button class="dtab dtab-logout" onclick="doLogout()">
+          <span class="dtab-icon">🚪</span><span class="dtab-label">Salir</span>
         </button>
       </div>
     </nav>
@@ -3361,7 +3523,7 @@ function goTo(page) {
   }
   // Show/hide mobile tab bar
   var tb = document.getElementById('dash-tab-bar');
-  if (tb) tb.style.display = (page === 'student' && window.innerWidth <= 900) ? 'flex' : 'none';
+  if (tb) { if (page === 'student') { tb.style.display = ''; } else { tb.style.display = 'none'; } }
   window.scrollTo(0,0);
   if (page === 'student') refreshDashboard();
 }
@@ -3642,13 +3804,25 @@ async function onLogin(u) {
   } else {
     document.body.classList.remove('prueba-plan');
   }
-  // Barra acceso rápido dentro del área de usuario — solo admin/editor
+  // Barra acceso rápido dentro del área de usuario — solo admin/editor (solo desktop)
   var uqn = document.getElementById('user-quick-nav');
   if (uqn) {
-    uqn.style.display = isAdmin ? 'flex' : 'none';
+    var isMobile = window.innerWidth <= 900;
+    uqn.style.display = (isAdmin && !isMobile) ? 'flex' : 'none';
     var uqnAdmin = document.getElementById('uqn-admin');
     if (uqnAdmin) uqnAdmin.style.display = isAdmin ? '' : 'none';
   }
+  // Fila qnav mobile (row-3 del tab bar) — solo admin/editor
+  document.querySelectorAll('.dtab-row-qnav').forEach(function(el) {
+    if (isAdmin) el.classList.add('qnav-visible');
+    else el.classList.remove('qnav-visible');
+  });
+  document.querySelectorAll('#dtab-qnav-admin').forEach(function(el) {
+    el.style.display = isAdmin ? '' : 'none';
+  });
+  // Clase body para ajustar padding-top del contenido en mobile
+  if (isAdmin) document.body.classList.add('mob-has-qnav');
+  else document.body.classList.remove('mob-has-qnav');
 
 // ── Aplicar bloqueo de semanas según plan ──
   filterWeeksByPlan();
@@ -3689,6 +3863,18 @@ function onLogout() {
   // ── Acad-nav: restaurar estado sin sesión ──
   document.body.classList.remove('loggedin');
   document.body.classList.remove('prueba-plan');
+  // ── RESET formulario login: limpiar campos y restaurar botón ──
+  ['inp-email','inp-pass','inp-name','inp-reg-email','inp-reg-pass'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  var btnLog = document.getElementById('btn-login');
+  if (btnLog) { btnLog.textContent = 'Entrar al Área de Alumnos'; btnLog.disabled = false; }
+  var btnReg = document.getElementById('btn-register');
+  if (btnReg) { btnReg.textContent = 'Crear Cuenta'; btnReg.disabled = false; }
+  // Volver al tab de login
+  var tabLogin = document.getElementById('tab-login');
+  if (tabLogin && !tabLogin.classList.contains('active')) switchTab('login');
 }
 
 function togglePassVis(id, btn) {
@@ -4802,7 +4988,7 @@ function goTo(page) {
   document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
   document.getElementById('page-' + page).classList.add('active');
   var tb = document.getElementById('dash-tab-bar');
-  if (tb) tb.style.display = (page === 'student' && window.innerWidth <= 900) ? 'flex' : 'none';
+  if (tb) { if (page === 'student') { tb.style.display = ''; } else { tb.style.display = 'none'; } }
   window.scrollTo(0,0);
   if (page === 'student') refreshDashboard();
   if (page === 'admin') loadAdminData();
@@ -5428,7 +5614,49 @@ html, body { overflow-x: hidden; }
 .dtab-row-2 {
   background: #111009;
   border-top: 1px solid rgba(255,255,255,.08);
+  width: 100vw !important; max-width: 100vw !important;
+  min-width: 0; position: relative; left: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+/* Fila editor/admin quick-nav — solo mobile */
+.dtab-row-qnav {
+  display: none;
+  background: transparent;
+  border: none;
   width: 100%;
+  box-sizing: border-box;
+  padding: 5px 14px;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  height: 38px;
+}
+.dtab-row-qnav .dtab {
+  flex: 0 0 auto !important;
+  flex-direction: row !important;
+  gap: 4px !important;
+  padding: 5px 13px !important;
+  border-radius: 100px !important;
+  background: #BC9640 !important;
+  border: none !important;
+  color: #FAF8F5 !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  min-width: 0; white-space: nowrap;
+}
+.dtab-row-qnav .dtab .dtab-icon { font-size: 12px; }
+.dtab-row-qnav .dtab .dtab-label { font-size: 11px !important; white-space: nowrap; }
+.dtab-row-qnav .dtab-logout {
+  background: #8B3530 !important;
+  color: #FAF8F5 !important;
+}
+/* En mobile: mostrar qnav si tiene clase visible, ocultar user-quick-nav y Academia del row-2 */
+@media(max-width: 900px) {
+  .dtab-row-qnav.qnav-visible { display: flex; }
+  #user-quick-nav { display: none !important; }
+  .dtab-row-2 .dtab-acad-mob { display: none !important; }
 }
 .dtab-row-2 .dtab {
   color: rgba(255,255,255,.7);
@@ -5439,7 +5667,7 @@ html, body { overflow-x: hidden; }
 .dtab {
   flex: 1 1 0;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 3px; padding: 8px 4px;
+  gap: 2px; padding: 5px 4px;
   background: none; border: none; cursor: pointer;
   color: rgba(255,255,255,.45);
   font-family: 'DM Sans', sans-serif;
@@ -5458,23 +5686,11 @@ html, body { overflow-x: hidden; }
 
 @media(max-width: 900px) {
   #dash-tab-bar { display: flex; }
-  .sidebar { display: none !important; }
-  .student-wrap { padding-top: 64px !important; }
+  .dtab { padding: 4px 4px !important; gap: 1px !important; }
   nav { height: 64px !important; }
   .nav-logo-svg { width: 48px !important; height: 48px !important; }
-  .main-content {
-    margin-left: 0 !important;
-    padding: 24px 16px 130px !important;
-    overflow-x: hidden !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-  }
-  #page-student {
-    overflow-x: hidden !important;
-  }
-  /* Hide floating editor button — it's in tab bar */
+  #page-student { overflow-x: hidden !important; }
   #edOpenBtn { display: none !important; }
-  /* Dashboard grid */
   .dashboard-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
   .stat-card { padding: 16px !important; }
   .stat-value { font-size: 28px !important; }
@@ -5535,7 +5751,7 @@ html, body { overflow-x: hidden; }
 
 @media(max-width: 400px) {
   .dtab-label { font-size: 8px !important; }
-  .dtab-icon { font-size: 17px !important; }
+  .dtab-icon { font-size: 15px !important; }
   .main-content { padding: 12px 10px 130px !important; }
   .stat-value { font-size: 20px !important; }
 }
@@ -7776,6 +7992,38 @@ document.addEventListener('keydown', function(e) {
 <div class="page" id="page-student">
   <div class="student-wrap">
 
+    <!-- HEADER MOBILE DASHBOARD -->
+    <div id="dash-mob-header">
+      <div class="dmh-logo" onclick="goTo('academy')">
+        <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="250" cy="250" r="240" fill="#0E0C0A"/>
+          <g stroke="#B8903A" stroke-width="1.6" stroke-linecap="round" opacity="0.85">
+            <line x1="250" y1="250" x2="250" y2="116"/><line x1="250" y1="250" x2="316" y2="134"/>
+            <line x1="250" y1="250" x2="366" y2="184"/><line x1="250" y1="250" x2="384" y2="250"/>
+            <line x1="250" y1="250" x2="366" y2="316"/><line x1="250" y1="250" x2="316" y2="366"/>
+            <line x1="250" y1="250" x2="250" y2="384"/><line x1="250" y1="250" x2="184" y2="366"/>
+            <line x1="250" y1="250" x2="134" y2="316"/><line x1="250" y1="250" x2="116" y2="250"/>
+            <line x1="250" y1="250" x2="134" y2="184"/><line x1="250" y1="250" x2="184" y2="134"/>
+          </g>
+          <circle cx="250" cy="116" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="316" cy="134" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="366" cy="184" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="384" cy="250" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="366" cy="316" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="316" cy="366" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="250" cy="384" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="184" cy="366" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="134" cy="316" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="116" cy="250" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="134" cy="184" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="184" cy="134" r="7" fill="#D4AA5A" opacity="0.9"/>
+          <circle cx="250" cy="250" r="10" fill="#B8903A" opacity="0.95"/>
+        </svg>
+        <div class="dmh-logo-text">Frecuencia Integral<span>Academy</span></div>
+      </div>
+      <button class="dmh-acad-btn" onclick="goTo('academy')">&#8592; Academia</button>
+    </div>
+
     <!-- SIDEBAR -->
     <div class="sidebar">
       <div class="sidebar-user">
@@ -7821,6 +8069,9 @@ document.addEventListener('keydown', function(e) {
       </div>
       <!-- FILA 2: visible solo al pulsar Más -->
       <div class="dtab-row dtab-row-2" id="dtab-row-2" style="display:none">
+        <button class="dtab dtab-acad-mob" onclick="goTo('academy');dtabCloseMas()">
+          <span class="dtab-icon">🏛️</span><span class="dtab-label">Academia</span>
+        </button>
         <button class="dtab" onclick="showView('arteterapia');dtabActive(this,4);dtabCloseMas()">
           <span class="dtab-icon">🎨</span><span class="dtab-label">Arteterapia</span>
         </button>
@@ -7853,6 +8104,18 @@ document.addEventListener('keydown', function(e) {
         </button>
         <button class="dtab dtab-logout" onclick="mobEdClose()" style="flex:0.8 1 0">
           <span class="dtab-icon">✕</span><span class="dtab-label">Cerrar</span>
+        </button>
+      </div>
+      <!-- FILA ADMIN/EDITOR: visible solo en mobile para usuarios con acceso -->
+      <div class="dtab-row dtab-row-qnav" id="dtab-row-qnav">
+        <button class="dtab" onclick="goTo('student')">
+          <span class="dtab-icon">📋</span><span class="dtab-label">Mi Dashboard</span>
+        </button>
+        <button class="dtab" id="dtab-qnav-admin" style="display:none" onclick="goTo('admin')">
+          <span class="dtab-icon">⚙️</span><span class="dtab-label">Admin</span>
+        </button>
+        <button class="dtab dtab-logout" onclick="doLogout()">
+          <span class="dtab-icon">🚪</span><span class="dtab-label">Salir</span>
         </button>
       </div>
     </nav>
