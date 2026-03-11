@@ -306,14 +306,14 @@ html, body { overflow-x: hidden; }
 
 /* PRUEBA PLAN — sidebar badges */
 body.prueba-plan .nav-item[data-view="multimedia"]::after {
-  content: ' ·  Libre';
+  content: '';
   font-size: 9px;
   color: #2b7d7a;
   font-weight: 700;
   vertical-align: middle;
 }
 body.prueba-plan .nav-item[data-view="materiales"]::after {
-  content: ' ·  Solo lectura';
+  content: '';
   font-size: 9px;
   color: #2b7d7a;
   font-weight: 700;
@@ -569,6 +569,62 @@ body.prueba-plan .nav-item[data-view="materiales"]::after {
   .dtab-icon { font-size: 17px !important; }
   .main-content { padding: 12px 10px 130px !important; }
   .stat-value { font-size: 20px !important; }
+}
+
+/* ===================================================
+   MULTIMEDIA — MOBILE / TABLET FIXES
+   =================================================== */
+
+/* Vista general — tablet (901-600px) */
+@media(max-width: 900px) {
+  #view-multimedia h2 { font-size: 22px !important; margin-bottom: 14px !important; }
+  #media-tabs { gap: 6px !important; margin-bottom: 16px !important; }
+  #media-grid-container { padding: 0 !important; }
+  .modal-body { padding: 20px 22px !important; }
+  #media-modal { padding: 12px !important; }
+}
+
+/* Vista general — mobile (≤600px) */
+@media(max-width: 600px) {
+  #view-multimedia h2 { font-size: 20px !important; }
+  #media-tabs button, #media-tabs span {
+    font-size: 11px !important;
+    padding: 6px 12px !important;
+  }
+  .modal-body { padding: 14px 12px 80px !important; }
+}
+
+/* Tarjetas Cuencos (buildCuencosGrid) — mobile */
+@media(max-width: 480px) {
+  #media-grid-container > div {
+    flex-wrap: wrap !important;
+    padding: 12px 14px !important;
+    gap: 10px !important;
+  }
+  #media-grid-container > div > button {
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+  }
+}
+
+/* Modal reproductor — bottom sheet en mobile */
+@media(max-width: 640px) {
+  #media-modal {
+    padding: 0 !important;
+    align-items: flex-end !important;
+  }
+  #media-modal-box {
+    border-radius: 20px 20px 0 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    max-height: 92vh !important;
+    overflow-y: auto !important;
+  }
+  #media-modal-box > div:first-child {
+    padding: 16px 18px 0 !important;
+  }
+  #mm-title { font-size: 17px !important; }
 }
 
 
@@ -3020,80 +3076,21 @@ function acadMenuClose() {
 
         <!-- TABS DE FILTRO -->
         <div id="media-tabs" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px">
-          <button onclick="filterMediaCat('Todos',this)" class="media-filter-btn active" style="padding:7px 16px;border-radius:100px;border:1.5px solid #2b7d7a;background:#2b7d7a;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">Todos</button>
-          <button onclick="filterMediaCat('Cuencos',this)" class="media-filter-btn" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🎵 Cuencos</button>
-          <button onclick="filterMediaCat('Meditación',this)" class="media-filter-btn" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🧘 Meditación</button>
-          <button onclick="filterMediaCat('Frecuencia',this)" class="media-filter-btn" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🌿 Frecuencia</button>
-          <button onclick="filterMediaCat('Teoría',this)" class="media-filter-btn" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">💫 Teoría</button>
-          <button onclick="filterMediaCat('Canalización',this)" class="media-filter-btn" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🌸 Canalización</button>
+          <button onclick="filterMediaCat('Cuencos',this)" class="media-filter-btn active" style="padding:7px 16px;border-radius:100px;border:1.5px solid #2b7d7a;background:#2b7d7a;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🎵 Cuencos</button>
+          <span title="Disponible próximamente" style="padding:7px 16px;border-radius:100px;border:1.5px solid #ede9e3;background:#f5f3f0;color:#c0b9b0;font-size:12px;font-weight:700;cursor:not-allowed;font-family:DM Sans,sans-serif;letter-spacing:.04em;display:inline-flex;align-items:center;gap:5px">🧘 Meditación <span style="font-size:9px;background:#e8e3dc;color:#a09890;border-radius:20px;padding:1px 6px;font-weight:700;letter-spacing:.04em">Próx.</span></span>
+          <span title="Disponible próximamente" style="padding:7px 16px;border-radius:100px;border:1.5px solid #ede9e3;background:#f5f3f0;color:#c0b9b0;font-size:12px;font-weight:700;cursor:not-allowed;font-family:DM Sans,sans-serif;letter-spacing:.04em;display:inline-flex;align-items:center;gap:5px">🌿 Frecuencia <span style="font-size:9px;background:#e8e3dc;color:#a09890;border-radius:20px;padding:1px 6px;font-weight:700;letter-spacing:.04em">Próx.</span></span>
+          <span title="Disponible próximamente" style="padding:7px 16px;border-radius:100px;border:1.5px solid #ede9e3;background:#f5f3f0;color:#c0b9b0;font-size:12px;font-weight:700;cursor:not-allowed;font-family:DM Sans,sans-serif;letter-spacing:.04em;display:inline-flex;align-items:center;gap:5px">💫 Teoría <span style="font-size:9px;background:#e8e3dc;color:#a09890;border-radius:20px;padding:1px 6px;font-weight:700;letter-spacing:.04em">Próx.</span></span>
+          <span title="Disponible próximamente" style="padding:7px 16px;border-radius:100px;border:1.5px solid #ede9e3;background:#f5f3f0;color:#c0b9b0;font-size:12px;font-weight:700;cursor:not-allowed;font-family:DM Sans,sans-serif;letter-spacing:.04em;display:inline-flex;align-items:center;gap:5px">🌸 Canalización <span style="font-size:9px;background:#e8e3dc;color:#a09890;border-radius:20px;padding:1px 6px;font-weight:700;letter-spacing:.04em">Próx.</span></span>
         </div>
 
         <!-- GRID DE TARJETAS -->
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px" id="media-grid">
-
-          <div data-cat="Cuencos" data-prueba="true" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Cuencos Tibetanos — Fundamentos" data-dur="32 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
-            <div style="background:#f5f2ec;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🎵</div>
-            <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Cuencos · 32 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Cuencos Tibetanos — Fundamentos</div></div>
-          </div>
-
-          <div data-cat="Canalización" data-prueba="false" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Canalización Marga — Puerta Blanca" data-dur="18 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
-            <div style="background:#fdf0ee;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🌸</div>
-            <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Canalización · 18 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Canalización Marga — Puerta Blanca</div></div>
-          </div>
-
-          <div data-cat="Meditación" data-prueba="true" data-src="REEMPLAZA_CON_URL_VIDEO.mp4" data-type="video" data-title="Meditación de Presencia Corporal" data-dur="15 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
-            <div style="background:#eef3fb;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🧘</div>
-            <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Meditación · 15 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Meditación de Presencia Corporal</div></div>
-          </div>
-
-          <div data-cat="Frecuencia" data-prueba="true" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Frecuencia 432Hz — Armonía Natural" data-dur="40 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
-            <div style="background:#f5f2ec;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🌿</div>
-            <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Frecuencia · 40 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Frecuencia 432Hz — Armonía Natural</div></div>
-          </div>
-
-          <div data-cat="Cuencos" data-prueba="false" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Cuencos — Nivel Terapéutico" data-dur="45 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
-            <div style="background:#fdf0ee;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🔥</div>
-            <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Cuencos · 45 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Cuencos — Nivel Terapéutico</div></div>
-          </div>
-
-          <div data-cat="Teoría" data-prueba="false" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="UCDM — Introducción al Perdón" data-dur="28 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
-            <div style="background:#fdf6ec;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">💫</div>
-            <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Teoría · 28 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">UCDM — Introducción al Perdón</div></div>
-          </div>
-
-          <div data-cat="Teoría" data-prueba="false" data-src="REEMPLAZA_CON_URL_VIDEO.mp4" data-type="video" data-title="Dzogchen — Introducción a Rigpa" data-dur="35 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
-            <div style="background:#eef3fb;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🔵</div>
-            <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Teoría · 35 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Dzogchen — Introducción a Rigpa</div></div>
-          </div>
-
-          <div data-cat="Frecuencia" data-prueba="false" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Frecuencia 963Hz — La Luz" data-dur="48 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
-            <div style="background:#eef3fb;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">✨</div>
-            <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Frecuencia · 48 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Frecuencia 963Hz — La Luz</div></div>
-          </div>
-
+        <div id="media-grid-container">
         </div>
 
         <!-- INFO PLAN PRUEBA (visible cuando filtro no tiene contenido) -->
         <div id="media-prueba-info" style="display:none;margin-top:8px"></div>
 
-        <!-- MODAL REPRODUCTOR -->
-        <div id="media-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px">
-          <div id="media-modal-box" style="background:#faf8f5;border-radius:20px;width:100%;max-width:640px;box-shadow:0 24px 64px rgba(0,0,0,.3);transition:max-width .3s">
-            <!-- HEADER -->
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 0">
-              <div>
-                <div id="mm-cat" style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px"></div>
-                <div id="mm-title" style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:#1c1814"></div>
-              </div>
-              <div style="display:flex;gap:10px;align-items:center">
-                <button id="mm-expand-btn" onclick="toggleMediaExpand()" title="Expandir" style="background:none;border:1.5px solid #e4ddd3;border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:14px;color:#7a7168">⛶</button>
-                <button onclick="closeMediaModal()" style="background:none;border:1.5px solid #e4ddd3;border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:16px;color:#7a7168">✕</button>
-              </div>
-            </div>
-            <!-- PLAYER AREA -->
-            <div id="mm-player" style="padding:20px 24px 24px"></div>
-          </div>
-        </div>
+
 
       </div>
     
@@ -3281,15 +3278,18 @@ function acadMenuClose() {
             <span class="modal-nav-icon">🧘</span>Ejercicio
           </button>
           <button class="modal-nav-btn" onclick="switchModalTab(3,this)" data-tab="3">
-            <span class="modal-nav-icon">📄</span>Materiales
+            <span class="modal-nav-icon">🎵</span>Multimedia
           </button>
           <button class="modal-nav-btn" onclick="switchModalTab(4,this)" data-tab="4">
-            <span class="modal-nav-icon">🎨</span>Arteterapia
+            <span class="modal-nav-icon">📄</span>Materiales
           </button>
           <button class="modal-nav-btn" onclick="switchModalTab(5,this)" data-tab="5">
-            <span class="modal-nav-icon">📝</span>Diario
+            <span class="modal-nav-icon">🎨</span>Arteterapia
           </button>
           <button class="modal-nav-btn" onclick="switchModalTab(6,this)" data-tab="6">
+            <span class="modal-nav-icon">📝</span>Diario
+          </button>
+          <button class="modal-nav-btn" onclick="switchModalTab(7,this)" data-tab="7">
             <span class="modal-nav-icon">✅</span>Completar
           </button>
         </div>
@@ -3387,27 +3387,7 @@ function showView(view, el) {
   if (view === 'materiales') renderMateriales();
   if (view === 'formaciones') filterWeeksByPlan();
   if (view === 'notas') notasInit();
-   if (view === 'multimedia') {
-    var isPrueba = user && user._plan === 'Prueba';
-    var grid = document.getElementById('media-grid');
-    if (!grid) return;
-    // Filtrar tarjetas según plan
-    Array.from(grid.children).forEach(function(card) {
-      var esPrueba = card.getAttribute('data-prueba') === 'true';
-      if (isPrueba) {
-        card.style.display = esPrueba ? '' : 'none';
-      } else {
-        card.style.display = '';
-      }
-    });
-    // Resetear tab activo a "Todos"
-    document.querySelectorAll('.media-filter-btn').forEach(function(b,i){ b.classList.toggle('active', i===0); });
-    var styleActive = 'padding:7px 16px;border-radius:100px;border:1.5px solid #2b7d7a;background:#2b7d7a;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em';
-    var styleInactive = 'padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em';
-    document.querySelectorAll('.media-filter-btn').forEach(function(b,i){ b.style.cssText = i===0 ? styleActive : styleInactive; });
-    var info = document.getElementById('media-prueba-info');
-    if (info) info.style.display = 'none';
-  }
+  if (view === 'multimedia') { renderMultimediaView(); }
 }
 
 function showUpgradeBanner() {
@@ -4151,7 +4131,21 @@ function openWeekModal(weekNum) {
         (d.ep && d.ep.length > 0 ? '<div>' + d.ep.map(function(p,i){ return '<div class="exercise-step"><div class="step-num">' + (i+1) + '</div><div class="step-text">' + p + '</div></div>'; }).join('') + '</div>' : '');
     })(),
 
-    // Tab 3: Materiales PDF
+    // Tab 3: Multimedia
+    (function() {
+      var showAudio = (user && user._plan === 'Prueba' && weekNum <= 3) || (w && w.p === 'Blanca');
+      if (!showAudio) return '<div style="padding:32px 16px;text-align:center"><div style="font-size:40px;margin-bottom:12px">&#127925;</div><div style="font-family:\'Cormorant Garamond\',serif;font-size:17px;color:#1c1814;margin-bottom:6px">Multimedia disponible en el curso</div><div style="font-size:11px;color:#7a7168;margin-bottom:16px">Accede a los audios de cuencos tibetanos y m&#225;s</div><button onclick="showUpgradeBanner()" style="background:linear-gradient(135deg,#BC9640,#D4AA5A);color:#1c1814;border:none;padding:8px 22px;border-radius:100px;font-size:11px;font-weight:700;cursor:pointer">Ver planes &#8594;</button></div>';
+      var tagsBar = '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px">'
+        + '<button style="padding:6px 14px;border-radius:100px;border:1.5px solid #2b7d7a;background:#2b7d7a;color:white;font-size:11px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif">&#127925; Cuencos</button>'
+        + '<span style="padding:6px 14px;border-radius:100px;border:1.5px solid #ede9e3;background:#f5f3f0;color:#c0b9b0;font-size:11px;font-weight:700;cursor:not-allowed;font-family:DM Sans,sans-serif;display:inline-flex;align-items:center;gap:4px">&#129497; Meditaci&#243;n <span style="font-size:8px;background:#e8e3dc;color:#a09890;border-radius:20px;padding:1px 5px;font-weight:700">Pr&#243;x.</span></span>'
+        + '<span style="padding:6px 14px;border-radius:100px;border:1.5px solid #ede9e3;background:#f5f3f0;color:#c0b9b0;font-size:11px;font-weight:700;cursor:not-allowed;font-family:DM Sans,sans-serif;display:inline-flex;align-items:center;gap:4px">&#127807; Frecuencia <span style="font-size:8px;background:#e8e3dc;color:#a09890;border-radius:20px;padding:1px 5px;font-weight:700">Pr&#243;x.</span></span>'
+        + '<span style="padding:6px 14px;border-radius:100px;border:1.5px solid #ede9e3;background:#f5f3f0;color:#c0b9b0;font-size:11px;font-weight:700;cursor:not-allowed;font-family:DM Sans,sans-serif;display:inline-flex;align-items:center;gap:4px">&#128261; Teor&#237;a <span style="font-size:8px;background:#e8e3dc;color:#a09890;border-radius:20px;padding:1px 5px;font-weight:700">Pr&#243;x.</span></span>'
+        + '<span style="padding:6px 14px;border-radius:100px;border:1.5px solid #ede9e3;background:#f5f3f0;color:#c0b9b0;font-size:11px;font-weight:700;cursor:not-allowed;font-family:DM Sans,sans-serif;display:inline-flex;align-items:center;gap:4px">&#127864; Canalizaci&#243;n <span style="font-size:8px;background:#e8e3dc;color:#a09890;border-radius:20px;padding:1px 5px;font-weight:700">Pr&#243;x.</span></span>'
+        + '</div>';
+      return tagsBar + buildCuencosGrid();
+    })(),
+
+    // Tab 4: Materiales PDF
     (function() {
       var isPrueba = user && user._plan === 'Prueba';
       var BASE = 'https://jtwbbyjspanirbsuoipa.supabase.co/storage/v1/object/public/materiales/PRUEBA/';
@@ -4229,10 +4223,11 @@ function openWeekModal(weekNum) {
               '<iframe src="" data-src="' + pdf.url + '" loading="lazy"></iframe>' +
             '</div>' +
           '</div>';
-        }).join('');
+        }).join('') +
+        (w.p === 'Blanca' ? '' : '');
     })(),
 
-    // Tab 4: Arteterapia
+    // Tab 5: Arteterapia
     (function() {
       var at = (typeof AT !== 'undefined') ? AT[String(weekNum)] : null;
       if (!at) return '<p style="color:#7a7168;font-size:14px">No hay ejercicio de arteterapia para esta semana.</p>';
@@ -4257,7 +4252,7 @@ function openWeekModal(weekNum) {
         '<p style="font-size:13px;line-height:1.75;color:#3d3730;font-style:italic">' + at.r + '</p></div>' : '');
     })(),
 
-    // Tab 5: Notas de la semana
+    // Tab 6: Notas de la semana
     (function() {
       var noteKey = 'nota-semana-' + weekNum;
       var savedNote = (notasCache && notasCache[noteKey]) ? notasCache[noteKey] : '';
@@ -4291,13 +4286,13 @@ function openWeekModal(weekNum) {
         + '</div></div>';
     })(),
 
-    // Tab 6: Completar
+    // Tab 7: Completar
     '<div>' +
     ['He leído el material de estudio','He realizado el ejercicio práctico','He escuchado el audio de la semana','He anotado mis reflexiones'].map(function(t,i){
       return '<div class="task-item" id="task-' + weekNum + '-' + i + '" onclick="toggleTask(' + weekNum + ',' + i + ')"><div class="task-cb"></div><div class="task-text">' + t + '</div></div>';
     }).join('') +
     '<button class="btn-complete" onclick="markComplete(' + weekNum + ')" ' + (done ? 'disabled style="background:#d1c8bc"' : '') + '>' +
-    (done ? '✅ Semana Completada' : '✦ Marcar como Completada') + '</button></div>'
+    (done ? '✅ Semana Completada' : '✦ Marcar como Completada') + '</button></div>',
 
   ];
 
@@ -4569,6 +4564,9 @@ function closePdfFullscreen() {
   // Reset visor limitado
   var viewer = document.getElementById('pdf-js-viewer');
   if (viewer) viewer.style.display = 'none';
+  var thumbs = document.getElementById('pdf-js-thumbs');
+  if (thumbs) thumbs.innerHTML = '';
+  _pdfDoc = null; _pdfPage = 1; _pdfRendering = false; _pdfScale = 1.0;
   var badge = document.getElementById('pdf-limited-badge');
   if (badge) badge.style.display = 'none';
   var dlBtn = document.getElementById('pdf-fullscreen-dl');
@@ -4587,11 +4585,11 @@ function renderMedia() {
   const isPrueba = user && user._plan === 'Prueba';
   // Cada item tiene 'prueba:true' si está disponible en plan Prueba (sem 1-3)
   const items = [
-    {icon:'🎵',title:'Cuencos Tibetanos — Fundamentos',cat:'Cuencos',dur:'32 min',bg:'#f5f2ec', prueba:true},
+    {icon:'🎵',title:'Bowls Tibetanos 7 Chakras',cat:'Cuencos',dur:'45 min',bg:'#f5f2ec',src:'https://jtwbbyjspanirbsuoipa.supabase.co/storage/v1/object/public/materiales/MULTIMEDIA/bowls%20tibetanos%207%20chakras.mp3', prueba:true},
     {icon:'🧘',title:'Meditación de Presencia Corporal',cat:'Meditación',dur:'15 min',bg:'#eef3fb', prueba:true},
     {icon:'🌿',title:'Frecuencia 432Hz — Armonía Natural',cat:'Frecuencia',dur:'40 min',bg:'#f5f2ec', prueba:true},
     {icon:'🌸',title:'Canalización Marga — Puerta Blanca',cat:'Canalización',dur:'18 min',bg:'#fdf0ee', prueba:false},
-    {icon:'🔥',title:'Cuencos — Nivel Terapéutico',cat:'Cuencos',dur:'45 min',bg:'#fdf0ee', prueba:false},
+    {icon:'🔥',title:'741 Hz Detox · Cleanse Aura',cat:'Cuencos',dur:'71 min',bg:'#fdf0ee',src:'https://jtwbbyjspanirbsuoipa.supabase.co/storage/v1/object/public/materiales/MULTIMEDIA/741_Hz_DETOX_CLEANSE_AURA_Remove_Toxins_Negative_Blocks', prueba:true},
     {icon:'💫',title:'UCDM — Introducción al Perdón',cat:'Teoría',dur:'28 min',bg:'#fdf6ec', prueba:false},
     {icon:'🔵',title:'Dzogchen — Introducción a Rigpa',cat:'Teoría',dur:'35 min',bg:'#eef3fb', prueba:false},
     {icon:'✨',title:'Frecuencia 963Hz — La Luz',cat:'Frecuencia',dur:'48 min',bg:'#eef3fb', prueba:false},
@@ -4609,32 +4607,10 @@ function renderMedia() {
 
 // Filtrar multimedia por categoría — muestra "Próximamente" si no hay contenido para plan Prueba
 function filterMediaCat(cat, btn) {
-  const isPrueba = user && user._plan === 'Prueba';
-  const grid = document.getElementById('media-grid');
-  const info = document.getElementById('media-prueba-info');
   document.querySelectorAll('.media-filter-btn').forEach(function(b){ b.classList.remove('active'); });
   if (btn) btn.classList.add('active');
-  var visible = 0;
-  if (!grid) return;
-  Array.from(grid.children).forEach(function(card) {
-    var cardCat = card.getAttribute('data-cat') || '';
-    var show = cat === 'Todos' || cardCat === cat;
-    card.style.display = show ? '' : 'none';
-    if (show) visible++;
-  });
-  if (info) {
-    if (isPrueba && visible === 0) {
-      info.style.display = 'block';
-      info.innerHTML = '<div style="text-align:center;padding:40px 20px;background:#faf8f5;border-radius:14px;border:1px solid #e4ddd3">' +
-        '<div style="font-size:32px;margin-bottom:12px">✦</div>' +
-        '<div style="font-family:\'Cormorant Garamond\',serif;font-size:20px;color:#1c1814;margin-bottom:8px">Disponible en el curso completo</div>' +
-        '<div style="font-size:13px;color:#7a7168;margin-bottom:20px">Este contenido forma parte del Método TCT · 48 semanas.</div>' +
-        '<button onclick="showUpgradeBanner()" style="background:#BC9640;color:white;border:none;padding:10px 24px;border-radius:100px;font-size:12px;font-weight:700;letter-spacing:.06em;cursor:pointer">Ver el curso completo →</button>' +
-        '</div>';
-    } else {
-      info.style.display = 'none';
-    }
-  }
+  // El grid se renderiza dinamicamente — solo re-renderizar
+  renderMultimediaView();
 }
 
 
@@ -4870,7 +4846,40 @@ function filterMedia(cat) {
     });
   });
 })();
+
+// ── MULTIMEDIA UNIFICADA ──
+function buildCuencosGrid() {
+  var isMobile = window.innerWidth <= 480;
+  var items = [
+    {idx:0,icon:'&#127925;',bg:'linear-gradient(135deg,#f5f0e8,#ede5d4)',title:'Bowls Tibetanos 7 Chakras',dur:'45 min'},
+    {idx:1,icon:'&#128293;',bg:'linear-gradient(135deg,#eef5f0,#d4ede4)',title:'741 Hz Detox &middot; Cleanse Aura',dur:'71 min'}
+  ];
+  return items.map(function(a){
+    var cardStyle = isMobile
+      ? 'background:#faf7f2;border:1px solid rgba(188,150,64,.3);border-radius:14px;padding:12px 14px;display:flex;flex-wrap:wrap;align-items:center;gap:10px;cursor:pointer;margin-bottom:10px'
+      : 'background:#faf7f2;border:1px solid rgba(188,150,64,.3);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;margin-bottom:10px;transition:box-shadow .2s';
+    var btnStyle = isMobile
+      ? 'background:linear-gradient(135deg,#BC9640,#D4AA5A);color:#1c1814;border:none;padding:9px 0;border-radius:100px;font-size:11px;font-weight:700;cursor:pointer;width:100%;text-align:center'
+      : 'background:linear-gradient(135deg,#BC9640,#D4AA5A);color:#1c1814;border:none;padding:8px 18px;border-radius:100px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0';
+    return '<div style="'+cardStyle+'" '
+      +'onmouseover="if(window.innerWidth>480)this.style.boxShadow=\'0 4px 16px rgba(188,150,64,.2)\'" '
+      +'onmouseout="this.style.boxShadow=\'\'" '
+      +'onclick="openAudioModal('+a.idx+')">'
+      +'<div style="width:46px;height:46px;border-radius:50%;background:'+a.bg+';display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">'+a.icon+'</div>'
+      +'<div style="flex:1;min-width:0">'
+        +'<div style="font-size:13px;font-weight:600;color:#1c1814;margin-bottom:3px">'+a.title+'</div>'
+        +'<div style="font-size:10px;color:#7a7168">Cuencos &middot; '+a.dur+'</div>'
+      +'</div>'
+      +'<button onclick="event.stopPropagation();openAudioModal('+a.idx+')" style="'+btnStyle+'">&#9658; Escuchar</button>'
+    +'</div>';
+  }).join('');
+}
+function renderMultimediaView() {
+  var el = document.getElementById('media-grid-container');
+  if (el) el.innerHTML = buildCuencosGrid();
+}
 var _mediaExpanded = false;
+var _mediaJustOpened = false;
 function openMediaModal(card) {
   var src = card.getAttribute('data-src');
   var type = card.getAttribute('data-type');
@@ -4891,14 +4900,46 @@ function openMediaModal(card) {
   } else if (type === 'video') {
     player.innerHTML = '<video controls autoplay style="width:100%;border-radius:12px;background:#000"><source src="'+src+'">Tu navegador no soporta video.</video>';
   } else {
-    player.innerHTML = '<div style="background:linear-gradient(135deg,#f5f2ec,#fdf0ee);border-radius:14px;padding:32px 24px;text-align:center;margin-bottom:16px"><div style="font-size:56px;margin-bottom:12px">🎵</div></div><audio controls autoplay style="width:100%;accent-color:#2b7d7a"><source src="'+src+'">Tu navegador no soporta audio.</audio>';
+    var bgColor = src.includes('741') ? 'linear-gradient(135deg,#eef5f0,#c8e8e0)' : 'linear-gradient(135deg,#f5f0e8,#ede5d4)';
+    var icon = src.includes('741') ? '🔥' : '🎵';
+    player.innerHTML =
+      '<div style="background:'+bgColor+';border-radius:16px;padding:36px 24px 28px;text-align:center;margin-bottom:0">' +
+        '<div style="font-size:52px;margin-bottom:10px">'+icon+'</div>' +
+        '<div style="font-family:\'Cormorant Garamond\',serif;font-size:19px;font-weight:400;color:#1c1814;margin-bottom:4px">'+title+'</div>' +
+        '<div style="font-size:11px;color:#7a7168;margin-bottom:20px">'+cat+' · '+dur+'</div>' +
+        '<audio controls autoplay style="width:100%;accent-color:#BC9640;border-radius:8px"><source src="'+src+'">Sin soporte audio.</audio>' +
+      '</div>';
   }
   var modal = document.getElementById('media-modal');
   modal.style.display = 'flex';
   _mediaExpanded = false;
+  _mediaJustOpened = true;
   document.getElementById('media-modal-box').style.maxWidth = '640px';
 }
 
+var AUDIO_URLS = [
+  'https://jtwbbyjspanirbsuoipa.supabase.co/storage/v1/object/public/materiales/MULTIMEDIA/bowls%20tibetanos%207%20chakras.mp3',
+  'https://jtwbbyjspanirbsuoipa.supabase.co/storage/v1/object/public/materiales/MULTIMEDIA/741_Hz_DETOX_CLEANSE_AURA_Remove_Toxins_Negative_Blocks'
+];
+var AUDIO_NAMES = ['Bowls Tibetanos 7 Chakras','741 Hz Detox · Cleanse Aura'];
+var AUDIO_DURS  = ['45 min','71 min'];
+function openAudioModal(idx) {
+  var src = AUDIO_URLS[idx], title = AUDIO_NAMES[idx], dur = AUDIO_DURS[idx];
+  document.getElementById('mm-title').textContent = title;
+  document.getElementById('mm-cat').textContent = 'Cuencos \u00b7 ' + dur;
+  var bgC = idx===1 ? 'linear-gradient(135deg,#eef5f0,#c8e8e0)' : 'linear-gradient(135deg,#f5f0e8,#ede5d4)';
+  var ic  = idx===1 ? '🔥' : '🎵';
+  document.getElementById('mm-player').innerHTML =
+    '<div style="background:'+bgC+';border-radius:16px;padding:36px 24px 28px;text-align:center">' +
+    '<div style="font-size:52px;margin-bottom:10px">'+ic+'</div>' +
+    '<div style="font-family:\'Cormorant Garamond\',serif;font-size:19px;font-weight:400;color:#1c1814;margin-bottom:4px">'+title+'</div>' +
+    '<div style="font-size:11px;color:#7a7168;margin-bottom:22px">Cuencos · '+dur+'</div>' +
+    '<audio controls autoplay style="width:100%;accent-color:#BC9640;border-radius:8px"><source src="'+src+'">Sin soporte audio.</audio>' +
+    '</div>';
+  document.getElementById('media-modal').style.display = 'flex';
+  _mediaJustOpened = true;
+  document.getElementById('media-modal-box').style.maxWidth = '580px';
+}
 function closeMediaModal() {
   var modal = document.getElementById('media-modal');
   modal.style.display = 'none';
@@ -4914,6 +4955,7 @@ function toggleMediaExpand() {
 }
 
 document.addEventListener('click', function(e) {
+  if (_mediaJustOpened) { _mediaJustOpened = false; return; }
   var modal = document.getElementById('media-modal');
   if (modal && modal.style.display==='flex' && e.target === modal) closeMediaModal();
 });
@@ -7867,89 +7909,6 @@ document.addEventListener('keydown', function(e) {
       </div>
 
      <!-- MULTIMEDIA VIEW -->
-      <div id="view-multimedia" style="display:none">
-        <h2 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;margin-bottom:20px">Biblioteca Multimedia</h2>
-
-        <!-- TABS DE FILTRO -->
-        <div id="media-tabs" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px">
-          <button onclick="filterMediaCat('Todos',this)" class="media-filter-btn active" style="padding:7px 16px;border-radius:100px;border:1.5px solid #2b7d7a;background:#2b7d7a;color:white;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">Todos</button>
-          <button onclick="filterMediaCat('Cuencos',this)" class="media-filter-btn" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🎵 Cuencos</button>
-          <button onclick="filterMediaCat('Meditación',this)" class="media-filter-btn" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🧘 Meditación</button>
-          <button onclick="filterMediaCat('Frecuencia',this)" class="media-filter-btn" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🌿 Frecuencia</button>
-          <button onclick="filterMediaCat('Teoría',this)" class="media-filter-btn" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">💫 Teoría</button>
-          <button onclick="filterMediaCat('Canalización',this)" class="media-filter-btn" style="padding:7px 16px;border-radius:100px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;font-size:12px;font-weight:700;cursor:pointer;font-family:DM Sans,sans-serif;letter-spacing:.04em">🌸 Canalización</button>
-        </div>
-
-        <!-- GRID DE TARJETAS -->
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px" id="media-grid">
-
-          <div data-cat="Cuencos" data-prueba="true" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Cuencos Tibetanos — Fundamentos" data-dur="32 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
-            <div style="background:#f5f2ec;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🎵</div>
-            <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Cuencos · 32 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Cuencos Tibetanos — Fundamentos</div></div>
-          </div>
-
-          <div data-cat="Canalización" data-prueba="false" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Canalización Marga — Puerta Blanca" data-dur="18 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
-            <div style="background:#fdf0ee;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🌸</div>
-            <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Canalización · 18 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Canalización Marga — Puerta Blanca</div></div>
-          </div>
-
-          <div data-cat="Meditación" data-prueba="true" data-src="REEMPLAZA_CON_URL_VIDEO.mp4" data-type="video" data-title="Meditación de Presencia Corporal" data-dur="15 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
-            <div style="background:#eef3fb;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🧘</div>
-            <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Meditación · 15 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Meditación de Presencia Corporal</div></div>
-          </div>
-
-          <div data-cat="Frecuencia" data-prueba="true" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Frecuencia 432Hz — Armonía Natural" data-dur="40 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
-            <div style="background:#f5f2ec;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🌿</div>
-            <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Frecuencia · 40 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Frecuencia 432Hz — Armonía Natural</div></div>
-          </div>
-
-          <div data-cat="Cuencos" data-prueba="false" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Cuencos — Nivel Terapéutico" data-dur="45 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
-            <div style="background:#fdf0ee;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🔥</div>
-            <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Cuencos · 45 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Cuencos — Nivel Terapéutico</div></div>
-          </div>
-
-          <div data-cat="Teoría" data-prueba="false" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="UCDM — Introducción al Perdón" data-dur="28 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
-            <div style="background:#fdf6ec;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">💫</div>
-            <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Teoría · 28 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">UCDM — Introducción al Perdón</div></div>
-          </div>
-
-          <div data-cat="Teoría" data-prueba="false" data-src="REEMPLAZA_CON_URL_VIDEO.mp4" data-type="video" data-title="Dzogchen — Introducción a Rigpa" data-dur="35 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
-            <div style="background:#eef3fb;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">🔵</div>
-            <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Teoría · 35 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Dzogchen — Introducción a Rigpa</div></div>
-          </div>
-
-          <div data-cat="Frecuencia" data-prueba="false" data-src="REEMPLAZA_CON_URL_AUDIO.mp3" data-type="audio" data-title="Frecuencia 963Hz — La Luz" data-dur="48 min" style="background:white;border-radius:14px;overflow:hidden;border:1px solid #e4ddd3;cursor:pointer;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,.08)'" onmouseout="this.style.transform='';this.style.boxShadow=''" onclick="openMediaModal(this)">
-            <div style="background:#eef3fb;height:100px;display:flex;align-items:center;justify-content:center;font-size:36px">✨</div>
-            <div style="padding:14px 16px"><div style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">Frecuencia · 48 min</div><div style="font-size:13px;font-weight:500;color:#1c1814;line-height:1.4">Frecuencia 963Hz — La Luz</div></div>
-          </div>
-
-        </div>
-
-        <!-- INFO PLAN PRUEBA (visible cuando filtro no tiene contenido) -->
-        <div id="media-prueba-info" style="display:none;margin-top:8px"></div>
-
-        <!-- MODAL REPRODUCTOR -->
-        <div id="media-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px">
-          <div id="media-modal-box" style="background:#faf8f5;border-radius:20px;width:100%;max-width:640px;box-shadow:0 24px 64px rgba(0,0,0,.3);transition:max-width .3s">
-            <!-- HEADER -->
-            <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 0">
-              <div>
-                <div id="mm-cat" style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px"></div>
-                <div id="mm-title" style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:#1c1814"></div>
-              </div>
-              <div style="display:flex;gap:10px;align-items:center">
-                <button id="mm-expand-btn" onclick="toggleMediaExpand()" title="Expandir" style="background:none;border:1.5px solid #e4ddd3;border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:14px;color:#7a7168">⛶</button>
-                <button onclick="closeMediaModal()" style="background:none;border:1.5px solid #e4ddd3;border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:16px;color:#7a7168">✕</button>
-              </div>
-            </div>
-            <!-- PLAYER AREA -->
-            <div id="mm-player" style="padding:20px 24px 24px"></div>
-          </div>
-        </div>
-
-      </div>
-    
-
       <!-- MATERIALES VIEW -->
       <div id="view-materiales" style="display:none">
         <h2 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;margin-bottom:8px">Materiales PDF</h2>
@@ -8133,15 +8092,18 @@ document.addEventListener('keydown', function(e) {
             <span class="modal-nav-icon">🧘</span>Ejercicio
           </button>
           <button class="modal-nav-btn" onclick="switchModalTab(3,this)" data-tab="3">
-            <span class="modal-nav-icon">📄</span>Materiales
+            <span class="modal-nav-icon">🎵</span>Multimedia
           </button>
           <button class="modal-nav-btn" onclick="switchModalTab(4,this)" data-tab="4">
-            <span class="modal-nav-icon">🎨</span>Arteterapia
+            <span class="modal-nav-icon">📄</span>Materiales
           </button>
           <button class="modal-nav-btn" onclick="switchModalTab(5,this)" data-tab="5">
-            <span class="modal-nav-icon">📝</span>Diario
+            <span class="modal-nav-icon">🎨</span>Arteterapia
           </button>
           <button class="modal-nav-btn" onclick="switchModalTab(6,this)" data-tab="6">
+            <span class="modal-nav-icon">📝</span>Diario
+          </button>
+          <button class="modal-nav-btn" onclick="switchModalTab(7,this)" data-tab="7">
             <span class="modal-nav-icon">✅</span>Completar
           </button>
         </div>
@@ -8244,22 +8206,52 @@ document.addEventListener('keydown', function(e) {
   </div>
   <!-- Modo normal: iframe -->
   <iframe class="pdf-modal-frame" id="pdf-fullscreen-frame" src=""></iframe>
-  <!-- Modo limitado: PDF.js canvas viewer -->
-  <div id="pdf-js-viewer" style="display:none;flex:1;flex-direction:column;overflow:hidden;background:#525659">
-    <!-- zona scroll del canvas -->
-    <div id="pdf-js-scroll" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:16px 12px 12px">
-      <div id="pdf-js-loading" style="color:rgba(255,255,255,.6);font-size:14px;padding:40px;font-family:DM Sans,sans-serif">Cargando documento…</div>
-      <canvas id="pdf-js-canvas" style="display:none;max-width:100%;box-shadow:0 4px 28px rgba(0,0,0,.6)"></canvas>
-    </div>
-    <!-- barra de navegación fija abajo, NO superpuesta -->
-    <div id="pdf-js-nav" style="display:none;flex-shrink:0;background:#111009;border-top:1px solid rgba(255,255,255,.07);padding:8px 20px;align-items:center;justify-content:center;gap:12px">
-      <button onclick="pdfJsChangePage(-1)" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);border:none;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:DM Sans,sans-serif;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.16)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">‹</button>
-      <span id="pdf-js-pageinfo" style="font-size:12px;color:rgba(255,255,255,.55);font-family:DM Sans,sans-serif;min-width:90px;text-align:center;letter-spacing:.02em"></span>
-      <button onclick="pdfJsChangePage(1)" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);border:none;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:DM Sans,sans-serif;transition:background .15s" onmouseover="this.style.background='rgba(255,255,255,.16)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">›</button>
-      <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
-        <button onclick="if(_pdfDoc){window.open(document.getElementById('pdf-js-canvas').toDataURL())}" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);border:none;padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-family:DM Sans,sans-serif" title="Imprimir">🖨 Imprimir</button>
-        <a id="pdf-js-dl-btn" href="#" download target="_blank" style="background:rgba(255,255,255,.08);color:rgba(255,255,255,.7);text-decoration:none;padding:5px 12px;border-radius:6px;font-size:12px;font-family:DM Sans,sans-serif" title="Descargar">⬇ Descargar</a>
+  <!-- Modo limitado: PDF.js viewer — estilo Chrome nativo -->
+  <div id="pdf-js-viewer" style="display:none;flex:1;flex-direction:row;overflow:hidden;background:#404040">
+
+    <!-- Panel izquierdo: miniaturas -->
+    <div id="pdf-js-thumbs" style="width:200px;flex-shrink:0;background:#2a2a2a;border-right:1px solid rgba(255,255,255,.08);overflow-y:auto;padding:8px 0;display:flex;flex-direction:column;gap:6px;align-items:center"></div>
+
+    <!-- Zona principal -->
+    <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+
+      <!-- Toolbar superior — réplica Chrome -->
+      <div id="pdf-js-nav" style="display:none;flex-shrink:0;background:#3c3c3c;border-bottom:1px solid rgba(0,0,0,.3);height:48px;align-items:center;padding:0 12px;gap:6px;font-family:Arial,sans-serif">
+        <!-- Menú hamburguesa -->
+        <button style="background:none;border:none;color:rgba(255,255,255,.7);font-size:20px;cursor:pointer;padding:4px 8px;border-radius:4px;line-height:1" title="Menú" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='none'">☰</button>
+        <!-- Nombre archivo -->
+        <span id="pdf-js-filename" style="font-size:13px;color:rgba(255,255,255,.8);margin:0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px"></span>
+        <div style="flex:1"></div>
+        <!-- Navegación páginas -->
+        <button onclick="pdfJsChangePage(-1)" style="background:none;border:none;color:rgba(255,255,255,.8);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:4px;line-height:1" title="Página anterior" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='none'">‹</button>
+        <div style="display:flex;align-items:center;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.2);border-radius:4px;padding:0 6px;gap:4px">
+          <input id="pdf-js-pageinput" type="number" min="1" value="1"
+            onchange="var v=parseInt(this.value);if(v>=1&&v<=_pdfMaxPage){_pdfPage=v;pdfJsRenderPage(v)}else{this.value=_pdfPage}"
+            style="width:36px;background:transparent;border:none;color:white;font-size:13px;text-align:center;outline:none;font-family:Arial,sans-serif;-moz-appearance:textfield">
+          <span style="color:rgba(255,255,255,.55);font-size:13px">/</span>
+          <span id="pdf-js-pagemax" style="color:rgba(255,255,255,.55);font-size:13px">48</span>
+        </div>
+        <button onclick="pdfJsChangePage(1)" style="background:none;border:none;color:rgba(255,255,255,.8);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:4px;line-height:1" title="Página siguiente" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='none'">›</button>
+        <div style="width:1px;height:24px;background:rgba(255,255,255,.15);margin:0 4px"></div>
+        <!-- Zoom -->
+        <button onclick="pdfJsZoom(-0.25)" style="background:none;border:none;color:rgba(255,255,255,.8);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:4px;line-height:1" title="Reducir" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='none'">−</button>
+        <span id="pdf-js-zoomlabel" style="font-size:13px;color:rgba(255,255,255,.7);min-width:44px;text-align:center">100%</span>
+        <button onclick="pdfJsZoom(0.25)" style="background:none;border:none;color:rgba(255,255,255,.8);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:4px;line-height:1" title="Ampliar" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='none'">+</button>
+        <div style="width:1px;height:24px;background:rgba(255,255,255,.15);margin:0 4px"></div>
+        <!-- Descarga -->
+        <a id="pdf-js-dl-btn" href="#" download target="_blank" style="background:none;border:none;color:rgba(255,255,255,.75);font-size:20px;cursor:pointer;padding:4px 8px;border-radius:4px;text-decoration:none;line-height:1;display:flex;align-items:center" title="Descargar" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='none'">⬇</a>
+        <!-- Imprimir -->
+        <button onclick="pdfJsPrint()" style="background:none;border:none;color:rgba(255,255,255,.75);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:4px;line-height:1" title="Imprimir" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='none'">🖨</button>
+        <!-- Más opciones -->
+        <button style="background:none;border:none;color:rgba(255,255,255,.75);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:4px;line-height:1" title="Más opciones" onmouseover="this.style.background='rgba(255,255,255,.1)'" onmouseout="this.style.background='none'">⋮</button>
       </div>
+
+      <!-- Canvas área -->
+      <div id="pdf-js-scroll" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:20px 16px;background:#525659">
+        <div id="pdf-js-loading" style="color:rgba(255,255,255,.6);font-size:14px;padding:40px;font-family:Arial,sans-serif">Cargando documento…</div>
+        <canvas id="pdf-js-canvas" style="display:none;box-shadow:0 2px 8px rgba(0,0,0,.5)"></canvas>
+      </div>
+
     </div>
   </div>
 </div>
@@ -12465,7 +12457,7 @@ function nmToast(msg){
     </div>
   </div>
 </div>
-<script>function filterMedia(cat){var tabs=['todos','cuencos','meditacion','frecuencia','teoria','canalizacion'];tabs.forEach(function(t){var btn=document.getElementById('mtab-'+t);if(!btn)return;if(t===cat){btn.style.background='#2b7d7a';btn.style.color='white';btn.style.borderColor='#2b7d7a';}else{btn.style.background='white';btn.style.color='#7a7168';btn.style.borderColor='#e4ddd3';}});var grid=document.getElementById('media-grid');if(!grid)return;Array.from(grid.children).forEach(function(card){card.style.display=(cat==='todos'||card.getAttribute('data-cat')===cat)?'':'none';});}</script>
+<script>function filterMedia(cat){var tabs=['todos','cuencos','meditacion','frecuencia','teoria','canalizacion'];tabs.forEach(function(t){var btn=document.getElementById('mtab-'+t);if(!btn)return;if(t===cat){btn.style.background='#2b7d7a';btn.style.color='white';btn.style.borderColor='#2b7d7a';}else{btn.style.background='white';btn.style.color='#7a7168';btn.style.borderColor='#e4ddd3';}});var grid=document.getElementById('media-grid');if(!grid)return;Array.from(grid.children).forEach(function(card){card.style.display=(cat==='todos'?card.getAttribute('data-cat')==='Cuencos':card.getAttribute('data-cat')===cat)?'':'none';});}</script>
 
 <!-- ══════════════════════════════════════════════════
      MOBILE EDITOR TOOLBAR (≤900px) — carrusel superior
@@ -12600,40 +12592,61 @@ function openPdfLimited(url, name, maxPage) {
   maxPage = maxPage || 48;
   _pdfPage    = 1;
   _pdfMaxPage = maxPage;
+  _pdfScale   = 1.0;
   _pdfDoc     = null;
 
+  // Topbar: nombre del documento
   document.getElementById('pdf-fullscreen-name').textContent = name;
-  var dlBtn = document.getElementById('pdf-fullscreen-dl');
-  if (dlBtn) { dlBtn.href = url; dlBtn.style.display = ''; }
+  // Badge "Pág. 1–48"
   var badge = document.getElementById('pdf-limited-badge');
   if (badge) badge.style.display = '';
+  // Ocultar botón descarga del topbar (está en el toolbar del viewer)
+  var dlBtn = document.getElementById('pdf-fullscreen-dl');
+  if (dlBtn) dlBtn.style.display = 'none';
 
+  // Mostrar visor PDF.js, ocultar iframe
   document.getElementById('pdf-fullscreen-frame').style.display = 'none';
   var viewer = document.getElementById('pdf-js-viewer');
   viewer.style.display = 'flex';
 
+  // Estado inicial canvas
   document.getElementById('pdf-js-loading').style.display = 'block';
   document.getElementById('pdf-js-canvas').style.display  = 'none';
   document.getElementById('pdf-js-nav').style.display     = 'none';
 
+  // Nombre archivo en toolbar
+  var fname = document.getElementById('pdf-js-filename');
+  if (fname) fname.textContent = url.split('/').pop().split('?')[0];
+
+  // Botón descarga en toolbar
+  var jsDownload = document.getElementById('pdf-js-dl-btn');
+  if (jsDownload) jsDownload.href = url;
+
+  // Limpiar miniaturas
+  var thumbs = document.getElementById('pdf-js-thumbs');
+  if (thumbs) thumbs.innerHTML = '<div style="color:rgba(255,255,255,.4);font-size:11px;padding:16px;font-family:Arial,sans-serif;text-align:center">Cargando…</div>';
+
   document.getElementById('pdf-fullscreen-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
 
-  var jsDownload = document.getElementById('pdf-js-dl-btn');
-  if (jsDownload) jsDownload.href = url;
   pdfjsLib.getDocument(url).promise.then(function(doc) {
     _pdfDoc = doc;
     _pdfMaxPage = Math.min(maxPage, doc.numPages);
     document.getElementById('pdf-js-loading').style.display = 'none';
     document.getElementById('pdf-js-canvas').style.display  = 'block';
     document.getElementById('pdf-js-nav').style.display     = 'flex';
+    var mx = document.getElementById('pdf-js-pagemax');
+    if (mx) mx.textContent = _pdfMaxPage;
     pdfJsRenderPage(_pdfPage);
+    pdfJsBuildThumbs();
   }).catch(function(err) {
     document.getElementById('pdf-js-loading').textContent =
       'No se pudo cargar el documento. Inténtalo de nuevo.';
     console.error('PDF.js error:', err);
   });
 }
+
+var _pdfScale = 1.0;   // escala actual del zoom
 
 function pdfJsRenderPage(num) {
   if (!_pdfDoc || _pdfRendering) return;
@@ -12642,24 +12655,26 @@ function pdfJsRenderPage(num) {
     var canvas   = document.getElementById('pdf-js-canvas');
     var ctx      = canvas.getContext('2d');
     var scroll   = document.getElementById('pdf-js-scroll');
-    var nav      = document.getElementById('pdf-js-nav');
-    // Área disponible: viewport menos topbar(~48px) menos nav(~47px) menos padding(32px)
-    var navH     = nav ? nav.offsetHeight : 47;
-    var availH   = window.innerHeight - 48 - navH - 32;
-    var availW   = (scroll ? scroll.clientWidth : window.innerWidth) - 24;
-    var vp       = page.getViewport({ scale: 1 });
-    // Escala para encajar la página completa (fit-page)
-    var scaleW   = availW / vp.width;
-    var scaleH   = availH / vp.height;
-    var scale    = Math.min(scaleW, scaleH);
-    var scaled   = page.getViewport({ scale: scale });
+    var availW   = (scroll ? scroll.clientWidth : window.innerWidth) - 40;
+    var vp0      = page.getViewport({ scale: 1 });
+    // Escala base fit-width × factor de zoom
+    var baseScale = availW / vp0.width;
+    var scale     = baseScale * _pdfScale;
+    var scaled    = page.getViewport({ scale: scale });
     canvas.width  = Math.floor(scaled.width);
     canvas.height = Math.floor(scaled.height);
     page.render({ canvasContext: ctx, viewport: scaled }).promise.then(function() {
       _pdfRendering = false;
-      document.getElementById('pdf-js-pageinfo').textContent =
-        'Pág. ' + _pdfPage + ' / ' + _pdfMaxPage;
+      // Actualizar controles
+      var inp = document.getElementById('pdf-js-pageinput');
+      if (inp) inp.value = _pdfPage;
+      var mx  = document.getElementById('pdf-js-pagemax');
+      if (mx)  mx.textContent = _pdfMaxPage;
+      var zl  = document.getElementById('pdf-js-zoomlabel');
+      if (zl)  zl.textContent = Math.round(_pdfScale * 100) + '%';
       if (scroll) scroll.scrollTop = 0;
+      // Highlight miniatura activa
+      pdfJsHighlightThumb(num);
     });
   });
 }
@@ -12671,6 +12686,63 @@ function pdfJsChangePage(delta) {
   pdfJsRenderPage(_pdfPage);
 }
 
+function pdfJsZoom(delta) {
+  var newScale = Math.max(0.5, Math.min(3.0, _pdfScale + delta));
+  _pdfScale = newScale;
+  pdfJsRenderPage(_pdfPage);
+}
+
+function pdfJsPrint() {
+  // Abrir PDF en nueva pestaña para imprimir
+  var dlBtn = document.getElementById('pdf-js-dl-btn');
+  if (dlBtn && dlBtn.href && dlBtn.href !== '#') {
+    var w = window.open(dlBtn.href);
+    if (w) { w.onload = function() { w.print(); }; }
+  }
+}
+
+function pdfJsHighlightThumb(num) {
+  var thumbs = document.getElementById('pdf-js-thumbs');
+  if (!thumbs) return;
+  thumbs.querySelectorAll('.pdf-thumb-wrap').forEach(function(el, i) {
+    var active = (i + 1 === num);
+    el.style.background    = active ? 'rgba(26,100,200,.35)' : 'transparent';
+    el.style.borderColor   = active ? '#5090e0' : 'transparent';
+  });
+  // Scroll la miniatura activa a la vista
+  var activeEl = thumbs.querySelector('.pdf-thumb-wrap:nth-child(' + num + ')');
+  if (activeEl) activeEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+
+function pdfJsBuildThumbs() {
+  var thumbs = document.getElementById('pdf-js-thumbs');
+  if (!thumbs || !_pdfDoc) return;
+  thumbs.innerHTML = '';
+  var total = Math.min(_pdfMaxPage, _pdfDoc.numPages);
+  for (var i = 1; i <= total; i++) {
+    (function(pageNum) {
+      var wrap = document.createElement('div');
+      wrap.className = 'pdf-thumb-wrap';
+      wrap.style.cssText = 'cursor:pointer;padding:6px;border-radius:4px;border:2px solid transparent;text-align:center;width:140px;box-sizing:border-box;flex-shrink:0';
+      wrap.onclick = (function(n){ return function(){ _pdfPage=n; pdfJsRenderPage(n); }; })(pageNum);
+      var tc = document.createElement('canvas');
+      tc.style.cssText = 'width:120px;display:block;margin:0 auto;box-shadow:0 1px 4px rgba(0,0,0,.4)';
+      var lbl = document.createElement('div');
+      lbl.style.cssText = 'font-size:11px;color:rgba(255,255,255,.5);margin-top:4px;font-family:Arial,sans-serif';
+      lbl.textContent = pageNum;
+      wrap.appendChild(tc);
+      wrap.appendChild(lbl);
+      thumbs.appendChild(wrap);
+      _pdfDoc.getPage(pageNum).then(function(page) {
+        var vp = page.getViewport({ scale: 120 / page.getViewport({scale:1}).width });
+        tc.width  = Math.floor(vp.width);
+        tc.height = Math.floor(vp.height);
+        page.render({ canvasContext: tc.getContext('2d'), viewport: vp });
+      });
+    })(i);
+  }
+}
+
 document.addEventListener('keydown', function(e) {
   var viewer = document.getElementById('pdf-js-viewer');
   if (!viewer || viewer.style.display === 'none') return;
@@ -12678,5 +12750,22 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   pdfJsChangePage(-1);
 });
 </script>
+<!-- REPRODUCTOR AUDIO/VIDEO GLOBAL -->
+<div id="media-modal" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px">
+  <div id="media-modal-box" style="background:#faf8f5;border-radius:20px;width:100%;max-width:580px;box-shadow:0 24px 64px rgba(0,0,0,.35);transition:max-width .3s">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px 0">
+      <div>
+        <div id="mm-cat" style="font-size:10px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px"></div>
+        <div id="mm-title" style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:#1c1814"></div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button id="mm-expand-btn" onclick="toggleMediaExpand()" title="Expandir" style="background:none;border:1.5px solid #e4ddd3;border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:14px;color:#7a7168">⛶</button>
+        <button onclick="closeMediaModal()" style="background:none;border:1.5px solid #e4ddd3;border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:16px;color:#7a7168">✕</button>
+      </div>
+    </div>
+    <div id="mm-player" style="padding:20px 24px 24px"></div>
+  </div>
+</div>
+
 </body>
 </html>
