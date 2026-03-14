@@ -1899,7 +1899,7 @@ button:focus-visible, input:focus-visible {
     <li><a onclick="acadScrollTo('acad-quienes')">Quiénes Somos</a></li>
     <li><a onclick="acadScrollTo('acad-testimonios')">Testimonios</a></li>
     <li><a onclick="acadScrollTo('acad-contacto')">Contacto</a></li>
-    <li id="acad-li-dash" style="display:none"><button class="acad-nav-dash" id="acad-btn-dash" onclick="goTo('student')">↩ Mi Dashboard</button></li>
+    <li id="acad-li-dash" style="display:none"><button class="acad-nav-dash" id="acad-btn-dash" onclick="goTo('student')">↩ Mi Área</button></li>
     <li id="acad-li-cta"><a class="acad-nav-cta" id="acad-btn-acceso" onclick="user ? goTo('student') : goTo('auth')">Acceso Alumnos</a></li>
   </ul>
   <button class="acad-nav-hamburger" onclick="acadMenuOpen()">
@@ -1916,7 +1916,7 @@ button:focus-visible, input:focus-visible {
   <a onclick="acadScrollTo('acad-testimonios');acadMenuClose()">Testimonios</a>
   <a onclick="acadScrollTo('acad-contacto');acadMenuClose()">Contacto</a>
   <div class="acad-mobile-menu-divider"></div>
-  <button id="acad-mob-dash" onclick="acadMenuClose();goTo('student')" style="display:none;background:rgba(188,150,64,.12);color:#D4AA5A;border:1.5px solid rgba(188,150,64,.35);padding:14px 36px;border-radius:100px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.04em;position:relative;z-index:1">↩ Mi Dashboard</button>
+  <button id="acad-mob-dash" onclick="acadMenuClose();goTo('student')" style="display:none;background:rgba(188,150,64,.12);color:#D4AA5A;border:1.5px solid rgba(188,150,64,.35);padding:14px 36px;border-radius:100px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.04em;position:relative;z-index:1">↩ Mi Área</button>
   <button id="acad-mob-acceso" onclick="acadMenuClose();(user ? goTo('student') : goTo('auth'))" style="background:linear-gradient(135deg,#BC9640,#D4AA5A);color:#1c1814;border:none;padding:14px 36px;border-radius:100px;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.04em;position:relative;z-index:1">Acceso Alumnos</button>
 </div>
 
@@ -3000,7 +3000,7 @@ function acadMenuClose() {
           <button class="btn-login" id="btn-register" onclick="doRegister()">Crear Cuenta</button>
         </div>
 
-        <a class="back-link" onclick="goTo('academy')">← Academia</a>
+        <a class="back-link" onclick="closeModal();goTo('academy')">← Academia</a>
       </div>
     </div>
   </div>
@@ -3012,7 +3012,7 @@ function acadMenuClose() {
 
     <!-- HEADER MOBILE DASHBOARD -->
     <div id="dash-mob-header">
-      <div class="dmh-logo" onclick="goTo('academy')">
+      <div class="dmh-logo" onclick="closeModal();goTo('academy')">
         <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
           <circle cx="250" cy="250" r="240" fill="#0E0C0A"/>
           <g stroke="#B8903A" stroke-width="1.6" stroke-linecap="round" opacity="0.85">
@@ -3039,7 +3039,7 @@ function acadMenuClose() {
         </svg>
         <div class="dmh-logo-text">Frecuencia Integral<span>Academy</span></div>
       </div>
-      <button class="dmh-acad-btn" onclick="goTo('academy')">&#8592; Academia</button>
+      <button class="dmh-acad-btn" onclick="closeModal();goTo('academy')">&#8592; Academia</button>
     </div>
 
     <!-- SIDEBAR -->
@@ -3050,14 +3050,14 @@ function acadMenuClose() {
         <div class="sidebar-badge" id="sb-plan">Puerta Oro</div>
       </div>
       <div class="sidebar-nav">
-        <button class="nav-item active" onclick="showView('dashboard')"><span class="nav-item-icon">🏠</span>Dashboard</button>
+        <button class="nav-item active" onclick="showView('dashboard')"><span class="nav-item-icon">🏠</span>Inicio</button>
         <button class="nav-item" onclick="showView('formaciones')"><span class="nav-item-icon">📚</span>Formaciones</button>
-        <button class="nav-item" data-view="multimedia" onclick="showView('multimedia')"><span class="nav-item-icon">🎵</span>Multimedia</button>
         <button class="nav-item" onclick="showView('arteterapia')"><span class="nav-item-icon">🎨</span>Arteterapia</button>
-        <button class="nav-item" data-view="materiales" onclick="showView('materiales')"><span class="nav-item-icon">📄</span>Materiales PDF</button>
-        <button class="nav-item" onclick="showView('progreso')"><span class="nav-item-icon">📊</span>Mi Progreso</button>
+        <button class="nav-item" data-view="multimedia" onclick="showView('multimedia')"><span class="nav-item-icon">🎵</span>Multimedia</button>
+        <button class="nav-item" data-view="materiales" onclick="showView('materiales')"><span class="nav-item-icon">📄</span>Materiales</button>
         <button class="nav-item" onclick="showView('notas')"><span class="nav-item-icon">📝</span>Diario</button>
-        <button class="nav-item" style="margin-top:auto;color:rgba(255,255,255,.4)" onclick="doLogout()"><span class="nav-item-icon">🚪</span>Cerrar Sesión</button>
+        <button class="nav-item" onclick="showView('progreso')"><span class="nav-item-icon">📊</span>Progreso</button>
+        <button class="nav-item" style="margin-top:auto;color:rgba(255,255,255,.4)" onclick="doLogout()"><span class="nav-item-icon">🚪</span>Salir</button>
       </div>
     </div>
 
@@ -3075,8 +3075,8 @@ function acadMenuClose() {
         <button class="dtab" onclick="showView('multimedia');dtabActive(this,2)">
           <span class="dtab-icon">🎵</span><span class="dtab-label">Multimedia</span>
         </button>
-        <button class="dtab" onclick="showView('progreso');dtabActive(this,3)">
-          <span class="dtab-icon">📊</span><span class="dtab-label">Progreso</span>
+        <button class="dtab" onclick="showView('arteterapia');dtabActive(this,3)">
+          <span class="dtab-icon">🎨</span><span class="dtab-label">Arteterapia</span>
         </button>
         <button class="dtab dtab-mas" id="dtab-mas-btn" onclick="dtabToggleMas(this)">
           <span class="dtab-icon">☰</span><span class="dtab-label">Más</span>
@@ -3090,11 +3090,11 @@ function acadMenuClose() {
         <button class="dtab dtab-acad-mob" onclick="goTo('academy');dtabCloseMas()">
           <span class="dtab-icon">🏛️</span><span class="dtab-label">Academia</span>
         </button>
-        <button class="dtab" onclick="showView('arteterapia');dtabActive(this,4);dtabCloseMas()">
-          <span class="dtab-icon">🎨</span><span class="dtab-label">Arteterapia</span>
-        </button>
-        <button class="dtab" onclick="showView('materiales');dtabActive(this,5);dtabCloseMas()">
+        <button class="dtab" onclick="showView('materiales');dtabActive(this,4);dtabCloseMas()">
           <span class="dtab-icon">📄</span><span class="dtab-label">Materiales</span>
+        </button>
+        <button class="dtab" onclick="showView('progreso');dtabActive(this,5);dtabCloseMas()">
+          <span class="dtab-icon">📊</span><span class="dtab-label">Progreso</span>
         </button>
         <button class="dtab" onclick="showView('notas');dtabActive(this,6);dtabCloseMas()">
           <span class="dtab-icon">📝</span><span class="dtab-label">Diario</span>
@@ -3127,7 +3127,7 @@ function acadMenuClose() {
       <!-- FILA ADMIN/EDITOR: visible solo en mobile para usuarios con acceso -->
       <div class="dtab-row dtab-row-qnav" id="dtab-row-qnav">
         <button class="dtab" onclick="goTo('student')">
-          <span class="dtab-icon">📋</span><span class="dtab-label">Mi Dashboard</span>
+          <span class="dtab-icon">📋</span><span class="dtab-label">Mi Área</span>
         </button>
         <button class="dtab" id="dtab-qnav-admin" style="display:none" onclick="goTo('admin')">
           <span class="dtab-icon">⚙️</span><span class="dtab-label">Admin</span>
@@ -3144,7 +3144,7 @@ function acadMenuClose() {
       <!-- BARRA ACCESO RÁPIDO — solo visible para admin/editor -->
       <div id="user-quick-nav" style="display:none;align-items:center;gap:8px;margin-bottom:20px;flex-wrap:wrap">
         <button class="btn-ghost" onclick="goTo('academy')" style="font-size:12px;padding:7px 14px;border-radius:10px;border:1.5px solid #e4ddd3;background:white;color:#3d3730;cursor:pointer;font-family:DM Sans,sans-serif;display:flex;align-items:center;gap:6px">🏠 Academia</button>
-        <button class="btn-ghost" onclick="goTo('student')" style="font-size:12px;padding:7px 14px;border-radius:10px;border:1.5px solid #e4ddd3;background:white;color:#3d3730;cursor:pointer;font-family:DM Sans,sans-serif">Mi Dashboard</button>
+        <button class="btn-ghost" onclick="goTo('student')" style="font-size:12px;padding:7px 14px;border-radius:10px;border:1.5px solid #e4ddd3;background:white;color:#3d3730;cursor:pointer;font-family:DM Sans,sans-serif">Mi Área</button>
         <button id="uqn-admin" style="display:none;font-size:12px;padding:7px 14px;border-radius:10px;border:none;background:#b89558;color:white;cursor:pointer;font-family:DM Sans,sans-serif;font-weight:700" onclick="goTo('admin')">⚙ Admin</button>
         <button onclick="doLogout()" style="font-size:12px;padding:7px 14px;border-radius:10px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;cursor:pointer;font-family:DM Sans,sans-serif">Salir</button>
       </div>
@@ -3394,16 +3394,16 @@ function acadMenuClose() {
             <span class="modal-nav-icon">💡</span>Conceptos
           </button>
           <button class="modal-nav-btn" onclick="switchModalTab(2,this)" data-tab="2">
-            <span class="modal-nav-icon">🧘</span>Ejercicio
+            <span class="modal-nav-icon">🧘</span>Ejercicios
           </button>
           <button class="modal-nav-btn" onclick="switchModalTab(3,this)" data-tab="3">
-            <span class="modal-nav-icon">🎵</span>Multimedia
+            <span class="modal-nav-icon">🎨</span>Arteterapia
           </button>
           <button class="modal-nav-btn" onclick="switchModalTab(4,this)" data-tab="4">
-            <span class="modal-nav-icon">📄</span>Materiales
+            <span class="modal-nav-icon">🎵</span>Multimedia
           </button>
           <button class="modal-nav-btn" onclick="switchModalTab(5,this)" data-tab="5">
-            <span class="modal-nav-icon">🎨</span>Arteterapia
+            <span class="modal-nav-icon">📄</span>Materiales
           </button>
           <button class="modal-nav-btn" onclick="switchModalTab(6,this)" data-tab="6">
             <span class="modal-nav-icon">📝</span>Diario
@@ -3484,7 +3484,7 @@ function goTo(page) {
   var tb = document.getElementById('dash-tab-bar');
   if (tb) { if (page === 'student') { tb.style.display = ''; } else { tb.style.display = 'none'; } }
   window.scrollTo(0,0);
-  if (page === 'student') refreshDashboard();
+  if (page === 'student') { refreshDashboard(); filterWeeksByPlan(); }
 }
 
 function showView(view, el) {
@@ -4278,7 +4278,32 @@ function openWeekModal(weekNum) {
         (d.ep && d.ep.length > 0 ? '<div>' + d.ep.map(function(p,i){ return '<div class="exercise-step"><div class="step-num">' + (i+1) + '</div><div class="step-text">' + p + '</div></div>'; }).join('') + '</div>' : '');
     })(),
 
-    // Tab 3: Multimedia
+    // Tab 3: Arteterapia
+    (function() {
+      var at = (typeof AT !== 'undefined') ? AT[String(weekNum)] : null;
+      if (!at) return '<p style="color:#7a7168;font-size:14px">No hay ejercicio de arteterapia para esta semana.</p>';
+      var pasos = at.p && at.p.length > 0
+        ? '<div style="margin-top:16px">' + at.p.map(function(p,i){
+            return '<div class="exercise-step"><div class="step-num" style="background:' + color + '">' + (i+1) + '</div><div class="step-text">' + p + '</div></div>';
+          }).join('') + '</div>'
+        : '';
+      return '<div style="background:linear-gradient(135deg,#BC964018,#BC964008);border:1px solid #BC964030;border-radius:14px;padding:20px;margin-bottom:16px">' +
+        '<div style="font-size:11px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">🎨 Ejercicio de Arteterapia</div>' +
+        '<div style="font-family:\'Cormorant Garamond\',serif;font-size:18px;font-weight:400;color:#1c1814;margin-bottom:10px">' + at.e + '</div>' +
+        '<div style="font-size:13px;color:#3d3730;font-style:italic;margin-bottom:8px">Objetivo: ' + at.o + '</div>' +
+        '<div style="font-size:12px;color:#a89e93">🖌️ Materiales: ' + at.m + '</div>' +
+        '</div>' +
+        '<div style="background:#faf8f5;border-radius:10px;padding:16px;margin-bottom:12px">' +
+        '<div style="font-size:11px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Contexto</div>' +
+        '<p style="font-size:13px;line-height:1.75;color:#3d3730">' + at.c + '</p>' +
+        '</div>' +
+        pasos +
+        (at.r ? '<div style="margin-top:16px;background:#fff8ed;border-left:3px solid #BC9640;border-radius:0 8px 8px 0;padding:14px 16px">' +
+        '<div style="font-size:11px;font-weight:700;color:#BC9640;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">✍️ Reflexión para el Diario</div>' +
+        '<p style="font-size:13px;line-height:1.75;color:#3d3730;font-style:italic">' + at.r + '</p></div>' : '');
+    })(),
+
+    // Tab 4: Multimedia
     (function() {
       var showAudio = (user && user._plan === 'Prueba' && weekNum <= 3) || (w && w.p === 'Blanca');
       if (!showAudio) return '<div style="padding:32px 16px;text-align:center"><div style="font-size:40px;margin-bottom:12px">&#127925;</div><div style="font-family:\'Cormorant Garamond\',serif;font-size:17px;color:#1c1814;margin-bottom:6px">Multimedia disponible en el curso</div><div style="font-size:11px;color:#7a7168;margin-bottom:16px">Accede a los audios de cuencos tibetanos y m&#225;s</div><button onclick="showUpgradeBanner()" style="background:linear-gradient(135deg,#BC9640,#D4AA5A);color:#1c1814;border:none;padding:8px 22px;border-radius:100px;font-size:11px;font-weight:700;cursor:pointer">Ver planes &#8594;</button></div>';
@@ -4292,7 +4317,7 @@ function openWeekModal(weekNum) {
       return tagsBar + buildCuencosGrid();
     })(),
 
-    // Tab 4: Materiales PDF
+    // Tab 5: Materiales PDF
     (function() {
       var isPrueba = user && user._plan === 'Prueba';
       var BASE = 'https://jtwbbyjspanirbsuoipa.supabase.co/storage/v1/object/public/materiales/PRUEBA/';
@@ -4372,31 +4397,6 @@ function openWeekModal(weekNum) {
           '</div>';
         }).join('') +
         (w.p === 'Blanca' ? '' : '');
-    })(),
-
-    // Tab 5: Arteterapia
-    (function() {
-      var at = (typeof AT !== 'undefined') ? AT[String(weekNum)] : null;
-      if (!at) return '<p style="color:#7a7168;font-size:14px">No hay ejercicio de arteterapia para esta semana.</p>';
-      var pasos = at.p && at.p.length > 0
-        ? '<div style="margin-top:16px">' + at.p.map(function(p,i){
-            return '<div class="exercise-step"><div class="step-num" style="background:' + color + '">' + (i+1) + '</div><div class="step-text">' + p + '</div></div>';
-          }).join('') + '</div>'
-        : '';
-      return '<div style="background:linear-gradient(135deg,#BC964018,#BC964008);border:1px solid #BC964030;border-radius:14px;padding:20px;margin-bottom:16px">' +
-        '<div style="font-size:11px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">🎨 Ejercicio de Arteterapia</div>' +
-        '<div style="font-family:\'Cormorant Garamond\',serif;font-size:18px;font-weight:400;color:#1c1814;margin-bottom:10px">' + at.e + '</div>' +
-        '<div style="font-size:13px;color:#3d3730;font-style:italic;margin-bottom:8px">Objetivo: ' + at.o + '</div>' +
-        '<div style="font-size:12px;color:#a89e93">🖌️ Materiales: ' + at.m + '</div>' +
-        '</div>' +
-        '<div style="background:#faf8f5;border-radius:10px;padding:16px;margin-bottom:12px">' +
-        '<div style="font-size:11px;font-weight:700;color:#7a7168;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Contexto</div>' +
-        '<p style="font-size:13px;line-height:1.75;color:#3d3730">' + at.c + '</p>' +
-        '</div>' +
-        pasos +
-        (at.r ? '<div style="margin-top:16px;background:#fff8ed;border-left:3px solid #BC9640;border-radius:0 8px 8px 0;padding:14px 16px">' +
-        '<div style="font-size:11px;font-weight:700;color:#BC9640;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px">✍️ Reflexión para el Diario</div>' +
-        '<p style="font-size:13px;line-height:1.75;color:#3d3730;font-style:italic">' + at.r + '</p></div>' : '');
     })(),
 
     // Tab 6: Notas de la semana
@@ -4951,7 +4951,7 @@ function goTo(page) {
   var tb = document.getElementById('dash-tab-bar');
   if (tb) { if (page === 'student') { tb.style.display = ''; } else { tb.style.display = 'none'; } }
   window.scrollTo(0,0);
-  if (page === 'student') { refreshDashboard(); setTimeout(updateStudentPadding, 50); }
+  if (page === 'student') { refreshDashboard(); filterWeeksByPlan(); setTimeout(updateStudentPadding, 50); }
   if (page === 'admin') loadAdminData();
 }
 
@@ -6315,7 +6315,7 @@ button:focus-visible, input:focus-visible {
     </div>
   </div>
   <div id="fi-topbar-right">
-    <button id="fi-topbar-academy" onclick="goTo('academy')">← Academia</button>
+    <button id="fi-topbar-academy" onclick="closeModal();goTo('academy')">← Academia</button>
   </div>
 </div>
 
@@ -6463,7 +6463,7 @@ button:focus-visible, input:focus-visible {
     <button class="btn-ghost" id="btnLogin" onclick="goTo('auth')">Acceso Alumnos</button>
     <button class="btn-primary" id="btnInscribirse" onclick="var el=document.getElementById('h-puertas');if(el)el.scrollIntoView({behavior:'smooth'});">Iniciarse Ahora</button>
     <button class="btn-ghost" id="btnHome" style="display:none" onclick="goTo('academy')">🏠 Academia</button>
-    <button class="btn-ghost" id="btnDash" style="display:none" onclick="goTo('student')">Mi Dashboard</button>
+    <button class="btn-ghost" id="btnDash" style="display:none" onclick="goTo('student')">Mi Área</button>
     <button class="btn-admin-nav" id="btnAdmin" style="display:none" onclick="goTo('admin')">⚙ Admin</button>
     <button class="btn-ghost" id="btnLogout" style="display:none" onclick="doLogout()">Salir</button>
   </div>
@@ -7943,7 +7943,7 @@ document.addEventListener('keydown', function(e) {
           <button class="btn-login" id="btn-register" onclick="doRegister()">Crear Cuenta</button>
         </div>
 
-        <a class="back-link" onclick="goTo('academy')">← Academia</a>
+        <a class="back-link" onclick="closeModal();goTo('academy')">← Academia</a>
       </div>
     </div>
   </div>
@@ -7955,7 +7955,7 @@ document.addEventListener('keydown', function(e) {
 
     <!-- HEADER MOBILE DASHBOARD -->
     <div id="dash-mob-header">
-      <div class="dmh-logo" onclick="goTo('academy')">
+      <div class="dmh-logo" onclick="closeModal();goTo('academy')">
         <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
           <circle cx="250" cy="250" r="240" fill="#0E0C0A"/>
           <g stroke="#B8903A" stroke-width="1.6" stroke-linecap="round" opacity="0.85">
@@ -7982,7 +7982,7 @@ document.addEventListener('keydown', function(e) {
         </svg>
         <div class="dmh-logo-text">Frecuencia Integral<span>Academy</span></div>
       </div>
-      <button class="dmh-acad-btn" onclick="goTo('academy')">&#8592; Academia</button>
+      <button class="dmh-acad-btn" onclick="closeModal();goTo('academy')">&#8592; Academia</button>
     </div>
 
     <!-- SIDEBAR -->
@@ -7993,14 +7993,14 @@ document.addEventListener('keydown', function(e) {
         <div class="sidebar-badge" id="sb-plan">Puerta Oro</div>
       </div>
       <div class="sidebar-nav">
-        <button class="nav-item active" onclick="showView('dashboard')"><span class="nav-item-icon">🏠</span>Dashboard</button>
+        <button class="nav-item active" onclick="showView('dashboard')"><span class="nav-item-icon">🏠</span>Inicio</button>
         <button class="nav-item" onclick="showView('formaciones')"><span class="nav-item-icon">📚</span>Formaciones</button>
-        <button class="nav-item" data-view="multimedia" onclick="showView('multimedia')"><span class="nav-item-icon">🎵</span>Multimedia</button>
         <button class="nav-item" onclick="showView('arteterapia')"><span class="nav-item-icon">🎨</span>Arteterapia</button>
-        <button class="nav-item" data-view="materiales" onclick="showView('materiales')"><span class="nav-item-icon">📄</span>Materiales PDF</button>
-        <button class="nav-item" onclick="showView('progreso')"><span class="nav-item-icon">📊</span>Mi Progreso</button>
+        <button class="nav-item" data-view="multimedia" onclick="showView('multimedia')"><span class="nav-item-icon">🎵</span>Multimedia</button>
+        <button class="nav-item" data-view="materiales" onclick="showView('materiales')"><span class="nav-item-icon">📄</span>Materiales</button>
         <button class="nav-item" onclick="showView('notas')"><span class="nav-item-icon">📝</span>Diario</button>
-        <button class="nav-item" style="margin-top:auto;color:rgba(255,255,255,.4)" onclick="doLogout()"><span class="nav-item-icon">🚪</span>Cerrar Sesión</button>
+        <button class="nav-item" onclick="showView('progreso')"><span class="nav-item-icon">📊</span>Progreso</button>
+        <button class="nav-item" style="margin-top:auto;color:rgba(255,255,255,.4)" onclick="doLogout()"><span class="nav-item-icon">🚪</span>Salir</button>
       </div>
     </div>
 
@@ -8018,8 +8018,8 @@ document.addEventListener('keydown', function(e) {
         <button class="dtab" onclick="showView('multimedia');dtabActive(this,2)">
           <span class="dtab-icon">🎵</span><span class="dtab-label">Multimedia</span>
         </button>
-        <button class="dtab" onclick="showView('progreso');dtabActive(this,3)">
-          <span class="dtab-icon">📊</span><span class="dtab-label">Progreso</span>
+        <button class="dtab" onclick="showView('arteterapia');dtabActive(this,3)">
+          <span class="dtab-icon">🎨</span><span class="dtab-label">Arteterapia</span>
         </button>
         <button class="dtab dtab-mas" id="dtab-mas-btn" onclick="dtabToggleMas(this)">
           <span class="dtab-icon">☰</span><span class="dtab-label">Más</span>
@@ -8033,11 +8033,11 @@ document.addEventListener('keydown', function(e) {
         <button class="dtab dtab-acad-mob" onclick="goTo('academy');dtabCloseMas()">
           <span class="dtab-icon">🏛️</span><span class="dtab-label">Academia</span>
         </button>
-        <button class="dtab" onclick="showView('arteterapia');dtabActive(this,4);dtabCloseMas()">
-          <span class="dtab-icon">🎨</span><span class="dtab-label">Arteterapia</span>
-        </button>
-        <button class="dtab" onclick="showView('materiales');dtabActive(this,5);dtabCloseMas()">
+        <button class="dtab" onclick="showView('materiales');dtabActive(this,4);dtabCloseMas()">
           <span class="dtab-icon">📄</span><span class="dtab-label">Materiales</span>
+        </button>
+        <button class="dtab" onclick="showView('progreso');dtabActive(this,5);dtabCloseMas()">
+          <span class="dtab-icon">📊</span><span class="dtab-label">Progreso</span>
         </button>
         <button class="dtab" onclick="showView('notas');dtabActive(this,6);dtabCloseMas()">
           <span class="dtab-icon">📝</span><span class="dtab-label">Diario</span>
@@ -8070,7 +8070,7 @@ document.addEventListener('keydown', function(e) {
       <!-- FILA ADMIN/EDITOR: visible solo en mobile para usuarios con acceso -->
       <div class="dtab-row dtab-row-qnav" id="dtab-row-qnav">
         <button class="dtab" onclick="goTo('student')">
-          <span class="dtab-icon">📋</span><span class="dtab-label">Mi Dashboard</span>
+          <span class="dtab-icon">📋</span><span class="dtab-label">Mi Área</span>
         </button>
         <button class="dtab" id="dtab-qnav-admin" style="display:none" onclick="goTo('admin')">
           <span class="dtab-icon">⚙️</span><span class="dtab-label">Admin</span>
@@ -8087,7 +8087,7 @@ document.addEventListener('keydown', function(e) {
       <!-- BARRA ACCESO RÁPIDO — solo visible para admin/editor -->
       <div id="user-quick-nav" style="display:none;align-items:center;gap:8px;margin-bottom:20px;flex-wrap:wrap">
         <button class="btn-ghost" onclick="goTo('academy')" style="font-size:12px;padding:7px 14px;border-radius:10px;border:1.5px solid #e4ddd3;background:white;color:#3d3730;cursor:pointer;font-family:DM Sans,sans-serif;display:flex;align-items:center;gap:6px">🏠 Academia</button>
-        <button class="btn-ghost" onclick="goTo('student')" style="font-size:12px;padding:7px 14px;border-radius:10px;border:1.5px solid #e4ddd3;background:white;color:#3d3730;cursor:pointer;font-family:DM Sans,sans-serif">Mi Dashboard</button>
+        <button class="btn-ghost" onclick="goTo('student')" style="font-size:12px;padding:7px 14px;border-radius:10px;border:1.5px solid #e4ddd3;background:white;color:#3d3730;cursor:pointer;font-family:DM Sans,sans-serif">Mi Área</button>
         <button id="uqn-admin" style="display:none;font-size:12px;padding:7px 14px;border-radius:10px;border:none;background:#b89558;color:white;cursor:pointer;font-family:DM Sans,sans-serif;font-weight:700" onclick="goTo('admin')">⚙ Admin</button>
         <button onclick="doLogout()" style="font-size:12px;padding:7px 14px;border-radius:10px;border:1.5px solid #e4ddd3;background:white;color:#7a7168;cursor:pointer;font-family:DM Sans,sans-serif">Salir</button>
       </div>
@@ -8313,16 +8313,16 @@ document.addEventListener('keydown', function(e) {
             <span class="modal-nav-icon">💡</span>Conceptos
           </button>
           <button class="modal-nav-btn" onclick="switchModalTab(2,this)" data-tab="2">
-            <span class="modal-nav-icon">🧘</span>Ejercicio
+            <span class="modal-nav-icon">🧘</span>Ejercicios
           </button>
           <button class="modal-nav-btn" onclick="switchModalTab(3,this)" data-tab="3">
-            <span class="modal-nav-icon">🎵</span>Multimedia
+            <span class="modal-nav-icon">🎨</span>Arteterapia
           </button>
           <button class="modal-nav-btn" onclick="switchModalTab(4,this)" data-tab="4">
-            <span class="modal-nav-icon">📄</span>Materiales
+            <span class="modal-nav-icon">🎵</span>Multimedia
           </button>
           <button class="modal-nav-btn" onclick="switchModalTab(5,this)" data-tab="5">
-            <span class="modal-nav-icon">🎨</span>Arteterapia
+            <span class="modal-nav-icon">📄</span>Materiales
           </button>
           <button class="modal-nav-btn" onclick="switchModalTab(6,this)" data-tab="6">
             <span class="modal-nav-icon">📝</span>Diario
@@ -11693,7 +11693,7 @@ function wixPanelAcciones() {
 
         <div class="nm-card" style="margin-top:16px">
           <div class="nm-card-title">Botones del header</div>
-          <div id="nmHdrBtnsList" style="display:flex;flex-direction:column;gap:8px"><div style="display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.03);padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.07)"><input type="text" value="Acceso Alumnos" class="nm-inp" style="flex:1" onchange="_nm.hdrBtns[0].text=this.value" placeholder="Texto botón"><select class="nm-inp" onchange="_nm.hdrBtns[0].type=this.value" style="flex:0 0 110px"><option value="primary">Primario</option><option value="ghost" selected="">Fantasma</option><option value="teal">Verde TCT</option><option value="gold">Dorado</option></select><label style="font-size:11px;color:rgba(255,255,255,.4);cursor:pointer;white-space:nowrap"><input type="checkbox" checked="" onchange="_nm.hdrBtns[0].show=this.checked" style="cursor:pointer"> Visible</label><button onclick="_nm.hdrBtns.splice(0,1);nmRenderHdrBtns()" class="nm-btn-danger" style="flex-shrink:0">✕</button></div><div style="display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.03);padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.07)"><input type="text" value="Iniciarse Ahora" class="nm-inp" style="flex:1" onchange="_nm.hdrBtns[1].text=this.value" placeholder="Texto botón"><select class="nm-inp" onchange="_nm.hdrBtns[1].type=this.value" style="flex:0 0 110px"><option value="primary">Primario</option><option value="ghost" selected="">Fantasma</option><option value="teal">Verde TCT</option><option value="gold">Dorado</option></select><label style="font-size:11px;color:rgba(255,255,255,.4);cursor:pointer;white-space:nowrap"><input type="checkbox" checked="" onchange="_nm.hdrBtns[1].show=this.checked" style="cursor:pointer"> Visible</label><button onclick="_nm.hdrBtns.splice(1,1);nmRenderHdrBtns()" class="nm-btn-danger" style="flex-shrink:0">✕</button></div><div style="display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.03);padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.07)"><input type="text" value="Mi Dashboard" class="nm-inp" style="flex:1" onchange="_nm.hdrBtns[2].text=this.value" placeholder="Texto botón"><select class="nm-inp" onchange="_nm.hdrBtns[2].type=this.value" style="flex:0 0 110px"><option value="primary">Primario</option><option value="ghost" selected="">Fantasma</option><option value="teal">Verde TCT</option><option value="gold">Dorado</option></select><label style="font-size:11px;color:rgba(255,255,255,.4);cursor:pointer;white-space:nowrap"><input type="checkbox" onchange="_nm.hdrBtns[2].show=this.checked" style="cursor:pointer"> Visible</label><button onclick="_nm.hdrBtns.splice(2,1);nmRenderHdrBtns()" class="nm-btn-danger" style="flex-shrink:0">✕</button></div><div style="display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.03);padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.07)"><input type="text" value="⚙ Admin" class="nm-inp" style="flex:1" onchange="_nm.hdrBtns[3].text=this.value" placeholder="Texto botón"><select class="nm-inp" onchange="_nm.hdrBtns[3].type=this.value" style="flex:0 0 110px"><option value="primary">Primario</option><option value="ghost" selected="">Fantasma</option><option value="teal">Verde TCT</option><option value="gold">Dorado</option></select><label style="font-size:11px;color:rgba(255,255,255,.4);cursor:pointer;white-space:nowrap"><input type="checkbox" onchange="_nm.hdrBtns[3].show=this.checked" style="cursor:pointer"> Visible</label><button onclick="_nm.hdrBtns.splice(3,1);nmRenderHdrBtns()" class="nm-btn-danger" style="flex-shrink:0">✕</button></div><div style="display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.03);padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.07)"><input type="text" value="Salir" class="nm-inp" style="flex:1" onchange="_nm.hdrBtns[4].text=this.value" placeholder="Texto botón"><select class="nm-inp" onchange="_nm.hdrBtns[4].type=this.value" style="flex:0 0 110px"><option value="primary">Primario</option><option value="ghost" selected="">Fantasma</option><option value="teal">Verde TCT</option><option value="gold">Dorado</option></select><label style="font-size:11px;color:rgba(255,255,255,.4);cursor:pointer;white-space:nowrap"><input type="checkbox" onchange="_nm.hdrBtns[4].show=this.checked" style="cursor:pointer"> Visible</label><button onclick="_nm.hdrBtns.splice(4,1);nmRenderHdrBtns()" class="nm-btn-danger" style="flex-shrink:0">✕</button></div></div>
+          <div id="nmHdrBtnsList" style="display:flex;flex-direction:column;gap:8px"><div style="display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.03);padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.07)"><input type="text" value="Acceso Alumnos" class="nm-inp" style="flex:1" onchange="_nm.hdrBtns[0].text=this.value" placeholder="Texto botón"><select class="nm-inp" onchange="_nm.hdrBtns[0].type=this.value" style="flex:0 0 110px"><option value="primary">Primario</option><option value="ghost" selected="">Fantasma</option><option value="teal">Verde TCT</option><option value="gold">Dorado</option></select><label style="font-size:11px;color:rgba(255,255,255,.4);cursor:pointer;white-space:nowrap"><input type="checkbox" checked="" onchange="_nm.hdrBtns[0].show=this.checked" style="cursor:pointer"> Visible</label><button onclick="_nm.hdrBtns.splice(0,1);nmRenderHdrBtns()" class="nm-btn-danger" style="flex-shrink:0">✕</button></div><div style="display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.03);padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.07)"><input type="text" value="Iniciarse Ahora" class="nm-inp" style="flex:1" onchange="_nm.hdrBtns[1].text=this.value" placeholder="Texto botón"><select class="nm-inp" onchange="_nm.hdrBtns[1].type=this.value" style="flex:0 0 110px"><option value="primary">Primario</option><option value="ghost" selected="">Fantasma</option><option value="teal">Verde TCT</option><option value="gold">Dorado</option></select><label style="font-size:11px;color:rgba(255,255,255,.4);cursor:pointer;white-space:nowrap"><input type="checkbox" checked="" onchange="_nm.hdrBtns[1].show=this.checked" style="cursor:pointer"> Visible</label><button onclick="_nm.hdrBtns.splice(1,1);nmRenderHdrBtns()" class="nm-btn-danger" style="flex-shrink:0">✕</button></div><div style="display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.03);padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.07)"><input type="text" value="Mi Área" class="nm-inp" style="flex:1" onchange="_nm.hdrBtns[2].text=this.value" placeholder="Texto botón"><select class="nm-inp" onchange="_nm.hdrBtns[2].type=this.value" style="flex:0 0 110px"><option value="primary">Primario</option><option value="ghost" selected="">Fantasma</option><option value="teal">Verde TCT</option><option value="gold">Dorado</option></select><label style="font-size:11px;color:rgba(255,255,255,.4);cursor:pointer;white-space:nowrap"><input type="checkbox" onchange="_nm.hdrBtns[2].show=this.checked" style="cursor:pointer"> Visible</label><button onclick="_nm.hdrBtns.splice(2,1);nmRenderHdrBtns()" class="nm-btn-danger" style="flex-shrink:0">✕</button></div><div style="display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.03);padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.07)"><input type="text" value="⚙ Admin" class="nm-inp" style="flex:1" onchange="_nm.hdrBtns[3].text=this.value" placeholder="Texto botón"><select class="nm-inp" onchange="_nm.hdrBtns[3].type=this.value" style="flex:0 0 110px"><option value="primary">Primario</option><option value="ghost" selected="">Fantasma</option><option value="teal">Verde TCT</option><option value="gold">Dorado</option></select><label style="font-size:11px;color:rgba(255,255,255,.4);cursor:pointer;white-space:nowrap"><input type="checkbox" onchange="_nm.hdrBtns[3].show=this.checked" style="cursor:pointer"> Visible</label><button onclick="_nm.hdrBtns.splice(3,1);nmRenderHdrBtns()" class="nm-btn-danger" style="flex-shrink:0">✕</button></div><div style="display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.03);padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.07)"><input type="text" value="Salir" class="nm-inp" style="flex:1" onchange="_nm.hdrBtns[4].text=this.value" placeholder="Texto botón"><select class="nm-inp" onchange="_nm.hdrBtns[4].type=this.value" style="flex:0 0 110px"><option value="primary">Primario</option><option value="ghost" selected="">Fantasma</option><option value="teal">Verde TCT</option><option value="gold">Dorado</option></select><label style="font-size:11px;color:rgba(255,255,255,.4);cursor:pointer;white-space:nowrap"><input type="checkbox" onchange="_nm.hdrBtns[4].show=this.checked" style="cursor:pointer"> Visible</label><button onclick="_nm.hdrBtns.splice(4,1);nmRenderHdrBtns()" class="nm-btn-danger" style="flex-shrink:0">✕</button></div></div>
           <button onclick="nmAddHdrBtn()" class="nm-btn-outline" style="margin-top:10px">+ Añadir botón</button>
           <button onclick="nmApplyHdrBtns()" class="nm-btn-teal" style="margin-top:8px">✅ Aplicar Botones</button>
         </div>
@@ -13083,6 +13083,7 @@ document.addEventListener('keydown', function(e) {
 
   /* ─ ROW-QNAV (admin/editor): fondo arena, fuera del negro ─ */
   #dash-tab-bar .dtab-row-qnav {
+    display: none !important;
     width: 100% !important;
     min-height: 40px !important;
     background: #E0D9CE !important;
@@ -13092,6 +13093,9 @@ document.addEventListener('keydown', function(e) {
     justify-content: center !important;
     align-items: center !important;
     flex-wrap: nowrap !important;
+  }
+  #dash-tab-bar .dtab-row-qnav.qnav-visible {
+    display: flex !important;
   }
   #dash-tab-bar .dtab-row-qnav .dtab {
     flex: 0 0 auto !important;
@@ -13203,8 +13207,7 @@ document.addEventListener('keydown', function(e) {
   /* ─ user-quick-nav nunca en mobile ─ */
   #user-quick-nav { display: none !important; }
 
-  /* ─ Qnav tags: asegurar visibilidad ─ */
-  .dtab-row-qnav.qnav-visible { display: flex !important; }
+  /* qnav-visible manejado arriba con selector más específico */
 }
 </style>
 
